@@ -20,223 +20,173 @@ import sys
 sys.path.append("/Users/charleslelosq/anaconda/lib/python2.7/lib-charles")
 
 import csv
-import numpy
+import numpy as np
 import scipy
 import matplotlib
 import matplotlib.gridspec as gridspec
 from pylab import *
 from StringIO import StringIO
 from scipy import interpolate
-from scipy.optimize import curve_fit
-from scipy.optimize import fmin_bfgs
-from scipy.optimize import fmin_l_bfgs_b
-from scipy.optimize import fmin as simplex
-from scipy.optimize import fmin_powell as powell
 
-from spectratools import * 
-from GNinversion import PGNLQ
+# to fit spectra we use the lmfit software of Max Newville, CARS, university of Chicago, available on the web
+from lmfit import minimize, Minimizer, Parameters, Parameter, report_fit, fit_report
+
+from spectratools import *  #Charles' libraries and functions
 
 from Tkinter import *
 import tkMessageBox
 from tkFileDialog import askopenfilename
-import os
 
-# On est obligé de faire une fonction locale adaptee pour fitter car curve_fit donne une liste de parametre et non une matrice...
-def multigaussian_local(params,x): #attention il y a aussi un multigaussian dans spectra tools, attention aux noms ici
-    nbpic = int(len(params)/3)
-    a = np.zeros((1,nbpic))
-    b = np.zeros((1,nbpic))
-    c = np.zeros((1,nbpic))
-    y = np.zeros((len(x),nbpic))
-    for n in range(nbpic):
-        m = 2*n # little trick for correct indexation
-        a[0,n] = params[n+m]
-        b[0,n] = params[n+m+1]
-        c[0,n] = params[n+m+2]
-        y[:,n] = a[0,n]*np.exp(-np.log(2)*((x[:]-b[0,n])/c[0,n])**2)
-    ytot = sum(y,1)
+#### We define a set of functions that will be used for fitting data
+#### unfortunatly, as we use lmfit (which is convenient because it can fix or release 
+#### easily the parameters) we are not able to use arrays for parameters... 
+#### so it is a little bit long to write all the things, but in a way quite robust also...
+#### gaussian and pseudovoigt functions are available in spectratools
+#### if you need a voigt, fix the gaussian-to-lorentzian ratio to 1 in the parameter definition before
+#### doing the data fit
+def residual_melt(pars, x, data=None, eps=None):
+    # unpack parameters:
+    #  extract .value attribute for each parameter
+    a1 = pars['a1'].value
+    a2 = pars['a2'].value
+    a3 = pars['a3'].value
+    a4 = pars['a4'].value
+    a5 = pars['a5'].value
     
-    return ytot, y
-     
-def multigaussian_local_lfix(params,x): #attention il y a aussi un multigaussian dans spectra tools, attention aux noms ici
-    nbpic = int((len(params)-2)/2)
-    a = np.zeros((1,nbpic))
-    b = np.zeros((1,nbpic))
-    c = np.zeros((1,2)) # FWMH fixed and in first position of params
-    c[0,0] = params[0]
-    c[0,1] = params[1]
-    b[0,:] = params[2:(nbpic+2)]
-    a[0,:] = params[nbpic+2:(2*nbpic+2)]
-    y = np.zeros((len(x),nbpic))
-    for n in range(nbpic):
-        if n == 0:
-            y[:,n] = a[0,n]*np.exp(-np.log(2)*((x[:]-b[0,n])/c[0,0])**2)
-        else:
-            y[:,n] = a[0,n]*np.exp(-np.log(2)*((x[:]-b[0,n])/c[0,1])**2)
-    ytot = sum(y,1)
+    f1 = pars['f1'].value
+    f2 = pars['f2'].value
+    f3 = pars['f3'].value
+    f4 = pars['f4'].value
+    f5 = pars['f5'].value    
     
-    return ytot, y     
-     
-def func(params, X, Y, Err):
-    nbpic = int(len(params)/3)
-    a = np.zeros((1,nbpic))
-    b = np.zeros((1,nbpic))
-    c = np.zeros((1,nbpic))
-    for n in range(nbpic):
-        m = 2*n # little trick for correct indexation
-        a[0,n] = params[n+m]
-        b[0,n] = params[n+m+1]
-        c[0,n] = params[n+m+2]    
+    l1 = pars['l1'].value
+    l2 = pars['l2'].value
+    l3 = pars['l3'].value
+    l4 = pars['l4'].value
+    l5 = pars['l5'].value
     
-    # compute chi-square
-    chi2 = 0.0
-    for n in range(len(X)):
-        x = X[n]
-        y = a *np.exp(-np.log(2)*((x-b)/c)**2)
-        y = sum(y,1)  
-        chi2 = chi2 + (Y[n] - y)*(Y[n] - y)/(Err[n]*Err[n])
-    return chi2
-        
-#def derivGauss(params,x, y, e):
-#    nbpic = int(len(params)/3)
-#    fprime = np.zeros(len(params)) #trois parametres * n gaussians    
-#    
-#    for n in range(nbpic):
-#        m = 2*n # little trick for correct indexation
-#        a1 = params[n+m]
-#        b1 = params[n+m+1]
-#        c1 = params[n+m+2]
-#        
-#        fprime[n+m]= sum(2*(a1*exp(-(-b1 + x)**2*log(2)/(c1**2)) - y)*exp(-(-b1 + x)**2*log(2)/(c1**2))/(e**2))
-#        fprime[n+1+m]= sum(-2*a1*(2*b1 - 2*x)*(a1*exp(-(-b1 + x)**2*log(2)/(c1**2)) - y)*exp(-(-b1 + x)**2*log(2)/(c1**2))*log(2)/(c1**2*e**2))
-#        fprime[n+2+m]= sum(4*a1*(-b1 + x)**2*(a1*exp(-(-b1 + x)**2*log(2)/(c1**2)) - y)*exp(-(-b1 + x)**2*log(2)/(c1**2))*log(2)/(c1**3*e**2))
+    # Gaussian model
+    model = gaussian(x,a1,f1,l1) + \
+            gaussian(x,a2,f2,l2) + \
+            gaussian(x,a3,f3,l3) + \
+            gaussian(x,a4,f4,l4) + \
+            gaussian(x,a5,f5,l5)
     
-
-    #fprime = np.concatenate((grad1,grad2,grad3),1)    
-#    
-#    return fprime
+    if data is None:
+        return model
+    if eps is None:
+        return (model - data)
+    return (model - data)/eps
     
-def gauss_lsq(params,x): 
-    nbpic = int(len(params)/3)
-    a = np.zeros((1,nbpic))
-    b = np.zeros((1,nbpic))
-    c = np.zeros((1,nbpic))
-    y = np.zeros((len(x),nbpic))
-    for n in range(nbpic):
-        m = 2*n # little trick for correct indexation
-        a[0,n] = params[n+m]
-        b[0,n] = params[n+m+1]
-        c[0,n] = params[n+m+2]
-        y[:,n] = a[0,n]*np.exp(-np.log(2)*((x[:]-b[0,n])/c[0,n])**2)
-    ytot = sum(y,1)
+def residual_fluid(pars, x, data=None, eps=None):
+    # unpack parameters:
+    #  extract .value attribute for each parameter
+    a1 = pars['a1'].value
+    a2 = pars['a2'].value
+    a3 = pars['a3'].value
+    a4 = pars['a4'].value
+    a5 = pars['a5'].value
+    a6 = pars['a6'].value
     
-    return ytot
- 
-def gauss_lsq_lfix(params,x):
-    nbpic = int((len(params)-2)/2)
-    a = np.zeros((1,nbpic))
-    b = np.zeros((1,nbpic))
-    c = np.zeros((1,2)) # FWMH fixed and in first position of params
-    c[0,0] = params[0]
-    c[0,1] = params[1]
-    b[0,:] = params[2:(nbpic+2)]
-    a[0,:] = params[nbpic+2:(2*nbpic+2)]
-    y = np.zeros((len(x),nbpic))
-    for n in range(nbpic):
-        if n == 0:
-            y[:,n] = a[0,n]*np.exp(-np.log(2)*((x[:]-b[0,n])/c[0,0])**2)
-        else:
-            y[:,n] = a[0,n]*np.exp(-np.log(2)*((x[:]-b[0,n])/c[0,1])**2)
-    ytot = sum(y,1)
+    f1 = pars['f1'].value
+    f2 = pars['f2'].value
+    f3 = pars['f3'].value
+    f4 = pars['f4'].value
+    f5 = pars['f5'].value  
+    f6 = pars['f6'].value
     
-    return ytot   
- 
-###### ERROR FUNCTION FOR THE FIT      
-errfunc = lambda p, x, y: gauss_lsq(p, x) - y # Distance to the target function that is chi2
-
-def deconvolution(name):
-    # get the sample to deconvolute
-    sample = np.genfromtxt(name)
-
-    ## Fit of spectra
-    # we search for peak minimum near 700 cm-1 for melt (work in our case)
-    bebe = sample[np.where((sample[:,0] > 650)&(sample[:,0]<750))]
-    minsp1 = bebe[np.where((bebe[:,1] == np.min(bebe[:,1])))]
-    minsp1[:,0] = 720 # for fluid
-
-    interestspectra = sample[np.where((sample[:,0] > minsp1[:,0])&(sample[:,0] < 1250))]
-    ese0 = interestspectra[:,2]/abs(interestspectra[:,1]) #take ese  as a percentage
-    interestspectra[:,1] = interestspectra[:,1]/np.amax(interestspectra[:,1])*100 # normalise spectra to maximum, easier to handle after 
-    sigma = np.zeros((len(interestspectra[:,0])))+1#np.abs(ese0*interestspectra[:,1]) #calculate good ese
-    #sigma = None
-
-    xfit = interestspectra[:,0]
-    d = interestspectra[:,1]
-
-    #Initial guess.
-    x0 = np.array([(21,763,19,20,830,35,27,890,45,30,1000,41,83,1065,32)]) # for melt lfree
-    cons = [(0,50),(740,790),(0,60),(0,50),(800,850),(20,50),(0,50),(850,930),(20,50),(None,None),(None,None),(None,None),(None,None),(None,None),(None,None)]   
-    #x0 = np.array([(21,558,19,20,641,35,100,760,27,30,820,41,83,890,32,10,1053,30)]) # for fluid lfree
-    #x0 = np.array([(19,40,763,832,891,1000,1065,30,40,50,60,90)]) # for melt lfix
-    #x0 = np.array([(20,40,760,558,641,820,890,1053,100,20,20,20,20,20)]) # for fluid lfix
-    # Apply algorythm.
-    xopt, f, dic = fmin_l_bfgs_b(func, x0, args=(xfit, d, sigma),approx_grad=1,bounds = cons, epsilon=1e-05) #approx_grad=1
-    #xopt, covar = scipy.optimize.leastsq(errfunc,x0,args = (xfit,d))
+    l1 = pars['l1'].value
+    l2 = pars['l2'].value
+    l3 = pars['l3'].value
+    l4 = pars['l4'].value
+    l5 = pars['l5'].value
+    l6 = pars['l6'].value
     
-
-
-    # Gauss Newton Algorythm
-    # Not good yet.... Problems ith matrix and arrays....
-#    params = np.array((33, 761,17,17,815,31,43,871,45,41,1015,47,77,1065,37)) #amplitude, frequency, FWMH
-#    sigparams = np.array((0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1))
-#    xopt = PGNLQ(params,sigparams,xfit,d,sigma,100,2)  
- 
-
-    ycalc, pics = multigaussian_local(xopt,xfit)
-    out = np.column_stack((xfit,d,ycalc,pics))     
+    phy = pars['phy'].value
     
+    # Gaussian and pseudovoigt model
+    model = gaussian(x,a1,f1,l1) + \
+            gaussian(x,a2,f2,l2) + \
+            pseudovoigt(x,a3,f3,l3,phy) + \
+            gaussian(x,a4,f4,l4) + \
+            gaussian(x,a5,f5,l5) + \
+            gaussian(x,a6,f6,l6)
     
-#    ####################################################
-#    ## 3. COMPUTE THE FIT AND FIT ERRORS USING bootstrap
-#    ####################################################        
-#
-#    # Estimate the confidence interval of the fitted parameter using
-#    # the bootstrap Monte-Carlo method
-#    # http://phe.rockefeller.edu/LogletLab/whitepaper/node17.html
-#    residuals = errfunc( xopt, xfit, d)
-#    s_res = numpy.std(residuals)
-#    ps = []
-#    # 100 random data sets are generated and fitted
-#    for i in range(300):
-#      randomDelta = numpy.random.normal(0., s_res, len(d))
-#      randomdataY = d + randomDelta   
-#      randomfit, randomcov = \
-#      scipy.optimize.leastsq( errfunc, x0, args=(xfit, randomdataY),\
-#                        full_output=0)
-#      ps.append( randomfit ) 
-#
-#    ps = numpy.array(ps)
-#    mean_pfit = numpy.mean(ps,0)
-#    Nsigma = 1. # 1sigma gets approximately the same as methods above
-#                # 1sigma corresponds to 68.3% confidence interval
-#                # 2sigma corresponds to 95.44% confidence interval
-#    err_pfit = Nsigma * numpy.std(ps,0) 
+    if data is None:
+        return model
+    if eps is None:
+        return (model - data)
+    return (model - data)/eps
 
-    fig = figure()
-    plot(interestspectra[:,0],interestspectra[:,1],'k-')
-    plot(xfit,ycalc,'r-')
-    for i in range(int(len(xopt))/3):
-         plot(xfit,pics[:,i],'b-')
-    xlim(700,1230)
-    ylim(-5,105)
-    xlabel("Raman shift, cm$^{-1}$", fontsize = 18, fontweight = "bold")
-    ylabel("Normalized intensity, a. u.", fontsize = 18, fontweight = "bold")
-    text(650,110,name,fontsize = 18,color='r')     
-    return out, xopt, fig
+def peaks_melt(pars, x):
+     # unpack parameters:
+    #  extract .value attribute for each parameter
+    a1 = pars['a1'].value
+    a2 = pars['a2'].value
+    a3 = pars['a3'].value
+    a4 = pars['a4'].value
+    a5 = pars['a5'].value
+    
+    f1 = pars['f1'].value
+    f2 = pars['f2'].value
+    f3 = pars['f3'].value
+    f4 = pars['f4'].value
+    f5 = pars['f5'].value    
+    
+    l1 = pars['l1'].value
+    l2 = pars['l2'].value
+    l3 = pars['l3'].value
+    l4 = pars['l4'].value
+    l5 = pars['l5'].value
+    
+    peak1 = gaussian(x,a1,f1,l1)
+    peak2 = gaussian(x,a2,f2,l2)
+    peak3 = gaussian(x,a3,f3,l3)
+    peak4 = gaussian(x,a4,f4,l4)
+    peak5 = gaussian(x,a5,f5,l5)
+    
+    return peak1,peak2,peak3,peak4,peak5
+    
+def peaks_fluid(pars, x):
+    # unpack parameters:
+    #  extract .value attribute for each parameter
+    a1 = pars['a1'].value
+    a2 = pars['a2'].value
+    a3 = pars['a3'].value
+    a4 = pars['a4'].value
+    a5 = pars['a5'].value
+    a6 = pars['a6'].value
+    
+    f1 = pars['f1'].value
+    f2 = pars['f2'].value
+    f3 = pars['f3'].value
+    f4 = pars['f4'].value
+    f5 = pars['f5'].value  
+    f6 = pars['f6'].value
+    
+    l1 = pars['l1'].value
+    l2 = pars['l2'].value
+    l3 = pars['l3'].value
+    l4 = pars['l4'].value
+    l5 = pars['l5'].value
+    l6 = pars['l6'].value
+    
+    phy = pars['phy'].value
+    
+    # Gaussian and pseudovoigt model
+    peak1 = gaussian(x,a1,f1,l1)
+    peak2 = gaussian(x,a2,f2,l2)
+    peak3 = pseudovoigt(x,a3,f3,l3,phy)
+    peak4 = gaussian(x,a4,f4,l4)
+    peak5 = gaussian(x,a5,f5,l5)
+    peak6 = gaussian(x,a6,f6,l6)
+    
+    return peak1,peak2,peak3,peak4,peak5,peak6
 
 
+##### CORE OF THE CALCULATION BELOW
 
-
+#### CALLING THE DATA NAMES
 tkMessageBox.showinfo(
             "Open file",
             "Please open the list of spectra")
@@ -246,71 +196,109 @@ filename = askopenfilename() # show an "Open" dialog box and return the path to 
 with open(filename) as inputfile:
     results = list(csv.reader(inputfile)) # we read the data list
 
-for lg in range(4):
+#### LOOP FOR BEING ABLE TO TREAT MULTIPLE DATA
+#### WARNING: OUTPUT ARE AUTOMATICALLY GENERATED IN A DIRECTORY CALLED "DECONV"
+#### (see end) THAT SHOULD BE PRESENT !!!!!!!!!!
+for lg in range(len(results)):
     name = str(results[lg]).strip('[]')
     name = name[1:-1] # to remove unwanted ""
-    # get the sample to deconvolute
-    sample = np.genfromtxt(name)
+    sample = np.genfromtxt(name) # get the sample to deconvolute
 
-    ## Fit of spectra
-    # we search for peak minimum near 700 cm-1 for melt (work in our case)
-    bebe = sample[np.where((sample[:,0] > 650)&(sample[:,0]<750))]
-    minsp1 = bebe[np.where((bebe[:,1] == np.min(bebe[:,1])))]
-    minsp1[:,0] = 720 # for fluid
-
-    interestspectra = sample[np.where((sample[:,0] > minsp1[:,0])&(sample[:,0] < 1250))]
-    ese0 = interestspectra[:,2]/abs(interestspectra[:,1]) #take ese  as a percentage
+    # we set here the lower and higher bonds for the interest region
+    lb = 450
+    hb = 1250
+    
+    interestspectra = sample[np.where((sample[:,0] > lb)&(sample[:,0] < hb))]
+    ese0 = interestspectra[:,2]/abs(interestspectra[:,1]) #take ese  as a percentage, we assume that the treatment was made correctly for error determination... if not, please put  sigma = None
     interestspectra[:,1] = interestspectra[:,1]/np.amax(interestspectra[:,1])*100 # normalise spectra to maximum, easier to handle after 
-    sigma = np.zeros((len(interestspectra[:,0])))+1#np.abs(ese0*interestspectra[:,1]) #calculate good ese
-    #sigma = None
+    sigma = abs(ese0*interestspectra[:,1]) #calculate good ese
+    #sigma = None # you can activate that if you are not sure about the errors
 
-    xfit = interestspectra[:,0]
-    d = interestspectra[:,1]
+    xfit = interestspectra[:,0] # region to be fitted
+    data = interestspectra[:,1] # region to be fitted
 
-    #Initial guess.
-    x0 = np.array([(21,763,19,20,830,35,27,890,45,30,1000,41,83,1065,32)]) # for melt lfree
-    cons = [(0,50),(740,790),(0,60),(0,50),(800,850),(20,50),(0,50),(850,930),(20,50),(None,None),(None,None),(None,None),(None,None),(None,None),(None,None)]   
-    #x0 = np.array([(21,558,19,20,641,35,100,760,27,30,820,41,83,890,32,10,1053,30)]) # for fluid lfree
-    #x0 = np.array([(19,40,763,832,891,1000,1065,30,40,50,60,90)]) # for melt lfix
-    #x0 = np.array([(20,40,760,558,641,820,890,1053,100,20,20,20,20,20)]) # for fluid lfix
-    # Apply algorythm.
-    xopt, f, dic = fmin_l_bfgs_b(func, x0, args=(xfit, d, sigma),approx_grad=1,bounds = cons, epsilon=1e-05) #approx_grad=1
-    ycalc, pics = multigaussian_local(xopt,xfit)
+    params = Parameters()
+    ####################### FOR MELT:
+    ####################### COMMENT IF NOT WANTED
+    #           (Name,  Value,  Vary,   Min,  Max,  Expr)
+#    params.add_many(('a1',   32,  True, 0,      None,  None),
+#               ('f1',   777,  True, 750,    None,  None),
+#               ('l1',   016,  True, 0,      None,  None),
+#               ('a2',   017,  True, 0,      None,  None),
+#               ('f2',   820,  True, None,   None,  None),
+#               ('l2',   032,  True, None,   None,  None),  
+#               ('a3',   40.51,True, 0,      None,  None),
+#               ('f3',   880,  True, None,   None,  None),
+#               ('l3',   044,  True, None,   None,  None),  
+#               ('a4',   041,  True, 0,      None,  None),
+#               ('f4',   1020, True, 900,    None,  None),
+#               ('l4',   047,  True, None,   None,  None),  
+#               ('a5',   077,  True, 0,      None,  None),
+#               ('f5',   1060, True, 1000,   None,  None),
+#               ('l5',   037,  True, None,   None,  None))  
+    
+    ####################### FOR FLUID:
+    ####################### COMMENT IF NOT WANTED
+    #           (Name,  Value,  Vary,   Min,  Max,  Expr)
+    params.add_many(('a1',   032,  True, 0,      None,  None),
+                    ('f1',   600,  True, None,   None,  None),
+                    ('l1',   020,  True, None,   None,  None),
+                    ('a2',   030,  True, 0,      None,  None),
+                    ('f2',   700,  True, None,   None,  None),
+                    ('l2',   031,  True, None,   None,  None),  
+                    ('a3',   80,  True, 0,      None,  None),
+                    ('f3',   763,  True, None,   None,  None),
+                    ('l3',   010,  True, None,   None,  None),  
+                    ('phy',  0.5,  True, 0,       1,    None),
+                    ('a4',   041,  True, 0,      None,  None),
+                    ('f4',   810,  True, 790,    None,  None),
+                    ('l4',   030,  True, None,   None,  None),  
+                    ('a5',   020,  True, 0,      None,  None),
+                    ('f5',   880,  True, 850,    None,  None),
+                    ('l5',   040,  True, None,   None,  None),  
+                    ('a6',   030,  True, 0,      None,  None),
+                    ('f6',   1060, True, 1000,   None,  None),
+                    ('l6',   030,  True, None,   None,  None))  
+    
+    result = minimize(residual_fluid, params, args=(xfit, data)) # fit data with leastsq model from scipy
+    yout = data + result.residual # the model line
+    model = fit_report(params) # the report
+    peak1,peak2,peak3,peak4,peak5,peak6 = peaks_fluid(params,xfit) # the different peaks
+    
+    ##### WE DO A NICE FIGURE THAT CAN BE IMPROVED FOR PUBLICATION
     fig = figure()
-    plot(interestspectra[:,0],interestspectra[:,1],'k-')
-    plot(xfit,ycalc,'r-')
-    for i in range(int(len(xopt))/3):
-         plot(xfit,pics[:,i],'b-')
-    xlim(700,1230)
+    plot(xfit,data,'k-')
+    plot(xfit,yout,'r-')
+    plot(xfit,peak1,'b-')
+    plot(xfit,peak2,'b-')
+    plot(xfit,peak3,'b-')
+    plot(xfit,peak4,'b-')
+    plot(xfit,peak5,'b-')
+    plot(xfit,peak6,'b-')
+    
+    xlim(lb,hb)
     ylim(-5,105)
     xlabel("Raman shift, cm$^{-1}$", fontsize = 18, fontweight = "bold")
     ylabel("Normalized intensity, a. u.", fontsize = 18, fontweight = "bold")
     text(650,110,name,fontsize = 18,color='r')     
 
-    #yout, model, fig = deconvolution(name)
-#    name.rfind('/')
-#    nameout = name[name.rfind('/')+1::]
-#    namesample = nameout[0:nameout.find('.')]
-#    pathbeg = filename[0:filename.rfind('/')]
-#    pathint = str('/deconv/')
-#    ext1 = '_ydec.txt'
-#    ext2 = '_params.txt'
-#    #ext3 = '_paramserrors.txt'
-#    ext4 = '.pdf'
-#    pathout1 = pathbeg+pathint+namesample+ext1
-#    pathout2 = pathbeg+pathint+namesample+ext2
-#    #pathout3 = pathbeg+pathint+namesample+ext3
-#    pathout4 = pathbeg+pathint+namesample+ext4
-#    np.savetxt(pathout1,yout)
-#    np.savetxt(pathout2,model)
-#    #np.savetxt(pathout3,errors)
-#    savefig(pathout4)
-    
-#### IF YOU WANT TO ONLY TREAT ON FILE? PLEASE UNCOMMENT THE FOLLOWING AND COMMENT BEFORE
-## data are out in this directory
-#Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-#filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
-#out = removebas(filename)
-#Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-#savefilename = asksaveasfile() # show an "Open" dialog box and return the path to the selected file
-#np.savetxt(savefilename,out)
+    ##### output of data, fitted peaks, parameters, and the figure in pdf
+    ##### all goes into the ./deconv/ folder
+    name.rfind('/')
+    nameout = name[name.rfind('/')+1::]
+    namesample = nameout[0:nameout.find('.')]
+    pathbeg = filename[0:filename.rfind('/')]
+    pathint = str('/deconv/') # the output folder
+    ext1 = '_ydec.txt'
+    ext2 = '_params.txt'
+    ext3 = '.pdf'
+    pathout1 = pathbeg+pathint+namesample+ext1
+    pathout2 = pathbeg+pathint+namesample+ext2
+    pathout3 = pathbeg+pathint+namesample+ext3
+    np.savetxt(pathout1,np.concatenate((xfit,yout,peak1,peak2,peak3,peak4,peak5),1))
+    f = open(pathout2,'w')
+    f.write(model)
+    f.close()    
+    #np.savetxt(pathout2,model)
+    savefig(pathout3)
+ 

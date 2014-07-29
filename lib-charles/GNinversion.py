@@ -9,6 +9,7 @@ import numpy as np
 import scipy # faster than numpy for linalg
 from numpy import linalg
 from numpy import matrix
+from numpy import diag
 
 def derivGauss(params,x,variance):
     nbpic = int(len(params)/3)
@@ -65,13 +66,13 @@ def PGNLQ(params,sigparams,x,y,sig,numberiter,relax):
 # algorithm, because of the division of GT matrix by the data errors. 
 
     # we use matrix class of numpy
-    params = matrix(params)
-    x = matrix(x)
-    y = matrix(y)
-    sig = matrix(sig)
+    var = sig**2
 
-    CM = matrix.diagonal(sigparams**2) # Here its the matrix of the prior model uncertainty...
+    CM = diag((sigparams**2)) # Here its the matrix of the prior model uncertainty...
+    CM = matrix(CM)
     ICM = CM.I # and its inverse
+    CM = np.asarray(CM)
+    ICM = np.asarray(ICM)
                 
     var = sig**2 # calculating the variance as the square of 1sig errors  
     # we do not need CD and ICD if we devideGT by the variance in the called function, we do that because too much numbers if we do the direct calculation with matrix...
@@ -93,9 +94,12 @@ def PGNLQ(params,sigparams,x,y,sig,numberiter,relax):
         modelresiduals = mcurrent-mprior # same, note that at the first iteration mcurrent = mprior
         #chi2 = sum((y-ycalc)**2/var) # The "old" chi2
                       
-        gradient = GT*dataresiduals + ICM*modelresiduals
-        d1 = GT*G+ICM
-        direction = d1.I*gradient# The direction 
+        gradient = np.dot(GT,dataresiduals) + np.dot(ICM,modelresiduals)
+        d1 = np.dot(GT,G) + ICM
+        d1 = matrix(d1)
+        d1inv = d1.I
+        d1inv = np.asarray(d1inv)
+        direction = np.dot(d1inv,gradient)# The direction 
         
         # Here we "relax" just the direction, in order to avoid the model to
         # converge too fast and sometime explode. Note that you can change the

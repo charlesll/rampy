@@ -30,68 +30,63 @@ from tkFileDialog import askopenfilename
 from tkFileDialog import asksaveasfile
 import os
 
-# actually we put the routine ina function, because doing that it do not depends on the way we import data, and we do not have to modify the following if we change this way
-def removebas(name):
+def removebas_melt(name):
     
     ##### COMMON X VALUE
     x = np.arange(280,1250,0.1)
     sample = np.zeros((len(x),3))
-    #diamond = np.zeros((len(x),2))
-    #background = np.zeros((len(x),2))
-    rawsample = np.genfromtxt(name,skip_header=20, skip_footer=43)
+    rawsample = np.genfromtxt(name,skip_header=20, skip_footer=43) # WARNING adjust header and footer lines if needed
     tck = interpolate.splrep(rawsample[:,0],rawsample[:,1],s=0)
     y = interpolate.splev(x,tck,der=0)
     sample[:,0] = x
     sample[:,1] = y 
     sample[:,2] = np.sqrt(np.abs(y))
     
-    ########################## FOLLOWING IS NOT NECESSARY
-    #tkMessageBox.showinfo(
-    #            "Open file",
-    #            "Please open the DIAMOND spectrum")
-    #
-    #Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-    #filename2 = askopenfilename() # show an "Open" dialog box and return the path to the selected file
-    #rawdiamond = np.genfromtxt(filename2,skip_header=20, skip_footer=43)
-    #tck = interpolate.splrep(rawdiamond[:,0],rawdiamond[:,1],s=0)
-    #y = interpolate.splev(x,tck,der=0)
-    #diamond[:,0] = x
-    #diamond[:,1] = y 
-    
-    # BACKGROUND IS VERY LOW SO IT DOES NOT MATTER TO REMOVE thE BASELINE
-    #tkMessageBox.showinfo(
-    #            "Open file",
-    #            "Please open the BACKGROUND spectrum")
-    #
-    #Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-    #filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
-    #rawbackground = np.genfromtxt(filename,skip_header=20, skip_footer=43)
-    #tck = interpolate.splrep(rawbackground[:,0],rawbackground[:,1],s=0)
-    #y = interpolate.splev(x,tck,der=0)
-    #background[:,0] = x
-    #background[:,1] = y 
-    #
-    #sample[:,1] = sample[:,1] - background[:,1]
-    
     #########################################################
+    #### BASELINE INTERPOLATION REGIONS For melt
+      
+    # Automatic search  is kind of dangerous,
+    # because if the background raises fastly you will just found the lower seach bond...
+    # but if it works you can use this piece of code to do it:
+    bebe = sample[np.where((sample[:,0] > 680)&(sample[:,0]<1000))] # if necessary adjust bonds
+    minsp1 = bebe[np.where((bebe[:,1] == np.min(bebe[:,1])))]
+        
+    bebe4 = sample[np.where((sample[:,0] > 1100)&(sample[:,0]<1300))]
+    minsp4 = bebe4[np.where((bebe4[:,1] == np.min(bebe4[:,1])))]    
     
-    # we search for minimum near 700 and 1100 cm-1 for constraining the baseline
-    # For melt:
-#    bebe = sample[np.where((sample[:,0] > 680)&(sample[:,0]<1000))] # if necessary adjust bonds
-#    minsp1 = bebe[np.where((bebe[:,1] == np.min(bebe[:,1])))]
-#    
-#    test1 = sample[np.where((sample[:,0] > 280)&(sample[:,0]<280.5))]
-#    minsp2 = test1[np.where((test1[:,1] == np.min(test1[:,1])))]
-#    
-#    bebe4 = sample[np.where((sample[:,0] > 1100)&(sample[:,0]<1300))]
-#    minsp4 = bebe4[np.where((bebe4[:,1] == np.min(bebe4[:,1])))]    
-#    
-#    #if minsp2[:,1] < minsp1[:,1]:
-#    bir = np.array([(680,730),(minsp4[:,0],1230)]) # if necessary adjust bonds
-#    corrsample, baselineD, coeffsD = linbaseline(sample,bir,'spline',10000000) # if necessary adjust spline coeff
-#    
-#   
-    # For fluid
+    # For the melt we do not constrain to the beginning of spectra near 280 cm-1
+    # only befire the Q1 and before the diamond peaks.
+    bir = np.array([(680,730),(minsp4[:,0],1230)]) # if necessary adjust bonds manualy
+    corrsample, baselineD, coeffsD = linbaseline(sample,bir,'spline',10000000) # if necessary adjust spline coeff
+    
+    # Plot the things to have a look at it
+    figure()
+    plot(x,sample[:,1],'k-')
+    plot(x,baselineD[:,1],'r-')
+    plot(x,corrsample[:,1]+(max(sample[:,1])/2),'g-') # corrected sample is shifted for better view
+    xlim(280,1250)
+    ylim(0,max(sample[:,1])) # automatic limit
+    
+    corrsample[:,2] = sample[:,2]/sample[:,1]*corrsample[:,1] # ese as dy/y * ycorr
+    
+    return corrsample
+
+def removebas_fluid(name):
+
+    # same comments as above    
+    
+    ##### COMMON X VALUE
+    x = np.arange(280,1250,0.1)
+    sample = np.zeros((len(x),3))
+    rawsample = np.genfromtxt(name,skip_header=20, skip_footer=43)
+    tck = interpolate.splrep(rawsample[:,0],rawsample[:,1],s=0)
+    y = interpolate.splev(x,tck,der=0)
+    sample[:,0] = x
+    sample[:,1] = y 
+    sample[:,2] = np.sqrt(np.abs(y))
+     
+    #### BASELINE INTERPOLATION REGIONS For fluid
+    # same comment as above for the automatic seach
     bebe = sample[np.where((sample[:,0] > 450)&(sample[:,0]<470))] # if necessary adjust bonds
     minsp1 = bebe[np.where((bebe[:,1] == np.min(bebe[:,1])))]
     bebe2 = sample[np.where((sample[:,0] > 680)&(sample[:,0]<720))] # if necessary adjust bonds
@@ -103,8 +98,6 @@ def removebas(name):
     
     bir = np.array([(295,300),(450,460),(minsp3[:,0]-3,minsp3[:,0]+3),(1120,1250)]) # if necessary adjust bonds
     corrsample, baselineD, coeffsD = linbaseline(sample,bir,'spline',20000000) # if necessary adjust spline coeff
-#      
-  #(280,284),(minsp1[:,0],minsp1[:,0]+20),(minsp2[:,0],minsp2[:,0]+10),
   
     figure()
     plot(x,sample[:,1],'k-')
@@ -113,9 +106,12 @@ def removebas(name):
     xlim(200,1250)
     ylim(0,max(sample[:,1]))
     
-    corrsample[:,2] = sample[:,2]/sample[:,1]*corrsample[:,1] # the ese are not affected by baseline... actually error propagation would tend to increase them !
+    corrsample[:,2] = sample[:,2]/sample[:,1]*corrsample[:,1] 
     
     return corrsample
+
+
+##### NOW WE USE THE FUNCTIONS TO TREAT OUR DATA
 
 tkMessageBox.showinfo(
             "Open file",
@@ -126,26 +122,15 @@ filename = askopenfilename() # show an "Open" dialog box and return the path to 
 with open(filename) as inputfile:
     results = list(csv.reader(inputfile)) # we read the data list
 
-for lg in range(len(results)):
-    name = str(results[lg]).strip('[]')
+#### WARNING WE ASSUME YOU HAVE A ./treated/ folder to record treated spectra !!!!!!
+for lg in range(len(results)): # we do a loop of this data list
+    name = str(results[lg]).strip('[]') # remove unwanted [] in the name of data file
     name = name[1:-1] # to remove unwanted ""
-    out = removebas(name)
+    out = removebas_fluid(name)
     name.rfind('/')
     nameout = name[name.rfind('/')+1::]   
     pathbeg = filename[0:filename.rfind('/')]
-    pathint = str('/treated/')
+    pathint = str('/treated/') # WARNING OUTPUT FOLDER MUST EXIST
     pathout = pathbeg+pathint+nameout
-    np.savetxt(pathout,out)
-    
-#### IF YOU WANT TO ONLY TREAT ON FILE? PLEASE UNCOMMENT THE FOLLOWING AND COMMENT BEFORE
-## data are out in this directory
-#Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-#filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
-#out = removebas(filename)
-#Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-#savefilename = asksaveasfile() # show an "Open" dialog box and return the path to the selected file
-#np.savetxt(savefilename,out)
-#    
-#    
-#    
-    
+    np.savetxt(pathout,out) # save the spectra
+  
