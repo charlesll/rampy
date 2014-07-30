@@ -133,4 +133,9 @@ for lg in range(len(results)): # we do a loop of this data list
     pathint = str('/treated/') # WARNING OUTPUT FOLDER MUST EXIST
     pathout = pathbeg+pathint+nameout
     np.savetxt(pathout,out) # save the spectra
+    # for figures
+    nameoutfig = nameout[:nameout.rfind('.')]
+    outfigpath = pathbeg+pathint+nameoutfig+'.pdf'
+    savefig(outfigpath)
+    
   
