@@ -233,9 +233,12 @@ for lg in range(len(results)):
     pathout1 = pathbeg+pathint+namesample+ext1
     pathout2 = pathbeg+pathint+namesample+ext2
     pathout3 = pathbeg+pathint+namesample+ext3
-    np.savetxt(pathout1,np.concatenate((xfit,data,yout,peak1,peak2,peak3,peak4,peak5),1))
-    f = open(pathout2,'w')
-    f.write(model)
-    f.close()
-    savefig(pathout3)
+    matout = np.vstack((xfit,data,yout,peak1,peak2,peak3,peak4,peak5))
+    matout = np.transpose(matout)
+    np.savetxt(pathout1,matout) # saving the arrays of spectra
+    fd = os.open( pathout2, os.O_RDWR|os.O_CREAT ) # Open a file and create it if it do not exist
+    fo = os.fdopen(fd, "w+") # Now get a file object for the above file.
+    fo.write(model) # write the parameters in it
+    fo.close()
+    savefig(pathout3) # save the figure
  
