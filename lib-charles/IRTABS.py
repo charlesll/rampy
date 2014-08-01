@@ -11,19 +11,38 @@ import numpy as np
 from pylab import *
 from StringIO import StringIO
 
-def FTIRout(nameR,nameB,nameout,thick): # FUNCTION TO CALCULATE THE ABSORBANCE SPECTRA
+def FTIRout(nameR,nameB,nameout,thick,**options): # FUNCTION TO CALCULATE THE ABSORBANCE SPECTRA
+    """
+    IRTABS.FTIRout(path for I, path for Io, output filename, thickness, **kw)    
+    This function returns the IR absorbance spectra.
+    It takes the paths of I and Io spectra as well as the output pathname as entries.
     
-    # WARNING: adjust skip_header and skip_footer to your files before running the function    
+    It returns the -log10(I/Io)*thickness spectra
+    
+    **kw arguments are :
+    header_lines, = 19 by default
+    footer_lines, = 30 by default
+    
+    WARNING: this function assumes that I and Io have the same x axis!
+    """
+    
+    # We take the number of header and footer lines
+    # Default values are not 0 here... for the JASCO SPECTROMETER
+    if options.get("header_lines") == None:
+        sh = 19
+    else:
+        sh = options.get("header_lines")    
+        
+    if options.get("footer_lines") == None:
+        sf = 30
+    else:
+        sf = options.get("footer_lines")   
     
     #Initial FTIR SIGNAL
-    #fr = open(nameR,'r')  ##### CHANGE NAME
-    #sr = fr.read()
-    spectreR = np.genfromtxt(nameR, skip_header= 19, skip_footer = 30)
+    spectreR = np.genfromtxt(nameR, skip_header= sh, skip_footer = sf)
     
     #Initial BACKGROUND
-    #fb = open(nameB,'r') ##### CHANGE NAME
-    #sb = fb.read()
-    spectreB = np.genfromtxt(nameB, skip_header= 19, skip_footer = 30)
+    spectreB = np.genfromtxt(nameB, skip_header= sh, skip_footer = sf)
     
     # Building transmittance spectrum
     x = spectreR[:,0]
@@ -36,47 +55,14 @@ def FTIRout(nameR,nameB,nameout,thick): # FUNCTION TO CALCULATE THE ABSORBANCE S
     spectreout = np.zeros((len(x),2))
     spectreout[:,0] = x
     spectreout[:,1] = w2
-    # We remove possible nan values
-    spectreout = spectreout[~np.isnan(spectreout).any(1)]
+    spectreout = spectreout[~np.isnan(spectreout).any(1)]# We remove possible nan values
     
     # data are out in this directory
     np.savetxt(nameout,spectreout)
     
     return spectreout
-    #%%
-def FTIRfft(name2): # FUNCTION FOR CORRECTING IR SPECTRA OF INTERFERENCE
-    
-    ##Initial FTIR SIGNAL
-    fr = open(name2,'r')  ##### CHANGE NAME
-    sr = fr.read()
-    spectre = np.genfromtxt(StringIO(sr))
-    
-    # Now we will make the fft of the signal
-    x = spectre[:,0]
-    y = spectre[:,1]
-    
-    N = len(y)
-    a = spectre[1000,0]-spectre[999,0]
-    L = a * N
-    
-    sp = np.fft.fft(y)
-    k = 2*np.pi*np.arange(len(sp))/L
-    
-    bp = sp[:]
-    # filtering
-    for i in range(len(bp)): # (H-red)  
-        if i>=10:
-            bp[i]=0  
-            
-    # signal filtred        
-    ibp = np.fft.ifft(bp)    
-    
-    
-    plot(x,y,'r-',x,ibp,'g-')
-    
-    
-    #%%
-def FTIRcomp(names, listelg, plotdisplay, nameout): # FUNCTION TO PLOT TOGETHER THREE SPECTRA
+
+def FTIRcomp(names, listelg, plotdisplay, nameout): # FUNCTION TO PLOT TOGETHER DIFFERENT SPECTRA
     
     # We will have at least 1 file so...
     # >Will use it for having the lenght of files (they must have the same of course)   
