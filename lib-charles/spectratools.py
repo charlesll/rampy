@@ -15,6 +15,7 @@ from scipy import interpolate
 from scipy import signal
 from scipy.optimize import curve_fit
 from scipy.interpolate import UnivariateSpline
+import gcvspline # we assume the pathway is already up to date here
 
 
 ############ SIMPLE MATHEMATICAL FUNCTIONS ###########
@@ -77,7 +78,9 @@ def spectrarray(x,name,interpmethod):
             out[:,i+1]=y
             
     return out
-    
+
+#### FILTERING OF DATA WITH A BUTTERWORTH FILTER 
+   
 def spectrafilter(spectre,filtertype,fq,numtaps,columns):
     """
     This function filters the HF of the spectra
@@ -116,6 +119,8 @@ def spectrafilter(spectre,filtertype,fq,numtaps,columns):
     
     return out
 
+#### OFFSETTING DATA FROM THE SPECTRARRAY FUNCTION
+
 def spectraoffset(spectre,offsets):
     """
     This function allows to offset your spectra for representing them or correcting them
@@ -132,11 +137,20 @@ def spectraoffset(spectre,offsets):
     
     return out
     
+    
+#### SPLINES, LINEAR OR POLYNOMIAL BASELINES    
+    
 def linbaseline(spectre,bir,method,splinesmooth):
     """
-    This function allows subtracting a linear baseline under the spectra
+    This function allows subtracting a baseline under the spectra
     spectre is a spectrum or an array of spectra constructed with the spectrarray function
     bir contains the Background Interpolation Regions, it must be a n x 2 dimensiona rray
+    
+    methods:
+    "linear": linear baseline, with spectre = array[x y]
+    "unispline": spline with the UnivariateSpline function of Scipy, splinesmooth is the spline smoothing factor (assume equal weight in the present case)
+    "gcvspline": spline with the gcvspl.f algorythm, really robust. Spectra must have x, y, ese in it, and splinesmooth is the smoothing factor
+    "poly": polynomial fitting, with splinesmooth the degree of the polynomial
     """
     # we already say what is the output array
     out1 = np.zeros(spectre.shape) # matrix for corrected spectra
@@ -168,7 +182,7 @@ def linbaseline(spectre,bir,method,splinesmooth):
             out2[:,i+1] = (popt[0] + popt[1]*x)
             
         return out1, out2, taux
-    elif method == 'spline':
+    elif method == 'unispline':
         ### selection of bir data
         for i in range(birlen):
             if i == 0:
@@ -181,7 +195,27 @@ def linbaseline(spectre,bir,method,splinesmooth):
             coeffs = UnivariateSpline(yafit[:,0],yafit[:,i+1], s=splinesmooth)
             out2[:,i+1] = coeffs(x)
             out1[:,i+1] = spectre[:,i+1]-out2[:,i+1]
-
+   elif method == 'gcvspline':
+        ## WARNING THEIR IS THE ERROR HERE IN THE SPECTRE MATRIX, not the case for the other functions
+        ## ONLY TREAT ONE SPECTRA AT A TIME       
+        ### selection of bir data
+        for i in range(birlen):
+            if i == 0:
+                yafit = spectre[np.where((spectre[:,0]> bir[i,0]) & (spectre[:,0] < bir[i,1]))] 
+            else:
+                je = spectre[np.where((spectre[:,0]> bir[i,0]) & (spectre[:,0] < bir[i,1]))]
+                yafit = np.concatenate((yafit,je),axis=0)
+        
+        # Spline baseline with mode 3 of gcvspl.f
+        xdata = yafit[:,0]
+        ydata = np.zeros((len(xdata),1))
+        ydata[:,0] = yafit[:,1]
+        ese = yafit[:,2]
+        VAL = ese**2
+        c, wk, ier = gcvspline.gcvspline(xdata,ydata,splinesmooth*ese,VAL,splmode = 3) # gcvspl with mode 3 and smooth factor
+        out2[:,1] = gcvspline.splderivative(x[:,0],xdata,c)       
+        out1[:,1] = spectre[:,1]-out2[:,1]
+        coeffs = None
     elif method == 'poly':
         ## Polynomial baseline
         ### selection of bir data

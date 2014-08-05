@@ -12,6 +12,7 @@ that usually come with any python distribution
 import sys
 sys.path.append("/Users/charleslelosq/anaconda/lib/python2.7/lib-charles")
 
+
 import numpy as np
 import scipy
 import matplotlib
@@ -20,6 +21,7 @@ from pylab import *
 
 from spectratools import *
 from IRTABS import *
+import gcvspline
 
 from Tkinter import *
 import tkMessageBox
@@ -76,8 +78,10 @@ b5 = 5500
 b6 = 6000
 
 bir = np.array([(b1,b2),(b3,b4),(b5,b6)]) # BIR for constraining the baseline
-corrIR, baseline, coeffs = linbaseline(interestIR,bir,'spline',1) # Baseline calculation and subtraction with spectratools.linbaseline
+corrIR, baseline, coeffs = linbaseline(interestIR,bir,'unispline',1) # Baseline calculation and subtraction with spectratools.linbaseline
 
+# Spline baseline with mode 3 of gcvspl.f
+       
 # Select interest areas for calculating the areas of OH and H2Omol peaks
 intarea45 = corrIR[np.where((corrIR[:,0]> b2) & (corrIR[:,0]<b3))]
 intarea52 = corrIR[np.where((corrIR[:,0]> b4) & (corrIR[:,0]<b5))]
