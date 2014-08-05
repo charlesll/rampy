@@ -195,7 +195,7 @@ def linbaseline(spectre,bir,method,splinesmooth):
             coeffs = UnivariateSpline(yafit[:,0],yafit[:,i+1], s=splinesmooth)
             out2[:,i+1] = coeffs(x)
             out1[:,i+1] = spectre[:,i+1]-out2[:,i+1]
-   elif method == 'gcvspline':
+    elif method == 'gcvspline':
         ## WARNING THEIR IS THE ERROR HERE IN THE SPECTRE MATRIX, not the case for the other functions
         ## ONLY TREAT ONE SPECTRA AT A TIME       
         ### selection of bir data
@@ -213,7 +213,7 @@ def linbaseline(spectre,bir,method,splinesmooth):
         ese = yafit[:,2]
         VAL = ese**2
         c, wk, ier = gcvspline.gcvspline(xdata,ydata,splinesmooth*ese,VAL,splmode = 3) # gcvspl with mode 3 and smooth factor
-        out2[:,1] = gcvspline.splderivative(x[:,0],xdata,c)       
+        out2[:,1] = gcvspline.splderivative(x,xdata,c)       
         out1[:,1] = spectre[:,1]-out2[:,1]
         coeffs = None
     elif method == 'poly':
