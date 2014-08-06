@@ -10,7 +10,8 @@ Put it anywhere, you need however the lib-charles library as well as numpy, scip
 that usually come with any python distribution
 """
 import sys
-sys.path.append("/Users/charleslelosq/anaconda/lib/python2.7/lib-charles")
+sys.path.append("/Users/Celita/Desktop/RamPy-master/lib-charles/")
+sys.path.append("/Users/Celita/Desktop/RamPy-master/lib-charles/gcvspl/")
 
 
 import numpy as np
@@ -64,23 +65,31 @@ output[:,1] = output[:,1]/100 # because people give absorption in cm usually...
 interestIR = output[np.where((output[:,0]>lb) & (output[:,0]<hb))] # we select data in the interest region
 
 #### If needed their is here a filter
-#cutfq = np.array([0.01])
-#interestIR = spectrafilter(interestIR,'low',cutfq,1,np.array([1]))
+orisp = interestIR
+cutfq = np.array([0.006])
+interestIR = spectrafilter(interestIR,'low',cutfq,1,np.array([1]))
 #cutfq = np.array([0.010,0.015])
 #interestIR = spectrafilter(interestIR,'bandstop',cutfq,1,np.array([1]))
 
+# we estimate errors as
+errors= np.sqrt(interestIR[:,1])
+dataset = np.zeros((len(interestIR),3))
+dataset[:,0] = interestIR[:,0]
+dataset[:,1] = interestIR[:,1]
+dataset[:,2] = errors
+
 #### BIR values:
 b1 = lb
-b2 = 4300
-b3 = 4720
-b4 = 4740
-b5 = 5500
+b2 = 4289
+b3 = 4761
+b4 = 4838
+b5 = 5667
 b6 = 6000
 
 bir = np.array([(b1,b2),(b3,b4),(b5,b6)]) # BIR for constraining the baseline
-corrIR, baseline, coeffs = linbaseline(interestIR,bir,'unispline',1) # Baseline calculation and subtraction with spectratools.linbaseline
+corrIR, baseline, coeffs = linbaseline(dataset,bir,'gcvspline',0.004) # # Spline baseline with mode 3 of gcvspl.f
+#corrIR, baseline, coeffs = linbaseline(interestIR,bir,'unispline',0.1) # Spline baseline with univariate spline of scipy
 
-# Spline baseline with mode 3 of gcvspl.f
        
 # Select interest areas for calculating the areas of OH and H2Omol peaks
 intarea45 = corrIR[np.where((corrIR[:,0]> b2) & (corrIR[:,0]<b3))]
@@ -104,6 +113,7 @@ ax3 = plt.subplot(gs[2])
 
 ax1.plot(output[:,0],output[:,1],'k-') # The global absorbance spectra
 ax2.plot(interestIR[:,0],interestIR[:,1],'b-') # The spectra in the region of interest
+ax2.plot(orisp[:,0],orisp[:,1],'k-')
 ax2.plot(baseline[:,0],baseline[:,1],'g-') # The polynomial baseline
 
 ax3.plot(corrIR[:,0],corrIR[:,1],'r-') # The spectra without the baseline

@@ -23,6 +23,22 @@ def gaussian(x,amp,freq,HWHM): # for spectral fit
     gauss = amp*np.exp(-np.log(2)*((x-freq)/HWHM)**2)
     return gauss
  
+def gaussianarea(Amplitude,HWHM,**options): 
+    """
+    Return the area of a gaussian with inpu amplitude and HWHM.
+    Options are eseAmplitude (None by default) and eseHWHM (None by default)
+    """
+    area = np.sqrt(np.pi/np.log(2))*Amplitude*HWHM
+    if options.get("eseAmplitude") != None:
+        eseAmplitude = options.get("eseAmplitude")
+        if options.get("eseHWHM") != None:
+            eseHWHM = options.get("eseHWHM")
+            esearea = np.sqrt((np.pi/np.log(2)*HWHM)**2 * eseAmplitude**2 + (np.pi/np.log(2)*Amplitude)**2 * eseHWHM**2)
+    else:
+        esearea = None
+    
+    return area, esearea
+    
 def pseudovoigt(x,amp,freq,HWHM,LGratio): # for spectral fit
     pv1 = LGratio*(amp/(1+((x-freq)/HWHM)**2)) + (1-LGratio)*(amp*np.exp(-np.log(2)*((x-freq)/HWHM)**2))
     return pv1
@@ -195,7 +211,7 @@ def linbaseline(spectre,bir,method,splinesmooth):
             coeffs = UnivariateSpline(yafit[:,0],yafit[:,i+1], s=splinesmooth)
             out2[:,i+1] = coeffs(x)
             out1[:,i+1] = spectre[:,i+1]-out2[:,i+1]
-   elif method == 'gcvspline':
+    elif method == 'gcvspline':
         ## WARNING THEIR IS THE ERROR HERE IN THE SPECTRE MATRIX, not the case for the other functions
         ## ONLY TREAT ONE SPECTRA AT A TIME       
         ### selection of bir data
@@ -213,7 +229,7 @@ def linbaseline(spectre,bir,method,splinesmooth):
         ese = yafit[:,2]
         VAL = ese**2
         c, wk, ier = gcvspline.gcvspline(xdata,ydata,splinesmooth*ese,VAL,splmode = 3) # gcvspl with mode 3 and smooth factor
-        out2[:,1] = gcvspline.splderivative(x[:,0],xdata,c)       
+        out2[:,1] = gcvspline.splderivative(x,xdata,c)       
         out1[:,1] = spectre[:,1]-out2[:,1]
         coeffs = None
     elif method == 'poly':
