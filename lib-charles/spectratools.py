@@ -166,6 +166,7 @@ def linbaseline(spectre,bir,method,splinesmooth):
     "linear": linear baseline, with spectre = array[x y]
     "unispline": spline with the UnivariateSpline function of Scipy, splinesmooth is the spline smoothing factor (assume equal weight in the present case)
     "gcvspline": spline with the gcvspl.f algorythm, really robust. Spectra must have x, y, ese in it, and splinesmooth is the smoothing factor
+    for gcvspline, if ese are not provided we assume ese = sqrt(y)
     "poly": polynomial fitting, with splinesmooth the degree of the polynomial
     """
     # we already say what is the output array
@@ -226,7 +227,11 @@ def linbaseline(spectre,bir,method,splinesmooth):
         xdata = yafit[:,0]
         ydata = np.zeros((len(xdata),1))
         ydata[:,0] = yafit[:,1]
-        ese = yafit[:,2]
+        test = np.shape(yafit)
+        if test[1] > 2:
+            ese = yafit[:,2]
+        else:
+            ese = np.sqrt(yafit[:,1])
         VAL = ese**2
         c, wk, ier = gcvspline.gcvspline(xdata,ydata,splinesmooth*ese,VAL,splmode = 3) # gcvspl with mode 3 and smooth factor
         out2[:,1] = gcvspline.splderivative(x,xdata,c)       
@@ -328,10 +333,10 @@ def longcorr(data,temp,wave): # input are a two column matrix of data, temperatu
         if idx[i] == True:
             ypos[i] = np.absolute(ypos[i])
     
-    ese = np.sqrt(ypos) # array containing errors
+    ese = np.sqrt(ypos) # we assume that errors on raw data are in sqrt(y)
     
     # For retrieving the good errors after long correction, one simple way is
-    # to work with %...
+    # to work with relative errors...
     error = ese/y;
     
     # then we proceed to the correction (Neuville and Mysen, 1996; Le Losq et
@@ -342,21 +347,21 @@ def longcorr(data,temp,wave): # input are a two column matrix of data, temperatu
     t0 = nu0*nu0*nu0*nu/rnu/rnu/rnu/rnu;
     t1 = -h*c*nu/k/T; # c in m/s  : t1 dimensionless
     t2 = 1 - np.exp(t1);
-    long = y*t0*t2; # for y values
-    long2 = ese*t0*t2; # for errors
+    longsp = y*t0*t2; # for y values
+    #long2 = ese*t0*t2; # for errors, as comment as we use relative errors
     
     
     # normalized to max intensity
     # tried area with np.trapz but their is an issue for now
     #norm = np.trapz(long,x)
-    norm = np.max(long)
-    long = long/norm
+    norm = np.max(longsp)
+    longsp = longsp/norm
     
-    eselong = error*long
+    eselong = error*longsp
     
     spectreout = np.zeros((len(x),3))
     spectreout[:,0] = x
-    spectreout[:,1] = long
+    spectreout[:,1] = longsp
     spectreout[:,2] = eselong
     
     return spectreout

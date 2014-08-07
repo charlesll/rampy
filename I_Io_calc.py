@@ -5,9 +5,9 @@ Created on Wed Jul  9 17:52 2014
 @author: charleslelosq
 Carnegie Institution for Science
 
-This script calculates pressure (MPa) in DAC experiments from Raman shift of 13C diamonds
-Put it anywhere, you need however the lib-charles library as well as numpy, scipy, matplotlib, and Tkinter
-that usually come with any python distribution
+This script calculate the I/Io IR spectra from original sample and background spectra
+Local needs: it also perform a baseline subtraction below the 4500 and 5200 cm-1
+peaks and calculate their area. Text and graphic outputs provided (see end of this code)
 """
 import sys
 sys.path.append("/Users/Celita/Desktop/RamPy-master/lib-charles/")

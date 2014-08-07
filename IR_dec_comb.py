@@ -2,12 +2,6 @@
 """
 Created on Tue Jul 22 07:54:05 2014
 
-@author: charleslelosq
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Jul 10 10:19:24 2014
 
 @author: charleslelosq
 Carnegie Institution for Science

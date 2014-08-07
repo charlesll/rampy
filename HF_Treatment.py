@@ -5,35 +5,36 @@ Created on Wed Jul  9 17:52 2014
 @author: charleslelosq
 Carnegie Institution for Science
 
-This script calculates pressure (MPa) in DAC experiments from Raman shift of 13C diamonds
-Put it anywhere, you need however the lib-charles library as well as numpy, scipy, matplotlib, and Tkinter
-that usually come with any python distribution
+This script is used to subtract the second order of diamond
+in the 2000-4000 cm-1 frequency range of Raman spectra from Diamond Anvil Cell
+experiments.
+
+Put it anywhere, you need however to properly set up the path of /lib-charles 
+and /lib-charles/gcvspl/ libraries (as well as numpy, scipy, matplotlib, 
+and Tkinter that usually come with any python distribution)
 """
+
 import sys
-sys.path.append("/Users/charleslelosq/anaconda/lib/python2.7/lib-charles")
+sys.path.append("/Users/charleslelosq/Documents/RamPy/lib-charles/")
+sys.path.append("/Users/charleslelosq/Documents/RamPy/lib-charles/gcvspl/")
 
 import numpy
 import scipy
 import matplotlib
-#from GNinversion import PGNLQ # Homemade pseudoGaussNewton inversion of spectra
 
 import matplotlib.gridspec as gridspec
 from pylab import *
-from StringIO import StringIO
 from scipy import interpolate
 from scipy.optimize import curve_fit
-from scipy.optimize import fmin_bfgs
-from scipy.optimize import fmin_l_bfgs_b
-from scipy.optimize import fmin as simplex
-from scipy.optimize import fmin_powell as powell
-
-from spectratools import *
 
 from Tkinter import *
 import tkMessageBox
 from tkFileDialog import askopenfilename
 from tkFileDialog import asksaveasfile
      
+# Home made modules
+from spectratools import *
+
 ####### First thing: subtracting the second order of diamond from the experimental spectra
 
 # Collecting the sample spectrum
@@ -64,11 +65,12 @@ rawdiamond[:,0] = rawsample[:,0]
 
 # SUbtract a  baseline below Diamond spectra
 birDiamond = np.array([(2037,2064),(2730,3850)])
-corrdiamond, baselineD, coeffsD = linbaseline(rawdiamond,birDiamond,'spline',6000000)
+# FOR GCVSPL: errors = sqrt(y), directly calculated in spectratools.linbaseline
+corrdiamond, baselineD, coeffsD = linbaseline(rawdiamond,birDiamond,'gcvspline',0.05)
 
 # SUbtract a  baseline below Sample spectra, please change ROI if needed, check that !!!!
-birSample = np.array([(2037,2054),(2780,2805),(3817,3850)])
-corrsample, baselineS, coeffsS = linbaseline(rawsample,birSample,'spline',1000000000000000)
+birSample = np.array([(2037,2054),(2780,2805),(3750,3850)])
+corrsample, baselineS, coeffsS = linbaseline(rawsample,birSample,'gcvspline',0.05)
 # If needed to suppress high-frequency oscillations, here a filter:
 cutfq = np.array([0.1])
 corrsample = spectrafilter(corrsample,'low',cutfq,1,np.array([1]))

@@ -2,19 +2,12 @@
 """
 Created on Tue Jul 22 07:54:05 2014
 
-@author: charleslelosq
-"""
+@author: Charles Le Losq
 
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Jul 10 10:19:24 2014
-
-@author: charleslelosq
 Carnegie Institution for Science
 
-This script calculates pressure (MPa) in DAC experiments from Raman shift of 13C diamonds
-Put it anywhere, you need however the lib-charles library as well as numpy, scipy, matplotlib, and Tkinter
-that usually come with any python distribution
+Deconvolution of Raman spectra with Gaussian and/or Lorentzian bands
+Use the lmfit framework developed by Matt Newville for the curve_fit algorithm of Scipy 
 """
 import sys
 sys.path.append("/Users/Celita/Desktop/RamPy-master/lib-charles/")

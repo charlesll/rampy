@@ -5,21 +5,20 @@ Created on Thu Jul 10 10:19:24 2014
 @author: charleslelosq
 Carnegie Institution for Science
 
-This script calculates pressure (MPa) in DAC experiments from Raman shift of 13C diamonds
-Put it anywhere, you need however the lib-charles library as well as numpy, scipy, matplotlib, and Tkinter
-that usually come with any python distribution
+This script fit the baseline of spectra in the 100-1500 cm-1 region.
+Two functions here for our local need. Adjust the baseline constrains in the functions.
+Call of functions is at the end of this script.
 """
 import sys
-sys.path.append("/Users/charleslelosq/anaconda/lib/python2.7/lib-charles")# my library
-
+sys.path.append("/Users/charleslelosq/Documents/RamPy/lib-charles/")
+sys.path.append("/Users/charleslelosq/Documents/RamPy/lib-charles/gcvspl/")
 
 import csv
-import numpy
+import numpy as np
 import scipy
 import matplotlib
 import matplotlib.gridspec as gridspec
 from pylab import *
-from StringIO import StringIO
 from scipy import interpolate
 
 from spectratools import * 
@@ -56,8 +55,8 @@ def removebas_melt(name):
     
     # For the melt we do not constrain to the beginning of spectra near 280 cm-1
     # only befire the Q1 and before the diamond peaks.
-    bir = np.array([(680,730),(minsp4[:,0],1230)]) # if necessary adjust bonds manualy
-    corrsample, baselineD, coeffsD = linbaseline(sample,bir,'spline',10000000) # if necessary adjust spline coeff
+    bir = np.array([(610,730),(minsp4[:,0],1280)]) # if necessary adjust bonds manualy
+    corrsample, baselineD, coeffsD = linbaseline(sample,bir,'gcvspline',0.1) # if necessary adjust spline coeff
     
     # Plot the things to have a look at it
     figure()
@@ -97,7 +96,7 @@ def removebas_fluid(name):
     minsp4 = bebe4[np.where((bebe4[:,1] == np.min(bebe4[:,1])))]
     
     bir = np.array([(295,300),(450,460),(minsp3[:,0]-3,minsp3[:,0]+3),(1120,1250)]) # if necessary adjust bonds
-    corrsample, baselineD, coeffsD = linbaseline(sample,bir,'spline',20000000) # if necessary adjust spline coeff
+    corrsample, baselineD, coeffsD = linbaseline(sample,bir,'gcvspline',0.1) # if necessary adjust spline coeff
   
     figure()
     plot(x,sample[:,1],'k-')
@@ -126,7 +125,7 @@ with open(filename) as inputfile:
 for lg in range(len(results)): # we do a loop of this data list
     name = str(results[lg]).strip('[]') # remove unwanted [] in the name of data file
     name = name[1:-1] # to remove unwanted ""
-    out = removebas_fluid(name)
+    out = removebas_melt(name)
     name.rfind('/')
     nameout = name[name.rfind('/')+1::]   
     pathbeg = filename[0:filename.rfind('/')]
