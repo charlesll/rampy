@@ -65,19 +65,28 @@ output[:,1] = output[:,1]/100 # because people give absorption in cm usually...
 interestIR = output[np.where((output[:,0]>lb) & (output[:,0]<hb))] # we select data in the interest region
 
 #### If needed their is here a filter
+<<<<<<< HEAD
 orisp = interestIR
 cutfq = np.array([0.006])
+=======
+cutfq = np.array([0.008])
+>>>>>>> FETCH_HEAD
 interestIR = spectrafilter(interestIR,'low',cutfq,1,np.array([1]))
 #cutfq = np.array([0.010,0.015])
 #interestIR = spectrafilter(interestIR,'bandstop',cutfq,1,np.array([1]))
 
 # we estimate errors as
+<<<<<<< HEAD
 errors= np.sqrt(interestIR[:,1])
+=======
+errors = np.sqrt(interestIR[:,1])
+>>>>>>> FETCH_HEAD
 dataset = np.zeros((len(interestIR),3))
 dataset[:,0] = interestIR[:,0]
 dataset[:,1] = interestIR[:,1]
 dataset[:,2] = errors
 
+<<<<<<< HEAD
 #### BIR values:
 b1 = lb
 b2 = 4289
@@ -88,6 +97,19 @@ b6 = 6000
 
 bir = np.array([(b1,b2),(b3,b4),(b5,b6)]) # BIR for constraining the baseline
 corrIR, baseline, coeffs = linbaseline(dataset,bir,'gcvspline',0.004) # # Spline baseline with mode 3 of gcvspl.f
+=======
+
+#### BIR values:
+b1 = lb
+b2 = 4300
+b3 = 4720
+b4 = 4740
+b5 = 5700
+b6 = 6000
+
+bir = np.array([(b1,b2),(b3,b4),(b5,b6)]) # BIR for constraining the baseline
+corrIR, baseline, coeffs = linbaseline(dataset,bir,'gcvspline',0.05) # # Spline baseline with mode 3 of gcvspl.f
+>>>>>>> FETCH_HEAD
 #corrIR, baseline, coeffs = linbaseline(interestIR,bir,'unispline',0.1) # Spline baseline with univariate spline of scipy
 
        
