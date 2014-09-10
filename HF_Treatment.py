@@ -30,7 +30,7 @@ from scipy.optimize import curve_fit
 from Tkinter import *
 import tkMessageBox
 from tkFileDialog import askopenfilename
-from tkFileDialog import asksaveasfile
+from tkFileDialog import asksaveasfilename
      
 # Home made modules
 from spectratools import *
@@ -150,7 +150,7 @@ ratioDH = AireOD/AireOH
 eseratioDH = np.sqrt((1/AireOH)**2*eseAireOD**2+((AireOD-AireOH)/(AireOH**2))**2*eseAireOH**2)
 
 
-figure()
+figure(1,figsize=(10,6))
 gs = matplotlib.gridspec.GridSpec(1, 3)
 ax1 = plt.subplot(gs[0])
 ax2 = plt.subplot(gs[1])
@@ -158,18 +158,37 @@ ax3 = plt.subplot(gs[2])
 
 ax1.plot(rawsample[:,0],rawsample[:,1],'k-')
 ax1.plot(rawdiamond[:,0],rawdiamond[:,1],'r-')
-ax1.plot(baselineD[:,0],baselineD[:,1],'y--')
-ax1.plot(baselineS[:,0],baselineS[:,1],'y--')
+ax1.plot(baselineD[:,0],baselineD[:,1],'b--')
+ax1.plot(baselineS[:,0],baselineS[:,1],'b--')
 
 
 ax2.plot(corrsample[:,0],corrsample[:,1],'k-')
 ax2.plot(corrdiamond[:,0],corrdiamond[:,1],'r-')
 ax2.plot(diamondfinal[:,0],diamondfinal[:,1],'g-')
 
+ax3.plot(sampleultimate[:,0],sampleultimate[:,1]/amax(peakOD[:,1])*100 ,'m-')
 
-ax3.plot(sampleultimate[:,0],sampleultimate[:,1]/amax(peakOD[:,1])*100 ,'r-')
+# Limits
+ax1.set_xlim(2000,3850)
+ax2.set_xlim(2000,3850)
+ax3.set_xlim(2000,3850)
+
+# we search the lower limit for ax2 and ax3 but the higher free.
+ax2.set_ylim(np.amin(corrdiamond[:,1])-5/100*np.amin(corrdiamond[:,1]),)#np.amax(corrdiamond[:,1])+10/100*np.amax(corrdiamond[:,1])
+ax3.set_ylim(np.amin(sampleultimate[:,1]/amax(peakOD[:,1])*100)-5/100*np.amin(sampleultimate[:,1]/amax(peakOD[:,1])*100),) #np.amax(sampleultimate[:,1]/amax(peakOD[:,1])*100)+10/100*np.amax(sampleultimate[:,1]/amax(peakOD[:,1])*100)
+
+# Labels:
+ax1.set_ylabel("Intensity, a. u.", fontsize = 18, fontweight = "bold")
+ax2.set_xlabel("Raman shift, cm$^{-1}$",fontsize = 18,fontweight = "bold")
+
+plt.tight_layout()
 
 # data are out in this directory
 Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-savefilename = asksaveasfile() # show an "Open" dialog box and return the path to the selected file
+savefilename = asksaveasfilename() # show an "Open" dialog box and return the path to the selected file
 np.savetxt(savefilename,sampleultimate)
+
+namesample = savefilename[0:savefilename.find('.')]
+namefig = namesample+'.pdf'
+savefig(namefig) # save the figure
+ 
