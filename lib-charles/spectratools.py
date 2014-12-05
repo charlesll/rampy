@@ -231,7 +231,7 @@ def linbaseline(spectre,bir,method,splinesmooth):
         if test[1] > 2:
             ese = yafit[:,2]
         else:
-            ese = np.sqrt(yafit[:,1])
+            ese = np.sqrt(abs(yafit[:,1]))
         VAL = ese**2
         c, wk, ier = gcvspline.gcvspline(xdata,ydata,splinesmooth*ese,VAL,splmode = 3) # gcvspl with mode 3 and smooth factor
         out2[:,1] = gcvspline.splderivative(x,xdata,c)       
