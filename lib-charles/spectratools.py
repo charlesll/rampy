@@ -9,13 +9,15 @@ February 2014
 This is a module with several function for helping importing/treating spectra
 
 """
+import sys
+sys.path.append("/Users/charleslelosq/Documents/RamPy/lib-charles/gcvspl/")
 
 import numpy as np
 from scipy import interpolate 
 from scipy import signal
 from scipy.optimize import curve_fit
 from scipy.interpolate import UnivariateSpline
-import gcvspline # we assume the pathway is already up to date here
+import gcvspline
 
 
 ############ SIMPLE MATHEMATICAL FUNCTIONS ###########
@@ -365,6 +367,7 @@ def longcorr(data,temp,wave): # input are a two column matrix of data, temperatu
     spectreout[:,2] = eselong
     
     return spectreout
+  
  
 ########### SPECIFIC GAUSSIAN/VOIGTR FUNCTIONS FOR USING WITH SCIPY OPTIMIZATION PROTOCOLS
    
