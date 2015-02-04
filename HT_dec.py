@@ -2,16 +2,18 @@
 """
 Created on Mon Jul 21 16:26:34 2014
 
+Modfied on Nov. 2014 for spectral differentiation and testing how
+hydrogen bonding affects DH fractionation
+
+Input => one line = paths of fluid and melts spectra with their 1000 ln(alpha) values and the initial DH values
+
 @author: charleslelosq
 """
 import numpy as np
 import scipy
-
-from scipy.optimize import curve_fit
-from scipy.optimize import fmin_bfgs
-from scipy.optimize import fmin_l_bfgs_b
-from scipy.optimize import fmin as simplex
-from scipy.optimize import fmin_powell as powell
+import matplotlib
+import matplotlib.gridspec as gridspec
+from pylab import *
 
 from Tkinter import *
 import tkMessageBox
@@ -19,131 +21,123 @@ from tkFileDialog import askopenfilename
 from tkFileDialog import asksaveasfile
 
 
-# On est obligé de faire une fonction locale adaptee pour fitter car curve_fit donne une liste de parametre et non une matrice...
-def multigaussian_local(params,x): #attention il y a aussi un multigaussian dans spectra tools, attention aux noms ici
-    nbpic = int(len(params)/3)
-    a = np.zeros((1,nbpic))
-    b = np.zeros((1,nbpic))
-    c = np.zeros((1,nbpic))
-    y = np.zeros((len(x),nbpic))
-    for n in range(nbpic):
-        m = 2*n # little trick for correct indexation
-        a[0,n] = params[n+m]
-        b[0,n] = params[n+m+1]
-        c[0,n] = params[n+m+2]
-        y[:,n] = a[0,n]*np.exp(-np.log(2)*((x[:]-b[0,n])/c[0,n])**2)
-    ytot = sum(y,1)
-    
-    return ytot, y
-    
-def func(params, X, Y, Err):
-    nbpic = int(len(params)/3)
-    a = np.zeros((1,nbpic))
-    b = np.zeros((1,nbpic))
-    c = np.zeros((1,nbpic))
-    for n in range(nbpic):
-        m = 2*n # little trick for correct indexation
-        a[0,n] = params[n+m]
-        b[0,n] = params[n+m+1]
-        c[0,n] = params[n+m+2]    
-    
-    # compute chi-square
-    chi2 = 0.0
-    for n in range(len(X)):
-        x = X[n]
-        y = a *np.exp(-np.log(2)*((x-b)/c)**2)
-        y = sum(y,1)  
-        chi2 = chi2 + (Y[n] - y)*(Y[n] - y)/(Err[n]*Err[n])
-    return chi2
-    
-def derivGauss(params,x, y, e):
-    nbpic = int(len(params)/3)
-    fprime = np.zeros(len(params)) #trois parametres * n gaussians    
-    
-    for n in range(nbpic):
-        m = 2*n # little trick for correct indexation
-        a1 = params[n+m]
-        b1 = params[n+m+1]
-        c1 = params[n+m+2]
-        
-        fprime[n+m]= sum(2*(a1*exp(-(-b1 + x)**2*log(2)/(c1**2)) - y)*exp(-(-b1 + x)**2*log(2)/(c1**2))/(e**2))
-        fprime[n+1+m]= sum(-2*a1*(2*b1 - 2*x)*(a1*exp(-(-b1 + x)**2*log(2)/(c1**2)) - y)*exp(-(-b1 + x)**2*log(2)/(c1**2))*log(2)/(c1**2*e**2))
-        fprime[n+2+m]= sum(4*a1*(-b1 + x)**2*(a1*exp(-(-b1 + x)**2*log(2)/(c1**2)) - y)*exp(-(-b1 + x)**2*log(2)/(c1**2))*log(2)/(c1**3*e**2))
-    
-    #fprime = np.concatenate((grad1,grad2,grad3),1)    
-    
-    return fprime
-    
-def gauss_lsq(params,x): #attention il y a aussi un multigaussian dans spectra tools, attention aux noms ici
-    nbpic = int(len(params)/3)
-    a = np.zeros((1,nbpic))
-    b = np.zeros((1,nbpic))
-    c = np.zeros((1,nbpic))
-    y = np.zeros((len(x),nbpic))
-    for n in range(nbpic):
-        m = 2*n # little trick for correct indexation
-        a[0,n] = params[n+m]
-        b[0,n] = params[n+m+1]
-        c[0,n] = params[n+m+2]
-        y[:,n] = a[0,n]*np.exp(-np.log(2)*((x[:]-b[0,n])/c[0,n])**2)
-    ytot = sum(y,1)
-    
-    return ytot
-    
-errfunc = lambda p, x, y: gauss_lsq(p, x) - y # Distance to the target function
-
-# This software is intended to do online fitting
-# So here is for try on one spectra
-# But will implement a way to treat a list of spectra soon
-# Collecting the sample spectrum
+# Collecting the list of spectra
 tkMessageBox.showinfo(
-            "Open file",
-            "Please open the sample spectrum")
+            "Open ",
+            "Please open the list of spectra")
 
 Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
-sample = np.genfromtxt(filename,skip_header=20, skip_footer=43) # Skipping lines from JASCO files
+samplename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
 
+# we import the information in an array, skipping the first line
+dataliste = np.genfromtxt(samplename,dtype = 'string', skip_header=0,skip_footer=0)
 
-# If you want the following fit the OD peak
-#Fitting the OD peak with the multigaussian_local, DO NOT FORGET TO CHANGE THE FUNCTION IF YOU CHANGE NUMBER OF PEAKS
-#params_OD_out, cov_OD_out = curve_fit(multigaussian_local, peakOD[:,0], peakOD[:,1],params_in)
-peakOD = sample[np.where((sample[:,0]> 2200) & (sample[:,0] < 2900))]
-ese = np.sqrt(np.abs(peakOD[:,1]))#/peakOD[:,1] #taken as a positive percentage
-peakOD[:,1] = peakOD[:,1]/amax(peakOD[:,1])*100 
-#ese = ese#*peakOD[:,1]
+pathfluid = (dataliste[:,0])
+pathmelt = (dataliste[:,1])
+alphas = np.genfromtxt(dataliste[:,2])
+esealphas = np.genfromtxt(dataliste[:,3])
+DHinit = dataliste[:,4]
 
-#For inversion
-x = peakOD[:,0]
-d = peakOD[:,1]
+xOH = np.arange(2200,3900,0.2)
+ratio = np.zeros((len(alphas),9)) # Total aire diff sp, ese, positiv aire diff sp, ese
 
-x0 = np.array((14.10698991e+00,   2509,   3.07119981e+01,
-         60,   2.59747641e+03,   35,
-         35,   2.64934712e+03,   3.07536403e+01))
-xopt = fmin_bfgs(func, x0, args=(x, d, ese),fprime=derivGauss,gtol = 1e-15) #approx_grad=1
-#xopt, cov_xopt = scipy.optimize.leastsq(errfunc,x0,args = (x,y))
-#xopt = powell(func, x0, args=(peakOD[:,0], peakOD[:,1], ese))
-ytot, y= multigaussian_local(xopt,x)
+for i in range(len(alphas)): # We loop over in dataliste
+    rawspfluid = np.genfromtxt(pathfluid[i]) # full path is expected
+    rawspmelt = np.genfromtxt(pathmelt[i]) # full path is expected
+    
+    # resampling for having the same X axis
+    rawfluid = np.zeros((len(xOH),3))
+    rawfluid[:,1] = np.interp(xOH,rawspfluid[:,0],rawspfluid[:,1])
+    rawfluid[:,0] = xOH  
+    rawfluid[:,2] = sqrt(rawfluid[:,1])/rawfluid[:,1] #relative error  
+    rawmelt = np.zeros((len(xOH),3))
+    rawmelt[:,1] = np.interp(xOH,rawspmelt[:,0],rawspmelt[:,1])
+    rawmelt[:,0] = xOH 
+    rawmelt[:,2] = sqrt(rawmelt[:,1])/rawmelt[:,1] #relative error       
+    
+    # Boundaries for the OD and OH stretch peaks
+    lbOH = 2900
+    hbOH = 3800    
+    lbOD = 2200
+    hbOD = lbOH
+    
+    ODfluid = rawfluid[np.where((rawfluid[:,0]>lbOD) & (rawfluid[:,0] < hbOD))]
+    ODmelt = rawmelt[np.where((rawmelt[:,0]>lbOD) & (rawmelt[:,0] < hbOD))]
+    
+    OHfluid = rawfluid[np.where((rawfluid[:,0]>lbOH) & (rawfluid[:,0] < hbOH))]
+    OHmelt = rawmelt[np.where((rawmelt[:,0]>lbOH) & (rawmelt[:,0] < hbOH))]
+      
+    # Normalization to total area  
+    aOHfluid = np.trapz(OHfluid[:,1],OHfluid[:,0])
+    eseaOHfluid = sqrt(aOHfluid)
+    aOHmelt = np.trapz(OHmelt[:,1],OHmelt[:,0])
+    eseaOHmelt = sqrt(aOHmelt)
+    OHfluid[:,1] = OHfluid[:,1]/aOHfluid
+    OHmelt[:,1] = OHmelt[:,1]/aOHmelt
+    
+    aODfluid = np.trapz(ODfluid[:,1],ODfluid[:,0])
+    eseaODfluid = sqrt(aODfluid)
+    aODmelt = np.trapz(ODmelt[:,1],ODmelt[:,0])
+    eseaODmelt = sqrt(aODmelt)
+    ODfluid[:,1] = ODfluid[:,1]/aODfluid
+    ODmelt[:,1] = ODmelt[:,1]/aODmelt
+    
+    diffOH = np.zeros(shape(OHfluid))
+    diffOH[:,0] = OHmelt[:,0]
+    diffOH[:,1] = OHmelt[:,1] - OHfluid[:,1]
+    diffOH[:,2] = np.sqrt(OHmelt[:,2]**2 + OHfluid[:,2]**2)
+    
+    diffOD = np.zeros(shape(ODfluid))
+    diffOD[:,0] = ODmelt[:,0]
+    diffOD[:,1] = ODmelt[:,1] - ODfluid[:,1]
+    diffOD[:,2] = np.sqrt(ODmelt[:,2]**2+ODfluid[:,2]**2)
 
+    # Here we only quantify the total difference between the OH stretch of the melt and the fluid     
+    ratio[i,0] = np.trapz(abs(diffOH[:,1]),diffOH[:,0])
+    ratio[i,1] = np.trapz(abs(diffOH[:,2]),diffOH[:,0])
+    
+    # And here we quantify the difference between the mean O-D and O-H streching frequencies in the melt and the fluid
+    # Mean frequencies of vibration
+    OHFreqMelt = np.sum(OHmelt[:,0]*(OHmelt[:,1]/np.sum(OHmelt[:,1])))
+    OHFreqFluid = np.sum(OHfluid[:,0]*(OHfluid[:,1]/np.sum(OHfluid[:,1])))
+    ODFreqMelt = np.sum(ODmelt[:,0]*(ODmelt[:,1]/np.sum(ODmelt[:,1])))
+    ODFreqFluid = np.sum(ODfluid[:,0]*(ODfluid[:,1]/np.sum(ODfluid[:,1])))
 
-###### If not anted comment the following section
-##### Now we calculate the relationship between vOH and vOD and O-O distances
-#tkMessageBox.showinfo(
-#            "Open file",
-#            "Please open the OO vs OD/OH distance file")
-#Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-#filename3 = askopenfilename() # show an "Open" dialog box and return the path to the selected file
-#distances = np.genfromtxt(filename3,skip_header=1)
-#vOD = distances[:,0]/distances[:,1]
-#oo = distances[:,2]
-#spline_vDH = UnivariateSpline(vOD,oo, s=1) 
-
+    pseudoDZPEmelt = OHFreqMelt - ODFreqMelt
+    pseudoDZPEfluid = OHFreqFluid - ODFreqFluid
+    diffPseudoDPE = pseudoDZPEmelt - pseudoDZPEfluid
+    
+    figure(i,figsize=(12,6))   
+    gs = gridspec.GridSpec(1, 2)
+    ax1 = plt.subplot(gs[0])
+    ax2 = plt.subplot(gs[1])
+       
+    ax1.plot(ODfluid[:,0],ODfluid[:,1],'b-')
+    ax1.plot(ODmelt[:,0],ODmelt[:,1],'r-')
+    ax1.plot(diffOD[:,0],diffOD[:,1],'g-')
+    ax1.plot(np.array([ODFreqMelt,ODFreqMelt]),np.array([0,1]),'r-')    
+    ax1.plot(np.array([ODFreqFluid,ODFreqFluid]),np.array([0,1]),'b-')    
+    ax1.set_ylim(((1.10*np.min(diffOD[:,1])),(1.10*np.max(ODfluid[:,1]))))
+    
+    ax2.plot(OHfluid[:,0],OHfluid[:,1],'b-')
+    ax2.plot(OHmelt[:,0],OHmelt[:,1],'r-')
+    ax2.plot(diffOH[:,0],diffOH[:,1],'g-')
+    ax2.plot(np.array([OHFreqMelt,OHFreqMelt]),np.array([0,1]),'r-')    
+    ax2.plot(np.array([OHFreqFluid,OHFreqFluid]),np.array([0,1]),'b-')    
+    ax2.set_ylim((1.10*min(diffOH[:,1]),1.10*max(OHfluid[:,1])))
+    
+    ratio[i,2] = OHFreqMelt    
+    ratio[i,3] = OHFreqFluid
+    ratio[i,4] = ODFreqMelt
+    ratio[i,5] = ODFreqFluid
+    ratio[i,6] = pseudoDZPEmelt
+    ratio[i,7] = pseudoDZPEfluid
+    ratio[i,8] = diffPseudoDPE    
+     
 figure()
-
-plot(peakOD[:,0],peakOD[:,1],'k-')
-plot(peakOD[:,0],ytot,'r-')
-plot(peakOD[:,0],y[:,0],'m-')
-plot(peakOD[:,0],y[:,1],'m-')
-plot(peakOD[:,0],y[:,2],'m-')
-
-#plot(peakOD[:,0],y[:,3],'m-')
+plot(alphas,ratio[:,4],'ro')
+ 
+Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
+savefilename = asksaveasfile() # show an "Open" dialog box and return the path to the selected file
+out = vstack((alphas,esealphas,ratio[:,0],ratio[:,1],ratio[:,2],ratio[:,3],ratio[:,4],ratio[:,5],ratio[:,6],ratio[:,7],ratio[:,8])).T # Output matrix with 4 columns: Alphas, errors, Ratio Hydro bonds, errors
+np.savetxt(savefilename,out)
