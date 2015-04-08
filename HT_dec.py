@@ -30,7 +30,7 @@ Tk().withdraw() # we don't want a full GUI, so keep the root window from appeari
 samplename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
 
 # we import the information in an array, skipping the first line
-dataliste = np.genfromtxt(samplename,dtype = 'string', skip_header=0,skip_footer=0)
+dataliste = np.genfromtxt(samplename,dtype = 'string', delimiter = '\t', skip_header=0,skip_footer=0)
 
 pathfluid = (dataliste[:,0])
 pathmelt = (dataliste[:,1])
@@ -38,7 +38,7 @@ alphas = np.genfromtxt(dataliste[:,2])
 esealphas = np.genfromtxt(dataliste[:,3])
 DHinit = dataliste[:,4]
 
-xOH = np.arange(2200,3900,0.2)
+xOH = np.arange(2100,3850,0.2)
 ratio = np.zeros((len(alphas),9)) # Total aire diff sp, ese, positiv aire diff sp, ese
 
 for i in range(len(alphas)): # We loop over in dataliste
@@ -49,16 +49,16 @@ for i in range(len(alphas)): # We loop over in dataliste
     rawfluid = np.zeros((len(xOH),3))
     rawfluid[:,1] = np.interp(xOH,rawspfluid[:,0],rawspfluid[:,1])
     rawfluid[:,0] = xOH  
-    rawfluid[:,2] = sqrt(rawfluid[:,1])/rawfluid[:,1] #relative error  
+    rawfluid[:,2] = sqrt(abs(rawfluid[:,1]))/abs(rawfluid[:,1]) #relative error  
     rawmelt = np.zeros((len(xOH),3))
     rawmelt[:,1] = np.interp(xOH,rawspmelt[:,0],rawspmelt[:,1])
     rawmelt[:,0] = xOH 
-    rawmelt[:,2] = sqrt(rawmelt[:,1])/rawmelt[:,1] #relative error       
+    rawmelt[:,2] = sqrt(abs(rawmelt[:,1]))/abs(rawmelt[:,1]) #relative error       
     
     # Boundaries for the OD and OH stretch peaks
-    lbOH = 2900
+    lbOH = 2810
     hbOH = 3800    
-    lbOD = 2200
+    lbOD = 2100
     hbOD = lbOH
     
     ODfluid = rawfluid[np.where((rawfluid[:,0]>lbOD) & (rawfluid[:,0] < hbOD))]

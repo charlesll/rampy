@@ -16,8 +16,8 @@ and Tkinter that usually come with any python distribution)
 """
 
 import sys
-sys.path.append("/Users/charleslelosq/Documents/RamPy/lib-charles/")
-sys.path.append("/Users/charleslelosq/Documents/RamPy/lib-charles/gcvspl/")
+sys.path.append("/Users/closq/Google Drive/RamPy/lib-charles/")
+sys.path.append("/Users/closq/Google Drive/RamPy/lib-charles/gcvspl/")
 
 import numpy as np
 import scipy
@@ -44,7 +44,7 @@ Tk().withdraw() # we don't want a full GUI, so keep the root window from appeari
 samplename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
 
 # we import the information in an array, skipping the first line
-dataliste = np.genfromtxt(samplename,dtype = 'string', skip_header=0,skip_footer=0)
+dataliste = np.genfromtxt(samplename,dtype = 'string',delimiter = '\t', skip_header=0,skip_footer=0)
 pathdiamond = (dataliste[:,0])
 pathsample = (dataliste[:,1])
 pathsave = (dataliste[:,2])
@@ -57,21 +57,23 @@ output = np.zeros((len(pathdiamond),2))
 # SAME FOR ALL SPECTRA
 # DEFINED HERE TO SIMPLIFY THE USE OF THIS CODE
 
-x = np.arange(2035,3800,0.2) # X scale for correction of X deviations, take care to put correct bondaries
+x = np.arange(2000,3842,0.2) # X scale for correction of X deviations, take care to put correct bondaries
 
 # Background Interpolation Regions for baseline subtraction
-birDiamond = np.array([(2035,2055),(2810,3849)]) # BIR diamond
-smofd = 0.03 # smoothing factor
-birSample = np.array([(2035,2055),(2840,2860),(3010,3030),(3790,3850)]) # BIR sample: typical 2860-2950 for melt; For fluid, may add (3000,3040)
-smofs = 0.05 # smoothing factor
+birDiamond = np.array([(2000,2040),(2700,3850)]) # BIR diamond
+smofd = 0.12 # smoothing factor
+birSample = np.array([(2000,2032),(2045,2050),(2770,2800),(3800,3850)]) # BIR sample: typical 2860-2950 for melt; For fluid, may add (3000,3100)
+btype = 'gcvspline' # 'poly' or 'gcvspline' for the sample
+smofs = 0.12 # smoothing factor / poly factor
 
 #### DO YOU NEED A FILTER BEFORE ADJUSTING DIAMOND/SAMPLE SIGNALS???
 filterSwitch1 = 0 #0 to switch off, 1 to turn on
 cutfq = np.array([0.05]) # cutoff Frequency
 filter1type = 'low' # 'low', 'high', 'bandstop', 'bandpass', change cutfq as a function of the filter type (see doc)
 
-bmaxd = np.array([(2400,2500)]) # 2400 2475 Here is were the program have to search for the frequency of the peak that is used for x calibration
-dconvfit = np.array([(2150,2360)]) # Here is were we calculate the conversion factor between the diamond and sample spectra. Unless you know what you are doing, DO NOT MODIFY!
+#bmaxd = np.array([(2645,2680)]) # 2400 2475 or 2645, 2680 (sharper peak) Here is were the program have to search for the frequency of the peak that is used for x calibration
+bmaxd = np.array([(2400,2490)])
+dconvfit = np.array([(2100,2310)]) # Here is were we calculate the conversion factor between the diamond and sample spectra. Unless you know what you are doing, DO NOT MODIFY!
 
 #### DO YOU NEED A SECOND FILTER BEFORE AREA CALCULATION, IN CASE OF "INTERFRINGEANCE" BANDS FOR INSTANCE?
 filterSwitch2 = 0 #0 to switch off, 1 to turn on
@@ -79,16 +81,16 @@ cutfq2 = np.array([0.013]) # cutoff Frequency
 filter2type = 'low' # 'low', 'high', 'bandstop', 'bandpass', change cutfq2 as a function of the filter type (see doc)
 
 # Here are the bondaries for the calculation of the areas. Please CHANGE THEM AS A FUNCTION OF YOUR DATA!!!!!!
-lb = 2200 # Lower Bondary
+lb = 2240 # Lower Bondary
 hb = 3800 # Upper Bondary
-mb1 = 2850 # Intermediate 1 (end of OD peak) good for fluid at 2860 (D2 doublet near 2900 to avoid), for melt at 2800, depends on temperature
-mb2 = 3030 # Intermediate 2 (beginning of OH peak) set as mb1 for melt, but for fluid at 3000 it allows avoiding the D2 doublet near 2900 cm-1
+mb1 = 2810 # Intermediate 1 (end of OD peak) good for fluid at 2860 (D2 doublet near 2900 to avoid), for melt at 2800, depends on temperature
+mb2 = 2810 # Intermediate 2 (beginning of OH peak) set as mb1 for melt, but for fluid at 3000 it allows avoiding the D2 doublet near 2900 cm-1
 
 # In case some of the signal is in the negative portion at the end, you want to activate that:
 birFinalSwitch = 0 # If 0, deactivated, if 1, activated
-birFinal = np.array([(2036,2150),(2840,2850),(3777,3779)])
+birFinal = np.array([(2100,2290),(2760,2780),(3800,3850)])
 basetype = 'poly'
-smofu = 2 #final smo/poly factor
+smofu = 3 #final smo/poly factor
 
 
 for i in range(len(pathdiamond)): # We loop over in dataliste
@@ -111,7 +113,7 @@ for i in range(len(pathdiamond)): # We loop over in dataliste
 
     # FOR GCVSPL: errors = sqrt(y), directly calculated in spectratools.linbaseline
     corrdiamond, baselineD, coeffsD = linbaseline(rawdiamond,birDiamond,'gcvspline',smofd) # SUbtract a  baseline below Diamond spectra  
-    corrsample, baselineS, coeffsS = linbaseline(rawsample,birSample,'gcvspline',smofs)   # SUbtract a  baseline below Sample spectra
+    corrsample, baselineS, coeffsS = linbaseline(rawsample,birSample,btype,smofs)   # SUbtract a  baseline below Sample spectra
     
     #### CORRECTION OF ANY X SHIFTS    
 
@@ -147,11 +149,11 @@ for i in range(len(pathdiamond)): # We loop over in dataliste
     # Their is few to no expected D2O-OD signals in this region, and two nice peak from diamond
     DiamondtoFit = diamondfinal[np.where((diamondfinal[:,0]> dconvfit[0,0]) & (diamondfinal[:,0] < dconvfit[0,1]))]
     SampletoFit =  samplefinal[np.where((samplefinal[:,0]> dconvfit[0,0]) & (samplefinal[:,0] < dconvfit[0,1]))]
-    corrY, cov_out = curve_fit(fun, DiamondtoFit[:,1], SampletoFit[:,1],np.array([(1)])) #Fitting the peak
-
+    corrY, cov_out = curve_fit(fun, DiamondtoFit[:,1], SampletoFit[:,1]) #Fitting the peak
+    
     # we record anorther spectra for diamond (normalized) and also for sample (subtracted from diamond and
     # area normalized)
-    diamondfinal[:,1] = fun(diamondfinal[:,1],corrY) # We correct the diamond spectra
+    diamondfinal[:,1] = fun(diamondfinal[:,1],corrY[0]) # We correct the diamond spectra  
     sampleultimateINT = np.zeros(shape(samplefinal)) # we create the output array containing the good sample spectrum
     sampleultimateINT[:,0] = samplefinal[:,0] 
     sampleultimateINT[:,1] = samplefinal[:,1] - diamondfinal[:,1] #We subtract the second order diamond from sample
@@ -219,6 +221,7 @@ for i in range(len(pathdiamond)): # We loop over in dataliste
     ax3.set_xlim(2000,3850)
     
     # we search the lower limit for ax2 and ax3 but the higher free.
+    ax1.set_ylim(0,20000)
     ax2.set_ylim(np.amin(corrdiamond[:,1])-5/100*np.amin(corrdiamond[:,1]),)#np.amax(corrdiamond[:,1])+10/100*np.amax(corrdiamond[:,1])
     ax3.set_ylim(np.amin(sampleultimate[:,1]/amax(peakOD[:,1])*100)-5/100*np.amin(sampleultimate[:,1]/amax(peakOD[:,1])*100),) #np.amax(sampleultimate[:,1]/amax(peakOD[:,1])*100)+10/100*np.amax(sampleultimate[:,1]/amax(peakOD[:,1])*100)
     

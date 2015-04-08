@@ -2,6 +2,8 @@
 """
 Created on Wed Jul  9 14:34:21 2014
 
+Heavily modified on March 3, 2015
+
 @author: charleslelosq
 Carnegie Institution for Science
 
@@ -9,10 +11,10 @@ This script calculates pressure (MPa) in DAC experiments from Raman shift of 13C
 Put it anywhere, you need however the lib-charles library as well as numpy, scipy, matplotlib, and Tkinter
 that usually come with any python distribution
 """
-import sys
-sys.path.append("/Users/charleslelosq/anaconda/lib/python2.7/lib-charles")
+import sys, os
+sys.path.append("/Users/closq/Google Drive/Rampy/lib-charles/")
 
-import numpy
+import numpy as np
 import scipy
 import matplotlib
 import matplotlib.gridspec as gridspec
@@ -21,230 +23,140 @@ from StringIO import StringIO
 from scipy import interpolate
 from scipy.optimize import curve_fit
 
-from spectratools import linbaseline
-from spectratools import pseudovoigt
-from spectratools import spectrafilter
+# to fit spectra we use the lmfit software of Matt Newville, CARS, university of Chicago, available on the web
+from lmfit import minimize, Minimizer, Parameters, Parameter, report_fit, fit_report
+
+from spectratools import *
 
 from Tkinter import *
+import tkMessageBox
 from tkFileDialog import askopenfilename
-import os
+
+### residual function
+def residual(pars, x, data=None, eps=None):
+    # unpack parameters:
+    #  extract .value attribute for each parameter
+    a1 = pars['a1'].value
+    a2 = pars['a2'].value
+    a3 = pars['a3'].value
+    
+    f1 = pars['f1'].value
+    f2 = pars['f2'].value
+    f3 = pars['f3'].value
+    
+    l1 = pars['l1'].value
+    l2 = pars['l2'].value
+    l3 = pars['l3'].value
+    
+    e1 = pars['e1'].value
+    e2 = pars['e2'].value
+    e3 = pars['e3'].value
+    
+    # Pseuydovoigts peaks
+    peak1 = pseudovoigt(x,a1,f1,l1,e1)
+    peak2 = pseudovoigt(x,a2,f2,l2,e2)
+    peak3 = pseudovoigt(x,a3,f3,l3,e3)    
+    
+    model = peak1 + peak2 + peak3
+    
+    if data is None:
+        return model, peak1, peak2, peak3
+    elif eps is None:
+        return (model - data)
+    else:
+        return (model - data)/eps
 
 
-##############FOR THE 25° DIAMOND #################
+#### DATA PATHS AND INPUT
 tkMessageBox.showinfo(
-            "Open file",
-            "Please open the 25C Diamond spectrum")
+            "Open ",
+            "Please open the list of spectra")
+
 Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
 filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
-print(filename)
 
-rawspectre = np.genfromtxt(filename,skip_header=20, skip_footer=43) # We skip lines for the JASCO spectrometer, to be changed in some other case
+datalist = np.genfromtxt(filename,delimiter = '\t', dtype=None,skip_header=0)
+RTdiamond = datalist['f0']
+HTdiamond = datalist['f1']
+temperature = datalist['f2']
 
-figure(1)
-plot(rawspectre[:,0],rawspectre[:,1],'k-')
+# for the results
+outputs = np.zeros((len(RTdiamond),4)) 
 
-# Individualize the 13C peak
-pic13C = rawspectre[np.where((rawspectre[:,0]> 1220) & (rawspectre[:,0]<1305))]
-##### SETUP THE FOLLOWING TO CUT HIGH FREQUENCY NOISE ON THE 13C PEAK #### COMMENT IF NOT NEEDED    
-#cutfq = np.array([0.1]) #
-#pic13C = spectrafilter(pic13C,'low',cutfq,1,np.array([1]))
-#plot(pic13C[:,0],pic13C[:,1],'g-')
+for lg in range(len(RTdiamond)):
+    inputRT = np.genfromtxt(RTdiamond[lg],skip_header=20, skip_footer=43) # get the sample to deconvolute
+    inputHT = np.genfromtxt(HTdiamond[lg],skip_header=20, skip_footer=43)
 
-# SUbtract a linear baseline below it
-bir13C = np.array([(1250,1270),(1298,1302)])
-pic13C, baseline13C, coeffs13C = linbaseline(pic13C,bir13C,'linear',1)
+    # quick normalisation of the maximal intensity to 100
+    # we will also take care that no intensity goes beyond 0
 
-#Fitting the peak with the pseudovoigt
-para13C, cov13C = curve_fit(pseudovoigt, pic13C[:,0], pic13C[:,1],[1500,1283,2,0.5])
+    inputRT[:,1] = inputRT[:,1]/np.max(inputRT[:,1])*100
+    inputHT[:,1] = inputHT[:,1]/np.max(inputHT[:,1])*100
 
-plot(pic13C[:,0],pic13C[:,1],'k-')
-plot(pic13C[:,0],pseudovoigt(pic13C[:,0],para13C[0],para13C[1],para13C[2],para13C[3]),'r-')
-
-# Individualize the Ne peak
-picNe = rawspectre[np.where((rawspectre[:,0]> 1700) & (rawspectre[:,0]<1740))]
-
-# SUbtract a linear baseline below it
-birNe = np.array([(1700,1710),(1725,1730)])
-picNe, baselineNe, coeffsNe = linbaseline(picNe,birNe,'linear',1)
-
-#Fitting the peak with the pseudovoigt
-paraNe, covNe = curve_fit(pseudovoigt, picNe[:,0], picNe[:,1],[4000,1718,2,1])
-
-plot(picNe[:,0],picNe[:,1],'k-')
-plot(picNe[:,0],pseudovoigt(picNe[:,0],paraNe[0],paraNe[1],paraNe[2],paraNe[3]),'r-')
-
-# Ne line is usually at 584.72 nm so 1710.22 cm-1
-correction = paraNe[1]-1710.22 # Exact shift of spectrometer
-Freq13C_RT = para13C[1]-correction # Corrected frequency of the diamond at RT
-
-##############FOR THE HT° DIAMOND #################
-tkMessageBox.showinfo(
-            "Open file",
-            "Please open the HT Diamond spectrum")
-Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
-filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
-print(filename)
-
-rawspectre = np.genfromtxt(filename,skip_header=20, skip_footer=43) # Same as above
-figure(2)
-plot(rawspectre[:,0],rawspectre[:,1],'k-')
-
-# Individualize the 13C peak
-pic13C = rawspectre[np.where((rawspectre[:,0]> 1220) & (rawspectre[:,0]<1305))]
-##### SETUP THE FOLLOWING TO CUT HIGH FREQUENCY NOISE ON THE 13C PEAK #### COMMENT IF NOT NEEDED    
-#cutfq = np.array([0.1]) #
-#pic13C = spectrafilter(pic13C,'low',cutfq,1,np.array([1]))
-#plot(pic13C[:,0],pic13C[:,1],'g-')
-
-# SUbtract a linear baseline below it
-bir13C = np.array([(1240,1245),(1298,1302)])
-pic13C, baseline13C, coeffs13C = linbaseline(pic13C,bir13C,'linear',1)
-
-#Fitting the peak with the pseudovoigt
-para13C_HT, cov_HT = curve_fit(pseudovoigt, pic13C[:,0], pic13C[:,1],[1000,1273,5,0.1])
-
-plot(pic13C[:,0],pic13C[:,1],'k-')
-plot(pic13C[:,0],pseudovoigt(pic13C[:,0],para13C_HT[0],para13C_HT[1],para13C_HT[2],para13C_HT[3]),'r-')
-
-# Individualize the Ne peak
-picNe = rawspectre[np.where((rawspectre[:,0]> 1700) & (rawspectre[:,0]<1740))]
-
-# SUbtract a linear baseline below it
-birNe = np.array([(1700,1710),(1725,1730)])
-picNe, baselineNe, coeffsNe = linbaseline(picNe,birNe,'linear',1)
-
-#Fitting the peak with the pseudovoigt
-paraNe_HT, covNe_HT = curve_fit(pseudovoigt, picNe[:,0], picNe[:,1],[4000,1719,1,0.5])
-
-plot(picNe[:,0],picNe[:,1],'k-')
-plot(picNe[:,0],pseudovoigt(picNe[:,0],paraNe_HT[0],paraNe_HT[1],paraNe_HT[2],paraNe_HT[3]),'r-')
-
-# Ne line is usually at 584.72 nm so 1710.22 cm-1
-correction = paraNe_HT[1]-1710.22 # Exact shift of spectrometer
-Freq13C_HT = para13C_HT[1]-correction
-
-################ FLLOWING LINES CREATE A GUI FOR ASKING FOR TEMPERATURE #################
-
-class Dialog(Toplevel):
-
-    def __init__(self, parent, title = None):
-
-        Toplevel.__init__(self, parent)
-        self.transient(parent)
-
-        if title:
-            self.title(title)
-
-        self.parent = parent
-
-        self.result = None
-
-        body = Frame(self)
-        self.initial_focus = self.body(body)
-        body.pack(padx=5, pady=5)
-
-        self.buttonbox()
-
-        self.grab_set()
-
-        if not self.initial_focus:
-            self.initial_focus = self
-
-        self.protocol("WM_DELETE_WINDOW", self.cancel)
-
-        self.geometry("+%d+%d" % (parent.winfo_rootx()+50,
-                                  parent.winfo_rooty()+50))
-
-        self.initial_focus.focus_set()
-
-        self.wait_window(self)
-
-    #
-    # construction hooks
-
-    def body(self, master):
-        # create dialog body.  return widget that should have
-        # initial focus.  this method should be overridden
-
-        pass
-
-    def buttonbox(self):
-        # add standard button box. override if you don't want the
-        # standard buttons
-
-        box = Frame(self)
-
-        w = Button(box, text="OK", width=10, command=self.ok, default=ACTIVE)
-        w.pack(side=LEFT, padx=5, pady=5)
-        w = Button(box, text="Cancel", width=10, command=self.cancel)
-        w.pack(side=LEFT, padx=5, pady=5)
-
-        self.bind("<Return>", self.ok)
-        self.bind("<Escape>", self.cancel)
-
-        box.pack()
-
-    #
-    # standard button semantics
-
-    def ok(self, event=None):
-
-        if not self.validate():
-            self.initial_focus.focus_set() # put focus back
-            return
-
-        self.withdraw()
-        self.update_idletasks()
-
-        self.apply()
-
-        self.cancel()
-
-    def cancel(self, event=None):
-
-        # put focus back to the parent window
-        self.parent.focus_set()
-        self.destroy()
-
-    #
-    # command hooks
-
-    def validate(self):
-
-        return 1 # override
-
-    def apply(self):
-
-        pass # override
+    figure(lg)   
+    gs = gridspec.GridSpec(1, 2)
+    ax1 = plt.subplot(gs[0])
+    ax2 = plt.subplot(gs[1])
+    
+    ax1.set_title('RT')
+    ax2.set_title(temperature[lg])
+    
+    ax1.plot(inputRT[:,0], inputRT[:,1],'k-')
+    ax2.plot(inputHT[:,0],inputHT[:,1],'r-')
+    params = Parameters()
+    #               (Name,  Value,  Vary,   Min,  Max,  Expr)
+    params.add_many(('a1',   10,   True,  0,      None,  None),
+                    ('f1',   1261,   True, 1260,    1300,  None),
+                    ('l1',   26,   True,  0,      50,  None),
+                    ('e1',   0.5,   True,  0,      1,  None),
+                    ('a2',   100,   True,  0,      None,  None),
+                    ('f2',   1332,   True, 1300,    1330,  None),
+                    ('l2',   26,   True,  0,      50,  None),
+                    ('e2',   0.5,   True,  0,      1,  None),
+                    ('a3',   2,   True,  0,      None,  None),
+                    ('f3',   1882,   True, 1800,    1920,  None),
+                    ('l3',   4,   True,  0,      50,  None),
+                    ('e3',   0.5,   True,  0,      1,  None))
+                    
+    paramsHT = Parameters()
+    #               (Name,  Value,  Vary,   Min,  Max,  Expr)
+    paramsHT.add_many(('a1',   10,   True,  0,      None,  None),
+                    ('f1',   1261,   True, 1260,    1280,  None),
+                    ('l1',   26,   True,  0,      50,  None),
+                    ('e1',   0.5,   True,  0,      1,  None),
+                    ('a2',   100,   True,  0,      None,  None),
+                    ('f2',   1315,   True, 1300,    1330,  None),
+                    ('l2',   26,   True,  0,      50,  None),
+                    ('e2',   0.5,   True,  0,      1,  None),
+                    ('a3',   2,   True,  0,      None,  None),
+                    ('f3',   1882,   True, 1800,    1920,  None),
+                    ('l3',   4,   True,  0,      50,  None),
+                    ('e3',   0.5,   True,  0,      1,  None))
+                        
+     
+    # Fitting the RT spectrum
+    bir = np.array([(1225,1240),(1370,1500),(1700,1820),(1920,1950)]) # BIR diamond        
+    ycorrRT, baselineRT, coeffsDRT = linbaseline(inputRT[:,0:2],bir,'gcvspline',0.15)
+    result = minimize(residual, params,method = "leastsq", args=(ycorrRT[:,0], ycorrRT[:,1])) # fit data with  model from scipy
+    youRT, peak1RT, peak2RT, peak3RT = residual(params, inputRT[:,0]) # the different peaks
+    
+    # Fitting the HT spectrum
+    ycorrHT, baselineHT, coeffsDHT = linbaseline(inputHT[:,0:2],bir,'gcvspline',0.15)
+    resultHT = minimize(residual, paramsHT,method = "leastsq", args=(ycorrHT[:,0], ycorrHT[:,1]))
+    youHT, peak1HT, peak2HT, peak3HT = residual(paramsHT, inputHT[:,0]) # the different peaks
         
-class MyDialog(Dialog):
+    ax1.plot(inputRT[:,0], youRT+baselineRT[:,1],'b-',inputRT[:,0],peak1RT,'g-',inputRT[:,0],peak2RT,'g-',inputRT[:,0],peak3RT,'g-',inputRT[:,0],baselineRT[:,1],'g-')
+    ax2.plot(inputHT[:,0], youHT+baselineHT[:,1],'b-',inputHT[:,0],peak1HT,'g-',inputHT[:,0],peak2HT,'g-',inputHT[:,0],peak3HT,'g-',inputHT[:,0],baselineHT[:,1],'g-')
+    
+    Freq13C_RT = params['f1'].value - (params['f3'].value - 1878.28) #f1 and f3 are the frequency of 13C and neon line
+    Freq13C_HT = paramsHT['f1'].value - (paramsHT['f3'].value - 1878.28) #f1 and f3 are the frequency of 13C and neon line
 
-    def body(self, master):
-
-        Label(master, text="Temperature:").grid(row=0)
-        #Label(master, text="Second:").grid(row=1)
-
-        self.e1 = Entry(master)
-        #self.e2 = Entry(master)
-
-        self.e1.grid(row=0, column=1)
-        #self.e2.grid(row=1, column=1)
-        return self.e1 # initial focus
-
-    def apply(self):
-        T = int(self.e1.get())
-        self.result = T
-        #second = int(self.e2.get())
-        #print first, second # or something
-        
-root=Tk()
-d=MyDialog(root)
-T = d.result
-root.destroy()
-
-############ WE HAVE TEMPERATURE? THEN WE CALCULATE PRESSURE WITH EQ. FROM MYSEN YAMASHITA 2010
-
-P = (Freq13C_HT-Freq13C_RT+1.065*10**-2*T + 1.769*10**-5*(T**2)) / 0.002707 #MPa
-
+    # WE CALCULATE PRESSURE WITH EQ. FROM MYSEN YAMASHITA 2010
+    outputs[lg,0] = temperature[lg]
+    outputs[lg,1] = Freq13C_RT
+    outputs[lg,2] = Freq13C_HT
+    outputs[lg,3] = (Freq13C_HT-Freq13C_RT+1.065*10**-2*temperature[lg] + 1.769*10**-5*(temperature[lg]**2)) / 0.002707 #MPa
+    
+    
 
 

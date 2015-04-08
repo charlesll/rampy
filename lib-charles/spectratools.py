@@ -10,7 +10,7 @@ This is a module with several function for helping importing/treating spectra
 
 """
 import sys
-sys.path.append("/Users/charleslelosq/Documents/RamPy/lib-charles/gcvspl/")
+sys.path.append("/Users/closq/Google Drive/RamPy/lib-charles/gcvspl/")
 
 import numpy as np
 from scipy import interpolate 
