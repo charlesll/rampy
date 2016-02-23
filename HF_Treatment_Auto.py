@@ -62,7 +62,7 @@ x = np.arange(2035,3800,0.2) # X scale for correction of X deviations, take care
 # Background Interpolation Regions for baseline subtraction
 birDiamond = np.array([(2035,2055),(2810,3849)]) # BIR diamond
 smofd = 0.03 # smoothing factor
-birSample = np.array([(2035,2055),(2840,2860),(3010,3030),(3790,3850)]) # BIR sample: typical 2860-2950 for melt; For fluid, may add (3000,3040)
+birSample = np.array([(2035,2055),(2840,2860),(3010,3030),(3790,3849)]) # BIR sample: typical 2860-2950 for melt; For fluid, may add (3000,3040)
 smofs = 0.05 # smoothing factor
 
 #### DO YOU NEED A FILTER BEFORE ADJUSTING DIAMOND/SAMPLE SIGNALS???
