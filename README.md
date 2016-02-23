@@ -1,4 +1,4 @@
-RamPy
+#RamPy
 =====
 
 This is a set of python scripts that are used to treat spectroscopic x y data
@@ -6,30 +6,43 @@ This is a set of python scripts that are used to treat spectroscopic x y data
 Developped under Mac with Anaconda Python.
 
 C. Le Losq.
-clelosq@carnegiescience.edu
+charles.lelosq@anu.edu.au
 
-##### INSTALLATION INSTRUCTIONS
 
-1) Full python distribution is needed, with the Scipy, Numpy, MatplotLib modules; One good thing is the free Anaconda Python distribution available for MAC, LINUX and WINDOWS...
+# REQUIREMENTS
 
-2) Setup correctly you $PATH variable in your .bash_profile file in your home directory. It must point to the python distribution you want to use. Be carefull, usually several python distributions can be installed in your system... Anaconda Python set up by itself the PATH during its installation. If you have doubt, simply google "setting up the .bash_profile file for python"
+For Python:
+Scipy
+Numpy
+Matplotlib
+lmfit & aeval (http://cars9.uchicago.edu/software/python/lmfit/)
+f2py
 
-3) You need to install lmfit and aeval, follow the instructions from this webpage: http://cars9.uchicago.edu/software/python/lmfit/
+Others:
+gfortran
+
+# INSTALLATION INSTRUCTIONS
+
+1) Be sure to setup correctly you $PATH variable in your .bash_profile file in your home directory. It must point to the python distribution you want to use. Be carefull, usually several python distributions can be installed in your system... Anaconda Python set up by itself the PATH during its installation. If you have doubt, simply google "setting up the .bash_profile file for python"
+
+2) You need to install lmfit and aeval, follow the instructions from this webpage: http://cars9.uchicago.edu/software/python/lmfit/
 I forked also the lmfit project in my Github...
 
 4) You need also gfortran, install it if you don't have it;
 
 5) Put the folder with the script where you want; Some files have to be moved and a particular folder construction have to be respected in order to work... Please read the following to learn about that...
 
-6) You need to compile the gcvspl.f algorithm in the ./RamPy/lib-charles/gcvspl/ folder using the following command:
+6) You need to compile the gcvspl.f algorithm in the ./RamPy/src/gcvspl/ folder using the following command:
 
 f2py -c -m gcvspl gcvspl.f
 
 7) read the following instructions and descriptions to know what is useful for what!
 
-##### MODULES in the lib-charles/ directory
+# MODULES in the lib-charles/ directory
 TO WRITE.
 
+
+# EXAMPLES
 
 ##### Diamond_Pressure.py
 
@@ -92,7 +105,8 @@ This script fit the baseline of spectra in the 100-1500 cm-1 region. Two functio
 Deconvolution of Raman spectra with Gaussian and/or Lorentzian bands
 Use the lmfit framework developed by Matt Newville for the curve_fit algorithm of Scipy 
 
-##### IR_dec_comb.py and HT_dec: deprecated, need to be finished...
+##### IR_dec_comb.py and HT_dec 
+Deprecated, need to be finished...
 
 
 

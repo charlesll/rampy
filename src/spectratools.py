@@ -10,7 +10,7 @@ This is a module with several function for helping importing/treating spectra
 
 """
 import sys
-sys.path.append("/Users/charleslelosq/Documents/RamPy/lib-charles/gcvspl/")
+sys.path.append("/Users/charles/Tresors/charles/Software/Rampy/lib-charles/gcvspl/")
 
 import numpy as np
 from scipy import interpolate 
@@ -67,14 +67,14 @@ def fun(x,a):
 
 ################## SPECIFIC FUNCTIONS FOR TREATMENT OF SPECTRA
 
-def spectrarray(x,name,interpmethod):
+def spectrarray(name,sh,sf,x,interpmethod):
     """The function needs the x general axis, an array containing the name of files, and a precision concenrning the interpolation method
     Spectra are interpolated to have linear and constant x values and be able to be in a same array
     Interpoation methods proposed are the np.interp function or an interpolation using the interpolate 
     function of scipy, based on spline functions
     """
     for i in range(len(name)):
-        rawspectre = np.genfromtxt(name[i])
+        rawspectre = np.genfromtxt(name[i],skip_header=sh, skip_footer=sf)
         rawspectre = rawspectre[~np.isnan(rawspectre).any(1)] # on verifie qu on a pas de nan
         # on echantillonne le spectre pour avoir les memes x
         if interpmethod == 'np.interp':
@@ -89,7 +89,7 @@ def spectrarray(x,name,interpmethod):
         # 1st column is the x axis
         # then others are the spectra in the order provided in the list of names input array
         if i == 0:
-            out = np.zeros((len(x),5))
+            out = np.zeros((len(x),len(name)+1))
             out[:,0]=x
             out[:,i+1]=y
         else:
@@ -141,7 +141,7 @@ def spectrafilter(spectre,filtertype,fq,numtaps,columns):
 
 def spectraoffset(spectre,offsets):
     """
-    This function allows to offset your spectra for representing them or correcting them
+    This function allows to Y offset your spectra for representing them or correcting them
     with an horizontal baseline for instance
     spectre is an array constructed with the spectrarray function
     offsets is an array constructed with numpy and containing the coefficient for the offset to apply to spectre   
@@ -155,7 +155,6 @@ def spectraoffset(spectre,offsets):
     
     return out
     
-    
 #### SPLINES, LINEAR OR POLYNOMIAL BASELINES    
     
 def linbaseline(spectre,bir,method,splinesmooth):
@@ -165,11 +164,12 @@ def linbaseline(spectre,bir,method,splinesmooth):
     bir contains the Background Interpolation Regions, it must be a n x 2 dimensiona rray
     
     methods:
-    "linear": linear baseline, with spectre = array[x y]
-    "unispline": spline with the UnivariateSpline function of Scipy, splinesmooth is the spline smoothing factor (assume equal weight in the present case)
-    "gcvspline": spline with the gcvspl.f algorythm, really robust. Spectra must have x, y, ese in it, and splinesmooth is the smoothing factor
-    for gcvspline, if ese are not provided we assume ese = sqrt(y)
-    "poly": polynomial fitting, with splinesmooth the degree of the polynomial
+    "linear": linear baseline, with spectre = array[x y];
+    "hori': constant baseline, fitted at the minimum in the provided region of spectra. Splinesmooth in this case is the 1/2 extent of the region where the mean minimum is calculated;
+    "unispline": spline with the UnivariateSpline function of Scipy, splinesmooth is the spline smoothing factor (assume equal weight in the present case);
+    "gcvspline": spline with the gcvspl.f algorythm, really robust. Spectra must have x, y, ese in it, and splinesmooth is the smoothing factor;
+    for gcvspline, if ese are not provided we assume ese = sqrt(y);
+    "poly": polynomial fitting, with splinesmooth the degree of the polynomial.
     """
     # we already say what is the output array
     out1 = np.zeros(spectre.shape) # matrix for corrected spectra
@@ -195,12 +195,24 @@ def linbaseline(spectre,bir,method,splinesmooth):
         
         # fit of the baseline
         for i in range(nbsp):
-            popt, pcov = curve_fit(fun1,yafit[:,0],yafit[:,i+1])
+            popt, pcov = curve_fit(fun1,yafit[:,0],yafit[:,i+1],p0=[1,1])
             taux[i,:]=popt
             out1[:,i+1] = spectre[:,i+1] - (popt[0] + popt[1]*x)
             out2[:,i+1] = (popt[0] + popt[1]*x)
             
         return out1, out2, taux
+    elif method =='hori':
+        # we take the data in the region of interest        
+        yafit = spectre[np.where((spectre[:,0]> bir[0,0]) & (spectre[:,0] < bir[0,1]))] 
+        
+        idx = np.where(yafit[:,1] == np.min(yafit[:,1])) #we search where the minimum is in yafit
+        yafit2 = yafit[np.where((yafit[:,0] > (yafit[idx[0],0]-splinesmooth)) & (yafit[:,0] < (yafit[idx[0],0]+splinesmooth)))]
+        constant = np.mean(yafit2[:,1]) #and we calculate the mean horizontal baseline in the region with an extent defined by splinesmooth
+        
+        out1[:,1] = spectre[:,1] - constant
+        out2[:,1] = constant
+        coeffs = None        
+        
     elif method == 'unispline':
         ### selection of bir data
         for i in range(birlen):
@@ -233,7 +245,7 @@ def linbaseline(spectre,bir,method,splinesmooth):
         if test[1] > 2:
             ese = yafit[:,2]
         else:
-            ese = np.sqrt(abs(yafit[:,1]))
+            ese = np.sqrt(np.abs(yafit[:,1]))
         VAL = ese**2
         c, wk, ier = gcvspline.gcvspline(xdata,ydata,splinesmooth*ese,VAL,splmode = 3) # gcvspl with mode 3 and smooth factor
         out2[:,1] = gcvspline.splderivative(x,xdata,c)       
@@ -271,6 +283,65 @@ def linbaseline(spectre,bir,method,splinesmooth):
             out2[:,i+1] = funlog(x,coeffs[0],coeffs[1],coeffs[2],coeffs[3])
             
     return out1, out2, coeffs
+
+def smooth(x,window_len=11,window="hamming"):
+    """smooth the data using a window with requested size.
+    
+    Taken from http://wiki.scipy.org/Cookbook/SignalSmooth
+    
+    This method is based on the convolution of a scaled window with the signal.
+    The signal is prepared by introducing reflected copies of the signal 
+    (with the window size) in both ends so that transient parts are minimized
+    in the begining and end part of the output signal.
+    
+    input:
+        x: the input signal 
+        window_len: the dimension of the smoothing window; should be an odd integer
+        window: the type of window from 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'
+            flat window will produce a moving average smoothing.
+
+    output:
+        the smoothed signal
+        
+    example:
+
+    t=linspace(-2,2,0.1)
+    x=sin(t)+randn(len(t))*0.1
+    y=smooth(x)
+    
+    see also: 
+    
+    numpy.hanning, numpy.hamming, numpy.bartlett, numpy.blackman, numpy.convolve
+    scipy.signal.lfilter
+ 
+    TODO: the window parameter could be the window itself if an array instead of a string
+    NOTE: length(output) != length(input), to correct this: return y[(window_len/2-1):-(window_len/2)] instead of just y.
+    """
+
+    if x.ndim != 1:
+        raise ValueError, "smooth only accepts 1 dimension arrays."
+
+    if x.size < window_len:
+        raise ValueError, "Input vector needs to be bigger than window size."
+
+
+    if window_len<3:
+        return x
+
+
+    if not window in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
+        raise ValueError, "Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'"
+
+
+    s=np.r_[x[window_len-1:0:-1],x,x[-1:-window_len:-1]]
+    #print(len(s))
+    if window == 'flat': #moving average
+        w=np.ones(window_len,'d')
+    else:
+        w=eval('np.'+window+'(window_len)')
+
+    y=np.convolve(w/w.sum(),s,mode='valid')
+    return y[(window_len/2-1):-(window_len/2)] #Not working pretty well....
 
 def spectrataux(x,spectres):
     """
@@ -327,15 +398,9 @@ def longcorr(data,temp,wave): # input are a two column matrix of data, temperatu
     
     
     # Calculate the error on data as sqrt(y). If y <= 0, then error = sqrt of absolute value of y.
-    # for doing that we construct an artificial array y containing only positive values
-    idx = y <= 0 
-    ypos = y
+    # for doing that we construct an artificial array y containing only positive values 
     
-    for i in range (len(y)):
-        if idx[i] == True:
-            ypos[i] = np.absolute(ypos[i])
-    
-    ese = np.sqrt(ypos) # we assume that errors on raw data are in sqrt(y)
+    ese = np.sqrt(np.absolute(data[:,1])) # we assume that errors on raw data are in sqrt(y)
     
     # For retrieving the good errors after long correction, one simple way is
     # to work with relative errors...
@@ -355,8 +420,8 @@ def longcorr(data,temp,wave): # input are a two column matrix of data, temperatu
     
     # normalized to max intensity
     # tried area with np.trapz but their is an issue for now
-    #norm = np.trapz(long,x)
-    norm = np.max(longsp)
+    norm = np.trapz(longsp,x)
+    #norm = np.max(longsp)
     longsp = longsp/norm
     
     eselong = error*longsp
