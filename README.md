@@ -3,6 +3,10 @@
 
 This is a set of python scripts that are used to treat spectroscopic x y data
 
+The core is in the spectratool.py module, with various functions to help organising the data, subtracting baseline (polynomial, linear, cubic splines), with access to linear, polynomial or gaussian/lorentzian function that can be used with peak fitting routine for instance. 
+
+the /examples/ folder contain various scripts that uses the tools developped to do various spectral treatment, including subtraction of the 2nd order diamond signal from Raman spectra, as described for instance in Dalou C., Le Losq C., Mysen B. O. (2015) In situ study of the fractionation of hydrogen isotopes between aluminosilicate melts and coexisting aqueous fluids at high pressure and high temperature - Implications for the dD in magmatic processes. Earth and Planetary Science Letters 426, 158-166.
+
 Developped under Mac with Anaconda Python.
 
 C. Le Losq.
