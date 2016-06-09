@@ -1,0 +1,1 @@
+from .gcvspline import gcvspline, splderivative

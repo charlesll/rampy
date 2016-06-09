@@ -1,10 +1,8 @@
-import sys
-sys.path.append("./gcvspl/")
+from dependencies import gcvspline
 import numpy as np
 from scipy import interpolate 
 from scipy.optimize import curve_fit
 from scipy.interpolate import UnivariateSpline
-import gcvspline
 
 def baseline(spectre,bir,method,splinesmooth):
     """
