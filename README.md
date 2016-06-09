@@ -12,6 +12,9 @@ Developped under Mac with Anaconda Python.
 C. Le Losq.
 charles.lelosq@anu.edu.au
 
+# DISCLAIMER
+
+RAMPY IS CURRENTLY UNDER A NEW DEVELOPMENT PHASE AND MAY NOT BE USABLE FOR A FEW DAYS.
 
 # REQUIREMENTS
 
@@ -41,9 +44,6 @@ I forked also the lmfit project in my Github...
 f2py -c -m gcvspl gcvspl.f
 
 7) read the following instructions and descriptions to know what is useful for what!
-
-# MODULES in the lib-charles/ directory
-TO WRITE.
 
 
 # EXAMPLES
