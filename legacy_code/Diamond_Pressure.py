@@ -12,8 +12,9 @@ Put it anywhere, you need however the lib-charles library as well as numpy, scip
 that usually come with any python distribution
 """
 import sys, os
-sys.path.append("/Users/charles/Tresors/Charles/Software/Rampy/lib-charles/")
-sys.path.append("/Users/charles/Tresors/Charles/Software/Rampy/lib-charles/gcvspl/")
+sys.path.append("/Users/charles/Tresors/Charles/Software/rampy/")
+sys.path.append("/Users/charles/Tresors/Charles/Software/rampy/lib-charles/")
+sys.path.append("/Users/charles/Tresors/Charles/Software/rampy/lib-charles/gcvspl/")
 
 import numpy as np
 import scipy
@@ -27,7 +28,7 @@ from scipy.optimize import curve_fit
 # to fit spectra we use the lmfit software of Matt Newville, CARS, university of Chicago, available on the web
 from lmfit import minimize, Minimizer, Parameters, Parameter, report_fit, fit_report
 
-from spectratools import *
+from rampy import *
 
 from Tkinter import *
 import tkMessageBox

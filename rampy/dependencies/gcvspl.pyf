@@ -1,0 +1,103 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module gcvspl2 ! in 
+    interface  ! in :gcvspl2
+        subroutine gcvspl(x,y,ny,wx,wy,m,n,k,md,val,c,nc,wk,ier) ! in :gcvspl2:gcvspl.f
+            double precision dimension(n) :: x
+            double precision dimension(ny,k) :: y
+            integer, optional,check(shape(y,0)==ny),depend(y) :: ny=shape(y,0)
+            double precision dimension(n),depend(n) :: wx
+            double precision dimension(k),depend(k) :: wy
+            integer :: m
+            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
+            integer, optional,check(shape(y,1)==k),depend(y) :: k=shape(y,1)
+            integer :: md
+            double precision :: val
+            double precision dimension(nc,k),intent(out),depend(nc,k) :: c
+            integer :: nc
+            double precision dimension(n + (6 * ((n * m) + 1))),intent(out),depend(m,n) :: wk
+            integer intent(out) :: ier
+        end subroutine gcvspl
+        subroutine basis(m,n,x,b,bl,q) ! in :gcvspl2:gcvspl.f
+            integer, optional,check((shape(b,0)+1)/(2)==m),depend(b) :: m=(shape(b,0)+1)/(2)
+            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
+            double precision dimension(n) :: x
+            double precision dimension(2 * m - 1,n),depend(n) :: b
+            double precision :: bl
+            double precision dimension(2 * m),depend(m) :: q
+        end subroutine basis
+        subroutine prep(m,n,x,w,we,el) ! in :gcvspl2:gcvspl.f
+            integer :: m
+            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
+            double precision dimension(n) :: x
+            double precision dimension(n),depend(n) :: w
+            double precision dimension(((2 * m) + 1) * n),depend(m,n) :: we
+            double precision :: el
+        end subroutine prep
+        function splc(m,n,k,y,ny,wx,wy,mode,val,p,eps,c,nc,stat,b,we,el,bwe) ! in :gcvspl2:gcvspl.f
+            integer, optional,check((shape(b,0)+1)/(2)==m),depend(b) :: m=(shape(b,0)+1)/(2)
+            integer, optional,check(len(wx)>=n),depend(wx) :: n=len(wx)
+            integer, optional,check(shape(y,1)==k),depend(y) :: k=shape(y,1)
+            double precision dimension(ny,k) :: y
+            integer, optional,check(shape(y,0)==ny),depend(y) :: ny=shape(y,0)
+            double precision dimension(n) :: wx
+            double precision dimension(k),depend(k) :: wy
+            integer :: mode
+            double precision :: val
+            double precision :: p
+            double precision :: eps
+            double precision dimension(nc,k),depend(k) :: c
+            integer, optional,check(shape(c,0)==nc),depend(c) :: nc=shape(c,0)
+            double precision dimension(6) :: stat
+            double precision dimension(2 * m - 1,n),depend(n) :: b
+            double precision dimension(2 * m + 1,n),depend(m,n) :: we
+            double precision :: el
+            double precision dimension(2 * m + 1,n),depend(m,n) :: bwe
+            double precision :: splc
+        end function splc
+        subroutine bandet(e,m,n) ! in :gcvspl2:gcvspl.f
+            double precision dimension(2 * m + 1,n) :: e
+            integer, optional,check((shape(e,0)-1)/(2)==m),depend(e) :: m=(shape(e,0)-1)/(2)
+            integer, optional,check(shape(e,1)==n),depend(e) :: n=shape(e,1)
+        end subroutine bandet
+        subroutine bansol(e,y,ny,c,nc,m,n,k) ! in :gcvspl2:gcvspl.f
+            double precision dimension(2 * m + 1,n) :: e
+            double precision dimension(ny,k) :: y
+            integer, optional,check(shape(y,0)==ny),depend(y) :: ny=shape(y,0)
+            double precision dimension(nc,k),depend(k) :: c
+            integer, optional,check(shape(c,0)==nc),depend(c) :: nc=shape(c,0)
+            integer, optional,check((shape(e,0)-1)/(2)==m),depend(e) :: m=(shape(e,0)-1)/(2)
+            integer, optional,check(shape(e,1)==n),depend(e) :: n=shape(e,1)
+            integer, optional,check(shape(y,1)==k),depend(y) :: k=shape(y,1)
+        end subroutine bansol
+        function trinv(b,e,m,n) ! in :gcvspl2:gcvspl.f
+            double precision dimension(2 * m + 1,n) :: b
+            double precision dimension(2 * m + 1,n),depend(m,n) :: e
+            integer, optional,check((shape(b,0)-1)/(2)==m),depend(b) :: m=(shape(b,0)-1)/(2)
+            integer, optional,check(shape(b,1)==n),depend(b) :: n=shape(b,1)
+            double precision :: trinv
+        end function trinv
+        function splder(ider,m,n,t,x,c,l,q) ! in :gcvspl2:gcvspl.f
+            intent(out) splder
+            integer :: ider
+            integer :: m
+            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
+            double precision :: t
+            double precision dimension(n) :: x
+            double precision dimension(n),depend(n) :: c
+            integer :: l
+            double precision dimension(2 * m),intent(hide),depend(m) :: q
+            double precision intent(out) :: splder
+        end function splder
+        subroutine search(n,x,t,l) ! in :gcvspl2:gcvspl.f
+            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
+            double precision dimension(n) :: x
+            double precision :: t
+            integer :: l
+        end subroutine search
+    end interface 
+end python module gcvspl2
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

@@ -1,6 +1,5 @@
-from dependencies import gcvspline
 import numpy as np
-from scipy import interpolate 
+from gcvspline import gcvspline, splderivative 
 from scipy.optimize import curve_fit
 from scipy.interpolate import UnivariateSpline
 
@@ -10,13 +9,31 @@ def baseline(spectre,bir,method,splinesmooth):
     spectre is a spectrum or an array of spectra constructed with the spectrarray function
     bir contains the Background Interpolation Regions, it must be a n x 2 dimensiona rray
     
-    methods:
+    Inputs
+    ------
+    
+        Spectre: Array with 2 or more columns. First column contain x axis, subsequent columns contains y values. If using gcvspline, only treat a spectrum at a call, third column can contain known ese.
+    
+        bir: an Array containing the regions of interest, organised per line. for instance, roi = np.array([[100., 200.],[500.,600.]]) will define roi between 100 and 200 as well as between 500 and 600,.
+    
+        methods:
+    
     "linear": linear baseline, with spectre = array[x y];
     "hori': constant baseline, fitted at the minimum in the provided region of spectra. Splinesmooth in this case is the 1/2 extent of the region where the mean minimum is calculated;
     "unispline": spline with the UnivariateSpline function of Scipy, splinesmooth is the spline smoothing factor (assume equal weight in the present case);
     "gcvspline": spline with the gcvspl.f algorythm, really robust. Spectra must have x, y, ese in it, and splinesmooth is the smoothing factor;
     for gcvspline, if ese are not provided we assume ese = sqrt(y);
     "poly": polynomial fitting, with splinesmooth the degree of the polynomial.
+    
+    Outputs
+    -------
+    
+        out1: an 2 columns x-y array containing the corrected signal
+    
+        out2: an 2 columns x-y array containing the baseline
+    
+        coefs: contains spline coefficients.
+    
     """
     # we already say what is the output array
     out1 = np.zeros(spectre.shape) # matrix for corrected spectra
@@ -84,7 +101,7 @@ def baseline(spectre,bir,method,splinesmooth):
                 je = spectre[np.where((spectre[:,0]> bir[i,0]) & (spectre[:,0] < bir[i,1]))]
                 yafit = np.concatenate((yafit,je),axis=0)
         
-        # Spline baseline with mode 3 of gcvspl.f
+        # Spline baseline with mode 1 of gcvspl.f, see gcvspline documentation
         xdata = yafit[:,0]
         ydata = np.zeros((len(xdata),1))
         ydata[:,0] = yafit[:,1]
@@ -93,9 +110,9 @@ def baseline(spectre,bir,method,splinesmooth):
             ese = yafit[:,2]
         else:
             ese = np.sqrt(np.abs(yafit[:,1]))
-        VAL = ese**2
-        c, wk, ier = gcvspline.gcvspline(xdata,ydata,splinesmooth*ese,VAL,splmode = 3) # gcvspl with mode 3 and smooth factor
-        out2[:,1] = gcvspline.splderivative(x,xdata,c)       
+        VAL = 1.0
+        c, wk, ier = gcvspline(xdata,ydata,ese,splinesmooth,splmode = 1) # gcvspl with mode 3 and smooth factor
+        out2[:,1] = splderivative(x,xdata,c)       
         out1[:,1] = spectre[:,1]-out2[:,1]
         coeffs = None
     elif method == 'poly':
