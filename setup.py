@@ -9,8 +9,5 @@ setup(name='rampy',
       author_email='charles.lelosq@anu.edu.au',
       license='GNU-GPLv2',
       packages=['rampy', 'rampy.tests'],
-      install_requires=[
-                'gcvspline',
-            ],
-      ext_modules=[extension],
+      install_requires=['gcvspline'],
       zip_safe=False)

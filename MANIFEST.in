@@ -1,0 +1,5 @@
+include README.md
+include LICENSE
+include example/*.ipynb
+include rampy/*.py
+include rampy/tests/*.py
