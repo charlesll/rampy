@@ -2,8 +2,9 @@ import numpy as np
 from gcvspline import gcvspline, splderivative 
 from scipy.optimize import curve_fit
 from scipy.interpolate import UnivariateSpline
+from scipy.spatial import ConvexHull
 
-def baseline(spectre,bir,method,splinesmooth):
+def baseline(spectre,bir,method,splinesmooth, **kwargs):
     """
     This function allows subtracting a baseline under the spectra
     spectre is a spectrum or an array of spectra constructed with the spectrarray function
@@ -24,6 +25,16 @@ def baseline(spectre,bir,method,splinesmooth):
     "gcvspline": spline with the gcvspl.f algorythm, really robust. Spectra must have x, y, ese in it, and splinesmooth is the smoothing factor;
     for gcvspline, if ese are not provided we assume ese = sqrt(y);
     "poly": polynomial fitting, with splinesmooth the degree of the polynomial.
+    "rubberband": rubberband baseline fitting
+    "als": automatic least square fitting following Eilers and Boelens 2005.
+    
+    Options
+    -------
+    
+        Options for the ALS algorithm are:
+        lambda: float, between 10**2 to 10**9, default = 10**5
+        p: float, advised value between 0.001 to 0.1, default = 0.01
+        niter: number of iteration, default = 10
     
     Outputs
     -------
@@ -35,6 +46,8 @@ def baseline(spectre,bir,method,splinesmooth):
         coefs: contains spline coefficients.
     
     """
+    
+    
     # we already say what is the output array
     out1 = np.zeros(spectre.shape) # matrix for corrected spectra
     out2 = np.zeros(spectre.shape) # matrix with the baselines    
@@ -145,6 +158,52 @@ def baseline(spectre,bir,method,splinesmooth):
             coeffs, pcov = curve_fit(funlog,yafit[:,0],yafit[:,i+1],p0 = splinesmooth)
             out1[:,i+1] = spectre[:,i+1] - funlog(x,coeffs[0],coeffs[1],coeffs[2],coeffs[3])
             out2[:,i+1] = funlog(x,coeffs[0],coeffs[1],coeffs[2],coeffs[3])
+            
+    elif method == 'rubberband'
+        # code from this stack-exchange forum
+        #https://dsp.stackexchange.com/questions/2725/how-to-perform-a-rubberband-correction-on-spectroscopic-data
+        
+        x = spectre[:,0]
+        y = spectre[:,1]
+        
+        # Find the convex hull
+        v = ConvexHull(np.array(zip(x, y))).vertices
+            
+        # Rotate convex hull vertices until they start from the lowest one
+        v = np.roll(v, -v.argmin())
+        # Leave only the ascending part
+        v = v[:v.argmax()]
+
+        # Create baseline using linear interpolation between vertices
+        out2 = np.interp(x, x[v], y[v])
+        out1 = y - out2
+        coeffs=None
+        
+    elif method == 'als'
+        # Matlab code in Eilers et Boelens 2005
+        # Python addaptation found on stackoverflow: https://stackoverflow.com/questions/29156532/python-baseline-correction-library
+        
+        # setting y
+        y = spectre[:,1]
+        
+        # optional parameters
+        lambda = kwargs.get('lambda',1.0*10**5)
+        p = kwargs.get('p',0.01)
+        niter = kwargs.get('niter',10)
+        
+        # starting the algorithm
+        L = len(y)
+        D = sparse.csc_matrix(np.diff(np.eye(L), 2))
+        w = np.ones(L)
+        for i in xrange(niter):
+            W = sparse.spdiags(w, 0, L, L)
+            Z = W + lam * D.dot(D.transpose())
+            z = spsolve(Z, w*y)
+            w = p * (y > z) + (1-p) * (y < z)
+        
+        out2 = z
+        out1 = y - z
+        coeffs=None
             
     return out1, out2, coeffs
 
