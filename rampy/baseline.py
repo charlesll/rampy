@@ -3,8 +3,9 @@ from gcvspline import gcvspline, splderivative
 from scipy.optimize import curve_fit
 from scipy.interpolate import UnivariateSpline
 from scipy.spatial import ConvexHull
+import scipy.sparse as sparse
 
-def baseline(spectre,bir,method,splinesmooth, **kwargs):
+def baseline(spectre,bir,method, **kwargs):
     """
     This function allows subtracting a baseline under the spectra
     spectre is a spectrum or an array of spectra constructed with the spectrarray function
@@ -32,9 +33,14 @@ def baseline(spectre,bir,method,splinesmooth, **kwargs):
     -------
     
         Options for the ALS algorithm are:
+    
         lambda: float, between 10**2 to 10**9, default = 10**5
         p: float, advised value between 0.001 to 0.1, default = 0.01
         niter: number of iteration, default = 10
+    
+        Options for the unispline and gcvspline algorithms are:
+    
+        s: smoothing coefficient, the higher the more smooth.
     
     Outputs
     -------
@@ -46,7 +52,6 @@ def baseline(spectre,bir,method,splinesmooth, **kwargs):
         coefs: contains spline coefficients.
     
     """
-    
     
     # we already say what is the output array
     out1 = np.zeros(spectre.shape) # matrix for corrected spectra
@@ -78,6 +83,7 @@ def baseline(spectre,bir,method,splinesmooth, **kwargs):
             out2[:,i+1] = (popt[0] + popt[1]*x)
             
         return out1, out2, taux
+        
     elif method =='hori':
         # we take the data in the region of interest        
         yafit = spectre[np.where((spectre[:,0]> bir[0,0]) & (spectre[:,0] < bir[0,1]))] 
@@ -88,9 +94,14 @@ def baseline(spectre,bir,method,splinesmooth, **kwargs):
         
         out1[:,1] = spectre[:,1] - constant
         out2[:,1] = constant
-        coeffs = None        
+        
+        return out1, out2
         
     elif method == 'unispline':
+        
+        # optional parameters
+        splinesmooth = kwargs.get('s',2.0)
+        
         ### selection of bir data
         for i in range(birlen):
             if i == 0:
@@ -103,9 +114,16 @@ def baseline(spectre,bir,method,splinesmooth, **kwargs):
             coeffs = UnivariateSpline(yafit[:,0],yafit[:,i+1], s=splinesmooth)
             out2[:,i+1] = coeffs(x)
             out1[:,i+1] = spectre[:,i+1]-out2[:,i+1]
+        
+        return out1, out2
+        
     elif method == 'gcvspline':
         ## WARNING THEIR IS THE ERROR HERE IN THE SPECTRE MATRIX, not the case for the other functions
         ## ONLY TREAT ONE SPECTRA AT A TIME       
+        
+        # optional parameters
+        splinesmooth = kwargs.get('s',2.0)
+        
         ### selection of bir data
         for i in range(birlen):
             if i == 0:
@@ -124,10 +142,12 @@ def baseline(spectre,bir,method,splinesmooth, **kwargs):
         else:
             ese = np.sqrt(np.abs(yafit[:,1]))
         VAL = 1.0
-        c, wk, ier = gcvspline(xdata,ydata,ese,splinesmooth,splmode = 1) # gcvspl with mode 3 and smooth factor
+        c, wk, ier = gcvspline(xdata,ydata,ese,splinesmooth,splmode = 1) # gcvspl with mode 1 and smooth factor
         out2[:,1] = splderivative(x,xdata,c)       
         out1[:,1] = spectre[:,1]-out2[:,1]
-        coeffs = None
+        
+        return out1, out2
+        
     elif method == 'poly':
         ## Polynomial baseline
         ### selection of bir data
@@ -144,6 +164,8 @@ def baseline(spectre,bir,method,splinesmooth, **kwargs):
             out2[:,i+1] = np.polyval(coeffs,x)
             out1[:,i+1] = spectre[:,i+1]-out2[:,i+1]
             
+        return out1, out2, coeffs
+            
     elif method == 'log':
         ### Baseline is of the type y = a*exp(b*(x-xo))
         ### selection of bir data
@@ -159,7 +181,9 @@ def baseline(spectre,bir,method,splinesmooth, **kwargs):
             out1[:,i+1] = spectre[:,i+1] - funlog(x,coeffs[0],coeffs[1],coeffs[2],coeffs[3])
             out2[:,i+1] = funlog(x,coeffs[0],coeffs[1],coeffs[2],coeffs[3])
             
-    elif method == 'rubberband'
+        return out1, out2, coeffs
+            
+    elif method == 'rubberband':
         # code from this stack-exchange forum
         #https://dsp.stackexchange.com/questions/2725/how-to-perform-a-rubberband-correction-on-spectroscopic-data
         
@@ -175,11 +199,12 @@ def baseline(spectre,bir,method,splinesmooth, **kwargs):
         v = v[:v.argmax()]
 
         # Create baseline using linear interpolation between vertices
-        out2 = np.interp(x, x[v], y[v])
-        out1 = y - out2
-        coeffs=None
+        out2[:,1] = np.interp(x, x[v], y[v])
+        out1[:,1] = y - out2[:,1]
         
-    elif method == 'als'
+        return out1, out2
+        
+    elif method == 'als':
         # Matlab code in Eilers et Boelens 2005
         # Python addaptation found on stackoverflow: https://stackoverflow.com/questions/29156532/python-baseline-correction-library
         
@@ -187,7 +212,7 @@ def baseline(spectre,bir,method,splinesmooth, **kwargs):
         y = spectre[:,1]
         
         # optional parameters
-        lambda = kwargs.get('lambda',1.0*10**5)
+        lam = kwargs.get('lambda',1.0*10**5)
         p = kwargs.get('p',0.01)
         niter = kwargs.get('niter',10)
         
@@ -198,12 +223,11 @@ def baseline(spectre,bir,method,splinesmooth, **kwargs):
         for i in xrange(niter):
             W = sparse.spdiags(w, 0, L, L)
             Z = W + lam * D.dot(D.transpose())
-            z = spsolve(Z, w*y)
+            z = sparse.linalg.spsolve(Z, w*y)
             w = p * (y > z) + (1-p) * (y < z)
         
-        out2 = z
-        out1 = y - z
-        coeffs=None
-            
-    return out1, out2, coeffs
+        out2[:,1] = z
+        out1[:,1] = y - z
+        
+        return out1, out2
 
