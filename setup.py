@@ -9,5 +9,5 @@ setup(name='rampy',
       author_email='charles.lelosq@anu.edu.au',
       license='GNU-GPLv2',
       packages=['rampy', 'rampy.tests'],
-      install_requires=['numpy>=1.12','gcvspline'],
+      install_requires=['numpy>=1.12','gcvspline','scipy'],
       zip_safe=False)
