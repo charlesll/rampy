@@ -4,6 +4,7 @@ from scipy.optimize import curve_fit
 from scipy.interpolate import UnivariateSpline
 from scipy.spatial import ConvexHull
 import scipy.sparse as sparse
+from numpy.linalg import norm
 
 def baseline(spectre,bir,method, **kwargs):
     """
@@ -28,6 +29,7 @@ def baseline(spectre,bir,method, **kwargs):
     "poly": polynomial fitting, with splinesmooth the degree of the polynomial.
     "rubberband": rubberband baseline fitting
     "als": automatic least square fitting following Eilers and Boelens 2005.
+    "arPLS": automatic baseline fit using the algorithm from Baek et al. 2015 Baseline correction using asymmetrically reweighted penalized least suqares smoothing, Analyst 140: 250-257.
     
     Options
     -------
@@ -37,6 +39,11 @@ def baseline(spectre,bir,method, **kwargs):
         lambda: float, between 10**2 to 10**9, default = 10**5
         p: float, advised value between 0.001 to 0.1, default = 0.01
         niter: number of iteration, default = 10
+    
+        Options for the ALS algorithm are:
+    
+        lam: float, the lambda smoothness parameter. Typical values are between 10**2 to 10**9, default = 10**5
+        ratio = float, the termination ratio. Set it high to start and lower it. Default = 0.01.
     
         Options for the unispline and gcvspline algorithms are:
     
@@ -212,7 +219,7 @@ def baseline(spectre,bir,method, **kwargs):
         y = spectre[:,1]
         
         # optional parameters
-        lam = kwargs.get('lambda',1.0*10**5)
+        lam = kwargs.get('lam',1.0*10**5)
         p = kwargs.get('p',0.01)
         niter = kwargs.get('niter',10)
         
@@ -230,4 +237,37 @@ def baseline(spectre,bir,method, **kwargs):
         out1[:,1] = y - z
         
         return out1, out2
+        
+    elif method == 'arPLS':
+        # Adaptation of the Matlab code in Baek et al 2015 
+    
+        # setting y
+        y = spectre[:,1]
+        
+        # optional parameters
+        lam = kwargs.get('lam',1.0*10**5)
+        ratio = kwargs.get('ratio',0.01)
+        
+        N = len(y)
+        D = sparse.csc_matrix(np.diff(np.eye(N), 2))
+        w = np.ones(N)
 
+        while True:
+            W = sparse.spdiags(w, 0, N, N)
+            Z = W + lam * D.dot(D.transpose())
+            z = sparse.linalg.spsolve(Z, w*y)
+            d = y - z
+            # make d- and get w^t with m and s
+            dn = d[d<0]
+            m = np.mean(dn)
+            s = np.std(dn)
+            wt = 1.0/(1 + np.exp( 2* (d-(2*s-m))/s ) )
+            # check exit condition and backup
+            if norm(w-wt)/norm(w) < ratio:
+                break
+            w = wt
+
+        out2[:,1] = z
+        out1[:,1] = y-z
+
+        return out1, out2
