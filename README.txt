@@ -1,4 +1,4 @@
-# RamPy
+RamPy
 =====
 
 This is the skeleton of a module to treat spectroscopic data in Python.
