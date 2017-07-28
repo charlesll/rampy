@@ -1,6 +1,8 @@
 # RamPy
 =====
 
+[![Build Status](https://travis-ci.org/charlesll/rampy.svg?branch=master)](https://travis-ci.org/charlesll/rampy)
+
 This is the skeleton of a module to treat spectroscopic data in Python.
 
 The baseline function implements various interesting algorithms for baseline subtraction.
