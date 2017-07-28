@@ -13,4 +13,4 @@ addons:
 install:
   - pip install .
 # command to run tests
-script: pytest 
+script: python -m unittest rampy
