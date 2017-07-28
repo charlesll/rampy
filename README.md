@@ -35,11 +35,7 @@ gcvvspline (you need a working FORTRAN compiler for its installation... Warning 
 
 # INSTALLATION
 
-For now, just clone this repo and run 
-
-	python setup.py
-
-will install rampy. In a short future, you will need to run only:
+Install with pip:
 
 	pip install rampy 
 
