@@ -198,7 +198,7 @@ def baseline(spectre,bir,method, **kwargs):
         y = spectre[:,1]
         
         # Find the convex hull
-        v = ConvexHull(np.array(zip(x, y))).vertices
+        v = ConvexHull(np.array([x, y])).vertices
             
         # Rotate convex hull vertices until they start from the lowest one
         v = np.roll(v, -v.argmin())
@@ -227,7 +227,7 @@ def baseline(spectre,bir,method, **kwargs):
         L = len(y)
         D = sparse.csc_matrix(np.diff(np.eye(L), 2))
         w = np.ones(L)
-        for i in xrange(niter):
+        for i in range(niter):
             W = sparse.spdiags(w, 0, L, L)
             Z = W + lam * D.dot(D.transpose())
             z = sparse.linalg.spsolve(Z, w*y)
