@@ -4,7 +4,6 @@ README.txt
 setup.py
 rampy/__init__.py
 rampy/baseline.py
-rampy/deconv.py
 rampy/filters.py
 rampy/functions.py
 rampy/long.py

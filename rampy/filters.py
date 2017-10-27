@@ -60,7 +60,40 @@ def smooth(x,window_len=11,window="hamming"):
     y=np.convolve(w/w.sum(),s,mode='valid')
     return y[(window_len/2-1):-(window_len/2)] #Not working pretty well....
     
+
+def whittaker(x,**kwargs):
+    """
+    Whittaker smoother from Eilers 2003
     
+    Inputs
+    ------
+    
+    x: vector with the values to smooth (equally spaced)
+    
+    Options
+    -------
+    
+    Lambda: the smoothing coefficient, the higher the smoother. Default = 10^5.
+    
+    Outputs
+    -------
+    
+    A vector containing the smoothed values
+    
+    """
+    # optional parameters
+    lam = kwargs.get('Lambda',1.0*10**5)
+    
+    # starting the algorithm
+    L = len(y)
+    D = sparse.csc_matrix(np.diff(np.eye(L), 2))
+    w = np.ones(L)
+    W = sparse.spdiags(w, 0, L, L)
+    Z = W + lam * D.dot(D.transpose())
+    z = sparse.linalg.spsolve(Z, w*y)
+    
+    return z
+
 #### FILTERING OF DATA WITH A BUTTERWORTH FILTER 
    
 def spectrafilter(spectre,filtertype,fq,numtaps,columns):
