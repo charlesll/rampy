@@ -116,11 +116,13 @@ def baseline(x_input,y_input,bir,method, **kwargs):
     x = X_scaler.transform(x_input.reshape(-1, 1))
     y = Y_scaler.transform(y_input.reshape(-1, 1))
     
+    print(x.shape)         
+    
     yafit = np.copy(yafit_unscaled)
     yafit[:,0] = X_scaler.transform(yafit_unscaled[:,0].reshape(-1, 1))[:,0]
     yafit[:,1] = Y_scaler.transform(yafit_unscaled[:,1].reshape(-1, 1))[:,0]
 
-    y = y.reshape(len(y),)
+    y = y.reshape(len(y_input))
     
     if method == 'poly':
         
@@ -130,7 +132,7 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         coeffs = np.polyfit(yafit[:,0],yafit[:,1],poly_order)
                 
         baseline_fitted = np.polyval(coeffs,x)
-        y_corrected = y-baseline_fitted
+        y_corrected = y-baseline_fitted.reshape(-1)
         
     elif method == 'unispline':
         
@@ -141,7 +143,7 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         coeffs = UnivariateSpline(yafit[:,0],yafit[:,1], s=splinesmooth)
             
         baseline_fitted = coeffs(x)
-        y_corrected = y-baseline_fitted
+        y_corrected = y-baseline_fitted.reshape(-1)
         
     elif method == 'gcvspline':
         
@@ -152,7 +154,7 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         c, wk, ier = gcvspline(yafit[:,0],yafit[:,1],np.sqrt(np.abs(yafit[:,1])),splinesmooth,splmode = 1) # gcvspl with mode 1 and smooth factor
         
         baseline_fitted = splderivative(x,yafit[:,0],c)       
-        y_corrected = y-baseline_fitted
+        y_corrected = y-baseline_fitted.reshape(-1)
             
     elif method == 'exp':
         ### Baseline is of the type y = a*exp(b*(x-xo))
@@ -162,7 +164,7 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         coeffs, pcov = curve_fit(funexp,yafit[:,0],yafit[:,1],p0 = p0_exp)
         
         baseline_fitted = funexp(x,coeffs[0],coeffs[1],coeffs[2])
-        y_corrected = y-baseline_fitted
+        y_corrected = y-baseline_fitted.reshape(-1)
     
     elif method == 'log':
         ### Baseline is of the type y = a*exp(b*(x-xo))
@@ -172,7 +174,7 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         coeffs, pcov = curve_fit(funlog,yafit[:,0],yafit[:,1],p0 = p0_exp)
         
         baseline_fitted = funlog(x,coeffs[0],coeffs[1],coeffs[2],coeffs[3])
-        y_corrected = y-baseline_fitted
+        y_corrected = y-baseline_fitted.reshape(-1)
             
     elif method == 'rubberband':
         # code from this stack-exchange forum

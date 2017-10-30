@@ -23,8 +23,9 @@ class TestBaseline(unittest.TestCase):
         ycalc2, base2 = rampy.baseline(x2,y2,roi2,'gcvspline',s=0.1 )
         ycalc3, base3 = rampy.baseline(x2,y2,roi2,'unispline',s=1e0)
         ycalc4, base4 = rampy.baseline(x2,y2,roi2,'als',lam=10**7,p=0.05)
-        ycalc5, base5 = rampy.baseline(x2,y2,roi2,'arPLS',lam=10**7s,ratio=0.1)
+        ycalc5, base5 = rampy.baseline(x2,y2,roi2,'arPLS',lam=10**7,ratio=0.1)
         
+        np.testing.assert_equal(ycalc1.shape,base1.shape)
         
         np.testing.assert_almost_equal(2*x2,base1[:,0],0)
         np.testing.assert_almost_equal(2*x2,base2[:,0],0)
