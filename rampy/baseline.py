@@ -7,6 +7,8 @@ import scipy.sparse as sparse
 from numpy.linalg import norm
 from sklearn import preprocessing
 
+import rampy
+
 def get_portion_interest(x,y,bir):
     """
     This function extracts the signals indicated in the bir.
@@ -77,8 +79,6 @@ def baseline(x_input,y_input,bir,method, **kwargs):
     Options
     -------
     
-        Options for the ALS algorithm are:
-    
         polynomial_order: integer, the degree of the polynomial (0 for a constant), default = 1
         
         s: float, spline smoothing coefficient for the unispline and gcvspline algorithms
@@ -93,6 +93,10 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         lam: float, the lambda smoothness parameter. Typical values are between 10**2 to 10**9, default = 10**5
     
         ratio = float, the termination ratio. Set it high to start and lower it. Default = 0.01.
+        
+        p0_exp: list, containg the starting parameter for the exp baseline fit with curve_fit. Default = [1.,1.,1.].
+        
+        p0_log: list, containg the starting parameter for the log baseline fit with curve_fit. Default = [1.,1.,1.,1.].
     
     Outputs
     -------
@@ -132,7 +136,6 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         coeffs = np.polyfit(yafit[:,0],yafit[:,1],poly_order)
                 
         baseline_fitted = np.polyval(coeffs,x)
-        y_corrected = y-baseline_fitted.reshape(-1)
         
     elif method == 'unispline':
         
@@ -143,7 +146,6 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         coeffs = UnivariateSpline(yafit[:,0],yafit[:,1], s=splinesmooth)
             
         baseline_fitted = coeffs(x)
-        y_corrected = y-baseline_fitted.reshape(-1)
         
     elif method == 'gcvspline':
         
@@ -154,27 +156,24 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         c, wk, ier = gcvspline(yafit[:,0],yafit[:,1],np.sqrt(np.abs(yafit[:,1])),splinesmooth,splmode = 1) # gcvspl with mode 1 and smooth factor
         
         baseline_fitted = splderivative(x,yafit[:,0],c)       
-        y_corrected = y-baseline_fitted.reshape(-1)
             
     elif method == 'exp':
         ### Baseline is of the type y = a*exp(b*(x-xo))
         # optional parameters
         p0_exp = kwargs.get('p0_exp',[1.,1.,1.])
         ## fit of the baseline
-        coeffs, pcov = curve_fit(funexp,yafit[:,0],yafit[:,1],p0 = p0_exp)
+        coeffs, pcov = curve_fit(rampy.funexp,yafit[:,0],yafit[:,1],p0 = p0_exp)
         
-        baseline_fitted = funexp(x,coeffs[0],coeffs[1],coeffs[2])
-        y_corrected = y-baseline_fitted.reshape(-1)
+        baseline_fitted = rampy.funexp(x,coeffs[0],coeffs[1],coeffs[2])
     
     elif method == 'log':
         ### Baseline is of the type y = a*exp(b*(x-xo))
         # optional parameters
         p0_log = kwargs.get('p0_log',[1.,1.,1.,1.])
         ## fit of the baseline
-        coeffs, pcov = curve_fit(funlog,yafit[:,0],yafit[:,1],p0 = p0_exp)
+        coeffs, pcov = curve_fit(rampy.funlog,yafit[:,0],yafit[:,1],p0 = p0_log)
         
-        baseline_fitted = funlog(x,coeffs[0],coeffs[1],coeffs[2],coeffs[3])
-        y_corrected = y-baseline_fitted.reshape(-1)
+        baseline_fitted = rampy.funlog(x,coeffs[0],coeffs[1],coeffs[2],coeffs[3])
             
     elif method == 'rubberband':
         # code from this stack-exchange forum
@@ -190,7 +189,6 @@ def baseline(x_input,y_input,bir,method, **kwargs):
 
         # Create baseline using linear interpolation between vertices
         baseline_fitted = np.interp(x, x[v], y[v])
-        y_corrected = y-baseline_fitted
         
     elif method == 'als':
         # Matlab code in Eilers et Boelens 2005
@@ -212,7 +210,6 @@ def baseline(x_input,y_input,bir,method, **kwargs):
             w = p * (y > z) + (1-p) * (y < z)
         
         baseline_fitted = z
-        y_corrected = y-baseline_fitted
         
     elif method == 'arPLS':
         # Adaptation of the Matlab code in Baek et al 2015 
@@ -241,9 +238,8 @@ def baseline(x_input,y_input,bir,method, **kwargs):
             w = wt
 
         baseline_fitted = z
-        y_corrected = y-baseline_fitted
 
-    return Y_scaler.inverse_transform(y_corrected.reshape(-1, 1)), Y_scaler.inverse_transform(baseline_fitted.reshape(-1, 1))
+    return y_input.reshape(-1,1)-Y_scaler.inverse_transform(baseline_fitted.reshape(-1, 1)), Y_scaler.inverse_transform(baseline_fitted.reshape(-1, 1))
     #return y_corrected, baseline_fitted
     
     #
