@@ -8,6 +8,10 @@ Licence: see LICENCE.md
 
 As Rampy starts to grow, I will summarize changes in this file starting at version 0.2.6
 
+# 0.2.8
+
+- addition of the tlcorrection() function to replace the Long function
+
 # 0.2.7
 
 - Minor correction of the baseline() documentation and removing a print() command.
