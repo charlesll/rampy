@@ -44,9 +44,7 @@ def get_portion_interest(x,y,bir):
 
 def baseline(x_input,y_input,bir,method, **kwargs):
     """
-    This function allows subtracting a baseline under the spectra
-    spectre is a spectrum or an array of spectra constructed with the spectrarray function
-    bir contains the Background Interpolation Regions, it must be a n x 2 dimension array
+    This function allows subtracting a baseline under a x y spectrum.
     
     Inputs
     ------
@@ -119,8 +117,6 @@ def baseline(x_input,y_input,bir,method, **kwargs):
     # transformation
     x = X_scaler.transform(x_input.reshape(-1, 1))
     y = Y_scaler.transform(y_input.reshape(-1, 1))
-    
-    print(x.shape)         
     
     yafit = np.copy(yafit_unscaled)
     yafit[:,0] = X_scaler.transform(yafit_unscaled[:,0].reshape(-1, 1))[:,0]
