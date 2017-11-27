@@ -6,8 +6,8 @@ rampy/__init__.py
 rampy/baseline.py
 rampy/filters.py
 rampy/functions.py
-rampy/long.py
 rampy/spectranization.py
 rampy/taux.py
+rampy/tlcorrection.py
 rampy/tests/__init__.py
 rampy/tests/test_baseline.py

@@ -25,12 +25,12 @@ def get_portion_interest(x,y,bir):
     Outputs
     -------
     
-    an 2 columns x-y array containing the signals in the bir.
+    a 2 columns x-y array containing the signals in the bir.
     
     """
     birlen = np.array(bir.shape[0])
     
-    sp = np.transpose(np.vstack((x,y)))
+    sp = np.transpose(np.vstack((x.reshape(-1),y.reshape(-1))))
     ### selection of bir data
     for i in range(birlen):
         if i == 0:
@@ -41,7 +41,6 @@ def get_portion_interest(x,y,bir):
             
     return yafit
     
-
 def baseline(x_input,y_input,bir,method, **kwargs):
     """
     This function allows subtracting a baseline under a x y spectrum.
@@ -99,11 +98,9 @@ def baseline(x_input,y_input,bir,method, **kwargs):
     Outputs
     -------
     
-        out1: an 2 columns x-y array containing the corrected signal
+        out1: an array containing the corrected signal
     
-        out2: an 2 columns x-y array containing the baseline
-    
-        coefs: contains spline coefficients.
+        out2: an array containing the baseline
     
     """
     # we get the signals in the bir
