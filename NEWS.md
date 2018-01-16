@@ -8,6 +8,16 @@ Licence: see LICENCE.md
 
 As Rampy starts to grow, I will summarize changes in this file starting at version 0.2.6
 
+# 0.2.9
+
+- addition of gaussian baseline
+
+- addition of flipsp() to flip spectra along the axis 0
+
+- addition of resample() to resample spectra with scipy.interpolate
+
+- improvement of tlcorrection
+
 # 0.2.8
 
 - addition of the tlcorrection() function to replace the Long function

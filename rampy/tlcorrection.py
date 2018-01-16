@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #############################################################################
 #Copyright (c) 2017 Charles Le Losq
 #
@@ -20,17 +21,11 @@
 #
 # THOSE FORMULA ARE WRITTEN FOR STOKES RAMAN. May be easily adapted for anti-Stokes upon request.
 #
-# References
-# Shuker, Reuben, and Robert Gammon. 1970. Raman-Scattering Selection-Rule Breaking and the Density of States in Amorphous Materials. Physical Review Letters 25 (4): 222–25.
-# Galeener, F. L., and Sen, P. N. 1978. Theory of the First-Order Vibrational Spectra of Disordered Solids. Physical Review B 17 (4): 1928–33.
-# Mysen, B. O., L. W. Finger, D. Virgo, and F. A. Seifert. 1982. Curve-Fitting of Raman Spectra of Silicate Glasses. American Mineralogist 67: 686–95.
-# Brooker et al. 1988 Assessment of correction procedures for reduction of Raman spectra. Journal of Raman Spectroscopy 19(2), 71-78.
-# Neuville, D. R., and B. O. Mysen. 1996. Role of Aluminium in the Silicate Network: In Situ, High-Temperature Study of Glasses and Melts on the Join SiO₂-NaAl0₂. Geochimica et Cosmochimica Acta 60: 1727–37.
-# Le Losq, C., D. R. Neuville, R. Moretti, and J. Roux. 2012. Determination of Water Content in Silicate Glasses Using Raman Spectrometry: Implications for the Study of Explosive Volcanism. American Mineralogist 97 (5-6): 779–90. doi:10.2138/am.2012.3831.
-# Hehlen, B. 2010. Inter-Tetrahedra Bond Angle of Permanently Densified Silicas Extracted from Their Raman Spectra. Journal of Physics: Condensed Matter 22 (2): 025401.
+
 #############################################################################
 
 import numpy as np
+from scipy.constants import c, h, hbar, k
 
 def tlcorrection(x,y,temp,wave, **kwargs):
     """
@@ -54,7 +49,7 @@ def tlcorrection(x,y,temp,wave, **kwargs):
 
     OUTPUTS:
 
-    (are combined in one array if only one output name is given)
+    (are combined in one tuple if only one output name is given)
 
         x: the x values
 
@@ -72,8 +67,10 @@ def tlcorrection(x,y,temp,wave, **kwargs):
 
     The 'hehlen' equation is that reported in Hehlen et al. (2010). It actually originates before this publication (Brooker et al. 1988). It uses a different correction that avoid crushing the signal below 500 cm-1. THerefore, it has the advantage of keeping intact the Boson peak signal in glasses.
     """
-
-
+    
+    if x[-1] < x[0]: # to raise an error if decreasing x values are provided
+        raise Error('x values should be increasing.')
+    
     # getting the kwargs
     correction = kwargs.get('correction','long')
     normalisation = kwargs.get('normalisation','area') 
@@ -92,6 +89,7 @@ def tlcorrection(x,y,temp,wave, **kwargs):
     
     # get the Raman shift in m-1
     nu = 100.0*x # cm-1 -> m-1 Raman shift
+    
     
     # then we proceed to the correction 
     try:

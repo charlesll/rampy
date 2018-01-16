@@ -11,7 +11,7 @@ The spectratool.py part of the library offers various functions to help organisi
 
 the /examples/ folder contain various examples.
 
-Copyright (2015-2017) C. Le Losq.
+Copyright (2015-2018) C. Le Losq.
 
 charles.lelosq@anu.edu.au
 
@@ -45,7 +45,7 @@ Install with pip:
 
 See the example folder
 
-Updated July 2017
+Updated January 2018
 
 
 

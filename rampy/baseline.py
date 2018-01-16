@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import numpy as np
 from gcvspline import gcvspline, splderivative 
 from scipy.optimize import curve_fit
@@ -149,7 +150,16 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         c, wk, ier = gcvspline(yafit[:,0],yafit[:,1],np.sqrt(np.abs(yafit[:,1])),splinesmooth,splmode = 1) # gcvspl with mode 1 and smooth factor
         
         baseline_fitted = splderivative(x,yafit[:,0],c)       
-            
+    
+    elif method == 'gaussian':
+        ### Baseline is of the type y = a*exp(-log(2)*((x-b)/c)**2)
+        # optional parameters
+        p0_gauss = kwargs.get('p0_gaussian',[1.,1.,1.])
+        ## fit of the baseline
+        coeffs, pcov = curve_fit(rampy.gaussian,yafit[:,0],yafit[:,1],p0 = p0_gauss)
+        
+        baseline_fitted = rampy.gaussian(x,coeffs[0],coeffs[1],coeffs[2])
+    
     elif method == 'exp':
         ### Baseline is of the type y = a*exp(b*(x-xo))
         # optional parameters

@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 import numpy as np
 from scipy import interpolate 
 from scipy import signal
 from scipy.optimize import curve_fit
 from scipy.interpolate import UnivariateSpline
+from scipy.interpolate import interp1d
 
 ################## SPECIFIC FUNCTIONS FOR TREATMENT OF SPECTRA
 
@@ -38,11 +40,8 @@ def spectrarray(name,sh,sf,x,interpmethod):
 
 def spectrataux(x,spectres):
     """
-    Created on Wed Feb 12 18:30:44 2014
+        spectrataux(x,spectres)
     
-    @author: Charles LE LOSQ
-    Carnegie Institution of Washington D.C.
-    February 2014
     This function calculates the increase/decrease rate of each frequency in a spectrum
     Your data must have the same frequency axis of course...
     Initial fitting function is a second order polynomial
@@ -66,10 +65,14 @@ def spectrataux(x,spectres):
 
 def spectraoffset(spectre,offsets):
     """
-    This function allows to Y offset your spectra for representing them or correcting them
-    with an horizontal baseline for instance
-    spectre is an array constructed with the spectrarray function
-    offsets is an array constructed with numpy and containing the coefficient for the offset to apply to spectre   
+        spectraoffset(spectre,offsets)
+    
+    Allows to offset your spectra with values in offsets
+    
+    spectre : array constructed with the spectrarray function
+    
+    offsets : array constructed with numpy and containing the coefficient for the offset to apply to spectre 
+    
     """
     
     # we already say what is the output array
@@ -79,3 +82,36 @@ def spectraoffset(spectre,offsets):
         out[:,i+1] = spectre[:,i+1] + offsets[i]
     
     return out
+    
+#
+# Simple data treatment functions
+#
+def flipsp(sp):
+    """
+
+    	flipsp(spectra::Array{Float64})
+
+    Flip an array along the row dimension (dim = 1) if the first column values are in decreasing order.
+
+    """
+    if sp[-1,0] < sp[0,0]:
+        sp = np.flip(sp,0)
+        return sp
+    else:
+        return sp
+    
+	
+
+
+def resample(x,y,x_new):
+    """
+
+    	resample(x,y,x_new)
+
+    Resample a y signal associated with x, along the x_new values.
+
+    Uses scipy.interpolate.interp1d
+
+    """
+    f = interp1d(x,y)
+    return f(x_new)
