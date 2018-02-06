@@ -1,63 +1,49 @@
 # -*- coding: utf-8 -*-
 #############################################################################
-#Copyright (c) 2017 Charles Le Losq
+#Copyright (c) 2018 Charles Le Losq
 #
-#The MIT License (MIT)
+# Licence GNU-GPL
 #
-#Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the #Software without restriction, including without limitation the rights to use, copy, #modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, #and to permit persons to whom the Software is furnished to do so, subject to the #following conditions:
 #
-#The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-#
-#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, #INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#
-# Temperature and laser wavelength effects correction for Raman spectra
-# Charles Le Losq
-# RSES-ANU 2016
-# Long's correction of Raman spectra and normalisation
-# last rev. Oct 2016 for convertion in Julia
-# ensures strictly increasing values of wavenumber
-# calc. e.s.e. as Long cor. norm. sqrt(n_raw) 3d output col.
-# exp. format to avoid null ese.
-#
-# THOSE FORMULA ARE WRITTEN FOR STOKES RAMAN. May be easily adapted for anti-Stokes upon request.
-#
-
 #############################################################################
-
 import numpy as np
-from scipy.constants import c, h, hbar, k
+from scipy.constants import c, h, k
 
 def tlcorrection(x,y,temp,wave, **kwargs):
     """
         tlcorrection(x,y,temp,wave,**kwargs)
-    
-    INPUTS:
-    
-        data: input spectrum with x and y in first and second columns respectively
-    
-        temp: Float64, the temperature in °C
 
-        wave: Float64, the wavenumber at which the spectrum was acquirred in nm
+    Parameters
+    ----------
+    x
+        Raman shifts in cm-1
+    y
+        Intensity values as counts
+    temp
+        Temperature in °C
+    wave
+        wavenumber of the laser that excited the sample, in nm
 
-    OPTIONS:
+    kwargs
+    ------
+    correction
+        Equation used for the correction. Choose between 'long', 'galeener', or 'hehlen'. Default = 'long'.
+    normalisation
+        Data normalisation procedure. Choose between 'intensity', 'area', or 'no'. Default = 'area'.
+    density
+        The density of the studied material in kg m-3, to be used with the 'hehlen' equation. Default = 2210.0 (density of silica).
 
-        'correction': Equation used for the correction. Choose between 'long', 'galeener', or 'hehlen'. Default = 'long'
+    Returns
+    -------
+    x
+        The Raman shifts values.
+    long
+        The corrected intensities.
+    eselong
+        The errors calculated as sqrt(y) on raw intensities and propagated after the correction.
 
-        'normalisation': data normalisation procedure. Choose between 'intensity', 'area', or 'no'. Default = 'area'
-
-        'density': the density of the studied material in kg m-3, to be used with the 'hehlen' equation. Default = 2210.0 (density of silica)
-
-    OUTPUTS:
-
-    (are combined in one tuple if only one output name is given)
-
-        x: the x values
-
-        long: the corrected y values
-
-        eselong: the errors calculated as sqrt(y) on raw data and propagated after the correction
-	
-    NOTES:
+    Remarks
+    -------
 
     This correction uses the formula reported in Galeener and Sen (1978), Mysen et al. (1982), Brooker et al. (1988) and Hehlen et al. (2010).
 
@@ -67,31 +53,31 @@ def tlcorrection(x,y,temp,wave, **kwargs):
 
     The 'hehlen' equation is that reported in Hehlen et al. (2010). It actually originates before this publication (Brooker et al. 1988). It uses a different correction that avoid crushing the signal below 500 cm-1. THerefore, it has the advantage of keeping intact the Boson peak signal in glasses.
     """
-    
+
     if x[-1] < x[0]: # to raise an error if decreasing x values are provided
-        raise Error('x values should be increasing.')
-    
+        raise ValueError('x values should be increasing.')
+
     # getting the kwargs
     correction = kwargs.get('correction','long')
-    normalisation = kwargs.get('normalisation','area') 
+    normalisation = kwargs.get('normalisation','area')
     density = kwargs.get('density',2210.0)
 
-    h = 6.626070040e-34   # J S    Plank constant from NIST
-    hb = 1.054571800e-34 # J S    Reduced Plank constant from NIST
-    k = 1.38064852e-23      # J K-1    Boltzman constant from NIST
-    c = 299792458.         # M S-1    Speed of light from NIST
+    #h = 6.626070040e-34   # J S    Plank constant from NIST
+    #hb = 1.054571800e-34 # J S    Reduced Plank constant from NIST
+    #k = 1.38064852e-23      # J K-1    Boltzman constant from NIST
+    #c = 299792458.         # M S-1    Speed of light from NIST
     nu0 = 1.0/wave*1e9     # nu0 laser is in M-1 (wave is in nm)
     T = temp + 273.15    # K temperature
     # density is in KG M-3
 
     # Calculate the relative error on data as sqrt(y). If y <= 0, then error = abs(y).
     ese = np.sqrt(np.absolute(y))/np.absolute(y) # relative errors
-    
+
     # get the Raman shift in m-1
     nu = 100.0*x # cm-1 -> m-1 Raman shift
-    
-    
-    # then we proceed to the correction 
+
+
+    # then we proceed to the correction
     try:
         if correction == 'long':
             # Formula used in Mysen et al. (1982), Neuville and Mysen (1996) and Le Losq et al. (2012) (corrected for using the Planck constant in the last reference)
@@ -99,22 +85,22 @@ def tlcorrection(x,y,temp,wave, **kwargs):
             frequency = nu0**3*nu/((nu0-nu)**4) # frequency correction; dimensionless
             boltzman = 1.0 - np.exp(-h*c*nu/(k*T)) # temperature correction with Boltzman distribution; dimensionless
             ycorr = y*frequency*boltzman # correction
-    
+
         elif correction == 'galeener':
             # This uses the formula reported in Galeener and Sen (1978) and Brooker et al. (1988); it uses the Bose-Einstein / Boltzman distribution
             # Formula from  without the scaling vo^3 coefficient reported in Mysen et al. (1982), Neuville and Mysen (1996) and Le Losq et al. (2012)
             frequency = nu/((nu0-nu)**4) # frequency correction; M^3
             boltzman = 1.0 - np.exp(-h*c*nu/(k*T)) # temperature correction with Boltzman distribution; dimensionless
             ycorr = y*frequency*boltzman # correction
-    
+
         elif correction =='hehlen':
             # this uses the formula reported in Hehlen et al. 2010
             frequency = 1/(nu0**3*density) # frequency + density correction; M/KG
             boltzman = 1.0 - np.exp(-h*c*nu/(k*T)) # dimensionless
             ycorr = y*frequency*boltzman # correction
     except:
-        print "Not implemented, choose correction = long, galeener or hehlen."
-    
+        print("Not implemented, choose correction = long, galeener or hehlen.")
+
     # we take care of the normalisation
     try:
         if normalisation == 'area':
@@ -122,10 +108,10 @@ def tlcorrection(x,y,temp,wave, **kwargs):
         elif normalisation == 'intensity':
             ycorr = ycorr/np.max(ycorr) # max. intensity normalisation
         elif normalisation == 'no':
-            print "No normalisation..."
-    except: 
-        print "Set the optional normalisation parameter to area, intensity or no."
-    
+            print("No normalisation...")
+    except:
+        print("Set the optional normalisation parameter to area, intensity or no.")
+
     esecorr = ese*ycorr # error calculation
-    
+
     return x, ycorr, esecorr
