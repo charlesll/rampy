@@ -8,6 +8,14 @@ Licence: see LICENCE.md
 
 As Rampy starts to grow, I will summarize changes in this file starting at version 0.2.6
 
+# 0.3.0
+
+- Documentation improvements
+
+- Python 3 compatible
+
+- Addition of the Rameau function
+
 # 0.2.9
 
 - addition of gaussian baseline
