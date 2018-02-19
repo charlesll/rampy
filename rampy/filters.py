@@ -1,94 +1,112 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 import numpy as np
+import scipy
 from scipy import signal
 import scipy.sparse as sparse
+import gcvspline
 
-def smooth(x,window_len=11,window="hamming"):
-    """Smooth the data using a window with requested size.
-
-    Taken from http://wiki.scipy.org/Cookbook/SignalSmooth
-
-    This method is based on the convolution of a scaled window with the signal.
-    The signal is prepared by introducing reflected copies of the signal
-    (with the window size) in both ends so that transient parts are minimized
-    in the begining and end part of the output signal.
+def smooth(x,y,method="whittaker",**kwargs):
+    """smooth the provided y signal (sampled on x)
 
     Parameters
-    ----------
-    x
-        The input signal
-    window_len
-        The dimension of the smoothing window; should be an odd integer
-    window
-        Tthe type of window from 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'
-            flat window will produce a moving average smoothing.
+    ==========
+    x: ndarray
+        Nx1 array of x values (equally spaced).
+    y: ndarray
+        Nx1 array of y values (equally spaced).
+    method: str
+        Method for smoothing the signal;
+        choose between savgol (Savitzky-Golay), GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline, whittaker, 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'.
+
+    kwargs
+    ======
+    window_length: int
+        The length of the filter window (i.e. the number of coefficients). window_length must be a positive odd integer.
+    polyorder: int
+        The order of the polynomial used to fit the samples. polyorder must be less than window_length.
+    Lambda: float
+        smoothing parameter of the Whittaker filter described in Eilers (2003). The higher the smoother the fit.
+    d: int
+        d parameter in Whittaker filter, see Eilers (2003).
+    ese_y: ndarray
+        errors associated with y (for the gcvspline algorithms)
 
     Returns
-    -------
-    y_smo
-        The smoothed signal.
+    =======
+    y_smo: ndarray
+        smoothed signal sampled on x.
 
-    Example
-    -------
+    Note
+    ====
+    See documentation of gcvspline for details on GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline
 
-    ```
-    t=linspace(-2,2,0.1)
-    x=sin(t)+randn(len(t))*0.1
-    y=smooth(x)
-    ```
+    savgol uses the scipy.signal.savgol_filter() function.
 
-    see also:
+    References
+    ==========
+    Eilers, P.H.C., 2003. A Perfect Smoother. Anal. Chem. 75, 3631–3636. https://doi.org/10.1021/ac034173t
 
-    numpy.hanning, numpy.hamming, numpy.bartlett, numpy.blackman, numpy.convolve
-    scipy.signal.lfilter
+    Scipy Cookbook: https://scipy-cookbook.readthedocs.io/items/SignalSmooth.html?highlight=smooth
 
-    TODO: the window parameter could be the window itself if an array instead of a string
-    NOTE: length(output) != length(input), to correct this: return y[(window_len/2-1):-(window_len/2)] instead of just y.
     """
-
-    if x.ndim != 1:
-        raise ValueError("smooth only accepts 1 dimension arrays.")
+    window_len = kwargs.get("window_length",5)
+    polyorder = kwargs.get("polyorder",2)
+    lam = kwargs.get("Lambda",10.0**5)
+    d = kwargs.get("d",2)
+    ese_y = kwargs.get("ese_y",1.0)
 
     if x.size < window_len:
         raise ValueError("Input vector needs to be bigger than window size.")
 
+    if not method in ['GCVSmoothedNSpline','MSESmoothedNSpline','DOFSmoothedNSpline','whittaker','savgol',
+                      'flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
+        raise ValueError("Method should be on 'GCVSmoothedNSpline','MSESmoothedNSpline','DOFSmoothedNSpline','whittaker','savgol','flat', 'hanning', 'hamming', 'bartlett', 'blackman'")
 
-    if window_len<3:
-        return x
+    if (method ==  "GCVSmoothedNSpline") or (method == "MSESmoothedNSpline") or (method == "DOFSmoothedNSpline"): # gcvspline methods
+        w = 1.0 / (np.ones((y.shape[0],1)) * ese_y) # errors
+        if method == "GCVSmoothedNSpline":
+            flt = gcvspline.GCVSmoothedNSpline(x.reshape(-1),y.reshape(-1),w.reshape(-1))
+        elif method == "MSESmoothedNSpline":
+            flt = gcvspline.MSESmoothedNSpline(x.reshape(-1),y.reshape(-1),w.reshape(-1))
+        elif method == "DOFSmoothedNSpline":
+            flt = gcvspline.DOFSmoothedNSpline(x.reshape(-1),y.reshape(-1),w.reshape(-1))
+        return flt(x)
 
+    elif method == "whittaker": # whittaker smoother
+        return whittaker(y,Lambda=lam,d=d)
+    elif method == "savgol": # Savtisky-Golay filter
+        return scipy.signal.savgol_filter(y, window_len, polyorder)
+    elif method in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']: # various window filters, from https://scipy-cookbook.readthedocs.io/items/SignalSmooth.html?highlight=smooth
 
-    if not window in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
-        raise ValueError("Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'")
+        s=np.r_[y[window_len-1:0:-1],y,y[-2:-window_len-1:-1]]
+        if method == 'flat': #moving average
+            w=np.ones(window_len,'d')
+        else:
+            w=eval('np.'+method+'(window_len)')
 
+        y_filt = np.convolve(w/w.sum(),s,mode='valid')
+        shift = int((len(y_filt) - len(y))/2)
 
-    s=np.r_[x[window_len-1:0:-1],x,x[-1:-window_len:-1]]
-    #print(len(s))
-    if window == 'flat': #moving average
-        w=np.ones(window_len,'d')
-    else:
-        w=eval('np.'+window+'(window_len)')
-
-    y=np.convolve(w/w.sum(),s,mode='valid')
-    return y[(window_len/2-1):-(window_len/2)] #Not working pretty well....
+        return y_filt[shift:-shift]
 
 def whittaker(y,**kwargs):
-    """Smooth a y signal with the Whittaker smoother
+    """smooth a signal with the Whittaker smoother
 
     Inputs
     ------
-    y
-        Vector with the values to smooth (equally spaced).
+    y: ndarray
+        An array with the values to smooth (equally spaced).
 
     kwargs
     ------
-    Lambda
+    Lambda: float
         The smoothing coefficient, the higher the smoother. Default = 10^5.
 
     Outputs
     -------
-    z
-        A vector containing the smoothed values.
+    z: ndarray
+        An array containing the smoothed values.
 
     References
     ----------
@@ -100,18 +118,16 @@ def whittaker(y,**kwargs):
 
     # starting the algorithm
     L = len(y)
-    D = sparse.csc_matrix(np.diff(np.eye(L), 2))
+    D = scipy.sparse.csc_matrix(np.diff(np.eye(L), 2))
     w = np.ones(L)
-    W = sparse.spdiags(w, 0, L, L)
+    W = scipy.sparse.spdiags(w, 0, L, L)
     Z = W + lam * D.dot(D.transpose())
-    z = sparse.linalg.spsolve(Z, w*y)
+    z = scipy.sparse.linalg.spsolve(Z, w*y)
 
     return z
 
-#### FILTERING OF DATA WITH A BUTTERWORTH FILTER
-
 def spectrafilter(spectre,filtertype,fq,numtaps,columns):
-    """Filter specific frequencies in spectra
+    """Filter specific frequencies in spectra with a butterworth filter
 
     Inputs
     ------

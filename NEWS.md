@@ -8,6 +8,12 @@ Licence: see LICENCE.md
 
 As Rampy starts to grow, I will summarize changes in this file starting at version 0.2.6
 
+# 0.3.1
+
+- Rameau is now an object-oriented interface
+
+- smooth() function updated; 10 algorithms are available.
+
 # 0.3.0
 
 - Documentation improvements
@@ -43,4 +49,3 @@ As Rampy starts to grow, I will summarize changes in this file starting at versi
 - addition of the whittaker smoother to fit the baseline (Eiler 2003);
 
 - addition of the ALS algorithm (Eilers and Boelens 2005).
-

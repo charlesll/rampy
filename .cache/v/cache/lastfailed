@@ -1,4 +1,1 @@
-{
-  "rampy/tests/test_baseline.py::TestBaseline": true, 
-  "rampy/tests/test_spectranization.py::TestSpectranization": true
-}
+{}

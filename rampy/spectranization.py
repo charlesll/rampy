@@ -143,3 +143,27 @@ def resample(x,y,x_new):
     """
     f = interp1d(x,y)
     return f(x_new)
+
+def normalise(y,x=0,method="intensity"):
+    """normalisation of the y signal
+    Parameters
+    ==========
+    x: Numpy array
+        x values
+    y: Numpy array
+        y values
+    method: string
+        method used, choose between area, intensity, minmax
+    Returns
+    =======
+    y_norm: Numpy array
+        Normalised signal
+    """
+    if method == "area":
+        if x == 0:
+            raise TypeError("Input x values for area normalisation")
+        y = y/np.trapz(y,x)
+    if method == "intensity":
+        y = y/np.max(y)
+    if method == "minmax":
+        y = (y-np.min(y))/(np.max(y)-np.min(y))
