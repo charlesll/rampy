@@ -6,7 +6,7 @@ email: charles.lelosq@anu.edu.au
 
 Licence: see LICENCE.md
 
-As Rampy starts to grow, I will summarize changes in this file starting at version 0.2.6
+As Rampy starts to grow, I will summarise changes in this file starting at version 0.2.6
 
 # 0.3.1
 
