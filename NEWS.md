@@ -14,6 +14,8 @@ As Rampy starts to grow, I will summarize changes in this file starting at versi
 
 - smooth() function updated; 10 algorithms are available.
 
+- updated example of peak fitting
+
 # 0.3.0
 
 - Documentation improvements
