@@ -15,13 +15,17 @@ The /examples/ folder contain various examples.
 
 # REQUIREMENTS
 
+Rampy is tested on Python 2.7 and 3.6 (see Travis badge; no garantee that it works on other Python versions)
+
+The following libraries are required and indicated in setup.py:
+
 - Scipy
 - Numpy >= 1.12
 - sklearn
 - pandas
 - gcvspline (you need a working FORTRAN compiler for its installation... Warning Windows users! Check you FORTRAN compiler!)
 
-Additional libraries for model fitting
+Additional libraries for model fitting may be wanted:
 
 - lmfit & aeval (http://cars9.uchicago.edu/software/python/lmfit/)
 - emcee
@@ -34,7 +38,7 @@ Install with pip:
 
 # EXAMPLES
 
-See the example folder
+See the /example folder.
 
 Updated February 2018
 
