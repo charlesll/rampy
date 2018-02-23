@@ -8,6 +8,10 @@ Licence: see LICENCE.md
 
 As Rampy starts to grow, I will summarise changes in this file starting at version 0.2.6
 
+# 0.3.2
+
+- Adding the names in the rameau object
+
 # 0.3.1
 
 - Rameau is now an object-oriented interface

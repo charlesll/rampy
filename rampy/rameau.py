@@ -42,6 +42,8 @@ class rameau:
         the predicted glass water content provided in data_liste (set to 0 if predicting for unknowns)
     p: ndarray
         calibration coefficient(s) of the LL2012 or DG2017 method
+    names: pandas dataframe
+        filenames indicated in the data_liste input 
 
     Note
     ====
@@ -71,10 +73,12 @@ class rameau:
     water = []
     water_predicted = []
     p = []
+    names = []
 
     def __init__(self,data_liste):
         self.data_liste = data_liste
         self.water = np.asarray(data_liste["Water, wt%"])
+        self.names = data_liste["Name"]
 
     def data_reduction(self,method="LL2012",delim='\t',path_in='./raw/',laser=514.532,spline_coeff=0.001,poly_coeff=3):
         """process Raman spectra of glass to calculate the Rws ratio
