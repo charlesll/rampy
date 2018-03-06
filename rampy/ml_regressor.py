@@ -1,6 +1,8 @@
 import sklearn
 from sklearn import model_selection
 from sklearn.neural_network import MLPRegressor
+from sklearn.svm import SVR
+from sklearn.kernel_ridge import KernelRidge
 import pandas as pd
 import numpy as np
 
@@ -90,6 +92,8 @@ def mlregressor(x, y, algorithm="SVM",**kwargs):
             contain the values of the hyperparameters that should be checked by gridsearch for the Kernel Ridge regression algorithm.
     param_grid_svm: Dictionary
             containg the values of the hyperparameters that should be checked by gridsearch for the Support Vector regression algorithm.
+    network_structure: Tuple
+            contain the neural network structure, as (number_neurons_layer1,(number_neurons_layer2,...).
 
     For the last two parameters, the user is refered to the documentation of SciKit Learn. See the pages:
 
@@ -119,6 +123,7 @@ def mlregressor(x, y, algorithm="SVM",**kwargs):
     param_grid_kr = kwargs.get("param_grid_kr",dict(alpha=[1e1, 1e0, 0.5, 0.1, 5e-2, 1e-2, 5e-3, 1e-3],gamma=np.logspace(-4, 4, 9)))
     param_grid_svm= kwargs.get("param_grid_svm",dict(C= [1e0, 2e0, 5e0, 1e1, 5e1, 1e2, 5e2, 1e3, 5e3, 1e4, 5e4, 1e5], gamma= np.logspace(-4, 4, 9)))
     user_kernel = kwargs.get("user_kernel","rbf")
+    neural_structure = kwargs.get("network_structure",(2,))
 
     if len(X_test) == 1:
         X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(
@@ -170,7 +175,7 @@ def mlregressor(x, y, algorithm="SVM",**kwargs):
     elif algorithm == "LinearRegression":
         model = sklearn.linear_model.LinearRegression()
     elif algorithm == "NeuralNet":
-        model = MLPRegressor(hidden_layer_sizes=(2,), activation='relu',solver='lbfgs', random_state=rand_state)
+        model = MLPRegressor(hidden_layer_sizes=neural_structure, activation='relu',solver='lbfgs', random_state=rand_state)
 
     if scaling == "yes":
         model.fit(X_train_sc, y_train_sc)
