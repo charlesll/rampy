@@ -256,8 +256,6 @@ def fit_spectra(data_liste,method="LL2012",delim='\t',path_in='./raw/',laser=514
         # constructing an interpolator: this will allow an output of all data with the same X axis
         f = scipy.interpolate.interp1d(sp[:,0], sp[:,1],fill_value="extrapolate")
 
-        for_tl = f(x) - f(x).min() +0.0001
-
         # temperature and excitation line correction (see Rameau help)
         x, y_all[:,i], sdf = rp.tlcorrection(x,f(x),23.0,laser,normalisation='intensity')
 
