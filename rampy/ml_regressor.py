@@ -42,15 +42,16 @@ def chemical_splitting(Pandas_DataFrame, target,split_fraction):
     frame1_idx, frame2_idx = model_selection.train_test_split(names_idx, test_size = split_fraction,random_state=42)
 
     # and now grabbing the relevant pandas dataframes
-    ttt = np.in1d(Pandas_DataFrame.logfo2,names[frame1_idx])
+    ttt = np.in1d(Pandas_DataFrame[target],names[frame1_idx])
     frame1 = Pandas_DataFrame[ttt == True]
     frame1_idx = np.where(ttt == True)
 
-    ttt2 = np.in1d(Pandas_DataFrame.logfo2,names[frame2_idx])
+    ttt2 = np.in1d(Pandas_DataFrame[target],names[frame2_idx])
     frame2 = Pandas_DataFrame[ttt2 == True]
     frame2_idx = np.where(ttt2 == True)
 
     return frame1, frame2, frame1_idx, frame2_idx
+
 
 def mlregressor(x, y, algorithm="SVM",**kwargs):
     """use machine learning algorithms from scikit learn to perform regression between spectra and a observed variable.
@@ -62,7 +63,7 @@ def mlregressor(x, y, algorithm="SVM",**kwargs):
     y: Array{Float64}
             the targets. Only a single target is possible for now.
     algorithm: String,
-            "KernelRidge", "SVM", "LinearRegression", "Lasso", "ElasticNet", "NeuralNet", default = "SVM"
+            "KernelRidge", "SVM", "LinearRegression", "Lasso", "ElasticNet", "NeuralNet", "BaggingNeuralNet", default = "SVM"
 
     Returns
     =======
@@ -92,9 +93,8 @@ def mlregressor(x, y, algorithm="SVM",**kwargs):
             contain the values of the hyperparameters that should be checked by gridsearch for the Kernel Ridge regression algorithm.
     param_grid_svm: Dictionary
             containg the values of the hyperparameters that should be checked by gridsearch for the Support Vector regression algorithm.
-    network_structure: Tuple
-            contain the neural network structure, as (number_neurons_layer1,(number_neurons_layer2,...).
-
+    param_neurons: Dictionary
+        Contains the options for the Neural Network. Default= dict(layers=(3,),solver = 'lbfgs',funct='relu')
     For the last two parameters, the user is refered to the documentation of SciKit Learn. See the pages:
 
     http://scikit-learn.org/stable/modules/kernel_ridge.html
@@ -108,12 +108,16 @@ def mlregressor(x, y, algorithm="SVM",**kwargs):
 
     If the results are poor with Support Vector and Kernel Ridge regressions, you will have to tune the param_grid_kr or param_grid_svm dictionnary that records the hyperparameter space to investigate during the cross validation.
 
+    Results for machine learning algorithms can vary from run to run. A way to solve that is to fix the random_state. 
+    For neural nets, results from multiple neural nets (bagging technique) may also generalise better, such that
+    it may be better to use the BaggingNeuralNet function.
+
     """
 
     #
     # Kwargs extractions
     #
-
+    
     X_test = kwargs.get("X_test",[0.0])
     y_test = kwargs.get("y_test",[0.0])
     test_sz = kwargs.get("test_sz",0.3)
@@ -123,8 +127,8 @@ def mlregressor(x, y, algorithm="SVM",**kwargs):
     param_grid_kr = kwargs.get("param_grid_kr",dict(alpha=[1e1, 1e0, 0.5, 0.1, 5e-2, 1e-2, 5e-3, 1e-3],gamma=np.logspace(-4, 4, 9)))
     param_grid_svm= kwargs.get("param_grid_svm",dict(C= [1e0, 2e0, 5e0, 1e1, 5e1, 1e2, 5e2, 1e3, 5e3, 1e4, 5e4, 1e5], gamma= np.logspace(-4, 4, 9)))
     user_kernel = kwargs.get("user_kernel","rbf")
-    neural_structure = kwargs.get("network_structure",(2,))
-
+    param_neurons = kwargs.get("param_neurons",dict(layers=(3,),solver = 'lbfgs',funct='relu'))
+    
     if len(X_test) == 1:
         X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(
             x, y.reshape(-1, 1), test_size=test_sz, random_state=rand_state)
@@ -164,21 +168,27 @@ def mlregressor(x, y, algorithm="SVM",**kwargs):
             clf_kr, cv=5, param_grid=param_grid_kr)
     elif algorithm == "SVM":
         clf_svm = SVR(kernel=user_kernel, gamma=0.1)
-        model = sklearn.model_selection.GridSearchCV(
-            clf_svm, cv=5, param_grid=param_grid_svm)
+        model = sklearn.model_selection.GridSearchCV(clf_svm, cv=5, param_grid=param_grid_svm)
     elif algorithm == "Lasso":
-        clf_lasso = sklearn.linear_model.Lasso(alpha=0.1)
-        model = sklearn.model_selection.GridSearchCV(clf_lasso, cv=5, param_grid=dict(alpha=[1e-3,1e-2,1e-1,1.,1e1,1e2,1e3,1e4]))
+        clf_lasso = sklearn.linear_model.Lasso(alpha=0.1,random_state=rand_state)
+        model = sklearn.model_selection.GridSearchCV(clf_lasso, cv=5, 
+                                    param_grid=dict(alpha=[1e-3,1e-2,1e-1,1.,1e1,1e2,1e3,1e4]))
     elif algorithm == "ElasticNet":
-        clf_ElasticNet = sklearn.linear_model.ElasticNet(alpha=0.1, l1_ratio=0.5)
-        model = sklearn.model_selection.GridSearchCV(clf_ElasticNet, cv=5, param_grid=dict(alpha=[1e-3, 1e-2, 1e-1, 1., 1e1, 1e2, 1e3, 1e4]))
+        clf_ElasticNet = sklearn.linear_model.ElasticNet(alpha=0.1, l1_ratio=0.5,random_state=rand_state)
+        model = sklearn.model_selection.GridSearchCV(clf_ElasticNet, 
+                cv=5, param_grid=dict(alpha=[1e-3, 1e-2, 1e-1, 1., 1e1, 1e2, 1e3, 1e4]))
     elif algorithm == "LinearRegression":
         model = sklearn.linear_model.LinearRegression()
     elif algorithm == "NeuralNet":
-        model = MLPRegressor(hidden_layer_sizes=neural_structure, activation='relu',solver='lbfgs', random_state=rand_state)
+        model = MLPRegressor(hidden_layer_sizes=param_neurons['layers'], 
+                             activation=param_neurons['funct'],solver=param_neurons['solver'],random_state=rand_state)
+    elif algorithm == "BaggingNeuralNet":
+        nn_m = MLPRegressor(hidden_layer_sizes=param_neurons['layers'], 
+                             activation=param_neurons['funct'],solver=param_neurons['solver'])
+        model = BaggingRegressor(base_estimator=nn_m, n_estimators=100, max_samples=1.0, max_features=1.0, bootstrap=True, bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=1, random_state=rand_state, verbose=0)
 
     if scaling == "yes":
-        model.fit(X_train_sc, y_train_sc)
+        model.fit(X_train_sc, y_train_sc.ravel())
         predict_train_sc = model.predict(X_train_sc)
         prediction_train = Y_scaler.inverse_transform(predict_train_sc)
         predict_test_sc = model.predict(X_test_sc)
