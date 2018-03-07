@@ -4,11 +4,11 @@ python:
   - "3.6"
 os:
   - linux
-  - osx
+
 addons:
   apt_packages:
     - gfortran
-    - tar
+
 install:
   - pip install .
 # command to run tests
