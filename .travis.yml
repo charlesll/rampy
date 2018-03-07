@@ -8,6 +8,7 @@ os:
 addons:
   apt_packages:
     - gfortran
+    - tar
 install:
   - pip install .
 # command to run tests
