@@ -8,9 +8,14 @@ Licence: see LICENCE.md
 
 As Rampy starts to grow, I will summarise changes in this file starting at version 0.2.6
 
+# 0.3.3
+
+- Minor dependency correction
+
 # 0.3.2
 
 - Adding the names in the rameau object
+- Improvements of the mlregressor function, with addition of neural nets and bagging neural nets algorithms
 
 # 0.3.1
 
