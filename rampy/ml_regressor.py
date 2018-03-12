@@ -95,7 +95,7 @@ def mlregressor(x, y, algorithm="SVM",**kwargs):
     param_grid_svm: Dictionary
             containg the values of the hyperparameters that should be checked by gridsearch for the Support Vector regression algorithm.
     param_neurons: Dictionary
-        Contains the options for the Neural Network. Default= dict(layers=(3,),solver = 'lbfgs',funct='relu')
+        Contains the options for the Neural Network. Default= dict(layers=(3,),solver = 'lbfgs',funct='relu',early_stopping=True)
     param_bagging: Dictionary
         contains the options for the BaggingNeuralNet method used with neural nets. Default= dict(n_estimators=100, max_samples=1.0, max_features=1.0, bootstrap=True, bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=1, random_state=rand_state, verbose=0)
     
@@ -131,7 +131,7 @@ def mlregressor(x, y, algorithm="SVM",**kwargs):
     param_grid_kr = kwargs.get("param_grid_kr",dict(alpha=[1e1, 1e0, 0.5, 0.1, 5e-2, 1e-2, 5e-3, 1e-3],gamma=np.logspace(-4, 4, 9)))
     param_grid_svm= kwargs.get("param_grid_svm",dict(C= [1e0, 2e0, 5e0, 1e1, 5e1, 1e2, 5e2, 1e3, 5e3, 1e4, 5e4, 1e5], gamma= np.logspace(-4, 4, 9)))
     user_kernel = kwargs.get("user_kernel","rbf")
-    param_neurons = kwargs.get("param_neurons",dict(layers=(3,),solver = 'lbfgs',funct='relu'))
+    param_neurons = kwargs.get("param_neurons",dict(layers=(3,),solver = 'lbfgs',funct='relu',early_stopping=True))
     param_bag = kwargs.get("param_bagging",dict(n_estimators=100, max_samples=1.0, max_features=1.0, bootstrap=True, bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=1, verbose=0))    
     
     if len(X_test) == 1:
@@ -189,7 +189,7 @@ def mlregressor(x, y, algorithm="SVM",**kwargs):
                              activation=param_neurons['funct'],solver=param_neurons['solver'],random_state=rand_state)
     elif algorithm == "BaggingNeuralNet":
         nn_m = MLPRegressor(hidden_layer_sizes=param_neurons['layers'], 
-                             activation=param_neurons['funct'],solver=param_neurons['solver'])
+                             activation=param_neurons['funct'],solver=param_neurons['solver'],early_stopping=param_neurons['early_stopping'])
         model = BaggingRegressor(base_estimator=nn_m, n_estimators=param_bag['n_estimators'], max_samples=param_bag['max_samples']
                                  , max_features=param_bag['max_features'], bootstrap=param_bag['bootstrap'], 
                                  bootstrap_features=param_bag['bootstrap_features'],

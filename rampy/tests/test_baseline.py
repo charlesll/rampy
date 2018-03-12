@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import scipy
 
-import gcvspline, rampy
+import rampy
 
 #from matplotlib import pyplot as plt
 
@@ -29,7 +29,7 @@ class TestBaseline(unittest.TestCase):
         
         # calculating the baselines
         ycalc1, base1 = rampy.baseline(x2,y2,roi2,'poly',polynomial_order=1)
-        ycalc2, base2 = rampy.baseline(x2,y2,roi2,'gcvspline',s=0.1 )
+        #ycalc2, base2 = rampy.baseline(x2,y2,roi2,'gcvspline',s=0.1 )
         ycalc3, base3 = rampy.baseline(x2,y2,roi2,'unispline',s=1e0)
         ycalc4, base4 = rampy.baseline(x2,y2,roi2,'als',lam=10**7,p=0.05)
         ycalc5, base5 = rampy.baseline(x2,y2,roi2,'arPLS',lam=10**7,ratio=0.1)
@@ -37,7 +37,7 @@ class TestBaseline(unittest.TestCase):
         
         # Testing the shapes
         np.testing.assert_equal(ycalc1.shape,base1.shape)
-        np.testing.assert_equal(ycalc2.shape,base2.shape)
+        #np.testing.assert_equal(ycalc2.shape,base2.shape)
         np.testing.assert_equal(ycalc3.shape,base3.shape)
         np.testing.assert_equal(ycalc4.shape,base4.shape)
         np.testing.assert_equal(ycalc5.shape,base5.shape)
@@ -46,7 +46,7 @@ class TestBaseline(unittest.TestCase):
         
         # testing the baselines
         np.testing.assert_almost_equal(base_ori,base1[:,0],0)
-        np.testing.assert_almost_equal(base_ori,base2[:,0],0)
+        #np.testing.assert_almost_equal(base_ori,base2[:,0],0)
         np.testing.assert_almost_equal(base_ori,base3[:,0],0)
         np.testing.assert_almost_equal(base_ori,base4[:,0],0)
         np.testing.assert_almost_equal(base_ori,base5[:,0],0)
@@ -56,7 +56,7 @@ class TestBaseline(unittest.TestCase):
                
                 #testing the corrected data
         np.testing.assert_almost_equal(y_ori,ycalc1[:,0],1)
-        np.testing.assert_almost_equal(y_ori,ycalc2[:,0],0)
+        #np.testing.assert_almost_equal(y_ori,ycalc2[:,0],0)
         np.testing.assert_almost_equal(y_ori,ycalc3[:,0],0)
         np.testing.assert_almost_equal(y_ori,ycalc4[:,0],0)
         np.testing.assert_almost_equal(y_ori,ycalc5[:,0],0)

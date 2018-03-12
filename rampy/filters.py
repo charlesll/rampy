@@ -4,7 +4,6 @@ import numpy as np
 import scipy
 from scipy import signal
 import scipy.sparse as sparse
-import gcvspline
 
 def smooth(x,y,method="whittaker",**kwargs):
     """smooth the provided y signal (sampled on x)
@@ -39,7 +38,9 @@ def smooth(x,y,method="whittaker",**kwargs):
 
     Note
     ====
-    See documentation of gcvspline for details on GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline
+
+    Use of GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline requires installation of gcvspline. See gcvspline documentation.
+    See also documentation for details on GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline.
 
     savgol uses the scipy.signal.savgol_filter() function.
 
@@ -64,7 +65,14 @@ def smooth(x,y,method="whittaker",**kwargs):
         raise ValueError("Method should be on 'GCVSmoothedNSpline','MSESmoothedNSpline','DOFSmoothedNSpline','whittaker','savgol','flat', 'hanning', 'hamming', 'bartlett', 'blackman'")
 
     if (method ==  "GCVSmoothedNSpline") or (method == "MSESmoothedNSpline") or (method == "DOFSmoothedNSpline"): # gcvspline methods
+        
+        try: # we test if gcvspline is installed
+            import gcvspline
+        except ModuleNotFoundError:
+            print('ERROR: Install gcvspline to use this smoothing mode (needs a working FORTRAN compiler).')
+
         w = 1.0 / (np.ones((y.shape[0],1)) * ese_y) # errors
+
         if method == "GCVSmoothedNSpline":
             flt = gcvspline.GCVSmoothedNSpline(x.reshape(-1),y.reshape(-1),w.reshape(-1))
         elif method == "MSESmoothedNSpline":

@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 import scipy
 
-import gcvspline, rampy
+import rampy
 
 #from matplotlib import pyplot as plt
 

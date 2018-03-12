@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import numpy as np
-from gcvspline import gcvspline, splderivative
 from scipy.optimize import curve_fit
 from scipy.interpolate import UnivariateSpline
 from scipy.spatial import ConvexHull
@@ -56,7 +55,7 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         "poly": polynomial fitting, with splinesmooth the degree of the polynomial.
         "unispline": spline with the UnivariateSpline function of Scipy, splinesmooth is the spline smoothing factor (assume equal weight in the present case);
         "gcvspline": spline with the gcvspl.f algorythm, really robust. Spectra must have x, y, ese in it, and splinesmooth is the smoothing factor;
-        for gcvspline, if ese are not provided we assume ese = sqrt(y);
+        for gcvspline, if ese are not provided we assume ese = sqrt(y). Requires the installation of gcvspline with a "pip install gcvspline" call prior to use;
         "exp": exponential background;
         "log": logarythmic background;
         "rubberband": rubberband baseline fitting;
@@ -128,6 +127,11 @@ def baseline(x_input,y_input,bir,method, **kwargs):
 
     elif method == 'gcvspline':
 
+        try:
+            from gcvspline import gcvspline, splderivative
+        except ModuleNotFoundError:
+            print('ERROR: Install gcvspline to use this mode (needs a working FORTRAN compiler).')
+            
         # optional parameters
         splinesmooth = kwargs.get('s',2.0)
 
