@@ -68,7 +68,7 @@ def smooth(x,y,method="whittaker",**kwargs):
         
         try: # we test if gcvspline is installed
             import gcvspline
-        except ModuleNotFoundError:
+        except ImportError:
             print('ERROR: Install gcvspline to use this smoothing mode (needs a working FORTRAN compiler).')
 
         w = 1.0 / (np.ones((y.shape[0],1)) * ese_y) # errors

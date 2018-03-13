@@ -129,7 +129,7 @@ def baseline(x_input,y_input,bir,method, **kwargs):
 
         try:
             from gcvspline import gcvspline, splderivative
-        except ModuleNotFoundError:
+        except ImportError:
             print('ERROR: Install gcvspline to use this mode (needs a working FORTRAN compiler).')
             
         # optional parameters

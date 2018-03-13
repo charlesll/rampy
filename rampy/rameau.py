@@ -80,10 +80,10 @@ class rameau:
         self.water = np.asarray(data_liste["Water, wt%"])
         self.names = data_liste["Name"]
 
-        try:
+        try: # we test if gcvspline is installed
             import gcvspline
-        except ModuleNotFoundError:
-                print('ERROR: this function requires the gcvspline module. Please install it (needs a working FORTRAN compiler).')
+        except ImportError:
+            print('gcvspline module not found. Please install it and check it works (requires a FORTRAN compiler).')
 
     def data_reduction(self,method="LL2012",delim='\t',path_in='./raw/',laser=514.532,spline_coeff=0.001,poly_coeff=3):
         """process Raman spectra of glass to calculate the Rws ratio
@@ -238,12 +238,9 @@ def fit_spectra(data_liste,method="LL2012",delim='\t',path_in='./raw/',laser=514
     C. Le Losq, D. R. Neuville, R. Moretti, J. Roux, Determination of water content in silicate glasses using Raman spectrometry: Implications for the study of explosive volcanism. American Mineralogist. 97, 779–790 (2012).
     D. Di Genova et al., Effect of iron and nanolites on Raman spectra of volcanic glasses: A reassessment of existing strategies to estimate the water content. Chemical Geology. 475, 76–86 (2017).
     """
-    try:
-        import gcvspline
-    except ModuleNotFoundError:
-        print('ERROR: this function requires the gcvspline module. Please install it (needs a working FORTRAN compiler).')
-                
 
+    import gcvspline
+    
     x_all_lf = np.arange(50,1400,1.0)
     x_all_hf = np.arange(2800,3800,1.0)
     x = np.hstack((x_all_lf,x_all_hf))
@@ -276,7 +273,10 @@ def fit_spectra(data_liste,method="LL2012",delim='\t',path_in='./raw/',laser=514
         # calculating baseline
         if method == "LL2012": # spline
             
-            c_hf, b_hf = rp.baseline(x,y_all[:,i],roi,"gcvspline",s=spline_coeff)
+            try:
+                c_hf, b_hf = rp.baseline(x,y_all[:,i],roi,"gcvspline",s=spline_coeff)
+            except:
+                break
 
             y_all_corr[:,i]=c_hf[:,0]
             y_all_base[:,i]=b_hf[:,0]
