@@ -12,5 +12,6 @@ rampy/spectranization.py
 rampy/tlcorrection.py
 rampy/tests/__init__.py
 rampy/tests/test_baseline.py
+rampy/tests/test_rameau.py
 rampy/tests/test_smooth.py
 rampy/tests/test_spectranization.py
