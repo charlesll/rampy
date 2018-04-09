@@ -23,7 +23,13 @@ The following libraries are required and indicated in setup.py:
 - Numpy >= 1.12
 - sklearn
 - pandas
+- cvxpy
+
+Optional dependencies:
+
 - gcvspline (you need a working FORTRAN compiler for its installation... Warning Windows users! Check you FORTRAN compiler!)
+
+*Installation of gcvspline is necessary for use of the rampy.rameau() class.*
 
 Additional libraries for model fitting may be wanted:
 
@@ -34,15 +40,15 @@ Additional libraries for model fitting may be wanted:
 
 Install with pip:
 
-	pip install rampy 
+  `pip install rampy` 
 
+If you want to use gcvspline, also install it:
+
+  `pip install gcvspline`
+ 
 # EXAMPLES
 
 See the /example folder.
 
-Updated February 2018
-
-
-
-
+Updated April 2018
 

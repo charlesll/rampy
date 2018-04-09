@@ -8,6 +8,10 @@ Licence: see LICENCE.md
 
 As Rampy starts to grow, I will summarise changes in this file starting at version 0.2.6
 
+# 0.3.5
+
+- Addition of the rampy.mixing_sp() function. See help(rampy.mixing_sp()), as well as the example folder.
+
 # 0.3.4
 
 - gcvspline is not a requirement anymore. Error messages will outputs when trying to use it, inviting to install it manually. This is implemented to avoid problems with FORTRAN compilation for people not interested in using gcvspline.
