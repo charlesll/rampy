@@ -6,12 +6,14 @@ rampy/__init__.py
 rampy/baseline.py
 rampy/filters.py
 rampy/functions.py
+rampy/mixing.py
 rampy/ml_regressor.py
 rampy/rameau.py
 rampy/spectranization.py
 rampy/tlcorrection.py
 rampy/tests/__init__.py
 rampy/tests/test_baseline.py
+rampy/tests/test_mixing.py
 rampy/tests/test_rameau.py
 rampy/tests/test_smooth.py
 rampy/tests/test_spectranization.py
