@@ -1,5 +1,6 @@
-from numpy.distutils.core import setup
-from numpy.distutils.extension import Extension
+#from numpy.distutils.core import setup
+#from numpy.distutils.extension import Extension
+from setuptools import setup, Extension
 
 setup(name='rampy',
       version='0.3.6',
