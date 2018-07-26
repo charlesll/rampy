@@ -1,12 +1,16 @@
 # Rampy News
 
-Copyright (c) 2014-2017 Dr. Charles Le Losq
+Copyright (c) 2014-2018 Dr. Charles Le Losq
 
 email: charles.lelosq@anu.edu.au
 
 Licence: see LICENCE.md
 
 As Rampy starts to grow, I will summarise changes in this file starting at version 0.2.6
+
+# 0.3.6
+
+- Correction of the tlcorrection() function: the 'hehlen' correction was missing a frequency term to be complete (eq. 2 and 3 in Hehlen 2010 J. Phys. Condes. Matter 22: 025401).
 
 # 0.3.5
 

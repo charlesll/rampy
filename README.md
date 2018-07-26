@@ -27,7 +27,7 @@ The following libraries are required and indicated in setup.py:
 
 Optional dependencies:
 
-- gcvspline (you need a working FORTRAN compiler for its installation... Warning Windows users! Check you FORTRAN compiler!)
+- gcvspline (you need a working FORTRAN compiler for its installation. To avoid this problem under Windows, wheels for Python 2.7, 3.4 and 3.6 are provided for 64 bit Windows, and a wheel for Python 3.6 is provided for Windows 32 bits. If installation fails, please check if is due to a fortran compiler issue.)
 
 *Installation of gcvspline is necessary for use of the rampy.rameau() class.*
 
@@ -50,7 +50,7 @@ If you want to use gcvspline, also install it:
 
 See the /example folder.
 
-Updated April 2018
+Updated July 2018
 
 
 

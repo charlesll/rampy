@@ -97,7 +97,7 @@ def tlcorrection(x,y,temp,wave, **kwargs):
             # this uses the formula reported in Hehlen et al. 2010
             frequency = 1/(nu0**3*density) # frequency + density correction; M/KG
             boltzman = 1.0 - np.exp(-h*c*nu/(k*T)) # dimensionless
-            ycorr = y*frequency*boltzman # correction
+            ycorr = nu*y*frequency*boltzman # correction
     except:
         print("Not implemented, choose correction = long, galeener or hehlen.")
 
