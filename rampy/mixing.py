@@ -26,9 +26,12 @@ def mixing_sp(y_fit,ref1,ref2):
     Uses cvxpy to perform this calculation
     """
 
-    F1 = cvxpy.Variable(y_fit.shape[1],1)
+    ref1 = ref1.reshape(1,-1)
+    ref2 = ref2.reshape(1,-1)
+    
+    F1 = cvxpy.Variable(shape=(y_fit.shape[1],1))
 
-    objective = cvxpy.Minimize(cvxpy.sum_entries(cvxpy.abs((F1*ref1.reshape(1,-1) + (1-F1)*ref2.reshape(1,-1)) - np.transpose(y_fit)))) 
+    objective = cvxpy.Minimize(cvxpy.sum(cvxpy.abs(F1*ref1 + (1-F1)*ref2 - y_fit.T))) 
 
     constraints = [0 <= F1, F1 <= 1]
 

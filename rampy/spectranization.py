@@ -6,20 +6,20 @@ from scipy.optimize import curve_fit
 from scipy.interpolate import UnivariateSpline
 from scipy.interpolate import interp1d
 
-################## SPECIFIC FUNCTIONS FOR TREATMENT OF SPECTRA
+# SPECIFIC FUNCTIONS FOR TREATMENT OF SPECTRA
 
 def spectrarray(name,sh,sf,x):
     """Construct a general array that contain common X values in first columns and all Y values in the subsequent columns.
 
     Parameters
     ----------
-    name
+    name : ndarray
         Array containing the names of the files (should work with a dataframe too).
-    sh
+    sh : int
         Number of header line in files to skip.
-    sf
+    sf : int
         Number of footer lines in files to skip.
-    x
+    x : ndarray
         The common x axis.
 
     Returns
@@ -50,12 +50,12 @@ def spectrataux(spectres):
 
     Parameters
     ----------
-    spectres
+    spectres : ndarray
         An array of spectra containing the common X axis in first column and all the spectra in the subsequent columns. (see spectrarray function)
 
     Returns
     -------
-    taux
+    taux : ndarray
         The rate of change of each frequency, fitted by a 2nd order polynomial functions.
     """
     # we need an organized function before calling the curve_fit algorithm
@@ -72,21 +72,19 @@ def spectrataux(spectres):
 
     return taux
 
-#### OFFSETTING DATA FROM THE SPECTRARRAY FUNCTION
-
 def spectraoffset(spectre,oft):
     """Offset your spectra with values in offsets
 
     Parameters
     ----------
-    spectre
+    spectre : ndarray
         array of spectra constructed with the spectrarray function
-    oft
+    oft : ndarray
         array constructed with numpy and containing the coefficient for the offset to apply to spectra
 
     Returns
     -------
-    out
+    out : ndarray
         Array with spectra separated by offsets defined in oft
 
     """
@@ -100,15 +98,15 @@ def spectraoffset(spectre,oft):
 # Simple data treatment functions
 #
 def flipsp(sp):
-    """Flip an array along the row dimension (dim = 1) if the first column values are in decreasing order.
+    """Flip an array along the row dimension (dim = 1) if the row values are in decreasing order.
 
     Parameters
     ----------
-    sp
+    sp : ndarray
         An array with n columns
     Returns
     -------
-    sp
+    sp : ndarray
         The same array but sorted such that the values in the first column are in increasing order.
     """
     if sp[-1,0] < sp[0,0]:
@@ -117,24 +115,21 @@ def flipsp(sp):
     else:
         return sp
 
-
-
-
 def resample(x,y,x_new):
     """Resample a y signal associated with x, along the x_new values.
 
     Parameters
     ----------
-    x
+    x : ndarray
         The x values
-    y
+    y : ndarray
         The y values
-    x_new
+    x_new : ndarray
         The new X values
 
     Returns
     -------
-    y_new
+    y_new : ndarray
         y values interpolated at x_new.
 
     Remarks
@@ -148,15 +143,15 @@ def normalise(y,x=0,method="intensity"):
     """normalisation of the y signal
     Parameters
     ==========
-    x: Numpy array
+    x : ndarray
         x values
-    y: Numpy array
+    y : ndarray
         y values
-    method: string
+    method : string
         method used, choose between area, intensity, minmax
     Returns
     =======
-    y_norm: Numpy array
+    y_norm : Numpy array
         Normalised signal
     """
     if method == "area":
@@ -167,3 +162,37 @@ def normalise(y,x=0,method="intensity"):
         y = y/np.max(y)
     if method == "minmax":
         y = (y-np.min(y))/(np.max(y)-np.min(y))
+
+def centroid(x,y,smooth = False,**kwargs):
+    """calculation of the y signal centroid
+    
+    as np.sum(y/np.sum(y)*x)
+    
+    Parameters
+    ==========
+    x: Numpy array
+        x values
+    y: Numpy array
+        y values, 1 spectrum
+       
+    Options
+    =======
+    smooth : bool
+        True or False. Smooth the signals with arguments provided as kwargs. Default method is whittaker smoothing. See the rampy.smooth function for smoothing options and arguments.
+        
+    Returns
+    =======
+    centroid : float
+        signal centroid
+    """
+    
+    # for safety, we reshape the x array    
+    x = x.reshape(-1)
+    y = y.reshape(-1)
+    
+    if smooth == True:
+        y_ = rp.smooth(x,y,**kwargs)
+    else: 
+        y_ = y.copy()
+        
+    return np.sum(y_/np.sum(y_)*x)

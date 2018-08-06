@@ -3,6 +3,7 @@ import unittest
 
 import numpy as np
 import scipy
+from scipy.stats import norm
 
 import rampy
 
@@ -33,6 +34,18 @@ class TestSpectranization(unittest.TestCase):
         y_new_2 = rampy.resample(x,y,x2)
         # Testing 
         np.testing.assert_equal(y_new_1,y_new_2)
+
+    def test_centroid(self):
+
+        x = np.arange(0,100,1.).reshape(-1,1)
+        y = norm.pdf(x,loc=60,scale=10)
+
+        c1 = rampy.centroid(x,y,smooth=True,method='whittaker')
+        c2 = rampy.centroid(x,y,smooth=False)
+
+         # Testing 
+        np.testing.assert_almost_equal(c1,60.,decimal=1)
+        np.testing.assert_almost_equal(c2,60.,decimal=1)
         
                 
 if __name__ == '__main__':
