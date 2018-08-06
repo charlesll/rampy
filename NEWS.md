@@ -8,6 +8,14 @@ Licence: see LICENCE.md
 
 As Rampy starts to grow, I will summarise changes in this file starting at version 0.2.6
 
+# 0.3.7
+
+- addition of an example of use of the rp.mlregressor function
+
+- Correction of the rp.mixing_sp() function, rampy is now compatible with cvxpy v1.0
+
+- addition of the centroid() function, that calculates the centroid of a signal
+
 # 0.3.6
 
 - Correction of the tlcorrection() function: the 'hehlen' correction was missing a frequency term to be complete (eq. 2 and 3 in Hehlen 2010 J. Phys. Condes. Matter 22: 025401).
