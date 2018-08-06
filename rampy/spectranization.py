@@ -6,6 +6,8 @@ from scipy.optimize import curve_fit
 from scipy.interpolate import UnivariateSpline
 from scipy.interpolate import interp1d
 
+import rampy
+
 # SPECIFIC FUNCTIONS FOR TREATMENT OF SPECTRA
 
 def spectrarray(name,sh,sf,x):
@@ -163,10 +165,11 @@ def normalise(y,x=0,method="intensity"):
     if method == "minmax":
         y = (y-np.min(y))/(np.max(y)-np.min(y))
 
-def centroid(x,y,smooth = False,**kwargs):
+def centroid(x,y,smoothing=False,**kwargs):
     """calculation of the y signal centroid
     
     as np.sum(y/np.sum(y)*x)
+    if smoothing == 1:
     
     Parameters
     ==========
@@ -174,10 +177,10 @@ def centroid(x,y,smooth = False,**kwargs):
         x values
     y: Numpy array
         y values, 1 spectrum
-       
+
     Options
     =======
-    smooth : bool
+    smoothing : bool
         True or False. Smooth the signals with arguments provided as kwargs. Default method is whittaker smoothing. See the rampy.smooth function for smoothing options and arguments.
         
     Returns
@@ -190,8 +193,8 @@ def centroid(x,y,smooth = False,**kwargs):
     x = x.reshape(-1)
     y = y.reshape(-1)
     
-    if smooth == True:
-        y_ = rp.smooth(x,y,**kwargs)
+    if smoothing == True:
+        y_ = rampy.smooth(x,y,**kwargs)
     else: 
         y_ = y.copy()
         

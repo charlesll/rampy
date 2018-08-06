@@ -40,8 +40,8 @@ class TestSpectranization(unittest.TestCase):
         x = np.arange(0,100,1.).reshape(-1,1)
         y = norm.pdf(x,loc=60,scale=10)
 
-        c1 = rampy.centroid(x,y,smooth=True,method='whittaker')
-        c2 = rampy.centroid(x,y,smooth=False)
+        c1 = rampy.centroid(x,y,smoothing=True,method="whittaker")
+        c2 = rampy.centroid(x,y,smoothing=False)
 
          # Testing 
         np.testing.assert_almost_equal(c1,60.,decimal=1)
