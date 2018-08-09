@@ -117,7 +117,7 @@ def flipsp(sp):
     else:
         return sp
 
-def resample(x,y,x_new):
+def resample(x,y,x_new,**kwargs):
     """Resample a y signal associated with x, along the x_new values.
 
     Parameters
@@ -129,6 +129,31 @@ def resample(x,y,x_new):
     x_new : ndarray
         The new X values
 
+    Options
+    -------
+    Arguments to be passed to scipy.interpolate.interp1d, see https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html
+
+    kind : str or int, optional
+        Specifies the kind of interpolation as a string (‘linear’, ‘nearest’, ‘zero’, ‘slinear’, ‘quadratic’, ‘cubic’, ‘previous’, ‘next’, where ‘zero’, ‘slinear’, ‘quadratic’ and ‘cubic’ refer to a spline interpolation of zeroth, first, second or third order; ‘previous’ and ‘next’ simply return the previous or next value of the point) or as an integer specifying the order of the spline interpolator to use. Default is ‘linear’.
+    axis : int, optional
+        Specifies the axis of y along which to interpolate. Interpolation defaults to the last axis of y.
+    copy : bool, optional
+        If True, the class makes internal copies of x and y. If False, references to x and y are used. The default is to copy.
+    bounds_error : bool, optional
+        If True, a ValueError is raised any time interpolation is attempted on a value outside of the range of x (where extrapolation is necessary). If False, out of bounds values are assigned fill_value. By default, an error is raised unless fill_value=”extrapolate”.
+    fill_value : array-like or (array-like, array_like) or “extrapolate”, optional
+        if a ndarray (or float), this value will be used to fill in for requested points outside of the data range. If not provided, then the default is NaN. The array-like must broadcast properly to the dimensions of the non-interpolation axes.
+        If a two-element tuple, then the first element is used as a fill value for x_new < x[0] and the second element is used for x_new > x[-1]. Anything that is not a 2-element tuple (e.g., list or ndarray, regardless of shape) is taken to be a single array-like argument meant to be used for both bounds as below, above = fill_value, fill_value.
+
+        New in scipy version 0.17.0.
+
+        If “extrapolate”, then points outside the data range will be extrapolated.
+
+        New in scipy version 0.17.0.
+
+    assume_sorted : bool, optional
+        If False, values of x can be in any order and they are sorted first. If True, x has to be an array of monotonically increasing values.
+
     Returns
     -------
     y_new : ndarray
@@ -138,7 +163,7 @@ def resample(x,y,x_new):
     -------
     Uses scipy.interpolate.interp1d
     """
-    f = interp1d(x,y)
+    f = interp1d(x,y,**kwargs)
     return f(x_new)
 
 def normalise(y,x=0,method="intensity"):
