@@ -10,13 +10,17 @@ As Rampy starts to grow, I will summarise changes in this file starting at versi
 
 # 0.3.7
 
-- addition of tests and examples of the mlregressor(), resample() and flipsp() functions
+- BREAKING CHANGE: mlregressor is now a class and not a function anymore. You can provide directly sklearn arguments to the algorithms through dictionnaries.
+The use of the class simplifies the use of mlregressor, as the created objects saves everything!
+It also makes it very easy to change the algorithm and try something else.
 
-- Correction of the rp.mixing_sp() function, rampy is now compatible with cvxpy v1.0
+- addition of tests and examples of the mlregressor() class and of resample() and flipsp() functions.
 
-- arguments can be provided to resample() to use different techniques of interpolation in scipy.interpolate.interp1d
+- Correction of the rp.mixing_sp() function, rampy is now compatible with cvxpy v1.0.
 
-- addition of the centroid() function, that calculates the centroid of a signal
+- arguments can be provided to resample() to use different techniques of interpolation in scipy.interpolate.interp1d.
+
+- addition of the centroid() function, that calculates the centroid of a signal.
 
 # 0.3.6
 
