@@ -70,22 +70,22 @@ class mlregressor:
         the target that you want to use as a testing dataset. Those targets should not be present in the y (training) dataset.
     algorithm : String,
         "KernelRidge", "SVM", "LinearRegression", "Lasso", "ElasticNet", "NeuralNet", "BaggingNeuralNet", default = "SVM"
+    scaling : Bool
+        True or False. If True, data will be scaled during fitting and prediction with the requested scaler (see below),
     scaler : String
         the type of scaling performed. Choose between MinMaxScaler or StandardScaler, see http://scikit-learn.org/stable/modules/preprocessing.html for details. Default = "MinMaxScaler".
     test_size : float
         the fraction of the dataset to use as a testing dataset; only used if X_test and y_test are not provided.
     rand_state : Float64
         the random seed that is used for reproductibility of the results. Default = 42.
-    user_kernel : String
-        the kernel to be used by SVM or KernelRidge.
-    param_grid_kr : Dictionary
-        contain the values of the hyperparameters that should be checked by gridsearch for the Kernel Ridge regression algorithm.
-    param_grid_svm : Dictionary
-        containg the values of the hyperparameters that should be checked by gridsearch for the Support Vector regression algorithm.
+    param_kr : Dictionary
+        contain the values of the hyperparameters that should be provided to KernelRidge and GridSearch for the Kernel Ridge regression algorithm.
+    param_svm : Dictionary
+        containg the values of the hyperparameters that should be provided to SVM and GridSearch for the Support Vector regression algorithm.
     param_neurons : Dictionary
-        contains the options for the Neural Network. Default= dict(layers=(3,),solver = 'lbfgs',funct='relu',early_stopping=True)
+        contains the parameters for the Neural Network (MLPregressor model in sklearn). Default= dict(layers=(3,),solver = 'lbfgs',funct='relu',early_stopping=True)
     param_bagging : Dictionary
-        contains the options for the BaggingNeuralNet method used with neural nets. Default= dict(n_estimators=100, max_samples=1.0, max_features=1.0, bootstrap=True, bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=1, random_state=rand_state, verbose=0)
+        contains the parameters for the BaggingRegressor sklearn function that uses a MLPregressor base method. Default= dict(n_estimators=100, max_samples=1.0, max_features=1.0, bootstrap=True, bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=1, random_state=rand_state, verbose=0)
     
     prediction_train : Array{Float64}
         the predicted target values for the training y dataset.
@@ -134,14 +134,35 @@ class mlregressor:
         self.y_test = kwargs.get("y_test",[0.0])
         self.algorithm = kwargs.get("algorithm","SVM")
         self.test_sz = kwargs.get("test_size",0.3)
-        self.scaling = kwargs.get("scaling","yes")
+        self.scaling = kwargs.get("scaling",True)
         self.scaler = kwargs.get("scaler","MinMaxScaler")
         self.rand_state = kwargs.get("rand_state",42)
-        self.param_grid_kr = kwargs.get("param_grid_kr",dict(alpha=[1e1, 1e0, 0.5, 0.1, 5e-2, 1e-2, 5e-3, 1e-3],gamma=np.logspace(-4, 4, 9)))
-        self.param_grid_svm= kwargs.get("param_grid_svm",dict(C= [1e0, 2e0, 5e0, 1e1, 5e1, 1e2, 5e2, 1e3, 5e3, 1e4, 5e4, 1e5], gamma= np.logspace(-4, 4, 9)))
-        self.user_kernel = kwargs.get("user_kernel","rbf")
-        self.param_neurons = kwargs.get("param_neurons",dict(layers=(3,),solver = 'lbfgs',funct='relu',early_stopping=True))
-        self.param_bag = kwargs.get("param_bagging",dict(n_estimators=100, max_samples=1.0, max_features=1.0, bootstrap=True, bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=1, verbose=0))    
+        
+        # hyperparameters for the algorithms
+        self.user_kernel = kwargs.get("kernel","rbf")
+        self.param_kr = kwargs.get(
+            "param_kr",dict(alpha=[1e1, 1e0, 0.5, 0.1, 5e-2, 1e-2, 5e-3, 1e-3],gamma=np.logspace(-4, 4, 9)))
+        
+        self.param_svm= kwargs.get(
+            "param_svm",dict(C= [1e0, 2e0, 5e0, 1e1, 5e1, 1e2, 5e2, 1e3, 5e3, 1e4, 5e4, 1e5], gamma= np.logspace(-4, 4, 9)))
+        
+        self.param_neurons = kwargs.get("param_neurons",
+                                        dict(hidden_layer_sizes=(3,),
+                                             solver='lbfgs',
+                                             activation='relu',
+                                             early_stopping=True,
+                                             random_state=self.rand_state))
+        
+        self.param_bag = kwargs.get("param_bagging",
+                                    dict(n_estimators=100, 
+                                         max_samples=1.0, 
+                                         max_features=1.0, 
+                                         bootstrap=True, 
+                                         bootstrap_features=False, 
+                                         oob_score=False, 
+                                         warm_start=False, 
+                                         n_jobs=1, verbose=0,
+                                         random_state=self.rand_state))    
         
         if len(self.X_test) == 1:
             self.X_train, self.X_test, self.y_train, self.y_test = sklearn.model_selection.train_test_split(
@@ -180,7 +201,7 @@ class mlregressor:
         self.X_scaler.fit(self.X_train)
         self.Y_scaler.fit(self.y_train)
 
-        # scaling the data
+        # scaling the data in all cases, it may not be used during the fit later
         self.X_train_sc = self.X_scaler.transform(self.X_train)
         self.y_train_sc = self.Y_scaler.transform(self.y_train)
 
@@ -188,50 +209,34 @@ class mlregressor:
         self.y_test_sc = self.Y_scaler.transform(self.y_test)
 
         if self.algorithm == "KernelRidge":
-            clf_kr = KernelRidge(kernel=self.user_kernel, gamma=0.1)
-            self.model = sklearn.model_selection.GridSearchCV(clf_kr, cv=5, param_grid=self.param_grid_kr)
+            clf_kr = KernelRidge(kernel=self.user_kernel)
+            self.model = sklearn.model_selection.GridSearchCV(clf_kr, cv=5, param_grid=self.param_kr)
         
         elif self.algorithm == "SVM":
-            clf_svm = SVR(kernel=self.user_kernel, gamma=0.1)
-            self.model = sklearn.model_selection.GridSearchCV(clf_svm, cv=5, param_grid=self.param_grid_svm)
+            clf_svm = SVR(kernel=self.user_kernel)
+            self.model = sklearn.model_selection.GridSearchCV(clf_svm, cv=5, param_grid=self.param_svm)
         
         elif self.algorithm == "Lasso":
             clf_lasso = sklearn.linear_model.Lasso(alpha=0.1,random_state=self.rand_state)
             self.model = sklearn.model_selection.GridSearchCV(clf_lasso, cv=5,
-                                                              param_grid=dict(alpha=[1e-3,1e-2,1e-1,1.,1e1,1e2,1e3,1e4]))
+                                                              param_grid=dict(alpha=np.logspace(-5,5,30)))
         
         elif self.algorithm == "ElasticNet":
             clf_ElasticNet = sklearn.linear_model.ElasticNet(alpha=0.1, l1_ratio=0.5,random_state=self.rand_state)
             self.model = sklearn.model_selection.GridSearchCV(clf_ElasticNet,cv=5, 
-                                                              param_grid=dict(alpha=[1e-3, 1e-2, 1e-1, 1., 1e1, 1e2, 1e3, 1e4]))
+                                                              param_grid=dict(alpha=np.logspace(-5,5,30)))
         
         elif self.algorithm == "LinearRegression":
             self.model = sklearn.linear_model.LinearRegression()
         
         elif self.algorithm == "NeuralNet":
-            self.model = MLPRegressor(hidden_layer_sizes=self.param_neurons['layers'],
-                                      activation=self.param_neurons['funct'],
-                                      solver=self.param_neurons['solver'],
-                                      random_state=self.rand_state)
+            self.model = MLPRegressor(**self.param_neurons)
         elif self.algorithm == "BaggingNeuralNet":
-            nn_m = MLPRegressor(hidden_layer_sizes=self.param_neurons['layers'], 
-                                 activation=self.param_neurons['funct'],
-                                solver=self.param_neurons['solver'],
-                                early_stopping=self.param_neurons['early_stopping'])
+            nn_m = MLPRegressor(**self.param_neurons)
             
-            self.model = BaggingRegressor(base_estimator=nn_m, 
-                                          n_estimators=self.param_bag['n_estimators'], 
-                                          max_samples=self.param_bag['max_samples'], 
-                                          max_features=self.param_bag['max_features'], 
-                                          bootstrap=self.param_bag['bootstrap'], 
-                                          bootstrap_features=self.param_bag['bootstrap_features'],
-                                          oob_score=self.param_bag['oob_score'], 
-                                          warm_start=self.param_bag['warm_start'],
-                                          n_jobs=self.param_bag['n_jobs'], 
-                                          random_state=self.rand_state, 
-                                          verbose=self.param_bag['verbose'])
+            self.model = BaggingRegressor(base_estimator = nn_m, **self.param_bag)
 
-        if self.scaling == "yes":
+        if self.scaling == True:
             self.model.fit(self.X_train_sc, self.y_train_sc.reshape(-1,))
             predict_train_sc = self.model.predict(self.X_train_sc)
             self.prediction_train = self.Y_scaler.inverse_transform(predict_train_sc.reshape(-1,1))
@@ -259,7 +264,7 @@ class mlregressor:
         ------
         if self.scaling == "yes", scaling will be performed on the input X.
         """
-        if self.scaling == "yes":
+        if self.scaling == True:
             X_sc = self.X_scaler.transform(X)
             pred_sc = self.model.predict(X_sc)
             return self.Y_scaler.inverse_transform(pred_sc.reshape(-1,1))
