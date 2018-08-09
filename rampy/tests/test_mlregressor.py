@@ -5,9 +5,9 @@ import scipy
 
 import rampy as rp
 
-class TestSmooth(unittest.TestCase):
+class TestML(unittest.TestCase):
 
-    def test_mixing(self):
+    def test_mlregressor(self):
 
         # dummy gaussians
         x = np.arange(0,100,1.0) # a dummy x axis

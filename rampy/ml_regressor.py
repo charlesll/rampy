@@ -54,59 +54,56 @@ def chemical_splitting(Pandas_DataFrame, target,split_fraction):
 
     return frame1, frame2, frame1_idx, frame2_idx
 
-def mlregressor(x, y, algorithm="SVM",**kwargs):
-    """use machine learning algorithms from scikit learn to perform regression between spectra and a observed variable.
+class mlregressor:
+    """use machine learning algorithms from scikit learn to perform regression between spectra and an observed variable.
 
-    Parameters
-    ==========
-    x: array{Float64}
-            the spectra organised in rows (1 row = one spectrum). The spectra should share a common X axis.
-    y: Array{Float64}
-            the targets. Only a single target is possible for now.
-    algorithm: String,
-            "KernelRidge", "SVM", "LinearRegression", "Lasso", "ElasticNet", "NeuralNet", "BaggingNeuralNet", default = "SVM"
-
-    Returns
-    =======
-    prediction_train: Array{Float64}
-            the predicted target values for the training y dataset.
-    prediction_test: Array{Float64}
-            the predicted target values for the testing y_test dataset.
-    model: Scikit learn model
-            A Scikit Learn object model, see scikit learn library documentation.
-    X_scaler:
-            A Scikit Learn scaler object for the x values.
-    Y_scaler
-            A Scikit Learn scaler object for the y values.
-
-    OPTIONS
-    =======
-
-    X_test: Array{Float64}
-            spectra organised in rows (1 row = one spectrum) that you want to use as a testing dataset. THose spectra should not be present in the x (training) dataset. The spectra should share a common X axis.
-    y_test: Array{Float64}
-            the target that you want to use as a testing dataset. Those targets should not be present in the y (training) dataset.
-    scaler: String
-            the type of scaling performed. Choose between MinMaxScaler or StandardScaler, see http://scikit-learn.org/stable/modules/preprocessing.html for details. Default = "MinMaxScaler".
-    rand_state: Float64
-            the random seed that is used for reproductibility of the results. Default = 42.
-    param_grid_kr: Dictionary
-            contain the values of the hyperparameters that should be checked by gridsearch for the Kernel Ridge regression algorithm.
-    param_grid_svm: Dictionary
-            containg the values of the hyperparameters that should be checked by gridsearch for the Support Vector regression algorithm.
-    param_neurons: Dictionary
-        Contains the options for the Neural Network. Default= dict(layers=(3,),solver = 'lbfgs',funct='relu',early_stopping=True)
-    param_bagging: Dictionary
+    
+    Attributes
+    ----------
+    x : {array-like, sparse matrix}, shape = (n_samples, n_features)
+        Spectra; n_features = n_frequencies.
+    y : array, shape = (n_samples,)
+        Returns predicted values.
+    X_test : {array-like, sparse matrix}, shape = (n_samples, n_features)
+        spectra organised in rows (1 row = one spectrum) that you want to use as a testing dataset. THose spectra should not be present in the x (training) dataset. The spectra should share a common X axis.
+    y_test : array, shape = (n_samples,)
+        the target that you want to use as a testing dataset. Those targets should not be present in the y (training) dataset.
+    algorithm : String,
+        "KernelRidge", "SVM", "LinearRegression", "Lasso", "ElasticNet", "NeuralNet", "BaggingNeuralNet", default = "SVM"
+    scaler : String
+        the type of scaling performed. Choose between MinMaxScaler or StandardScaler, see http://scikit-learn.org/stable/modules/preprocessing.html for details. Default = "MinMaxScaler".
+    test_size : float
+        the fraction of the dataset to use as a testing dataset; only used if X_test and y_test are not provided.
+    rand_state : Float64
+        the random seed that is used for reproductibility of the results. Default = 42.
+    user_kernel : String
+        the kernel to be used by SVM or KernelRidge.
+    param_grid_kr : Dictionary
+        contain the values of the hyperparameters that should be checked by gridsearch for the Kernel Ridge regression algorithm.
+    param_grid_svm : Dictionary
+        containg the values of the hyperparameters that should be checked by gridsearch for the Support Vector regression algorithm.
+    param_neurons : Dictionary
+        contains the options for the Neural Network. Default= dict(layers=(3,),solver = 'lbfgs',funct='relu',early_stopping=True)
+    param_bagging : Dictionary
         contains the options for the BaggingNeuralNet method used with neural nets. Default= dict(n_estimators=100, max_samples=1.0, max_features=1.0, bootstrap=True, bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=1, random_state=rand_state, verbose=0)
     
-    For the last two parameters, the user is refered to the documentation of SciKit Learn. See the pages:
+    prediction_train : Array{Float64}
+        the predicted target values for the training y dataset.
+    prediction_test : Array{Float64}
+        the predicted target values for the testing y_test dataset.
+    model : Scikit learn model
+        A Scikit Learn object model, see scikit learn library documentation.
+    X_scaler :
+        A Scikit Learn scaler object for the x values.
+    Y_scaler :
+        A Scikit Learn scaler object for the y values.
+    
+    Remarks
+    -------
 
-    http://scikit-learn.org/stable/modules/kernel_ridge.html
+    For details on hyperparameters of each algorithms, please directly consult the documentation of SciKit Learn at:
 
-    http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVR.html
-
-    NOTES
-    =====
+    http://scikit-learn.org/stable/
 
     For Support Vector and Kernel Ridge regressions, mlregressor performs a cross_validation search with using 5 KFold cross validators.
 
@@ -117,95 +114,154 @@ def mlregressor(x, y, algorithm="SVM",**kwargs):
     it may be better to use the BaggingNeuralNet function.
 
     """
+ 
+    def __init__(self,x,y,**kwargs):
+        """  
+        Parameters
+        ----------
+        x : array{Float64}
+            the spectra organised in rows (1 row = one spectrum). The spectra should share a common X axis.
+        y : Array{Float64}
+            Target. Only a single target is possible for now.
 
-    #
-    # Kwargs extractions
-    #
+        """
+        self.x = x
+        self.y = y
+        #
+        # Kwargs extractions
+        #
+        self.X_test = X_test = kwargs.get("X_test",[0.0])
+        self.y_test = kwargs.get("y_test",[0.0])
+        self.algorithm = kwargs.get("algorithm","SVM")
+        self.test_sz = kwargs.get("test_size",0.3)
+        self.scaling = kwargs.get("scaling","yes")
+        self.scaler = kwargs.get("scaler","MinMaxScaler")
+        self.rand_state = kwargs.get("rand_state",42)
+        self.param_grid_kr = kwargs.get("param_grid_kr",dict(alpha=[1e1, 1e0, 0.5, 0.1, 5e-2, 1e-2, 5e-3, 1e-3],gamma=np.logspace(-4, 4, 9)))
+        self.param_grid_svm= kwargs.get("param_grid_svm",dict(C= [1e0, 2e0, 5e0, 1e1, 5e1, 1e2, 5e2, 1e3, 5e3, 1e4, 5e4, 1e5], gamma= np.logspace(-4, 4, 9)))
+        self.user_kernel = kwargs.get("user_kernel","rbf")
+        self.param_neurons = kwargs.get("param_neurons",dict(layers=(3,),solver = 'lbfgs',funct='relu',early_stopping=True))
+        self.param_bag = kwargs.get("param_bagging",dict(n_estimators=100, max_samples=1.0, max_features=1.0, bootstrap=True, bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=1, verbose=0))    
+        
+        if len(self.X_test) == 1:
+            self.X_train, self.X_test, self.y_train, self.y_test = sklearn.model_selection.train_test_split(
+            self.x, self.y.reshape(-1, 1), test_size=self.test_sz, random_state=self.rand_state)
+        elif self.X_test.shape[1] == self.x.shape[1]:
+            self.X_train = np.copy(self.x)
+            self.y_train = np.copy(self.y)
+        else:
+            ValueError("You tried to provide a testing dataset that has a different number of features (in columns) than the training set. Please correct this.")
+
+        # to avoid any problem with SciKit Learn quite annoying demands for the shape of arrays...
+        self.y_train = self.y_train.reshape(-1,1)
+        self.y_test = self.y_test.reshape(-1, 1)
+
+        # initialising the preprocessor scaler
+        if self.scaler == "StandardScaler":
+            self.X_scaler = sklearn.preprocessing.StandardScaler()
+            self.Y_scaler = sklearn.preprocessing.StandardScaler()
+        elif self.scaler == "MinMaxScaler":
+            self.X_scaler = sklearn.preprocessing.MinMaxScaler()
+            self.Y_scaler = sklearn.preprocessing.MinMaxScaler()
+        else:
+            InputError("Choose the scaler between MinMaxScaler and StandardScaler")
+
+    def fit(self):
+        """Train the model with the indicated algorithm.
+
+        Do not forget to tune the hyperparameters.
+
+        Parameters
+        ----------
+        algorithm : String,
+            "KernelRidge", "SVM", "LinearRegression", "Lasso", "ElasticNet", "NeuralNet", "BaggingNeuralNet", default = "SVM"
+
+        """
+        self.X_scaler.fit(self.X_train)
+        self.Y_scaler.fit(self.y_train)
+
+        # scaling the data
+        self.X_train_sc = self.X_scaler.transform(self.X_train)
+        self.y_train_sc = self.Y_scaler.transform(self.y_train)
+
+        self.X_test_sc = self.X_scaler.transform(self.X_test)
+        self.y_test_sc = self.Y_scaler.transform(self.y_test)
+
+        if self.algorithm == "KernelRidge":
+            clf_kr = KernelRidge(kernel=self.user_kernel, gamma=0.1)
+            self.model = sklearn.model_selection.GridSearchCV(clf_kr, cv=5, param_grid=self.param_grid_kr)
+        
+        elif self.algorithm == "SVM":
+            clf_svm = SVR(kernel=self.user_kernel, gamma=0.1)
+            self.model = sklearn.model_selection.GridSearchCV(clf_svm, cv=5, param_grid=self.param_grid_svm)
+        
+        elif self.algorithm == "Lasso":
+            clf_lasso = sklearn.linear_model.Lasso(alpha=0.1,random_state=self.rand_state)
+            self.model = sklearn.model_selection.GridSearchCV(clf_lasso, cv=5,
+                                                              param_grid=dict(alpha=[1e-3,1e-2,1e-1,1.,1e1,1e2,1e3,1e4]))
+        
+        elif self.algorithm == "ElasticNet":
+            clf_ElasticNet = sklearn.linear_model.ElasticNet(alpha=0.1, l1_ratio=0.5,random_state=self.rand_state)
+            self.model = sklearn.model_selection.GridSearchCV(clf_ElasticNet,cv=5, 
+                                                              param_grid=dict(alpha=[1e-3, 1e-2, 1e-1, 1., 1e1, 1e2, 1e3, 1e4]))
+        
+        elif self.algorithm == "LinearRegression":
+            self.model = sklearn.linear_model.LinearRegression()
+        
+        elif self.algorithm == "NeuralNet":
+            self.model = MLPRegressor(hidden_layer_sizes=self.param_neurons['layers'],
+                                      activation=self.param_neurons['funct'],
+                                      solver=self.param_neurons['solver'],
+                                      random_state=self.rand_state)
+        elif self.algorithm == "BaggingNeuralNet":
+            nn_m = MLPRegressor(hidden_layer_sizes=self.param_neurons['layers'], 
+                                 activation=self.param_neurons['funct'],
+                                solver=self.param_neurons['solver'],
+                                early_stopping=self.param_neurons['early_stopping'])
+            
+            self.model = BaggingRegressor(base_estimator=nn_m, 
+                                          n_estimators=self.param_bag['n_estimators'], 
+                                          max_samples=self.param_bag['max_samples'], 
+                                          max_features=self.param_bag['max_features'], 
+                                          bootstrap=self.param_bag['bootstrap'], 
+                                          bootstrap_features=self.param_bag['bootstrap_features'],
+                                          oob_score=self.param_bag['oob_score'], 
+                                          warm_start=self.param_bag['warm_start'],
+                                          n_jobs=self.param_bag['n_jobs'], 
+                                          random_state=self.rand_state, 
+                                          verbose=self.param_bag['verbose'])
+
+        if self.scaling == "yes":
+            self.model.fit(self.X_train_sc, self.y_train_sc.reshape(-1,))
+            predict_train_sc = self.model.predict(self.X_train_sc)
+            self.prediction_train = self.Y_scaler.inverse_transform(predict_train_sc.reshape(-1,1))
+            predict_test_sc = self.model.predict(self.X_test_sc)
+            self.prediction_test = self.Y_scaler.inverse_transform(predict_test_sc.reshape(-1,1))
+        else:
+            self.model.fit(self.X_train, self.y_train.reshape(-1,))
+            self.prediction_train = self.model.predict(self.X_train)
+            self.prediction_test = self.model.predict(self.X_test)
     
-    X_test = kwargs.get("X_test",[0.0])
-    y_test = kwargs.get("y_test",[0.0])
-    test_sz = kwargs.get("test_sz",0.3)
-    scaling = kwargs.get("scaling","yes")
-    scaler = kwargs.get("scaler","MinMaxScaler")
-    rand_state = kwargs.get("rand_state",42)
-    param_grid_kr = kwargs.get("param_grid_kr",dict(alpha=[1e1, 1e0, 0.5, 0.1, 5e-2, 1e-2, 5e-3, 1e-3],gamma=np.logspace(-4, 4, 9)))
-    param_grid_svm= kwargs.get("param_grid_svm",dict(C= [1e0, 2e0, 5e0, 1e1, 5e1, 1e2, 5e2, 1e3, 5e3, 1e4, 5e4, 1e5], gamma= np.logspace(-4, 4, 9)))
-    user_kernel = kwargs.get("user_kernel","rbf")
-    param_neurons = kwargs.get("param_neurons",dict(layers=(3,),solver = 'lbfgs',funct='relu',early_stopping=True))
-    param_bag = kwargs.get("param_bagging",dict(n_estimators=100, max_samples=1.0, max_features=1.0, bootstrap=True, bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=1, verbose=0))    
-    
-    if len(X_test) == 1:
-        X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(
-            x, y.reshape(-1, 1), test_size=test_sz, random_state=rand_state)
-    elif X_test.shape[1] == x.shape[1]:
-        X_train = np.copy(x)
-        y_train = np.copy(y)
-    else:
-        ValueError("You tried to provide a testing dataset that has a different number of features (in columns) than the training set. Please correct this.")
-
-    # to avoid any problem with SciKit Learn quite annoying demands for the shape of arrays...
-    y_train = y_train.reshape(-1,1)
-    y_test = y_test.reshape(-1, 1)
-
-    # initialising the preprocessor scaler
-    if scaler == "StandardScaler":
-        X_scaler = sklearn.preprocessing.StandardScaler()
-        Y_scaler = sklearn.preprocessing.StandardScaler()
-    elif scaler == "MinMaxScaler":
-        X_scaler = sklearn.preprocessing.MinMaxScaler()
-        Y_scaler = sklearn.preprocessing.MinMaxScaler()
-    else:
-        InputError("Choose the scaler between MinMaxScaler and StandardScaler")
-
-    X_scaler.fit(X_train)
-    Y_scaler.fit(y_train)
-
-    # scaling the data
-    X_train_sc = X_scaler.transform(X_train)
-    y_train_sc = Y_scaler.transform(y_train)
-
-    X_test_sc = X_scaler.transform(X_test)
-    y_test_sc = Y_scaler.transform(y_test)
-
-    if algorithm == "KernelRidge":
-        clf_kr = KernelRidge(kernel=user_kernel, gamma=0.1)
-        model = sklearn.model_selection.GridSearchCV(
-            clf_kr, cv=5, param_grid=param_grid_kr)
-    elif algorithm == "SVM":
-        clf_svm = SVR(kernel=user_kernel, gamma=0.1)
-        model = sklearn.model_selection.GridSearchCV(clf_svm, cv=5, param_grid=param_grid_svm)
-    elif algorithm == "Lasso":
-        clf_lasso = sklearn.linear_model.Lasso(alpha=0.1,random_state=rand_state)
-        model = sklearn.model_selection.GridSearchCV(clf_lasso, cv=5, 
-                                    param_grid=dict(alpha=[1e-3,1e-2,1e-1,1.,1e1,1e2,1e3,1e4]))
-    elif algorithm == "ElasticNet":
-        clf_ElasticNet = sklearn.linear_model.ElasticNet(alpha=0.1, l1_ratio=0.5,random_state=rand_state)
-        model = sklearn.model_selection.GridSearchCV(clf_ElasticNet, 
-                cv=5, param_grid=dict(alpha=[1e-3, 1e-2, 1e-1, 1., 1e1, 1e2, 1e3, 1e4]))
-    elif algorithm == "LinearRegression":
-        model = sklearn.linear_model.LinearRegression()
-    elif algorithm == "NeuralNet":
-        model = MLPRegressor(hidden_layer_sizes=param_neurons['layers'], 
-                             activation=param_neurons['funct'],solver=param_neurons['solver'],random_state=rand_state)
-    elif algorithm == "BaggingNeuralNet":
-        nn_m = MLPRegressor(hidden_layer_sizes=param_neurons['layers'], 
-                             activation=param_neurons['funct'],solver=param_neurons['solver'],early_stopping=param_neurons['early_stopping'])
-        model = BaggingRegressor(base_estimator=nn_m, n_estimators=param_bag['n_estimators'], max_samples=param_bag['max_samples']
-                                 , max_features=param_bag['max_features'], bootstrap=param_bag['bootstrap'], 
-                                 bootstrap_features=param_bag['bootstrap_features'],
-                                 oob_score=param_bag['oob_score'], warm_start=param_bag['warm_start'],
-                                 n_jobs=param_bag['n_jobs'], 
-                                 random_state=rand_state, verbose=param_bag['verbose'])
-
-    if scaling == "yes":
-        model.fit(X_train_sc, y_train_sc.ravel())
-        predict_train_sc = model.predict(X_train_sc)
-        prediction_train = Y_scaler.inverse_transform(predict_train_sc)
-        predict_test_sc = model.predict(X_test_sc)
-        prediction_test = Y_scaler.inverse_transform(predict_test_sc)
-        return prediction_train, prediction_test, model, X_scaler, Y_scaler
-    else:
-        model.fit(X_train, vec(y_train))
-        prediction_train = model.predict(X_train)
-        prediction_test = model.predict(X_test)
-        return prediction_train, prediction_test, model
+    def predict(self,X):
+        """Predict using the model.
+        
+        Parameters
+        ----------
+        X : {array-like, sparse matrix}, shape = (n_samples, n_features)
+            Samples.
+        
+        Returns
+        -------
+        C : array, shape = (n_samples,)
+            Returns predicted values.
+            
+        Remark
+        ------
+        if self.scaling == "yes", scaling will be performed on the input X.
+        """
+        if self.scaling == "yes":
+            X_sc = self.X_scaler.transform(X)
+            pred_sc = self.model.predict(X_sc)
+            return self.Y_scaler.inverse_transform(pred_sc.reshape(-1,1))
+        else:
+            return self.model.predict(self.X)
