@@ -10,9 +10,11 @@ As Rampy starts to grow, I will summarise changes in this file starting at versi
 
 # 0.3.7
 
-- addition of an example of use of the rp.mlregressor function
+- addition of tests and examples of the mlregressor(), resample() and flipsp() functions
 
 - Correction of the rp.mixing_sp() function, rampy is now compatible with cvxpy v1.0
+
+- arguments can be provided to resample() to use different techniques of interpolation in scipy.interpolate.interp1d
 
 - addition of the centroid() function, that calculates the centroid of a signal
 
