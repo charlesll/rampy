@@ -8,7 +8,7 @@ from sklearn.ensemble import BaggingRegressor
 import pandas as pd
 import numpy as np
 
-def chemical_splitting(Pandas_DataFrame, target,split_fraction):
+def chemical_splitting(Pandas_DataFrame, target, split_fraction =0.30, rand_state=42):
     """split datasets depending on their chemistry
 
         Parameters
@@ -19,7 +19,8 @@ def chemical_splitting(Pandas_DataFrame, target,split_fraction):
             The target in the DataFrame according to which we will split the dataset
         split_fraction: a float number between 0 and 1
             This is the amount of splitting you want, in reference to the second output dataset (see OUTPUTS).
-
+        rand_state : Float64
+            the random seed that is used for reproductibility of the results. Default = 42.
         Returns
         =======
             frame1 : A Pandas DataFrame
@@ -41,7 +42,7 @@ def chemical_splitting(Pandas_DataFrame, target,split_fraction):
     names_idx = np.arange(len(names))
 
     # getting index for the frames with the help of scikitlearn
-    frame1_idx, frame2_idx = model_selection.train_test_split(names_idx, test_size = split_fraction,random_state=42)
+    frame1_idx, frame2_idx = model_selection.train_test_split(names_idx, test_size = split_fraction,random_state=rand_state)
 
     # and now grabbing the relevant pandas dataframes
     ttt = np.in1d(Pandas_DataFrame[target],names[frame1_idx])
