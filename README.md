@@ -1,5 +1,5 @@
 # RamPy
-=====
+=======
 
 Copyright (2015-2018) C. Le Losq.
 
@@ -29,7 +29,7 @@ Optional dependencies:
 
 - gcvspline (you need a working FORTRAN compiler for its installation. To avoid this problem under Windows, wheels for Python 2.7, 3.4 and 3.6 are provided for 64 bit Windows, and a wheel for Python 3.6 is provided for Windows 32 bits. If installation fails, please check if is due to a fortran compiler issue.)
 
-*Installation of gcvspline is necessary for use of the rampy.rameau() class.*
+*Installation of gcvspline is necessary for use of the `rampy.rameau()` class.*
 
 Additional libraries for model fitting may be wanted:
 
