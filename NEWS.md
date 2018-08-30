@@ -8,13 +8,11 @@ Licence: see LICENCE.md
 
 As Rampy starts to grow, I will summarise changes in this file starting at version 0.2.6
 
-# 0.4
+# 0.3.7
 
 - BREAKING CHANGE: mlregressor is now a class and not a function anymore. You can provide directly sklearn arguments to the algorithms through dictionnaries.
 The use of the class simplifies the use of mlregressor, as the created objects saves everything!
 It also makes it very easy to change the algorithm and try something else.
-
-- rampy.chemical_splitting() allows one to select the random seed.
 
 - addition of tests and examples of the mlregressor() class and of resample() and flipsp() functions.
 
