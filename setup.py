@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='rampy',
-      version='0.4.0',
+      version='0.4.1',
       description='A Python module containing functions to treat spectroscopic (XANES, Raman, IR...) data',
       url='https://github.com/charlesll/rampy',
       author='Charles Le Losq',

@@ -59,7 +59,7 @@ def chemical_splitting(Pandas_DataFrame, target,split_fraction=0.30, rand_state=
 class mlregressor:
     """use machine learning algorithms from scikit learn to perform regression between spectra and an observed variable.
 
-    
+
     Attributes
     ----------
     x : {array-like, sparse matrix}, shape = (n_samples, n_features)
@@ -85,10 +85,12 @@ class mlregressor:
     param_svm : Dictionary
         containg the values of the hyperparameters that should be provided to SVM and GridSearch for the Support Vector regression algorithm.
     param_neurons : Dictionary
-        contains the parameters for the Neural Network (MLPregressor model in sklearn). Default= dict(layers=(3,),solver = 'lbfgs',funct='relu',early_stopping=True)
+        contains the parameters for the Neural Network (MLPregressor model in sklearn).
+        Default= dict(layers=(3,),solver = 'lbfgs',funct='relu',early_stopping=True)
     param_bagging : Dictionary
-        contains the parameters for the BaggingRegressor sklearn function that uses a MLPregressor base method. Default= dict(n_estimators=100, max_samples=1.0, max_features=1.0, bootstrap=True, bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=1, random_state=rand_state, verbose=0)
-    
+        contains the parameters for the BaggingRegressor sklearn function that uses a MLPregressor base method.
+        Default= dict(n_estimators=100, max_samples=1.0, max_features=1.0, bootstrap=True,
+                      bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=1, random_state=rand_state, verbose=0)
     prediction_train : Array{Float64}
         the predicted target values for the training y dataset.
     prediction_test : Array{Float64}
@@ -99,7 +101,7 @@ class mlregressor:
         A Scikit Learn scaler object for the x values.
     Y_scaler :
         A Scikit Learn scaler object for the y values.
-    
+
     Remarks
     -------
 
@@ -116,9 +118,9 @@ class mlregressor:
     it may be better to use the BaggingNeuralNet function.
 
     """
- 
+
     def __init__(self,x,y,**kwargs):
-        """  
+        """
         Parameters
         ----------
         x : array{Float64}
@@ -132,29 +134,29 @@ class mlregressor:
         #
         # Kwargs extractions
         #
-        self.X_test = X_test = kwargs.get("X_test",[0.0])
+        self.X_test = kwargs.get("X_test",[0.0])
         self.y_test = kwargs.get("y_test",[0.0])
         self.algorithm = kwargs.get("algorithm","SVM")
         self.test_sz = kwargs.get("test_size",0.3)
         self.scaling = kwargs.get("scaling",True)
         self.scaler = kwargs.get("scaler","MinMaxScaler")
         self.rand_state = kwargs.get("rand_state",42)
-        
+
         # hyperparameters for the algorithms
         self.user_kernel = kwargs.get("kernel","rbf")
         self.param_kr = kwargs.get(
             "param_kr",dict(alpha=[1e1, 1e0, 0.5, 0.1, 5e-2, 1e-2, 5e-3, 1e-3],gamma=np.logspace(-4, 4, 9)))
-        
+
         self.param_svm= kwargs.get(
             "param_svm",dict(C= [1e0, 2e0, 5e0, 1e1, 5e1, 1e2, 5e2, 1e3, 5e3, 1e4, 5e4, 1e5], gamma= np.logspace(-4, 4, 9)))
-        
+
         self.param_neurons = kwargs.get("param_neurons",
                                         dict(hidden_layer_sizes=(3,),
                                              solver='lbfgs',
                                              activation='relu',
                                              early_stopping=True,
                                              random_state=self.rand_state))
-        
+
         self.param_bag = kwargs.get("param_bagging",
                                     dict(n_estimators=100, 
                                          max_samples=1.0, 
@@ -165,7 +167,7 @@ class mlregressor:
                                          warm_start=False, 
                                          n_jobs=1, verbose=0,
                                          random_state=self.rand_state))    
-        
+
         if len(self.X_test) == 1:
             self.X_train, self.X_test, self.y_train, self.y_test = sklearn.model_selection.train_test_split(
             self.x, self.y.reshape(-1, 1), test_size=self.test_sz, random_state=self.rand_state)
@@ -213,29 +215,29 @@ class mlregressor:
         if self.algorithm == "KernelRidge":
             clf_kr = KernelRidge(kernel=self.user_kernel)
             self.model = sklearn.model_selection.GridSearchCV(clf_kr, cv=5, param_grid=self.param_kr)
-        
+
         elif self.algorithm == "SVM":
             clf_svm = SVR(kernel=self.user_kernel)
             self.model = sklearn.model_selection.GridSearchCV(clf_svm, cv=5, param_grid=self.param_svm)
-        
+
         elif self.algorithm == "Lasso":
             clf_lasso = sklearn.linear_model.Lasso(alpha=0.1,random_state=self.rand_state)
             self.model = sklearn.model_selection.GridSearchCV(clf_lasso, cv=5,
                                                               param_grid=dict(alpha=np.logspace(-5,5,30)))
-        
+
         elif self.algorithm == "ElasticNet":
             clf_ElasticNet = sklearn.linear_model.ElasticNet(alpha=0.1, l1_ratio=0.5,random_state=self.rand_state)
             self.model = sklearn.model_selection.GridSearchCV(clf_ElasticNet,cv=5, 
                                                               param_grid=dict(alpha=np.logspace(-5,5,30)))
-        
+
         elif self.algorithm == "LinearRegression":
             self.model = sklearn.linear_model.LinearRegression()
-        
+
         elif self.algorithm == "NeuralNet":
             self.model = MLPRegressor(**self.param_neurons)
         elif self.algorithm == "BaggingNeuralNet":
             nn_m = MLPRegressor(**self.param_neurons)
-            
+
             self.model = BaggingRegressor(base_estimator = nn_m, **self.param_bag)
 
         if self.scaling == True:
@@ -248,20 +250,20 @@ class mlregressor:
             self.model.fit(self.X_train, self.y_train.reshape(-1,))
             self.prediction_train = self.model.predict(self.X_train)
             self.prediction_test = self.model.predict(self.X_test)
-    
+
     def predict(self,X):
         """Predict using the model.
-        
+
         Parameters
         ----------
         X : {array-like, sparse matrix}, shape = (n_samples, n_features)
             Samples.
-        
+
         Returns
         -------
         C : array, shape = (n_samples,)
             Returns predicted values.
-            
+
         Remark
         ------
         if self.scaling == "yes", scaling will be performed on the input X.

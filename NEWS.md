@@ -8,6 +8,10 @@ Licence: see LICENCE.md
 
 As Rampy starts to grow, I will summarise changes in this file starting at version 0.2.6
 
+# 0.4.1
+
+- Correction of an error in `mlregressor` which made impossible to import X_test datasets.
+
 # 0.4.0
 
 - BREAKING CHANGE: `mlregressor` is now a class and not a function anymore. You can provide directly sklearn arguments to the algorithms through dictionaries.
