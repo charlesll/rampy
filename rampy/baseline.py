@@ -45,47 +45,53 @@ def baseline(x_input,y_input,bir,method, **kwargs):
 
     Parameters
     ----------
-    x_input
-        Array with x values.
-    y_input
-        Array with y values.
-    bir
-        An Array containing the regions of interest, organised per line. for instance, roi = np.array([[100., 200.],[500.,600.]]) will define roi between 100 and 200 as well as between 500 and 600,.
+    x_input : ndarray
+        x values.
+    y_input : ndarray
+        y values.
+    bir : ndarray
+        Contain the regions of interest, organised per line. 
+        For instance, roi = np.array([[100., 200.],[500.,600.]]) will 
+        define roi between 100 and 200 as well as between 500 and 600,.
     methods
         "poly": polynomial fitting, with splinesmooth the degree of the polynomial.
-        "unispline": spline with the UnivariateSpline function of Scipy, splinesmooth is the spline smoothing factor (assume equal weight in the present case);
-        "gcvspline": spline with the gcvspl.f algorythm, really robust. Spectra must have x, y, ese in it, and splinesmooth is the smoothing factor;
-        for gcvspline, if ese are not provided we assume ese = sqrt(y). Requires the installation of gcvspline with a "pip install gcvspline" call prior to use;
+        "unispline": spline with the UnivariateSpline function of Scipy, splinesmooth is 
+                     the spline smoothing factor (assume equal weight in the present case);
+        "gcvspline": spline with the gcvspl.f algorythm, really robust. 
+                     Spectra must have x, y, ese in it, and splinesmooth is the smoothing factor;
+                     For gcvspline, if ese are not provided we assume ese = sqrt(y). 
+                     Requires the installation of gcvspline with a "pip install gcvspline" call prior to use;
         "exp": exponential background;
         "log": logarythmic background;
         "rubberband": rubberband baseline fitting;
         "als": automatic least square fitting following Eilers and Boelens 2005;
-        "arPLS": automatic baseline fit using the algorithm from Baek et al. 2015 Baseline correction using asymmetrically reweighted penalized least suqares smoothing, Analyst 140: 250-257.
+        "arPLS": automatic baseline fit using the algorithm from Baek et al. 2015 
+                 Baseline correction using asymmetrically reweighted penalized least squares smoothing, Analyst 140: 250-257.
 
     kwargs
     ------
-    polynomial_order
-        Integer, the degree of the polynomial (0 for a constant), default = 1.
-    s
-        Float, spline smoothing coefficient for the unispline and gcvspline algorithms.
-    lam
+    polynomial_order : Int
+        The degree of the polynomial (0 for a constant), default = 1.
+    s : Float
+        spline smoothing coefficient for the unispline and gcvspline algorithms.
+    lam : Float
         float, the lambda smoothness parameter for the ALS and ArPLS algorithms. Typical values are between 10**2 to 10**9, default = 10**5.
-    p
+    p : Float
         float, for the ALS algorithm, advised value between 0.001 to 0.1, default = 0.01.
-    niter
+    niter : Int
         number of iteration of the ALS algorithm, default = 10.
-    p0_exp
-        list, containg the starting parameter for the exp baseline fit with curve_fit. Default = [1.,1.,1.].
+    p0_exp : List
+        containg the starting parameter for the exp baseline fit with curve_fit. Default = [1.,1.,1.].
 
-    p0_log
-        list, containg the starting parameter for the log baseline fit with curve_fit. Default = [1.,1.,1.,1.].
+    p0_log : List
+        containg the starting parameter for the log baseline fit with curve_fit. Default = [1.,1.,1.,1.].
 
     Returns
     -------
-    out1
-        an array containing the corrected signal
-    out2
-        an array containing the baseline
+    out1 : ndarray
+        Contain the corrected signal.
+    out2 : ndarray
+        Contain the baseline.
 
     """
     # we get the signals in the bir
