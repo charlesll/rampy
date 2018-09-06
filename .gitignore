@@ -1,4 +1,5 @@
 .DS_STORE
 /dist/
+/build/
 /examples/.ipynb_checkpoints/
 /rampy.egg-info/

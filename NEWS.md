@@ -8,6 +8,10 @@ Licence: see LICENCE.md
 
 As Rampy starts to grow, I will summarise changes in this file starting at version 0.2.6
 
+# 0.4.2
+
+- Removing dependency to cvxpy that does not build well in Windows... It affects the use of the rampy.mixing function
+
 # 0.4.1
 
 - Correction of an error in `mlregressor` which made impossible to import X_test datasets.

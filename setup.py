@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='rampy',
-      version='0.4.1',
+      version='0.4.2',
       description='A Python module containing functions to treat spectroscopic (XANES, Raman, IR...) data',
       url='https://github.com/charlesll/rampy',
       author='Charles Le Losq',
@@ -15,5 +15,9 @@ setup(name='rampy',
       long_description_content_type="text/markdown",
       license='GNU-GPLv2',
       packages=['rampy', 'rampy.tests'],
-      install_requires=['numpy>=1.12','scipy','sklearn','pandas','cvxpy>=1.0'],
+      install_requires=['numpy>=1.12','scipy','sklearn','pandas'],
+      extras_require={
+        'gcvspline':  ["gcvspline"],
+        'mixing': ["cvxpy>=1.0"],
+    }
       zip_safe=False)

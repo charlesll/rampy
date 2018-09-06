@@ -1,4 +1,3 @@
-import cvxpy
 import numpy as np
 
 def mixing_sp(y_fit,ref1,ref2):
@@ -25,6 +24,11 @@ def mixing_sp(y_fit,ref1,ref2):
 
     Uses cvxpy to perform this calculation
     """
+
+    try:
+        import cvxpy
+    except ImportError:
+        print('ERROR: Install cvxpy>=1.0 to use this function.')
 
     ref1 = ref1.reshape(1,-1)
     ref2 = ref2.reshape(1,-1)
