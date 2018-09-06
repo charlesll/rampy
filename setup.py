@@ -18,6 +18,5 @@ setup(name='rampy',
       install_requires=['numpy>=1.12','scipy','sklearn','pandas'],
       extras_require={
         'gcvspline':  ["gcvspline"],
-        'mixing': ["cvxpy>=1.0"],
-    }
+        'mixing': ["cvxpy>=1.0"],},
       zip_safe=False)
