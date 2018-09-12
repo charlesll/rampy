@@ -8,6 +8,7 @@ os:
 addons:
   apt_packages:
     - gfortran
+    - cvxpy
 
 install:
   - pip install .
