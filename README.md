@@ -30,7 +30,9 @@ Optional dependencies:
 
 *Installation of gcvspline is necessary for use of the `rampy.rameau()` class.*
 
-- cvxpy v 1.0 or higher, for using the rampy.mixing() function.
+- cvxpy v 1.0 or higher. As for gcvspline, the installation of cvxpy can cause problems for Windows users due to missing compiler. See instructions from cvxpy in this case.
+
+*Installation of gcvspline is necessary for use of the `rampy.mixing()` class.*
 
 Additional libraries for model fitting may be wanted:
 
@@ -43,9 +45,11 @@ Install with pip:
 
   `pip install rampy` 
 
-If you want to use gcvspline, also install it:
+If you want to use gcvspline and cvxpy, also install it:
 
   `pip install gcvspline`
+
+  `pip install cvxpy`
  
 # EXAMPLES
 
@@ -53,7 +57,7 @@ Given a signal [x y] containing a peak, and recorded in a text file myspectrum.t
 
 You can import it, remove a automatic background, plot the result, and print the centroid of the peak as:
 
-`
+```
 import matplotlib.pyplot as plt
 import numpy as np
 import rampy as rp
@@ -70,13 +74,11 @@ plt.plot(spectrum[:,0],y_corrected,"k",label="corrected signal")
 plt.show()
 
 print("Signal centroid is %.2f" % rp.centroid(spectrum[:,0],y_corrected))
-`
+```
 
+See the /example folder for further examples.
 
-
-See the /example folder.
-
-Updated July 2018
+Updated September 2018
 
 
 
