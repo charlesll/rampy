@@ -86,7 +86,7 @@ class mlregressor:
         containg the values of the hyperparameters that should be provided to SVM and GridSearch for the Support Vector regression algorithm.
     param_neurons : Dictionary
         contains the parameters for the Neural Network (MLPregressor model in sklearn).
-        Default= dict(layers=(3,),solver = 'lbfgs',funct='relu',early_stopping=True)
+        Default= dict(hidden_layer_sizes=(3,),solver = 'lbfgs',activation='relu',early_stopping=True)
     param_bagging : Dictionary
         contains the parameters for the BaggingRegressor sklearn function that uses a MLPregressor base method.
         Default= dict(n_estimators=100, max_samples=1.0, max_features=1.0, bootstrap=True,

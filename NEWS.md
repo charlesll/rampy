@@ -8,6 +8,16 @@ Licence: see LICENCE.md
 
 As Rampy starts to grow, I will summarise changes in this file starting at version 0.2.6
 
+# 0.4.3
+
+- Improvements in documentation of mlregressor.
+
+- Improvements of rampy.normalise and rampy.centroid. Those functions can treat arrays of spectra now.
+
+- Correction of a bug in rampy.normalize that caused the "area" method to not work when entering x.
+
+- Better tests
+
 # 0.4.2
 
 - Removing dependency to cvxpy that does not build well in Windows... It affects the use of the rampy.mixing function

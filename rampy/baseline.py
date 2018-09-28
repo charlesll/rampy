@@ -52,8 +52,10 @@ def baseline(x_input,y_input,bir,method, **kwargs):
     bir : ndarray
         Contain the regions of interest, organised per line. 
         For instance, roi = np.array([[100., 200.],[500.,600.]]) will 
-        define roi between 100 and 200 as well as between 500 and 600,.
-    methods
+        define roi between 100 and 200 as well as between 500 and 600.
+        Note: This is NOT used by the "als" and "arPLS" algorithms, but still is a requirement when calling the function.
+        bir and method probably will become args in a futur iteration of rampy to solve this.
+    methods : str
         "poly": polynomial fitting, with splinesmooth the degree of the polynomial.
         "unispline": spline with the UnivariateSpline function of Scipy, splinesmooth is 
                      the spline smoothing factor (assume equal weight in the present case);
@@ -78,11 +80,12 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         float, the lambda smoothness parameter for the ALS and ArPLS algorithms. Typical values are between 10**2 to 10**9, default = 10**5.
     p : Float
         float, for the ALS algorithm, advised value between 0.001 to 0.1, default = 0.01.
+    ratio : float
+        ratio parameter of the arPLS algorithm. default = 0.01.
     niter : Int
         number of iteration of the ALS algorithm, default = 10.
     p0_exp : List
         containg the starting parameter for the exp baseline fit with curve_fit. Default = [1.,1.,1.].
-
     p0_log : List
         containg the starting parameter for the log baseline fit with curve_fit. Default = [1.,1.,1.,1.].
 
@@ -238,6 +241,4 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         baseline_fitted = z
 
     return y_input.reshape(-1,1)-Y_scaler.inverse_transform(baseline_fitted.reshape(-1, 1)), Y_scaler.inverse_transform(baseline_fitted.reshape(-1, 1))
-    #return y_corrected, baseline_fitted
-
-    #
+    

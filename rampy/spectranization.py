@@ -167,41 +167,48 @@ def resample(x,y,x_new,**kwargs):
     return f(x_new)
 
 def normalise(y,x=0,method="intensity"):
-    """normalisation of the y signal
+    """normalise y signal(s)
+
     Parameters
     ==========
-    x : ndarray
+    x : ndarray, m values by n samples
         x values
-    y : ndarray
-        y values
+    y : ndarray, m values by n samples
+        corresponding y values
     method : string
         method used, choose between area, intensity, minmax
+
     Returns
     =======
     y_norm : Numpy array
-        Normalised signal
+        Normalised signal(s)
     """
     if method == "area":
-        if x == 0:
-            raise TypeError("Input x values for area normalisation")
-        y = y/np.trapz(y,x)
-    if method == "intensity":
-        y = y/np.max(y)
-    if method == "minmax":
-        y = (y-np.min(y))/(np.max(y)-np.min(y))
+        try: 
+            y = y/np.trapz(y,x,axis=0)
+        except:
+            raise ValueError("Input array of x values for area normalisation")  
+    elif method == "intensity":
+        y = y/np.max(y,axis=0)
+        
+    elif method == "minmax":
+        y = (y-np.min(y,axis=0))/(np.max(y,axis=0)-np.min(y,axis=0))
+    else:
+        raise NotImplementedError("Wrong method name, choose between area, intensity and minmax.")
+        
+    return y
 
 def centroid(x,y,smoothing=False,**kwargs):
-    """calculation of the y signal centroid
+    """calculation of y signal centroid(s)
     
     as np.sum(y/np.sum(y)*x)
-    if smoothing == 1:
     
     Parameters
     ==========
-    x: Numpy array
+    x: Numpy array, m values by n samples
         x values
-    y: Numpy array
-        y values, 1 spectrum
+    y: Numpy array, m values by n samples
+        y values
 
     Options
     =======
@@ -210,17 +217,14 @@ def centroid(x,y,smoothing=False,**kwargs):
         
     Returns
     =======
-    centroid : float
-        signal centroid
+    centroid : Numpy array, n samples
+        signal centroid(s)
     """
     
-    # for safety, we reshape the x array    
-    x = x.reshape(-1)
-    y = y.reshape(-1)
+    y_ = y.copy()
     
     if smoothing == True:
-        y_ = rampy.smooth(x,y,**kwargs)
-    else: 
-        y_ = y.copy()
+        for i in range(x.shape[1]):
+            y_[:,i] = rampy.smooth(x[:,i],y[:,i],**kwargs)
         
-    return np.sum(y_/np.sum(y_)*x)
+    return np.sum(y_/np.sum(y_,axis=0)*x,axis=0)

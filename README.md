@@ -23,13 +23,14 @@ The following libraries are required and indicated in setup.py:
 - Numpy >= 1.12
 - sklearn
 - pandas
-- cvxpy
 
 Optional dependencies:
 
 - gcvspline (you need a working FORTRAN compiler for its installation. To avoid this problem under Windows, wheels for Python 2.7, 3.4 and 3.6 are provided for 64 bit Windows, and a wheel for Python 3.6 is provided for Windows 32 bits. If installation fails, please check if is due to a fortran compiler issue.)
 
 *Installation of gcvspline is necessary for use of the `rampy.rameau()` class.*
+
+- cvxpy v 1.0 or higher, for using the rampy.mixing() function.
 
 Additional libraries for model fitting may be wanted:
 
@@ -47,6 +48,31 @@ If you want to use gcvspline, also install it:
   `pip install gcvspline`
  
 # EXAMPLES
+
+Given a signal [x y] containing a peak, and recorded in a text file myspectrum.txt. 
+
+You can import it, remove a automatic background, plot the result, and print the centroid of the peak as:
+
+`
+import matplotlib.pyplot as plt
+import numpy as np
+import rampy as rp
+
+spectrum = np.genfromtxt("myspectrum.txt")
+
+bir = np.array([[0,100., 200., 1000]]) # the frequency regions devoid of signal, used by rp.baseline()
+y_corrected, background = rp.baseline(spectrum[:,0],spectrum[:,1],bir,"arPLS",lam=10**10)
+
+plt.figure()
+plt.plot(spectrum[:,0],spectrum[:,1],"k",label="raw data")
+plt.plot(spectrum[:,0],background,"k",label="background")
+plt.plot(spectrum[:,0],y_corrected,"k",label="corrected signal")
+plt.show()
+
+print("Signal centroid is %.2f" % rp.centroid(spectrum[:,0],y_corrected))
+`
+
+
 
 See the /example folder.
 

@@ -37,16 +37,33 @@ class TestSpectranization(unittest.TestCase):
 
     def test_centroid(self):
 
-        x = np.arange(0,100,1.).reshape(-1,1)
-        y = norm.pdf(x,loc=60,scale=10)
+        x = np.ones((100,10))
+        y = np.ones((100,10))
+
+        for i in range(10):
+            x[:,i] = np.linspace(0,100,100)
+            y[:,i] = np.exp(-0.5*((x[:,i]-50)**2/10**2))
 
         c1 = rampy.centroid(x,y,smoothing=True,method="whittaker")
         c2 = rampy.centroid(x,y,smoothing=False)
 
          # Testing 
-        np.testing.assert_almost_equal(c1,60.,decimal=1)
-        np.testing.assert_almost_equal(c2,60.,decimal=1)
-        
+        np.testing.assert_almost_equal(c1,50.,decimal=1)
+        np.testing.assert_almost_equal(c2,50.,decimal=1)
+
+    def test_normalise(self):
+
+        x = np.ones((100,10))
+        y = np.ones((100,10))
+
+        for i in range(10):
+            x[:,i] = np.linspace(0,100,100)
+            y[:,i] = np.exp(-0.5*((x[:,i]-50)**2/10**2))
+
+        # we just test that it runs
+        c1 = rampy.normalise(x,y,method="area")
+        c2 = rampy.normalise(x,y,method="intensity")
+        c3 = rampy.normalise(x,y,method="minmax")
                 
 if __name__ == '__main__':
     unittest.main()

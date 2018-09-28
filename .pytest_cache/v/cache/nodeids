@@ -1,0 +1,10 @@
+[
+  "rampy/tests/test_baseline.py::TestBaseline::test_baseline",
+  "rampy/tests/test_mixing.py::TestSmooth::test_mixing",
+  "rampy/tests/test_mlregressor.py::TestML::test_mlregressor",
+  "rampy/tests/test_smooth.py::TestSmooth::test_smooth",
+  "rampy/tests/test_spectranization.py::TestSpectranization::test_centroid",
+  "rampy/tests/test_spectranization.py::TestSpectranization::test_flipsp",
+  "rampy/tests/test_spectranization.py::TestSpectranization::test_normalise",
+  "rampy/tests/test_spectranization.py::TestSpectranization::test_resample"
+]
