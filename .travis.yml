@@ -8,9 +8,9 @@ os:
 addons:
   apt_packages:
     - gfortran
-    - cvxpy
 
 install:
+  - pip install cvxpy
   - pip install .
 # command to run tests
 script: pytest
