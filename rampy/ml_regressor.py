@@ -13,31 +13,44 @@ def chemical_splitting(Pandas_DataFrame, target,split_fraction=0.30, rand_state=
 
         Parameters
         ==========
-        Pandas_DataFrame: A Pandas DataFrame
+        Pandas_DataFrame : Pandas DataFrame
             The input DataFrame with in the first row the names of the different data compositions
-        target: string
+        label : string
             The target in the DataFrame according to which we will split the dataset
-        split_fraction: a float number between 0 and 1
+        split_fraction : Float, between 0 and 1
             This is the amount of splitting you want, in reference to the second output dataset (see OUTPUTS).
         rand_state : Float64
             the random seed that is used for reproductibility of the results. Default = 42.
 
         Returns
         =======
-            frame1 : A Pandas DataFrame
+            frame1 : Pandas DataFrame
                 A DataSet with (1-split_fraction) datas from the input dataset with unique chemical composition / names
-            frame2 : A Pandas DataFrame
+            frame2 : Pandas DataFrame
                 A DataSet with split_fraction datas from the input dataset with unique chemical composition / names
-            frame1_idx :
-                A numpy array containing the indexes of the data picked in Pandas_DataFrame to construct frame1
-            frame2_idx :
-                A numpy array containing the indexes of the data picked in Pandas_DataFrame to construct frame2
+            frame1_idx : ndarray
+                Contains the indexes of the data picked in Pandas_DataFrame to construct frame1
+            frame2_idx : ndarray
+                Contains the indexes of the data picked in Pandas_DataFrame to construct frame2
         Note
         ====
         This function avoids the same chemical dataset to be found in different training/testing/validating datasets that are used in ML.
 
         Indeed, it is worthless to put data from the same original dataset / with the same chemical composition
         in the training / testing / validating datasets. This creates a initial bias in the splitting process...
+    
+        Another way of doing that would be to write:
+
+        '''
+        grouped = Pandas_DataFrame.groupby(by='label')
+        k = [i for i in grouped.groups.keys()]
+        k_train, k_valid = model_selection.train_test_split(np.array(k),test_size=0.40,random_state=100)
+        train = Pandas_DataFrame.loc[Pandas_DataFrame['label'].isin(k_train)]
+        valid = Pandas_DataFrame.loc[Pandas_DataFrame['label'].isin(k_valid)]
+        '''
+
+        (results will vary slightly as variable k is sorted but not variable names in the function below)
+    
     """
     names = Pandas_DataFrame[target].unique()
     names_idx = np.arange(len(names))
