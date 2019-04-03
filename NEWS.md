@@ -8,7 +8,15 @@ Licence: see LICENCE.md
 
 As Rampy starts to grow, I will summarise changes in this file starting at version 0.2.6
 
-# 0.4.3
+# 0.4.4 (in development)
+
+- Correction of a bug in tlcorrection
+
+- Addition of unsupervised machine learning techniques
+
+- Addition of the T2008 external calibration method in rameau
+
+# 0.4.3 (stable)
 
 - Improvements in documentation of mlregressor.
 

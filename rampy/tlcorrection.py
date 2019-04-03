@@ -78,40 +78,43 @@ def tlcorrection(x,y,temp,wave, **kwargs):
 
 
     # then we proceed to the correction
-    try:
-        if correction == 'long':
-            # Formula used in Mysen et al. (1982), Neuville and Mysen (1996) and Le Losq et al. (2012) (corrected for using the Planck constant in the last reference)
-            # It is that reported in Brooker et al. (1988) with the addition of a scaling nu0^3 coefficient for adimentionality
-            frequency = nu0**3*nu/((nu0-nu)**4) # frequency correction; dimensionless
-            boltzman = 1.0 - np.exp(-h*c*nu/(k*T)) # temperature correction with Boltzman distribution; dimensionless
-            ycorr = y*frequency*boltzman # correction
+    
+    if correction == 'long':
+        # Formula used in Mysen et al. (1982), Neuville and Mysen (1996) and Le Losq et al. (2012) (corrected for using the Planck constant in the last reference)
+        # It is that reported in Brooker et al. (1988) with the addition of a scaling nu0^3 coefficient for adimentionality
+        frequency = nu0**3*nu/((nu0-nu)**4) # frequency correction; dimensionless
+        boltzman = 1.0 - np.exp(-h*c*nu/(k*T)) # temperature correction with Boltzman distribution; dimensionless
+        ycorr = y*frequency*boltzman # correction
 
-        elif correction == 'galeener':
-            # This uses the formula reported in Galeener and Sen (1978) and Brooker et al. (1988); it uses the Bose-Einstein / Boltzman distribution
-            # Formula from  without the scaling vo^3 coefficient reported in Mysen et al. (1982), Neuville and Mysen (1996) and Le Losq et al. (2012)
-            frequency = nu/((nu0-nu)**4) # frequency correction; M^3
-            boltzman = 1.0 - np.exp(-h*c*nu/(k*T)) # temperature correction with Boltzman distribution; dimensionless
-            ycorr = y*frequency*boltzman # correction
+    elif correction == 'galeener':
+        # This uses the formula reported in Galeener and Sen (1978) and Brooker et al. (1988); it uses the Bose-Einstein / Boltzman distribution
+        # Formula from  without the scaling vo^3 coefficient reported in Mysen et al. (1982), Neuville and Mysen (1996) and Le Losq et al. (2012)
+        frequency = nu/((nu0-nu)**4) # frequency correction; M^3
+        boltzman = 1.0 - np.exp(-h*c*nu/(k*T)) # temperature correction with Boltzman distribution; dimensionless
+        ycorr = y*frequency*boltzman # correction
 
-        elif correction =='hehlen':
-            # this uses the formula reported in Hehlen et al. 2010
-            frequency = 1/(nu0**3*density) # frequency + density correction; M/KG
-            boltzman = 1.0 - np.exp(-h*c*nu/(k*T)) # dimensionless
-            ycorr = nu*y*frequency*boltzman # correction
-    except:
-        print("Not implemented, choose correction = long, galeener or hehlen.")
+    elif correction =='hehlen':
+        # this uses the formula reported in Hehlen et al. 2010
+        frequency = 1.0/(nu0**3*density) # frequency + density correction; M/KG
+        boltzman = 1.0 - np.exp(-h*c*nu/(k*T)) # dimensionless
+        ycorr = nu*y*frequency*boltzman # correction
+    
+    else:
+        Error("Not implemented, choose correction = long, galeener or hehlen.")
 
     # we take care of the normalisation
-    try:
-        if normalisation == 'area':
-            ycorr = ycorr/np.trapz(ycorr,x) # area normalisation
-        elif normalisation == 'intensity':
-            ycorr = ycorr/np.max(ycorr) # max. intensity normalisation
-        elif normalisation == 'no':
-            print("No normalisation...")
-    except:
-        print("Set the optional normalisation parameter to area, intensity or no.")
+    
+    if normalisation == 'area':
+        ycorr = ycorr/np.trapz(ycorr,x) # area normalisation
+    
+    elif normalisation == 'intensity':
+        ycorr = ycorr/np.max(ycorr) # max. intensity normalisation
+    
+    elif normalisation == 'no':
+        ycorr = y.copy()
+        print("No normalisation...")
+    
+    else:
+        Error("Set the optional normalisation parameter to area, intensity or no.")
 
-    esecorr = ese*ycorr # error calculation
-
-    return x, ycorr, esecorr
+    return x, ycorr, ese*ycorr
