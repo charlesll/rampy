@@ -15,7 +15,7 @@ setup(name='rampy',
       long_description_content_type="text/markdown",
       license='GNU-GPLv2',
       packages=['rampy', 'rampy.tests'],
-      install_requires=['numpy>=1.12','scipy','sklearn','pandas'],
+      install_requires=['numpy>=1.12','scipy','scikit-learn','pandas'],
       extras_require={
         'gcvspline':  ["gcvspline"],
         'mixing': ["cvxpy>=1.0"],},
