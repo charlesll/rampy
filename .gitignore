@@ -3,3 +3,6 @@
 /build/
 /examples/.ipynb_checkpoints/
 /rampy.egg-info/
+/.pytest_cache/
+/.cache/
+.pyc
