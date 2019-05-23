@@ -10,6 +10,7 @@ addons:
     - gfortran
 
 install:
+  - pip install cvxpy
   - pip install .
 # command to run tests
 script: pytest
