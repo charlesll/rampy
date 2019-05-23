@@ -14,16 +14,18 @@ def get_portion_interest(x,y,bir):
 
     Parameters
     ----------
-
-    x: the x axis
-
-    y: the y values
-
-    bir: the regions x values where the signal needs to be extracted, must be a n x 2 dimension array
+    x : ndarray
+        the x axis
+    y : ndarray
+        the y values
+    bir : n x 2 array
+        the x values of regions where the signal needs to be extracted, 
+        must be a n x 2 dimension array, where n is the number of regions to extract
+        and column 0 contains the low bounds, column 1 the high ones.
 
     Returns
     -------
-    yafit
+    yafit : ndarray
         a 2 columns x-y array containing the signals in the bir.
 
     """
