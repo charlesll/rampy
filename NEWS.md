@@ -18,6 +18,10 @@ Licence: see LICENCE.md
 
 - Correction of a bug in tlcorrection
 
+- add lorentzian() function
+
+- update docs
+
 # 0.4.3 (stable)
 
 - Improvements in documentation of mlregressor.
