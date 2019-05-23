@@ -91,7 +91,8 @@ def smooth(x,y,method="whittaker",**kwargs):
         if method == 'flat': #moving average
             w=np.ones(window_len,'d')
         else:
-            w=eval('np.'+method+'(window_len)')
+            w=getattr(np,method)(window_len)
+            #w=eval('np.'+method+'(window_len)') # old code, usafe with eval
 
         y_filt = np.convolve(w/w.sum(),s,mode='valid')
         shift = int((len(y_filt) - len(y))/2)
