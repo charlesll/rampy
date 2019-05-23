@@ -59,6 +59,29 @@ def gaussianarea(amp,HWHM,**options):
 
     return area, esearea
 
+def lorentzian(x,amp,freq,HWHM):
+    """compute a Lorentzian peak
+
+    Inputs
+    ------
+    x : ndarray
+        the positions at which the signal should be sampled
+    amp : float
+        amplitude
+    freq : float
+        frequency/position of the Gaussian component
+    HWHM : float
+        half-width at half-maximum
+
+    Returns
+    -------
+    out : ndarray
+        the signal
+    """
+    
+    return amp/(1+((x-freq)/HWHM)**2)
+
+
 def pseudovoigt(x,amp,freq,HWHM,LGratio):
     """compute a pseudo-Voigt peak
 
