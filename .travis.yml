@@ -1,7 +1,7 @@
 language: python
 python:
-  - "2.7"
   - "3.6"
+  - "3.7"
 os:
   - linux
 
@@ -10,7 +10,6 @@ addons:
     - gfortran
 
 install:
-  - pip install cvxpy
   - pip install .
 # command to run tests
 script: pytest
