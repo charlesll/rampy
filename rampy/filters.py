@@ -10,25 +10,25 @@ def smooth(x,y,method="whittaker",**kwargs):
 
     Parameters
     ==========
-    x: ndarray
+    x : ndarray
         Nx1 array of x values (equally spaced).
-    y: ndarray
+    y : ndarray
         Nx1 array of y values (equally spaced).
-    method: str
+    method : str
         Method for smoothing the signal;
         choose between savgol (Savitzky-Golay), GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline, whittaker, 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'.
 
     kwargs
     ======
-    window_length: int
+    window_length : int
         The length of the filter window (i.e. the number of coefficients). window_length must be a positive odd integer.
-    polyorder: int
+    polyorder : int
         The order of the polynomial used to fit the samples. polyorder must be less than window_length.
-    Lambda: float
+    Lambda : float
         smoothing parameter of the Whittaker filter described in Eilers (2003). The higher the smoother the fit.
-    d: int
+    d : int
         d parameter in Whittaker filter, see Eilers (2003).
-    ese_y: ndarray
+    ese_y : ndarray
         errors associated with y (for the gcvspline algorithms)
 
     Returns
@@ -103,17 +103,17 @@ def whittaker(y,**kwargs):
 
     Inputs
     ------
-    y: ndarray
+    y : ndarray
         An array with the values to smooth (equally spaced).
 
     kwargs
     ------
-    Lambda: float
+    Lambda : float
         The smoothing coefficient, the higher the smoother. Default = 10^5.
 
     Outputs
     -------
-    z: ndarray
+    z : ndarray
         An array containing the smoothed values.
 
     References
@@ -139,19 +139,19 @@ def spectrafilter(spectre,filtertype,fq,numtaps,columns):
 
     Inputs
     ------
-    spectre
+    spectre : ndarray
         Array of X-Y values of spectra. First column is X and subsequent n columns are Y values of n spectra. (see also spectraarray function)
-    filtertype
-        Contains a string defining which type of filter you want. Choose between 'low', 'high', 'bandstop', 'bandpass'.
-    fq
+    filtertype : string
+        type of filter; Choose between 'low', 'high', 'bandstop', 'bandpass'.
+    fq : ndarray
         Frequency of the periodic signal you try to erase. If using a bandpass or band stop filter, fq must be an array containing the cutoff frequencies.
-    columns
-        An array defining which columns you want to treat.
+    columns : ndarray
+        An array defining which columns to treat.
 
     Outputs
     -------
-    out
-        An array with the filtered signals.
+    out : ndarray
+        filtered signals.
 
     """
     out = np.zeros(spectre.shape) # output array
