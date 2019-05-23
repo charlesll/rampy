@@ -15,32 +15,32 @@ def tlcorrection(x,y,temp,wave, **kwargs):
 
     Parameters
     ----------
-    x
+    x : ndarray
         Raman shifts in cm-1
-    y
+    y : ndarray
         Intensity values as counts
-    temp
+    temp : float
         Temperature in °C
-    wave
+    wave : float
         wavenumber of the laser that excited the sample, in nm
 
     kwargs
     ------
-    correction
+    correction : string
         Equation used for the correction. Choose between 'long', 'galeener', or 'hehlen'. Default = 'long'.
-    normalisation
+    normalisation : string
         Data normalisation procedure. Choose between 'intensity', 'area', or 'no'. Default = 'area'.
-    density
+    density : float
         The density of the studied material in kg m-3, to be used with the 'hehlen' equation. Default = 2210.0 (density of silica).
 
     Returns
     -------
-    x
-        The Raman shifts values.
-    long
-        The corrected intensities.
-    eselong
-        The errors calculated as sqrt(y) on raw intensities and propagated after the correction.
+    x : 1darray
+        Raman shifts values.
+    long : 1darray
+        corrected intensities.
+    eselong : 1darray
+        errors calculated as sqrt(y) on raw intensities and propagated after the correction.
 
     Remarks
     -------
