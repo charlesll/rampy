@@ -154,28 +154,24 @@ def spectrafilter(spectre,filtertype,fq,numtaps,columns):
         An array with the filtered signals.
 
     """
-
-    # we already say what is the output array
-    out = np.zeros(spectre.shape)
+    out = np.zeros(spectre.shape) # output array
+    out[:,0] = spectre[:,0] # record x axis
 
     # Butterworth band stop filter caracteristics
     a = spectre[1,0] - spectre[0,0]
     samplerate = 1/a  #Hertz
-    nyq_rate = samplerate/2 # frequence Nyquist
+    nyq_rate = samplerate/2 # Nyquist frequency
     cutf = fq # cutoff frequency
     #bandwidth = 0.005 # largeur filtre, for band pass/stop filters
-    numtaps = 1 # ordre du filtre...
+    numtaps = 1 # filter order
 
     for i in range(len(columns)):
         y = spectre[:,columns[i]]
         if (filtertype == 'low') or (filtertype == 'high'):
             b, a = signal.butter(numtaps, [(cutf/nyq_rate)], btype = filtertype)
-            out[:,columns[i]] = signal.filtfilt(b, a, y) # filter with phase shift correction
         else:
             b, a = signal.butter(numtaps, [(cutf[0]/nyq_rate),(cutf[1]/nyq_rate)], btype = filtertype)
-            out[:,columns[i]] = signal.filtfilt(b, a, y) # filter with phase shift correction
-
-    # Note forgetting to register the x axis
-    out[:,0] = spectre[:,0]
-
+        
+        out[:,columns[i]] = signal.filtfilt(b, a, y) # filter with phase shift correction
+    
     return out
