@@ -107,6 +107,28 @@ def pseudovoigt(x,amp,freq,HWHM,LGratio):
     
     return LGratio*(amp/(1+((x-freq)/HWHM)**2)) + (1-LGratio)*(amp*np.exp(-np.log(2)*((x-freq)/HWHM)**2))
 
+def pearson7(x,a0,a1,a2,a3):
+    """compute a Peason7 peak
+
+    Inputs
+    ------
+    x : ndarray
+        the positions at which the signal should be sampled
+    a0, a1, a2, a3 : float
+        parameters of the Pearson7 equation
+    
+    Returns
+    -------
+    out : ndarray
+        the signal
+
+    Note
+    ----
+    equation is:
+        out = a0 * (1/ ( (1 + ((x-a1)/a2))**2 * (2**(1/a3) -1))**a3
+    """
+    return a0 / ( (1.0 + ((x-a1)/a2)**2.0 * (2.0**(1.0/a3) -1.0))**a3 )
+
 def funlog(x,a,b,c,d):
     return a*np.log(-b*(x-c))-d*x**2
 
