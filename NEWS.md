@@ -6,9 +6,7 @@ email: charles.lelosq@anu.edu.au
 
 Licence: see LICENCE.md
 
-As Rampy starts to grow, I will summarise changes in this file starting at version 0.2.6
-
-# Wanter features
+# Wanted features
 
 - Addition of unsupervised machine learning techniques
 

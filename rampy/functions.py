@@ -5,25 +5,83 @@ from scipy.special import erfc
 
 ############ SIMPLE MATHEMATICAL FUNCTIONS ###########
 def gaussian(x,amp,freq,HWHM): # for spectral fit
+    """compute a Gaussian peak
+
+    Inputs
+    ------
+    x : ndarray
+        the positions at which the signal should be sampled
+    amp : float
+        amplitude
+    freq : float
+        frequency/position of the Gaussian component
+    HWHM : float
+        half-width at half-maximum
+    Returns
+    -------
+    out : ndarray
+        the signal
+    """
     return amp*np.exp(-np.log(2)*((x-freq)/HWHM)**2)
 
-def gaussianarea(Amplitude,HWHM,**options):
+def gaussianarea(amp,HWHM,**options):
+    """returns the area of a Gaussian peak 
+    
+    Inputs
+    ------
+    amp : float or ndarray
+        amplitude of the peak
+    HWHM : float or ndarray
+        half-width at half-maximum
+    
+    Options 
+    -------
+    eseAmplitude : float or ndarray
+        standard deviation on amp; Default = None
+    eseHWHM : float or ndarray
+        standard deviation on HWHM; Default = None
+
+    Returns
+    -------
+    area : float or ndarray
+        peak area
+    esearea : float or ndarray
+        error on peak area; will be None if no errors on amp and HWHM were provided.
     """
-    Return the area of a gaussian with inpu amplitude and HWHM.
-    Options are eseAmplitude (None by default) and eseHWHM (None by default)
-    """
-    area = np.sqrt(np.pi/np.log(2))*Amplitude*HWHM
+    area = np.sqrt(np.pi/np.log(2))*amp*HWHM
     if options.get("eseAmplitude") != None:
         eseAmplitude = options.get("eseAmplitude")
         if options.get("eseHWHM") != None:
             eseHWHM = options.get("eseHWHM")
-            esearea = np.sqrt((np.pi/np.log(2)*HWHM)**2 * eseAmplitude**2 + (np.pi/np.log(2)*Amplitude)**2 * eseHWHM**2)
+            esearea = np.sqrt((np.pi/np.log(2)*HWHM)**2 * eseAmplitude**2 + (np.pi/np.log(2)*amp)**2 * eseHWHM**2)
     else:
         esearea = None
 
     return area, esearea
 
-def pseudovoigt(x,amp,freq,HWHM,LGratio): # for spectral fit
+def pseudovoigt(x,amp,freq,HWHM,LGratio):
+    """compute a pseudo-Voigt peak
+
+    Inputs
+    ------
+    x : ndarray
+        the positions at which the signal should be sampled
+    amp : float
+        amplitude
+    freq : float
+        frequency/position of the Gaussian component
+    HWHM : float
+        half-width at half-maximum
+    LGratio : float
+        ratio pf the Lorentzian component, should be between 0 and 1 (included)
+    Returns
+    -------
+    out : ndarray
+        the signal
+    """
+    if (LGratio>1) or (LGratio<0):
+        raise ValueError("LGratio should be comprised between 0 and 1")
+    
     return LGratio*(amp/(1+((x-freq)/HWHM)**2)) + (1-LGratio)*(amp*np.exp(-np.log(2)*((x-freq)/HWHM)**2))
 
 def funlog(x,a,b,c,d):
