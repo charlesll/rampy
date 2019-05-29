@@ -1,0 +1,38 @@
+# Supplementary Code 
+
+Determination of the oxidation state of iron in Mid-Ocean Ridge basalt glasses by Raman spectroscopy.
+
+by Le Losq C., Berry A. J., Kendrick M. A., Neuville D. R. and O'Neill H. St. C.
+
+2019, American Mineralogist 104, doi.org/10.2138/am-2019-6887
+
+Code tested on Python 3.6, Linux and MacOS.
+
+A copy of this code as well as its eventual improvements will be hosted on github.com/charlesll/rampy/examples
+
+# Datasets:
+
+All raw spectra are in ./raw. See publication for acquisition details.
+
+Correspondance to samples can be seen in the Excel file MORB_datalist.xlsx (3 different spreadsheets).
+
+# Python Instructions:
+
+* Install Python version > 3.5 and Jupyter Notebook through Anaconda Python.
+
+(read Jupyter Notebook documentation and examples online if not familiar with it)
+
+* Install the libraries indicated at the top of the Jupyter Notebook file 
+
+ - be careful about version numbers)
+
+ - use pip for install of gcvspline, rampy, cvxpy, pyMCR)
+
+* If not already existing, create a folder called "figures"
+
+* In the Jupyter Notebook, click on "Cells" => "Run all" will run all cells 
+and generate all figures and outputs in the notebook.
+
+* Note that results in Figure 10 can vary from one run to another as neural networks are randomly initialised and do not converge all the time to the same solution.
+
+* Do not erase or move the file iron.py, it contains functions called in the notebook.

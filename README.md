@@ -1,7 +1,7 @@
 # RamPy
 =======
 
-Copyright (2015-2018) C. Le Losq.
+Copyright (2015-2019) C. Le Losq.
 
 charles.lelosq@anu.edu.au
 
@@ -43,17 +43,17 @@ Additional libraries for model fitting may be wanted:
 
 Install with pip:
 
-  `pip install rampy` 
+  `pip install rampy`
 
 If you want to use gcvspline and cvxpy, also install it:
 
   `pip install gcvspline`
 
   `pip install cvxpy`
- 
+
 # EXAMPLES
 
-Given a signal [x y] containing a peak, and recorded in a text file myspectrum.txt. 
+Given a signal [x y] containing a peak, and recorded in a text file myspectrum.txt.
 
 You can import it, remove a automatic background, plot the result, and print the centroid of the peak as:
 
@@ -79,8 +79,3 @@ print("Signal centroid is %.2f" % rp.centroid(spectrum[:,0],y_corrected))
 See the /example folder for further examples.
 
 Updated May 2019
-
-
-
-
-

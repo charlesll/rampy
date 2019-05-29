@@ -11,46 +11,46 @@ import numpy as np
 def chemical_splitting(Pandas_DataFrame, target,split_fraction=0.30, rand_state=42):
     """split datasets depending on their chemistry
 
-        Parameters
-        ==========
-        Pandas_DataFrame : Pandas DataFrame
-            The input DataFrame with in the first row the names of the different data compositions
-        label : string
-            The target in the DataFrame according to which we will split the dataset
-        split_fraction : Float, between 0 and 1
-            This is the amount of splitting you want, in reference to the second output dataset (see OUTPUTS).
-        rand_state : Float64
-            the random seed that is used for reproductibility of the results. Default = 42.
+    Parameters
+    ==========
+    Pandas_DataFrame : Pandas DataFrame
+        The input DataFrame with in the first row the names of the different data compositions
+    label : string
+        The target in the DataFrame according to which we will split the dataset
+    split_fraction : Float, between 0 and 1
+        This is the amount of splitting you want, in reference to the second output dataset (see OUTPUTS).
+    rand_state : Float64
+        the random seed that is used for reproductibility of the results. Default = 42.
 
-        Returns
-        =======
-            frame1 : Pandas DataFrame
-                A DataSet with (1-split_fraction) datas from the input dataset with unique chemical composition / names
-            frame2 : Pandas DataFrame
-                A DataSet with split_fraction datas from the input dataset with unique chemical composition / names
-            frame1_idx : ndarray
-                Contains the indexes of the data picked in Pandas_DataFrame to construct frame1
-            frame2_idx : ndarray
-                Contains the indexes of the data picked in Pandas_DataFrame to construct frame2
-        Note
-        ====
-        This function avoids the same chemical dataset to be found in different training/testing/validating datasets that are used in ML.
+    Returns
+    =======
+        frame1 : Pandas DataFrame
+            A DataSet with (1-split_fraction) datas from the input dataset with unique chemical composition / names
+        frame2 : Pandas DataFrame
+            A DataSet with split_fraction datas from the input dataset with unique chemical composition / names
+        frame1_idx : ndarray
+            Contains the indexes of the data picked in Pandas_DataFrame to construct frame1
+        frame2_idx : ndarray
+            Contains the indexes of the data picked in Pandas_DataFrame to construct frame2
+    Note
+    ====
+    This function avoids the same chemical dataset to be found in different training/testing/validating datasets that are used in ML.
 
-        Indeed, it is worthless to put data from the same original dataset / with the same chemical composition
-        in the training / testing / validating datasets. This creates a initial bias in the splitting process...
-    
-        Another way of doing that would be to write:
+    Indeed, it is worthless to put data from the same original dataset / with the same chemical composition
+    in the training / testing / validating datasets. This creates a initial bias in the splitting process...
 
-        '''
-        grouped = Pandas_DataFrame.groupby(by='label')
-        k = [i for i in grouped.groups.keys()]
-        k_train, k_valid = model_selection.train_test_split(np.array(k),test_size=0.40,random_state=100)
-        train = Pandas_DataFrame.loc[Pandas_DataFrame['label'].isin(k_train)]
-        valid = Pandas_DataFrame.loc[Pandas_DataFrame['label'].isin(k_valid)]
-        '''
+    Another way of doing that would be to write:
 
-        (results will vary slightly as variable k is sorted but not variable names in the function below)
-    
+    '''
+    grouped = Pandas_DataFrame.groupby(by='label')
+    k = [i for i in grouped.groups.keys()]
+    k_train, k_valid = model_selection.train_test_split(np.array(k),test_size=0.40,random_state=100)
+    train = Pandas_DataFrame.loc[Pandas_DataFrame['label'].isin(k_train)]
+    valid = Pandas_DataFrame.loc[Pandas_DataFrame['label'].isin(k_valid)]
+    '''
+
+    (results will vary slightly as variable k is sorted but not variable names in the function below)
+
     """
     names = Pandas_DataFrame[target].unique()
     names_idx = np.arange(len(names))
@@ -115,6 +115,14 @@ class mlregressor:
     Y_scaler :
         A Scikit Learn scaler object for the y values.
 
+    Example
+    -------
+
+    Given an array X of n samples by m frequencies, and Y an array of n x 1 concentrations
+
+    >>> model = rampy.mlregressor(X,y)
+    >>>
+
     Remarks
     -------
 
@@ -126,7 +134,7 @@ class mlregressor:
 
     If the results are poor with Support Vector and Kernel Ridge regressions, you will have to tune the param_grid_kr or param_grid_svm dictionnary that records the hyperparameter space to investigate during the cross validation.
 
-    Results for machine learning algorithms can vary from run to run. A way to solve that is to fix the random_state. 
+    Results for machine learning algorithms can vary from run to run. A way to solve that is to fix the random_state.
     For neural nets, results from multiple neural nets (bagging technique) may also generalise better, such that
     it may be better to use the BaggingNeuralNet function.
 
@@ -171,15 +179,15 @@ class mlregressor:
                                              random_state=self.rand_state))
 
         self.param_bag = kwargs.get("param_bagging",
-                                    dict(n_estimators=100, 
-                                         max_samples=1.0, 
-                                         max_features=1.0, 
-                                         bootstrap=True, 
-                                         bootstrap_features=False, 
-                                         oob_score=False, 
-                                         warm_start=False, 
+                                    dict(n_estimators=100,
+                                         max_samples=1.0,
+                                         max_features=1.0,
+                                         bootstrap=True,
+                                         bootstrap_features=False,
+                                         oob_score=False,
+                                         warm_start=False,
                                          n_jobs=1, verbose=0,
-                                         random_state=self.rand_state))    
+                                         random_state=self.rand_state))
 
         if len(self.X_test) == 1:
             self.X_train, self.X_test, self.y_train, self.y_test = sklearn.model_selection.train_test_split(
@@ -240,7 +248,7 @@ class mlregressor:
 
         elif self.algorithm == "ElasticNet":
             clf_ElasticNet = sklearn.linear_model.ElasticNet(alpha=0.1, l1_ratio=0.5,random_state=self.rand_state)
-            self.model = sklearn.model_selection.GridSearchCV(clf_ElasticNet,cv=5, 
+            self.model = sklearn.model_selection.GridSearchCV(clf_ElasticNet,cv=5,
                                                               param_grid=dict(alpha=np.logspace(-5,5,30)))
 
         elif self.algorithm == "LinearRegression":
