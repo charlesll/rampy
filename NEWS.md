@@ -10,7 +10,7 @@ Licence: see LICENCE.md
 
 - Addition of more unsupervised machine learning techniques
 
-- classification via 1D CNN using Keras or Pytorch
+- Classification via 1D CNN and other algorithms using Keras or Pytorch
 
 - Addition of external calibration method in rameau
 
