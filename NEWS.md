@@ -8,21 +8,25 @@ Licence: see LICENCE.md
 
 # Wanted features
 
-- Addition of unsupervised machine learning techniques
+- Addition of more unsupervised machine learning techniques
+
+- classification via 1D CNN using Keras or Pytorch
 
 - Addition of external calibration method in rameau
 
-# 0.4.4 (in development)
+# 0.4.4 (stable)
 
 - Cleaning the code
 
 - Correction of a bug in tlcorrection
 
-- add lorentzian() function
+- add lorentzian() and pearson7() peak shape functions
+
+- add mlexplorator function for easy PCA/NMF on spectroscopic data
 
 - update docs
 
-# 0.4.3 (stable)
+# 0.4.3
 
 - Improvements in documentation of mlregressor.
 
