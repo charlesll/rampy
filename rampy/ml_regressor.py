@@ -213,7 +213,7 @@ class mlregressor:
             InputError("Choose the scaler between MinMaxScaler and StandardScaler")
 
     def fit(self):
-        """Train the model with the indicated algorithm.
+        """Scale data and train the model with the indicated algorithm.
 
         Do not forget to tune the hyperparameters.
 
@@ -261,6 +261,21 @@ class mlregressor:
 
             self.model = BaggingRegressor(base_estimator = nn_m, **self.param_bag)
 
+        if self.scaling == True:
+            self.model.fit(self.X_train_sc, self.y_train_sc.reshape(-1,))
+            predict_train_sc = self.model.predict(self.X_train_sc)
+            self.prediction_train = self.Y_scaler.inverse_transform(predict_train_sc.reshape(-1,1))
+            predict_test_sc = self.model.predict(self.X_test_sc)
+            self.prediction_test = self.Y_scaler.inverse_transform(predict_test_sc.reshape(-1,1))
+        else:
+            self.model.fit(self.X_train, self.y_train.reshape(-1,))
+            self.prediction_train = self.model.predict(self.X_train)
+            self.prediction_test = self.model.predict(self.X_test)
+
+    def refit(self):
+        """Re-train a model previously trained with fit()
+
+        """
         if self.scaling == True:
             self.model.fit(self.X_train_sc, self.y_train_sc.reshape(-1,))
             predict_train_sc = self.model.predict(self.X_train_sc)

@@ -1,3 +1,6 @@
+import sklearn
+from sklearn.decomposition import PCA, NMF
+
 class mlexplorer:
     """use machine learning algorithms from scikit learn to explore spectroscopic datasets
 

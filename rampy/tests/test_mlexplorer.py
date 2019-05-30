@@ -8,9 +8,9 @@ from scipy.stats import norm
 
 import rampy as rp
 
-class TestML(unittest.TestCase):
+class TestML2(unittest.TestCase):
 
-    def test_mlregressor(self):
+    def test_mlexplorer(self):
 
         x = np.arange(0,600,1.0)
         nb_samples = 100 # number of samples in our dataset
@@ -34,18 +34,15 @@ class TestML(unittest.TestCase):
         noise_new = np.random.randn(len(x))*1e-4
         Obs_new = np.dot(C_new_true,S_true) + noise_new
 
-        model = rp.mlregressor(Obs,C_true[:,0].reshape(-1,1))
+        explo = rp.mlexplorer(Obs)
 
-        for i in ["KernelRidge", "SVM", "LinearRegression", "NeuralNet", "BaggingNeuralNet"]:
-            # we do not test on Lasso and ElasticNet as this raises lots of warning due to convergence issues...
-            model.algorithm = i
-            model.user_kernel = 'poly'
-            model.fit()
-
-            C_new_predicted = model.predict(Obs_new)
-
-        # testing if refit works
-        model.refit()
+        # we just test that it runs for now
+        explo.algorithm = 'NMF'
+        explo.nb_compo = 2
+        explo.test_size = 0.3
+        explo.scaler = "MinMax"
+        explo.fit()
+        explo.refit()
 
 if __name__ == '__main__':
     unittest.main()
