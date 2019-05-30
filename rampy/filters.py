@@ -65,7 +65,7 @@ def smooth(x,y,method="whittaker",**kwargs):
         raise ValueError("Method should be on 'GCVSmoothedNSpline','MSESmoothedNSpline','DOFSmoothedNSpline','whittaker','savgol','flat', 'hanning', 'hamming', 'bartlett', 'blackman'")
 
     if (method ==  "GCVSmoothedNSpline") or (method == "MSESmoothedNSpline") or (method == "DOFSmoothedNSpline"): # gcvspline methods
-        
+
         try: # we test if gcvspline is installed
             import gcvspline
         except ImportError:
@@ -85,7 +85,7 @@ def smooth(x,y,method="whittaker",**kwargs):
         return whittaker(y,Lambda=lam,d=d)
     elif method == "savgol": # Savtisky-Golay filter
         return scipy.signal.savgol_filter(y, window_len, polyorder)
-    elif method in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']: # various window filters, from https://scipy-cookbook.readthedocs.io/items/SignalSmooth.html?highlight=smooth
+    elif method in frozenset(('flat', 'hanning', 'hamming', 'bartlett', 'blackman')): # various window filters, from https://scipy-cookbook.readthedocs.io/items/SignalSmooth.html?highlight=smooth
 
         s=np.r_[y[window_len-1:0:-1],y,y[-2:-window_len-1:-1]]
         if method == 'flat': #moving average
@@ -171,7 +171,7 @@ def spectrafilter(spectre,filtertype,fq,numtaps,columns):
             b, a = signal.butter(numtaps, [(cutf/nyq_rate)], btype = filtertype)
         else:
             b, a = signal.butter(numtaps, [(cutf[0]/nyq_rate),(cutf[1]/nyq_rate)], btype = filtertype)
-        
+
         out[:,columns[i]] = signal.filtfilt(b, a, y) # filter with phase shift correction
-    
+
     return out
