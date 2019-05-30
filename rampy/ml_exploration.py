@@ -4,6 +4,8 @@ from sklearn.decomposition import PCA, NMF
 class mlexplorer:
     """use machine learning algorithms from scikit learn to explore spectroscopic datasets
 
+    Performs automatic scaling and train/test split before NMF or PCA fit.
+
     Attributes
     ----------
     x : {array-like, sparse matrix}, shape = (n_samples, n_features)
@@ -31,6 +33,21 @@ class mlexplorer:
     http://scikit-learn.org/stable/
 
     Results for machine learning algorithms can vary from run to run. A way to solve that is to fix the random_state.
+
+    Example
+    -------
+
+    Given an array X of n samples by m frequencies, and Y an array of n x 1 concentrations
+
+    >>> explo = rampy.mlexplorer(X) # X is an array of signals built by mixing two partial components
+    >>> explo.algorithm = 'NMF' # using Non-Negative Matrix factorization
+    >>> explo.nb_compo = 2 # number of components to use
+    >>> explo.test_size = 0.3 # size of test set
+    >>> explo.scaler = "MinMax" # scaler
+    >>> explo.fit() # fitting!
+    >>> W = explo.model.transform(explo.X_train_sc) # getting the mixture array
+    >>> H = explo.X_scaler.inverse_transform(explo.model.components_) # components in the original space
+    >>> plt.plot(X,H.T) # plot the two components
 
     """
 

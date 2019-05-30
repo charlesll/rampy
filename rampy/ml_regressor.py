@@ -121,7 +121,10 @@ class mlregressor:
     Given an array X of n samples by m frequencies, and Y an array of n x 1 concentrations
 
     >>> model = rampy.mlregressor(X,y)
-    >>>
+    >>> model.algorithm("SVM")
+    >>> model.user_kernel = 'poly'
+    >>> model.fit()
+    >>> y_new = model.predict(X_new)
 
     Remarks
     -------
