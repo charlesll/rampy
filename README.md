@@ -15,7 +15,7 @@ The /examples/ folder contain various examples.
 
 # REQUIREMENTS
 
-Rampy is tested on Python 2.7 and 3.6 (see Travis badge; no garantee that it works on other Python versions)
+Rampy is tested on Python 3.6 (see Travis badge; no garantee that it works on other Python versions)
 
 The following libraries are required and indicated in setup.py:
 
@@ -78,4 +78,10 @@ print("Signal centroid is %.2f" % rp.centroid(spectrum[:,0],y_corrected))
 
 See the /example folder for further examples.
 
-Updated May 2019
+# Other packages
+
+rampy can be used also to analyse the output of the [RADIS](https://radis.readthedocs.io/en/latest/) package.
+
+See for instance https://github.com/charlesll/rampy/issues/13
+
+Updated August 2019

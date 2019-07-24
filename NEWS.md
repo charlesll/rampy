@@ -14,7 +14,13 @@ Licence: see LICENCE.md
 
 - Addition of external calibration method in rameau
 
-# 0.4.4 (stable)
+# 0.4.5 (in dev)
+
+- update docs
+
+- enhancing the pseudovoigt section for its use with arrays
+
+# 0.4.4
 
 - Cleaning the code
 

@@ -11,30 +11,116 @@ def gaussian(x,amp,freq,HWHM): # for spectral fit
     ------
     x : ndarray
         the positions at which the signal should be sampled
-    amp : float
+    amp : float or ndarray with size equal to x.shape
         amplitude
-    freq : float
+    freq : float or ndarray with size equal to x.shape
         frequency/position of the Gaussian component
-    HWHM : float
+    HWHM : float or ndarray with size equal to x.shape
         half-width at half-maximum
+
     Returns
     -------
     out : ndarray
         the signal
+
+    Remarks
+    -------
+    Formula is amp * exp(-log(2) * (x-freq)**2/(HWHM**2))
     """
     return amp*np.exp(-np.log(2)*((x-freq)/HWHM)**2)
 
+
+def peakarea(shape,**options):
+    """returns the area of a peak
+
+    Inputs
+    ------
+    shape : string
+        gaussian, lorentzian, pseudovoigt or pearson7
+
+    Options
+    -------
+    amp : float or ndarray
+        amplitude of the peak
+    pos : float or ndarray
+        peak position
+    HWHM : float or ndarray
+        half-width at half-maximum
+    a3 : float or ndarray
+        a3 parameters for pearson7
+    eseAmplitude : float or ndarray
+        standard deviation on amp; Default = None
+    eseHWHM : float or ndarray
+        standard deviation on HWHM; Default = None
+
+    Returns
+    -------
+    area : float or ndarray
+        peak area
+    esearea : float or ndarray
+        error on peak area; will be None if no errors on amp and HWHM were provided.
+    """
+
+    if shape == "gaussian": # gaussian peak: analytical solution
+        try:
+            amp=options.get("amp")
+            HWHM=options.get("HWHM")
+            area = np.sqrt(np.pi/np.log(2))*amp*HWHM
+            if options.get("eseAmplitude") != None:
+                eseAmplitude = options.get("eseAmplitude")
+                if options.get("eseHWHM") != None:
+                    eseHWHM = options.get("eseHWHM")
+                    esearea = np.sqrt((np.pi/np.log(2)*HWHM)**2 * eseAmplitude**2 + (np.pi/np.log(2)*amp)**2 * eseHWHM**2)
+                return area, esearea
+            else:
+                return area
+
+        except ValueError:
+            print("amp and HWHM should be provided")
+
+    elif (shape == "lorentzian") or (shape == "pseudovoigt") or (shape == "pearson7"): # other shapes: trapezoidal integration
+        try:
+            amp=options.get("amp")
+            pos=options.get("pos")
+            HWHM=options.get("HWHM")
+        except ValueError:
+            print("amp,pos,HWHM should be provided")
+
+        # we construct a fake X axis with lots of samples
+        x_int = np.linspace(pos-(10*HWHM),pos+10*HWHM, 10000)
+
+        # now calculate y, also ask for any additional parameters
+        if shape == "pearson7":
+            try:
+                a3=options.get("a3")
+            except ValueError:
+                print("a3 should be provided for pearson7 peak")
+            y = rp.pearson7(x_int,amp,pos,HWHM,a3)
+
+        elif shape == "pseudovoigt":
+            try:
+                LGratio=options.get("LGratio")
+            except ValueError:
+                print("LGratio should be provided for pseudovoigt peak")
+            y = rp.pseudovoigt(x_int,amp,pos,HWHM,LGratio)
+        else: # for lorentzian peak
+            y = rp.lorentzian(x_int,amp,pos,HWHM)
+
+        return np.trapz(y,x_int)
+    else:
+        raise ValueError("Shape should be gaussian, lorentzian, pseudovoigt or pearson7")
+        
 def gaussianarea(amp,HWHM,**options):
-    """returns the area of a Gaussian peak 
-    
+    """returns the area of a Gaussian peak
+
     Inputs
     ------
     amp : float or ndarray
         amplitude of the peak
     HWHM : float or ndarray
         half-width at half-maximum
-    
-    Options 
+
+    Options
     -------
     eseAmplitude : float or ndarray
         standard deviation on amp; Default = None
@@ -66,46 +152,56 @@ def lorentzian(x,amp,freq,HWHM):
     ------
     x : ndarray
         the positions at which the signal should be sampled
-    amp : float
+    amp : float or ndarray with size equal to x.shape
         amplitude
-    freq : float
+    freq : float or ndarray with size equal to x.shape
         frequency/position of the Gaussian component
-    HWHM : float
+    HWHM : float or ndarray with size equal to x.shape
         half-width at half-maximum
 
     Returns
     -------
     out : ndarray
         the signal
-    """
-    
-    return amp/(1+((x-freq)/HWHM)**2)
 
+    Remarks
+    -------
+    Formula is amp/(1+((x-freq)/HWHM)**2)
+    """
+    return amp/(1+((x-freq)/HWHM)**2)
 
 def pseudovoigt(x,amp,freq,HWHM,LGratio):
     """compute a pseudo-Voigt peak
-
     Inputs
     ------
     x : ndarray
-        the positions at which the signal should be sampled
-    amp : float
+        the positions at which the signal should be sampled. Can be provided as vector, nx1 or nxm array.
+    amp : float or ndarray with size equal to x.shape
         amplitude
-    freq : float
+    freq : float or ndarray with size equal to x.shape
         frequency/position of the Gaussian component
-    HWHM : float
+    HWHM : float or ndarray with size equal to x.shape
         half-width at half-maximum
-    LGratio : float
+    LGratio : float or ndarray with size equal to x.shape
         ratio pf the Lorentzian component, should be between 0 and 1 (included)
+
     Returns
     -------
-    out : ndarray
+    out : ndarray of size equal to x.shape
         the signal
+
+    Remarks
+    -------
+    Formula is LGratio*gaussian(amp,freq,HWHM) + (1-LGratio)*lorentzian(amp,freq,HWHM)
     """
-    if (LGratio>1) or (LGratio<0):
-        raise ValueError("LGratio should be comprised between 0 and 1")
-    
-    return LGratio*(amp/(1+((x-freq)/HWHM)**2)) + (1-LGratio)*(amp*np.exp(-np.log(2)*((x-freq)/HWHM)**2))
+    try:
+        if (LGratio.any()>1) or (LGratio.any()<0):
+            raise ValueError("LGratio should be comprised between 0 and 1")
+    except:
+        if (LGratio.any()>1) or (LGratio.any()<0):
+            raise ValueError("LGratio should be comprised between 0 and 1")
+
+    return LGratio*lorentzian(x,amp,freq,HWHM) + (1-LGratio)*gaussian(x,amp,freq,HWHM)
 
 def pearson7(x,a0,a1,a2,a3):
     """compute a Peason7 peak
@@ -114,18 +210,17 @@ def pearson7(x,a0,a1,a2,a3):
     ------
     x : ndarray
         the positions at which the signal should be sampled
-    a0, a1, a2, a3 : float
+    a0, a1, a2, a3 : float or ndarrays of size equal to x.shape
         parameters of the Pearson7 equation
-    
+
     Returns
     -------
     out : ndarray
         the signal
 
-    Note
-    ----
-    equation is:
-        out = a0 * (1/ ( (1 + ((x-a1)/a2))**2 * (2**(1/a3) -1))**a3
+    Remarks
+    -------
+    Formula is a0 * (1/ ( (1 + ((x-a1)/a2))**2 * (2**(1/a3) -1))**a3
     """
     return a0 / ( (1.0 + ((x-a1)/a2)**2.0 * (2.0**(1.0/a3) -1.0))**a3 )
 
