@@ -43,7 +43,7 @@ class rameau:
     p: ndarray
         calibration coefficient(s) of the LL2012 or DG2017 method
     names: pandas dataframe
-        filenames indicated in the data_liste input 
+        filenames indicated in the data_liste input
 
     Note
     ====
@@ -240,7 +240,7 @@ def fit_spectra(data_liste,method="LL2012",delim='\t',path_in='./raw/',laser=514
     """
 
     import gcvspline
-    
+
     x_all_lf = np.arange(50,1400,1.0)
     x_all_hf = np.arange(2800,3800,1.0)
     x = np.hstack((x_all_lf,x_all_hf))
@@ -259,7 +259,7 @@ def fit_spectra(data_liste,method="LL2012",delim='\t',path_in='./raw/',laser=514
     for i in range(len(data_liste)):
 
         # importing the spectra
-        sp = np.genfromtxt("./raw/"+data_liste["Name"][i],delimiter=delim,skip_header=1)
+        sp = np.genfromtxt(path_in+data_liste["Name"][i],delimiter=delim,skip_header=1)
 
         # constructing an interpolator: this will allow an output of all data with the same X axis
         f = scipy.interpolate.interp1d(sp[:,0], sp[:,1],fill_value="extrapolate")
@@ -272,7 +272,7 @@ def fit_spectra(data_liste,method="LL2012",delim='\t',path_in='./raw/',laser=514
 
         # calculating baseline
         if method == "LL2012": # spline
-            
+
             try:
                 c_hf, b_hf = rp.baseline(x,y_all[:,i],roi,"gcvspline",s=spline_coeff)
             except:
