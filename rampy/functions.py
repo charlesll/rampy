@@ -33,6 +33,11 @@ def gaussian(x,amp,freq,HWHM): # for spectral fit
 def peakarea(shape,**options):
     """returns the area of a peak
 
+    (!experimental!)
+
+    gaussian peak area is calculated analytically; areas for other peak shapes
+    are calculated using trapezoidal integration.
+
     Inputs
     ------
     shape : string
@@ -96,7 +101,6 @@ def peakarea(shape,**options):
             except ValueError:
                 print("a3 should be provided for pearson7 peak")
             y = rp.pearson7(x_int,amp,pos,HWHM,a3)
-
         elif shape == "pseudovoigt":
             try:
                 LGratio=options.get("LGratio")
@@ -109,7 +113,7 @@ def peakarea(shape,**options):
         return np.trapz(y,x_int)
     else:
         raise ValueError("Shape should be gaussian, lorentzian, pseudovoigt or pearson7")
-        
+
 def gaussianarea(amp,HWHM,**options):
     """returns the area of a Gaussian peak
 
