@@ -1,8 +1,7 @@
-name: example-environment
-channels:
-  - conda-forge
+name: rampy
 dependencies:
   - numpy
+  - fortran-magic
   - scipy
   - matplotlib
   - pandas
