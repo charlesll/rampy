@@ -6,7 +6,6 @@ dependencies:
   - scipy
   - matplotlib
   - pandas
-  - sklearn
   - pip
   - pip:
     - cvxpy
@@ -14,3 +13,4 @@ dependencies:
     - rampy
     - lmfit
     - emcee
+    - sklearn
