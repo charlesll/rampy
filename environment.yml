@@ -1,0 +1,15 @@
+name: example-environment
+channels:
+  - conda-forge
+dependencies:
+  - numpy
+  - scipy
+  - matplotlib
+  - pandas
+  - sklearn
+  - pip:
+    - cvxpy
+    - gcvspline
+    - rampy
+    - lmfit
+    - emcee
