@@ -1,14 +1,12 @@
 name: rampy
 dependencies:
   - numpy
-  - fortran-magic
   - scipy
   - matplotlib
   - pandas
   - pip
   - pip:
     - cvxpy
-    - gcvspline
     - rampy
     - lmfit
     - emcee
