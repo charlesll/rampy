@@ -3,7 +3,7 @@
 
 Copyright (2015-2019) C. Le Losq.
 
-charles.lelosq@anu.edu.au
+lelosq@ipgp.fr
 
 [![Build Status](https://travis-ci.org/charlesll/rampy.svg?branch=master)](https://travis-ci.org/charlesll/rampy) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1168729.svg)](https://doi.org/10.5281/zenodo.1168729) [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/charlesll/rampy.git/master)
 
@@ -76,4 +76,4 @@ print("Signal centroid is %.2f" % rp.centroid(spectrum[:,0],y_corrected))
 
 See the /example folder for further examples.
 
-Updated May 2019
+Updated October 2019
