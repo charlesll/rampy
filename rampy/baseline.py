@@ -79,13 +79,15 @@ def baseline(x_input,y_input,bir,method, **kwargs):
     s : Float
         spline smoothing coefficient for the unispline and gcvspline algorithms.
     lam : Float
-        float, the lambda smoothness parameter for the ALS and ArPLS algorithms. Typical values are between 10**2 to 10**9, default = 10**5.
+        float, the lambda smoothness parameter for the ALS, ArPLS and drPLS algorithms. Typical values are between 10**2 to 10**9, default = 10**5 for ALS and ArPLS and default = 10**6 for drPLS.
     p : Float
         float, for the ALS algorithm, advised value between 0.001 to 0.1, default = 0.01.
     ratio : float
-        ratio parameter of the arPLS algorithm. default = 0.01.
+        ratio parameter of the arPLS and drPLS algorithm. default = 0.01 for arPLS and 0.001 for drPLS.
     niter : Int
-        number of iteration of the ALS algorithm, default = 10.
+        number of iteration of the ALS and drPLS algorithm, default = 10 for ALS and default = 100 for drPLS.
+    eta : Float
+        roughness parameter for the drPLS algorithm, is between 0 and 1, default = 0.5
     p0_exp : List
         containg the starting parameter for the exp baseline fit with curve_fit. Default = [1.,1.,1.].
     p0_log : List
@@ -241,6 +243,49 @@ def baseline(x_input,y_input,bir,method, **kwargs):
             w = wt
 
         baseline_fitted = z
+        
+    elif method == 'drPLS':
+        #according to Applied Optics, 2019, 58, 3913-3920.
+        
+        #optional parameters
+        niter = kwargs.get('niter',100)
+        lam = kwargs.get('lam',1000000)
+        eta = kwargs.get('niter',0.5)
+        ratio = kwargs.get('ratio',0.001)
+        
+        #optional smoothing in the next line, currently commented out
+        #y = np.around(savgol_filter(raw_data,19,2,deriv=0,axis=1),decimals=6)
+    
+        L = len(y)
+
+        D = sparse.diags([1,-2,1],[0,-1,-2],shape=(L,L-2),format='csr')
+        D = D.dot(D.transpose())
+        D_1 = sparse.diags([-1,1],[0,-1],shape=(L,L-1),format='csr')
+        D_1 = D_1.dot(D_1.transpose())
+            
+        w_0 = np.ones(L)
+        I_n = sparse.diags(w_0,format='csr')
+                
+        #this is the code for the fitting procedure   
+        w = w_0
+        W = sparse.diags(w,format='csr')
+        Z = w_0
+                
+        for jj in range(int(niter)):
+            W.setdiag(w)
+            Z_prev = Z
+            Z = sparse.linalg.spsolve(W + D_1 + lam * (I_n - eta*W) * D,W*y,permc_spec='NATURAL')
+            if np.linalg.norm(Z - Z_prev) > ratio:
+                d = y - Z
+                d_negative = d[d<0]
+                sigma_negative = np.std(d_negative)
+                mean_negative = np.mean(d_negative)
+                w = 0.5 * (1 - np.exp(jj) * (d - (-mean_negative + 2*sigma_negative))/sigma_negative / (1 + np.abs(np.exp(jj) * (d - (-mean_negative + 2*sigma_negative))/sigma_negative)))
+            else:
+                break
+        #end of fitting procedure
+                
+        baseline_fitted = Z
 
     return y_input.reshape(-1,1)-Y_scaler.inverse_transform(baseline_fitted.reshape(-1, 1)), Y_scaler.inverse_transform(baseline_fitted.reshape(-1, 1))
     
