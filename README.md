@@ -1,7 +1,7 @@
 # RamPy
 =======
 
-Copyright (2015-2019) C. Le Losq.
+Copyright (2015-2020) C. Le Losq.
 
 lelosq@ipgp.fr
 
@@ -30,7 +30,7 @@ Optional dependencies:
 
 - cvxpy v 1.0 or higher. As for gcvspline, the installation of cvxpy can cause problems for Windows users due to missing compiler. See instructions from cvxpy in this case.
 
-*Installation of gcvspline is necessary for use of the `rampy.mixing()` class.*
+*Installation of cvxpy is necessary for use of the `rampy.mixing()` class.*
 
 Additional libraries for model fitting may be wanted:
 
@@ -82,4 +82,4 @@ rampy can be used also to analyse the output of the [RADIS](https://radis.readth
 
 See for instance https://github.com/charlesll/rampy/issues/13
 
-Updated August 2019
+Updated January 2020

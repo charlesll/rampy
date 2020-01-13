@@ -1,9 +1,9 @@
 # RamPy -- Examples
 ===================
 
-Copyright (2015-2019) C. Le Losq.
+Copyright (2015-2020) C. Le Losq.
 
-charles.lelosq@anu.edu.au
+lelosq@ipgp.fr
 
 This folder contains examples for the use of Rampy. Feel free to send PR if you have more examples or improvements to propose, as well as ideas for examples you would like to see there.
 

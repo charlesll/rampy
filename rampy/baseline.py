@@ -19,7 +19,7 @@ def get_portion_interest(x,y,bir):
     y : ndarray
         the y values
     bir : n x 2 array
-        the x values of regions where the signal needs to be extracted, 
+        the x values of regions where the signal needs to be extracted,
         must be a n x 2 dimension array, where n is the number of regions to extract
         and column 0 contains the low bounds, column 1 the high ones.
 
@@ -52,25 +52,25 @@ def baseline(x_input,y_input,bir,method, **kwargs):
     y_input : ndarray
         y values.
     bir : ndarray
-        Contain the regions of interest, organised per line. 
-        For instance, roi = np.array([[100., 200.],[500.,600.]]) will 
+        Contain the regions of interest, organised per line.
+        For instance, roi = np.array([[100., 200.],[500.,600.]]) will
         define roi between 100 and 200 as well as between 500 and 600.
         Note: This is NOT used by the "als" and "arPLS" algorithms, but still is a requirement when calling the function.
         bir and method probably will become args in a futur iteration of rampy to solve this.
-    methods : str
+    method : str
         "poly": polynomial fitting, with splinesmooth the degree of the polynomial.
-        "unispline": spline with the UnivariateSpline function of Scipy, splinesmooth is 
+        "unispline": spline with the UnivariateSpline function of Scipy, splinesmooth is
                      the spline smoothing factor (assume equal weight in the present case);
-        "gcvspline": spline with the gcvspl.f algorythm, really robust. 
+        "gcvspline": spline with the gcvspl.f algorythm, really robust.
                      Spectra must have x, y, ese in it, and splinesmooth is the smoothing factor;
-                     For gcvspline, if ese are not provided we assume ese = sqrt(y). 
+                     For gcvspline, if ese are not provided we assume ese = sqrt(y).
                      Requires the installation of gcvspline with a "pip install gcvspline" call prior to use;
         "exp": exponential background;
         "log": logarythmic background;
         "rubberband": rubberband baseline fitting;
-        "als": automatic least square fitting following Eilers and Boelens 2005;
-        "arPLS": automatic baseline fit using the algorithm from Baek et al. 2015 
-                 Baseline correction using asymmetrically reweighted penalized least squares smoothing, Analyst 140: 250-257.
+        "als": (automatic) baseline least square fitting following Eilers and Boelens 2005;
+        "arPLS": (automatic) Baseline correction using asymmetrically reweighted penalized least squares smoothing. Baek et al. 2015, Analyst 140: 250-257;
+        'drPLS': (automatic) Baseline correction method based on doubly reweighted penalized least squares. Xu et al., Applied Optics 58(14):3913-3920.
 
     kwargs
     ------
@@ -144,7 +144,7 @@ def baseline(x_input,y_input,bir,method, **kwargs):
             from gcvspline import gcvspline, splderivative
         except ImportError:
             print('ERROR: Install gcvspline to use this mode (needs a working FORTRAN compiler).')
-            
+
         # optional parameters
         splinesmooth = kwargs.get('s',2.0)
 
@@ -243,34 +243,34 @@ def baseline(x_input,y_input,bir,method, **kwargs):
             w = wt
 
         baseline_fitted = z
-        
+
     elif method == 'drPLS':
         #according to Applied Optics, 2019, 58, 3913-3920.
-        
+
         #optional parameters
         niter = kwargs.get('niter',100)
         lam = kwargs.get('lam',1000000)
-        eta = kwargs.get('niter',0.5)
+        eta = kwargs.get('eta',0.5)
         ratio = kwargs.get('ratio',0.001)
-        
+
         #optional smoothing in the next line, currently commented out
         #y = np.around(savgol_filter(raw_data,19,2,deriv=0,axis=1),decimals=6)
-    
+
         L = len(y)
 
         D = sparse.diags([1,-2,1],[0,-1,-2],shape=(L,L-2),format='csr')
         D = D.dot(D.transpose())
         D_1 = sparse.diags([-1,1],[0,-1],shape=(L,L-1),format='csr')
         D_1 = D_1.dot(D_1.transpose())
-            
+
         w_0 = np.ones(L)
         I_n = sparse.diags(w_0,format='csr')
-                
-        #this is the code for the fitting procedure   
+
+        #this is the code for the fitting procedure
         w = w_0
         W = sparse.diags(w,format='csr')
         Z = w_0
-                
+
         for jj in range(int(niter)):
             W.setdiag(w)
             Z_prev = Z
@@ -284,8 +284,9 @@ def baseline(x_input,y_input,bir,method, **kwargs):
             else:
                 break
         #end of fitting procedure
-                
+
         baseline_fitted = Z
+    else:
+        raise ValueError("method not found, check you entered the right name.")
 
     return y_input.reshape(-1,1)-Y_scaler.inverse_transform(baseline_fitted.reshape(-1, 1)), Y_scaler.inverse_transform(baseline_fitted.reshape(-1, 1))
-    
