@@ -1,0 +1,13 @@
+name: rampy
+dependencies:
+  - numpy
+  - scipy
+  - matplotlib
+  - pandas
+  - pip
+  - pip:
+    - cvxpy
+    - rampy
+    - lmfit
+    - emcee
+    - sklearn
