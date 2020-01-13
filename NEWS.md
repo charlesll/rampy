@@ -1,8 +1,8 @@
 # Rampy News
 
-Copyright (c) 2014-2019 Dr. Charles Le Losq
+Copyright (c) 2014-2020 Dr. Charles Le Losq
 
-email: charles.lelosq@anu.edu.au
+email: lelosq@ipgp.fr
 
 Licence: see LICENCE.md
 
@@ -19,6 +19,10 @@ Licence: see LICENCE.md
 - update docs
 
 - enhancing the pseudovoigt section for its use with arrays
+
+- adding an experimental "peakarea" function
+
+- drPLS algorithm added in baselines (thanks @Snijderfrey)
 
 # 0.4.4
 

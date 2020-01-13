@@ -34,7 +34,8 @@ class TestBaseline(unittest.TestCase):
         ycalc3, base3 = rampy.baseline(x2,y2,roi2,'unispline',s=1e0)
         ycalc4, base4 = rampy.baseline(x2,y2,roi2,'als',lam=10**7,p=0.05)
         ycalc5, base5 = rampy.baseline(x2,y2,roi2,'arPLS',lam=10**7,ratio=0.1)
-        ycalc6, base6 = rampy.baseline(x2,y2,roi2,'exp',p0_exp=[0.1,0.1,45])
+        ycalc6, base6 = rampy.baseline(x2,y2,roi2,'drPLS')
+        ycalc7, base7 = rampy.baseline(x2,y2,roi2,'exp',p0_exp=[0.1,0.1,45])
 
         # Testing the shapes
         np.testing.assert_equal(ycalc1.shape,base1.shape)
@@ -43,7 +44,7 @@ class TestBaseline(unittest.TestCase):
         np.testing.assert_equal(ycalc4.shape,base4.shape)
         np.testing.assert_equal(ycalc5.shape,base5.shape)
         np.testing.assert_equal(ycalc6.shape,base6.shape)
-        #np.testing.assert_equal(ycalc7.shape,base7.shape)
+        np.testing.assert_equal(ycalc7.shape,base7.shape)
 
         # testing the baselines
         np.testing.assert_almost_equal(base_ori,base1[:,0],0)
@@ -51,9 +52,9 @@ class TestBaseline(unittest.TestCase):
         np.testing.assert_almost_equal(base_ori,base3[:,0],0)
         np.testing.assert_almost_equal(base_ori,base4[:,0],0)
         np.testing.assert_almost_equal(base_ori,base5[:,0],0)
+        np.testing.assert_almost_equal(base_ori,base6[:,0],0)
         #exp-log cases
-        np.testing.assert_almost_equal(base_exp,base6[:,0],0)
-        #np.testing.assert_almost_equal(base_log,base7[:,0],0)
+        np.testing.assert_almost_equal(base_exp,base7[:,0],0)
 
         #testing the corrected data
         np.testing.assert_almost_equal(y_ori,ycalc1[:,0],1)
@@ -62,10 +63,7 @@ class TestBaseline(unittest.TestCase):
         np.testing.assert_almost_equal(y_ori,ycalc4[:,0],0)
         np.testing.assert_almost_equal(y_ori,ycalc5[:,0],0)
         np.testing.assert_almost_equal(y_ori,ycalc6[:,0],0)
+        np.testing.assert_almost_equal(y_exp,ycalc7[:,0],0)
 
 if __name__ == '__main__':
     unittest.main()
-
-
-
-
