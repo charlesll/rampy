@@ -26,7 +26,9 @@ Optional dependencies:
 
 - gcvspline (you need a working FORTRAN compiler for its installation. To avoid this problem under Windows, wheels for Python 2.7, 3.4 and 3.6 are provided for 64 bit Windows, and a wheel for Python 3.6 is provided for Windows 32 bits. If installation fails, please check if is due to a fortran compiler issue.)
 
-*Installation of gcvspline is necessary for use of the `rampy.rameau()` class.*
+- xlrd and matplotlib
+
+*Installation of gcvspline as well as matplotlib and xlrd are necessary for use of the `rampy.rameau()` class.*
 
 - cvxpy v 1.0 or higher. As for gcvspline, the installation of cvxpy can cause problems for Windows users due to missing compiler. See instructions from cvxpy in this case.
 
