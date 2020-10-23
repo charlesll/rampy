@@ -7,3 +7,4 @@ from .tlcorrection import *
 from .spectranization import *
 from .rameau import *
 from .mixing import *
+from .peak_shapes import *
