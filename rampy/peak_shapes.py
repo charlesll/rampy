@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 import numpy as np
-from scipy.special import erfc
 
 def gaussian(x,amp,freq,HWHM): # for spectral fit
     """compute a Gaussian peak

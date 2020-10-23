@@ -8,3 +8,4 @@ from .spectranization import *
 from .rameau import *
 from .mixing import *
 from .peak_shapes import *
+from .peak_area import *
