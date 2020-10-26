@@ -14,7 +14,11 @@ Licence: see LICENCE.md
 
 - Addition of external calibration method in rameau
 
-# 0.4.5 (in dev)
+# 0.4.6
+
+- doc improvements
+
+# 0.4.5 (stable)
 
 - update docs
 

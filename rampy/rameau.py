@@ -72,7 +72,7 @@ class rameau:
     rs = []
     water = []
     water_predicted = []
-    p = []
+    p = None
     names = []
 
     def __init__(self,data_liste):
@@ -172,7 +172,7 @@ class rameau:
 
         if method == "LL2012":
             try:
-                if self.p.size > 0:
+                if self.p != None:
                     print("Using adjusted A coefficient: %f" % self.p)
                     self.water_predicted = LL2012_predict(dictio,A=self.p)
                 else:
@@ -182,7 +182,7 @@ class rameau:
                 raise TypeError("Bad p coefficient. Did you try predicting values with a different method than the calibration?")
         elif method == "DG2017":
             try:
-                if self.p.size > 0:
+                if self.p != None:
                     print("Using adjusted p coefficients: %f and %f" % (self.p[0],self.p[1]))
                     self.water_predicted = DG2017_predict(dictio,a=self.p[0], b=self.p[1])
                 else:
