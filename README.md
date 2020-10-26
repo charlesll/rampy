@@ -30,7 +30,7 @@ Optional dependencies:
 
 *Installation of gcvspline as well as matplotlib and xlrd are necessary for use of the `rampy.rameau()` class.*
 
-- cvxpy v 1.0 or higher. As for gcvspline, the installation of cvxpy can cause problems for Windows users due to missing compiler. See instructions from cvxpy in this case.
+- cvxpy v 1.1 or higher. As for gcvspline, the installation of cvxpy can cause problems for Windows users due to missing compiler. See instructions from cvxpy in this case.
 
 *Installation of cvxpy is necessary for use of the `rampy.mixing()` class.*
 

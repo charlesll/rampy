@@ -14,9 +14,15 @@ Licence: see LICENCE.md
 
 - Addition of external calibration method in rameau
 
-# 0.4.6
+# 0.4.6 (dev)
 
 - doc improvements
+
+- cvxpy 1.1 or higher is an optional dependency.
+
+- switch to setup.cfg
+
+- add shiftsp() function
 
 # 0.4.5 (stable)
 

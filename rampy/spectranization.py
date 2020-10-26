@@ -75,7 +75,7 @@ def spectrataux(spectres):
     return taux
 
 def spectraoffset(spectre,oft):
-    """Offset your spectra with values in offsets
+    """Vertical offset your spectra with values in offsets
 
     Parameters
     ----------
@@ -99,13 +99,33 @@ def spectraoffset(spectre,oft):
 #
 # Simple data treatment functions
 #
+def shiftsp(sp, shift):
+    """Shift the X axis (frequency, wavenumber, etc.) of a given value.
+
+    Parameters
+    ----------
+    sp : ndarray
+        An array with n columns, the first one should contain the X axis (frequency, wavenumber, etc.)
+    shift : float
+        The shift value to apply.
+
+    Returns
+    -------
+    sp : ndarray
+        The same array but sorted such that the values in the first column are in increasing order.
+    """
+    sp[:,0] = sp[:,0] - shift
+    return sp
+
+
 def flipsp(sp):
     """Flip an array along the row dimension (dim = 1) if the row values are in decreasing order.
 
     Parameters
     ----------
     sp : ndarray
-        An array with n columns
+        An array with n columns, the first one should contain the X axis (frequency, wavenumber, etc.)
+
     Returns
     -------
     sp : ndarray
@@ -184,25 +204,25 @@ def normalise(y,x=0,method="intensity"):
         Normalised signal(s)
     """
     if method == "area":
-        try: 
+        try:
             y = y/np.trapz(y,x,axis=0)
         except:
-            raise ValueError("Input array of x values for area normalisation")  
+            raise ValueError("Input array of x values for area normalisation")
     elif method == "intensity":
         y = y/np.max(y,axis=0)
-        
+
     elif method == "minmax":
         y = (y-np.min(y,axis=0))/(np.max(y,axis=0)-np.min(y,axis=0))
     else:
         raise NotImplementedError("Wrong method name, choose between area, intensity and minmax.")
-        
+
     return y
 
 def centroid(x,y,smoothing=False,**kwargs):
     """calculation of y signal centroid(s)
-    
+
     as np.sum(y/np.sum(y)*x)
-    
+
     Parameters
     ==========
     x: Numpy array, m values by n samples
@@ -214,17 +234,17 @@ def centroid(x,y,smoothing=False,**kwargs):
     =======
     smoothing : bool
         True or False. Smooth the signals with arguments provided as kwargs. Default method is whittaker smoothing. See the rampy.smooth function for smoothing options and arguments.
-        
+
     Returns
     =======
     centroid : Numpy array, n samples
         signal centroid(s)
     """
-    
+
     y_ = y.copy()
-    
+
     if smoothing == True:
         for i in range(x.shape[1]):
             y_[:,i] = rampy.smooth(x[:,i],y[:,i],**kwargs)
-        
+
     return np.sum(y_/np.sum(y_,axis=0)*x,axis=0)

@@ -32,10 +32,10 @@ def mixing_sp(y_fit,ref1,ref2):
 
     ref1 = ref1.reshape(1,-1)
     ref2 = ref2.reshape(1,-1)
-    
+
     F1 = cvxpy.Variable(shape=(y_fit.shape[1],1))
 
-    objective = cvxpy.Minimize(cvxpy.sum(cvxpy.abs(F1*ref1 + (1-F1)*ref2 - y_fit.T))) 
+    objective = cvxpy.Minimize(cvxpy.sum(cvxpy.abs(cvxpy.multiply(F1,ref1) + cvxpy.multiply((1-F1),ref2) - y_fit.T))) 
 
     constraints = [0 <= F1, F1 <= 1]
 

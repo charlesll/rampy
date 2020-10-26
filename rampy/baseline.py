@@ -164,15 +164,17 @@ def baseline(x_input,y_input,bir,method, **kwargs):
 
     elif method == 'exp':
         ### Baseline is of the type y = a*exp(b*(x-xo))
+
         # optional parameters
-        p0_exp = kwargs.get('p0_exp',[1.,1.,1.])
+        p0_exp = kwargs.get('p0_exp',[1.,1.,0.])
         ## fit of the baseline
         coeffs, pcov = curve_fit(rampy.funexp,yafit[:,0],yafit[:,1],p0 = p0_exp)
 
         baseline_fitted = rampy.funexp(x,coeffs[0],coeffs[1],coeffs[2])
 
     elif method == 'log':
-        ### Baseline is of the type y = a*exp(b*(x-xo))
+        ### Baseline is of the type y = a*np.log(-b*(x-c))-d*x**2
+
         # optional parameters
         p0_log = kwargs.get('p0_log',[1.,1.,1.,1.])
         ## fit of the baseline
@@ -185,7 +187,9 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         #https://dsp.stackexchange.com/questions/2725/how-to-perform-a-rubberband-correction-on-spectroscopic-data
 
         # Find the convex hull
-        v = ConvexHull(np.array([x, y])).vertices
+        v = ConvexHull([[X[0], X[1]] for X in zip(x, y)]).vertices
+
+        #v = ConvexHull(np.vstack((x.ravel(), y.ravel())).T).vertices
 
         # Rotate convex hull vertices until they start from the lowest one
         v = np.roll(v, -v.argmin())
