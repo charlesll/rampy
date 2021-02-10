@@ -29,7 +29,7 @@ def peak(data,function,energies):
         fun=functions.create_gauss()
         fit_fun=lambda x: curve_fit(fun, lambdas, x)
     
-    data=pd.DataFrame(intensities)
+    #data=pd.DataFrame(intensities)
     #data.apply(lambda x: curve_fit(fun, lambdas, x))
     #plt.plot(lambdas[:,0],intensities[:,0])
     np.apply_along_axis(fit_fun, 0, intensities)
