@@ -31,36 +31,15 @@ def peak(data,function,Xrange,Xmean,sigma,amp,y0,A):
         fun=functions.create_lorenz()    
         print('correct')
         
-    fit_fun=lambda x: curve_fit(fun, lambdas[Xrange[0]:Xrange[1]], x[Xrange[0]:Xrange[1]],
-                                p0=(amp,Xmean,sigma,y0,A))
-    draw_fun=lambda x: plt.plot(lambdas[Xrange[0]:Xrange[1]], x[Xrange[0]:Xrange[1]])
-    
-    #df=pd.DataFrame(intensities)
-    #data=df.apply(lambda x: curve_fit(fun, lambdas[Xrange[0]:Xrange[1]], x[Xrange[0]:Xrange[1]],
-                       #         p0=(amp,Xmean,sigma,y0,A)))
-    #return data
-
     for d in np.ndindex(intensities.shape[0]):
         plt.plot(lambdas[Xrange[0]:Xrange[1]],intensities[Xrange[0]:Xrange[1],d])
-        print(lambdas[Xrange[0]:Xrange[1]].shape)
-        print(intensities[Xrange[0]:Xrange[1],d].shape)
         try:
             popt, pcov = curve_fit(fun, lambdas[Xrange[0]:Xrange[1]], 
                                    np.squeeze(intensities[Xrange[0]:Xrange[1],d]),
                                    p0=(amp,Xmean,sigma,y0,A))
         except RuntimeError:
             print("Error - curve_fit failed")
-    #data=pd.DataFrame(intensities)
-    #data.apply(lambda x: curve_fit(fun, lambdas, x))
-    #plt.plot(lambdas[Xrange[0]:Xrange[1]],intensities[Xrange[0]:Xrange[1],0])
-    #plt.plot(lambdas[Xrange[0]:Xrange[1]],fun(lambdas[Xrange[0]:Xrange[1]],
-    #                                          amp,Xmean,sigma,y0,A))
-    #data1,data2=np.apply_along_axis(fit_fun, 0, intensities)
-    #np.apply_along_axis(draw_fun, 0, intensities)
-    
-    #return curve_fit(fun, lambdas, intensities)
-   # return np.array([curve_fit(fun, lambdas_one, xi) for xi in intensities],axis=1)
-    
+        
 
 
 data=read_renishaw(file)
