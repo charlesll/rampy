@@ -29,18 +29,19 @@ def peak(data,function,Xrange,Xmean,sigma,amp,y0,A):
         fun=functions.create_gauss()
     elif function=='lorenz':
         fun=functions.create_lorenz()    
-        print('correct')
-        
-    for d in np.ndindex(intensities.shape[0]):
-        plt.plot(lambdas[Xrange[0]:Xrange[1]],intensities[Xrange[0]:Xrange[1],d])
+    results=np.empty(5)
+    for d in np.ndindex(intensities.shape[1]):
         try:
             popt, pcov = curve_fit(fun, lambdas[Xrange[0]:Xrange[1]], 
                                    np.squeeze(intensities[Xrange[0]:Xrange[1],d]),
                                    p0=(amp,Xmean,sigma,y0,A))
         except RuntimeError:
             print("Error - curve_fit failed")
-        
+        results=np.vstack((results,popt))
+    return results
 
 
 data=read_renishaw(file)
-result=peak(data,'lorenz',[0,200],3700,40,2000,6000,0)
+for x in [2000,2500,2700,2900,3000]:
+    result=peak(data,'lorenz',[0,200],x,40,2000,6000,0)
+    print(result[0,1])
