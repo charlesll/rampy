@@ -4,8 +4,6 @@ import functions
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
 
-file='4338-NDC1-(31)_4X4.txt'
-
 def read_renishaw(file):
     df=pd.read_csv(file,names=['x','y','lambda','int'],sep='\t')
     table=df.loc[:,'int'].values
@@ -18,8 +16,6 @@ def read_renishaw(file):
       
     intensities=np.transpose(np.reshape(table,(X.shape[0],lambdas_one.shape[0])))
     lambdas=np.transpose(np.reshape(lambdas,(X.shape[0],lambdas_one.shape[0])))
-    
-    plt.plot(lambdas_one,intensities[:,0])
     
     return X, Y, lambdas_one,intensities
 
@@ -40,8 +36,5 @@ def peak(data,function,Xrange,Xmean,sigma,amp,y0,A):
         results=np.vstack((results,popt))
     return results
 
+#data=read_renishaw(file)
 
-data=read_renishaw(file)
-for x in [2000,2500,2700,2900,3000]:
-    result=peak(data,'lorenz',[0,200],x,40,2000,6000,0)
-    print(result[0,1])
