@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
+
 import numpy as np
 from scipy.special import erfc
 
@@ -67,17 +68,7 @@ def gauss_lsq_lfix(params,x):
     ytot = sum(y,1)
 
     return ytot
-	
-def create_gauss():
-    def gauss(x,Amp,Xmean,sigma,y0,A):
-        return ((Amp/(sigma*np.sqrt(2*np.pi)))*
-    np.exp(-(x-Xmean)**2/(2*sigma**2))+y0+A*x)
-    return gauss
 
-def create_lorenz():
-    def lorenz(x,Amp,Xmean,sigma,y0,A):
-        return (2*Amp/np.pi)*sigma**2/(4*(x-Xmean)**2+sigma**2)+y0+A*x
-    return lorenz
 ########### SPECIFIC FUNCTIONS FOR CHEMICAL DIFFUSION
 
 
