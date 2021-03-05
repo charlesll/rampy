@@ -26,7 +26,7 @@ def gaussian(x,amp,freq,HWHM): # for spectral fit
     Formula is amp*np.exp(-np.log(2)*((x-freq)/HWHM)**2)
     """
     return amp*np.exp(-np.log(2)*((x-freq)/HWHM)**2)
-
+	
 def lorentzian(x,amp,freq,HWHM):
     """compute a Lorentzian peak
 
@@ -105,3 +105,26 @@ def pearson7(x,a0,a1,a2,a3):
     Formula is a0 / ( (1.0 + ((x-a1)/a2)**2.0 * (2.0**(1.0/a3) -1.0))**a3 )
     """
     return a0 / ( (1.0 + ((x-a1)/a2)**2.0 * (2.0**(1.0/a3) -1.0))**a3 )
+	
+def create_gauss():
+    def gauss(x,amp,freq,HWHM,bcg,slope):
+        return amp*np.exp(-np.log(2)*((x-freq)/HWHM)**2)+slope*x+bcg
+    return gauss
+
+def create_lorenz():
+    def lorenz(x,amp,freq,HWHM,bcg,slope):
+        return amp/(1+((x-freq)/HWHM)**2)+slope*x+bcg
+    return lorenz
+"""
+def create_pseudovoigt():
+	def pseudovoigt(x,amp,freq,HWHM,L_ratio):
+            try:
+				if (L_ratio.any()>1) or (L_ratio.any()<0):
+					raise ValueError("L_ratio should be comprised between 0 and 1")
+			except:
+				if (L_ratio.any()>1) or (L_ratio.any()<0):
+					raise ValueError("L_ratio should be comprised between 0 and 1")
+
+		return L_ratio*lorentzian(x,amp,freq,HWHM) + (1-L_ratio)*gaussian(x,amp,freq,HWHM)
+    return pseudovoigt
+"""

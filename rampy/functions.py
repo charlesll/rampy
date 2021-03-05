@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
+
 import numpy as np
 from scipy.special import erfc
 
@@ -69,6 +70,7 @@ def gauss_lsq_lfix(params,x):
     return ytot
 
 ########### SPECIFIC FUNCTIONS FOR CHEMICAL DIFFUSION
+
 
 
 def diffshort(x, t, C0, C1, D):
