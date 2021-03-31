@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 import numpy as np
+import rampy as rp
 
 def peakarea(shape,**options):
     """returns the area of a peak

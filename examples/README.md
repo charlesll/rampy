@@ -1,7 +1,7 @@
 # RamPy -- Examples
 ===================
 
-Copyright (2015-2020) C. Le Losq.
+Copyright (2015-2021) C. Le Losq.
 
 lelosq@ipgp.fr
 

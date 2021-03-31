@@ -2,9 +2,11 @@ import unittest
 
 import numpy as np
 np.random.seed(42)
-import scipy
 
+import scipy
 from scipy.stats import norm
+
+from sklearn.utils import shuffle
 
 import rampy as rp
 
@@ -45,22 +47,22 @@ class TestMLC(unittest.TestCase):
                              np.tile(np.array([5]).reshape(-1,1),number_of_spectra),
                             )).reshape(-1,1)
 
-        # new observations
-        C_new_ = np.random.rand(10) #10 samples with random concentrations between 0 and 1
-        C_new_true = np.vstack((C_new_,(1-C_new_))).T
-
-        noise_new = np.random.randn(len(x))*1e-4
-        Obs_new = np.dot(C_new_true,S_true) + noise_new
-
-        explo = rp.mlexplorer(Obs)
+        X = dataset
+        y = labels
+        
+        names = ["Nearest Neighbors", "Linear SVM", "RBF SVM", "Gaussian Process",
+                 "Decision Tree", "Random Forest", "Neural Net", "AdaBoost",
+                 "Naive Bayes", "QDA"]
 
         # we just test that it runs for now
-        explo.algorithm = 'NMF'
-        explo.nb_compo = 2
-        explo.test_size = 0.3
-        explo.scaler = "MinMax"
-        explo.fit()
-        explo.refit()
+        # initiate model
+        MLC = rp.mlclassificator(X,y,scaling=False,test_size=0.33)
+
+        # iterate over classifiers
+        for name in names:
+            MLC.algorithm = name
+            MLC.fit()
+            score = MLC.model.score(MLC.X_test, MLC.y_test)
 
 if __name__ == '__main__':
     unittest.main()
