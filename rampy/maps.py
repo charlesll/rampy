@@ -52,8 +52,8 @@ def peak(X, Y, lambdas,intensities,function,Xrange,amp,Xmean,sigma,y0,A):
         n_X0=np.argwhere(X!=X[0])[0,0] # while main axis in x
         n_X1=int(X.shape[0]/n_X0)
     else:
-        n_X0=np.argwhere(Y!=Y[0])[0,0] # while main axis in y
-        n_X1=int(Y.shape[0]/n_X0)
+        n_X1=np.argwhere(Y!=Y[0])[0,0] # while main axis in y
+        n_X0=int(Y.shape[0]/n_X1)
     
     
     rmap=np.empty([n_X0,n_X1])
