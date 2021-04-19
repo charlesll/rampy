@@ -23,6 +23,15 @@ def read_renishaw(file):
     
     return X, Y, lambdas_one,intensities
 
+def read_horiba(file):
+    #Horiba file reading
+    df=pd.read_csv(file,sep='\t')
+    intensities=df.iloc[:,2:].values
+    lambdas=df.columns.values[2:]
+    X=df.iloc[:,0].values
+    Y=df.iloc[:,1].values
+    return X, Y, lambdas,intensities.T
+
 def peak(X, Y, lambdas,intensities,function,Xrange,amp,Xmean,sigma,y0,A):
     #fitting
     if function=='gauss':
@@ -39,8 +48,12 @@ def peak(X, Y, lambdas,intensities,function,Xrange,amp,Xmean,sigma,y0,A):
             print("Error - curve_fit failed")
         results=np.vstack((results,popt))
     #maps
-    n_X0=np.argwhere(X!=X[0])[0,0] # while main axis in x
-    n_X1=int(X.shape[0]/n_X0)
+    if X[0]!=X[1]:
+        n_X0=np.argwhere(X!=X[0])[0,0] # while main axis in x
+        n_X1=int(X.shape[0]/n_X0)
+    else:
+        n_X1=np.argwhere(Y!=Y[0])[0,0] # while main axis in y
+        n_X0=int(Y.shape[0]/n_X1)
     
     
     rmap=np.empty([n_X0,n_X1])
@@ -49,4 +62,3 @@ def peak(X, Y, lambdas,intensities,function,Xrange,amp,Xmean,sigma,y0,A):
         rmap=np.dstack((rmap,results[1:,d].reshape(n_X0,n_X1)))
     
     return results,rmap
-
