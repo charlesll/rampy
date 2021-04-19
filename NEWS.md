@@ -1,6 +1,6 @@
 # Rampy News
 
-Copyright (c) 2014-2020 Dr. Charles Le Losq
+Copyright (c) 2014-2021 Dr. Charles Le Losq
 
 email: lelosq@ipgp.fr
 
@@ -14,7 +14,11 @@ Licence: see LICENCE.md
 
 - Addition of external calibration method in rameau
 
-# 0.4.6 (dev)
+# 0.4.7 (dev)
+
+- peak fitting for maps
+
+# 0.4.6 (stable)
 
 - doc improvements
 
@@ -24,7 +28,7 @@ Licence: see LICENCE.md
 
 - add shiftsp() function
 
-# 0.4.5 (stable)
+# 0.4.5
 
 - update docs
 

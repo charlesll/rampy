@@ -1,7 +1,7 @@
 # RamPy
 =======
 
-Copyright (2015-2020) C. Le Losq.
+Copyright (2015-2021) C. Le Losq and co.
 
 lelosq@ipgp.fr
 
@@ -84,4 +84,10 @@ rampy can be used also to analyse the output of the [RADIS](https://radis.readth
 
 See for instance https://github.com/charlesll/rampy/issues/13
 
-Updated January 2020
+# CONTRIBUTORS
+
+Charles Le Losq, Institut de physique du globe de Paris
+
+Kacper Grodecki, Military University of Technology, Warsow
+
+Updated April 2021
