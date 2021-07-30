@@ -186,9 +186,9 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         # code from this stack-exchange forum
         #https://dsp.stackexchange.com/questions/2725/how-to-perform-a-rubberband-correction-on-spectroscopic-data
 
+        x = x.flatten()
         # Find the convex hull
-        v = ConvexHull([[X[0], X[1]] for X in zip(x, y)]).vertices
-
+        v = ConvexHull(np.array(list(zip(x, y))), incremental=True).vertices
         #v = ConvexHull(np.vstack((x.ravel(), y.ravel())).T).vertices
 
         # Rotate convex hull vertices until they start from the lowest one
