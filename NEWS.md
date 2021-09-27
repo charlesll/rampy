@@ -6,7 +6,7 @@ email: lelosq@ipgp.fr
 
 Licence: see LICENCE.md
 
-# Wanted features
+# Wanted features (planned)
 
 - Addition of more unsupervised machine learning techniques
 
@@ -14,11 +14,23 @@ Licence: see LICENCE.md
 
 - Addition of external calibration method in rameau
 
-# 0.4.7 (dev)
-
 - peak fitting for maps
 
-# 0.4.6 (stable)
+# 0.4.8 (stable)
+
+- area and area ratio calculations available for maps
+
+- read_horiba function (from rampy.maps) corrected (Github issue #25)
+
+- rubberband baseline was fixed, test added, fit_baseline example update (Github issue #1, thanks @sjfraser05)
+
+# 0.4.7
+
+- urgent correction of a bug in rp.pseudovoigt() > float entries were resulting in an error message...
+
+- map treatment available for HORIBA and RENISHAW spectrometer (see example folder). Please report any bug!
+
+# 0.4.6
 
 - doc improvements
 

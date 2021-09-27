@@ -36,6 +36,8 @@ class TestBaseline(unittest.TestCase):
         ycalc5, base5 = rampy.baseline(x2,y2,roi2,'arPLS',lam=10**7,ratio=0.1)
         ycalc6, base6 = rampy.baseline(x2,y2,roi2,'drPLS')
         ycalc7, base7 = rampy.baseline(x2,y2,roi2,'exp',p0_exp=[0.1,0.1,45])
+        # we just check that rubberband works....
+        ycalc8, base8 = rampy.baseline(x2,y2,roi2,'rubberband')
 
         # Testing the shapes
         np.testing.assert_equal(ycalc1.shape,base1.shape)

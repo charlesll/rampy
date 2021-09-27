@@ -127,7 +127,7 @@ class map():
         Returns
         -------
         self.centroid_position : ndarray
-                centroid position for the map
+	    	centroid position for the map
         """
         self.centroid_position = np.copy(self.X)
         for i in range(len(self.X)):
@@ -139,39 +139,63 @@ class map():
 
         The intensity maximum is estimated from a simple np.max() search.
         Do not forget to smooth the signal if necessary prior to using this.
+        
         Parameters
         ----------
         y : object intensities
-            the intensities to normalise. For instance, pass self.normalised for performing the calculation on normalised spectra.
+            the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.
         region_to_investigate : 1x2 array
-            the x values of regions where the centroid will be measured
+            the x values of regions where the intensity will be measured
 
         Returns
         -------
         self.I_max : ndarray
-                maximum to make a nice plot
+            Intensity maximum
         """
         self.I_max = np.copy(self.X)
         for i in range(len(self.X)):
             sp_ = rp.get_portion_interest(self.w, y[:,i], region_to_investigate)
             self.I_max[i] = np.max(sp_[:,1])
+            
+    def area(self, y, region_to_investigate):
+        """get the area under the curve in the region to investigate.
 
-    def intensity_ratio(self, y, region_to_investigate):
-        """get the maximum intensity in the region to investigate.
-
-        The intensity maximum is estimated from a simple np.max() search.
+        The area is calculated by trapezoidal integration, using np.trapz()        
         Do not forget to smooth the signal if necessary prior to using this.
+        
         Parameters
         ----------
         y : object intensities
-            the intensities to normalise. For instance, pass self.normalised for performing the calculation on normalised spectra.
+            the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.
+        region_to_investigate : 1x2 array
+            the x values of regions where the area will be measured
+
+        Returns
+        -------
+        self.A : ndarray
+                maximum to make a nice plot
+        """
+        self.A = np.copy(self.X)
+        for i in range(len(self.X)):
+            sp_ = rp.get_portion_interest(self.w, y[:,i], region_to_investigate)
+            self.A[i] = np.trapz(sp_[:,1],sp_[:,0])
+
+    def intensity_ratio(self, y, region_to_investigate):
+        """get the intensity ratio between two regions of interest.
+
+        The intensity maxima are estimated from a simple np.max() search.
+        Do not forget to smooth the signals if necessary prior to using this.
+        Parameters
+        ----------
+        y : object intensities
+            the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.
         region_to_investigate : 2x2 array
-            the x values of regions where the centroid will be measured. The two lines record the portions of interest.
+            the x values of regions where the intensity ratios will be measured. The two lines record the two regions of interest.
 
         Returns
         -------
         self.I_ratio : ndarray
-                maximum to make a nice plot
+			Intensity ratio
         """
         self.I_ratio = np.copy(self.X)
         I_max1 = np.copy(self.X)
@@ -182,8 +206,35 @@ class map():
             I_max1 = np.max(sp_1[:,1])
             I_max2 = np.max(sp_2[:,1])
             self.I_ratio[i] = I_max1/I_max2
+            
+            
+    def area_ratio(self, y, region_to_investigate):
+        """get the area ratio between two regions of interest.
 
+        The areas are calculated by trapezoidal integration, using np.trapz()        
+        Do not forget to smooth the signals if necessary prior to using this.
+        
+        Parameters
+        ----------
+        y : object intensities
+            the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.
+        region_to_investigate : 1x2 array
+            the x values of regions where the areas will be measured. The two lines record the two regions of interest.
 
+        Returns
+        -------
+        self.A_ratio : ndarray
+			Area ratio = area region 1 / area region 2
+        """
+        self.A_ratio = np.copy(self.X)
+        A_max1 = np.copy(self.X)
+        A_max2 = np.copy(self.X)
+        for i in range(len(self.X)):
+            sp_1 = rp.get_portion_interest(self.w, y[:,i], region_to_investigate[0,:].reshape(1,2))
+            sp_2 = rp.get_portion_interest(self.w, y[:,i], region_to_investigate[1,:].reshape(1,2))
+            A_max1 = np.trapz(sp_1[:,1],sp_1[:,0])
+            A_max2 = np.trapz(sp_2[:,1],sp_2[:,0])
+            self.A_ratio[i] = A_max1/A_max2
 
 def read_renishaw(file):
     """read Renishaw csv maps
@@ -238,11 +289,11 @@ def read_horiba(file):
         Intensities
     """
 
-    df=pd.read_csv(file,sep='\t')
-    intensities=df.iloc[:,2:].values
-    lambdas=df.columns.values[2:]
-    X=df.iloc[:,0].values
-    Y=df.iloc[:,1].values
+    df = pd.read_csv(file,sep='\t')
+    intensities = df.iloc[:,2:].values
+    lambdas = df.columns.values[2:].values.astype(float)
+    X = df.iloc[:,0].values
+    Y = df.iloc[:,1].values
     return X, Y, lambdas, intensities.T
 
 def peak(X, Y, lambdas, intensities, function, Xrange, amp, Xmean, sigma, y0, A):

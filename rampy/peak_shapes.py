@@ -77,10 +77,10 @@ def pseudovoigt(x,amp,freq,HWHM,L_ratio):
     Formula is (1-L_ratio)*gaussian(amp,freq,HWHM) + L_ratio*lorentzian(amp,freq,HWHM)
     """
     try:
-        if (L_ratio.any()>1) or (L_ratio.any()<0):
+        if (L_ratio.any()>1) or (L_ratio.any()<0): # if entries are lists/arrays
             raise ValueError("L_ratio should be comprised between 0 and 1")
     except:
-        if (L_ratio.any()>1) or (L_ratio.any()<0):
+        if (L_ratio>1) or (L_ratio<0): # if entries are floats
             raise ValueError("L_ratio should be comprised between 0 and 1")
 
     return L_ratio*lorentzian(x,amp,freq,HWHM) + (1-L_ratio)*gaussian(x,amp,freq,HWHM)
