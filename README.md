@@ -13,14 +13,14 @@ The /examples/ folder contain various examples.
 
 # REQUIREMENTS
 
-Rampy is tested on Python 3.6 (see Travis badge; no garantee that it works on other Python versions)
+Rampy is tested on Python 3.8 (see Travis badge; no garantee that it works on other Python versions)
 
-The following libraries are required and indicated in setup.py:
+The following libraries are required and indicated in setup.cfg:
 
 - Scipy
 - Numpy >= 1.12
 - sklearn
-- pandas
+- pandas & xlrd
 
 Optional dependencies:
 
@@ -84,10 +84,4 @@ rampy can be used also to analyse the output of the [RADIS](https://radis.readth
 
 See for instance https://github.com/charlesll/rampy/issues/13
 
-# CONTRIBUTORS
-
-Charles Le Losq, Institut de physique du globe de Paris
-
-Kacper Grodecki, Military University of Technology, Warsow
-
-Updated April 2021
+Updated September 2021
