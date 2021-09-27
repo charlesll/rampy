@@ -291,7 +291,7 @@ def read_horiba(file):
 
     df = pd.read_csv(file,sep='\t')
     intensities = df.iloc[:,2:].values
-    lambdas = df.columns.values[2:].values.astype(float)
+    lambdas = df.columns.values[2:].astype(float)
     X = df.iloc[:,0].values
     Y = df.iloc[:,1].values
     return X, Y, lambdas, intensities.T

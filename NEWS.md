@@ -16,7 +16,11 @@ Licence: see LICENCE.md
 
 - peak fitting for maps
 
-# 0.4.8 (stable)
+# 0.4.9 (stable)
+
+- quick fix of a bug in read_horiba function (from rampy.maps) 
+
+# 0.4.8
 
 - area and area ratio calculations available for maps
 
