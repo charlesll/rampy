@@ -1,0 +1,2179 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rampy package &mdash; RamPy 0.4.9 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Examples" href="examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> RamPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">rampy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rampy.baseline">rampy.baseline module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rampy.filters">rampy.filters module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rampy.functions">rampy.functions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rampy.maps">rampy.maps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rampy.mixing">rampy.mixing module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rampy.ml_classification">rampy.ml_classification module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rampy.ml_exploration">rampy.ml_exploration module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rampy.ml_regressor">rampy.ml_regressor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rampy.peak_area">rampy.peak_area module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rampy.peak_shapes">rampy.peak_shapes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rampy.rameau">rampy.rameau module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rampy.spectranization">rampy.spectranization module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rampy.tlcorrection">rampy.tlcorrection module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-rampy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>rampy package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/rampy.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="rampy-package">
+<h1>rampy package<a class="headerlink" href="#rampy-package" title="Permalink to this headline"></a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline"></a></h2>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="module-rampy.baseline">
+<span id="rampy-baseline-module"></span><h2>rampy.baseline module<a class="headerlink" href="#module-rampy.baseline" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.baseline.baseline">
+<span class="sig-prename descclassname"><span class="pre">rampy.baseline.</span></span><span class="sig-name descname"><span class="pre">baseline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.baseline.baseline" title="Permalink to this definition"></a></dt>
+<dd><p>Allows subtracting a baseline under a x y spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_input</strong> (<em>ndarray</em>) – x values.</p></li>
+<li><p><strong>y_input</strong> (<em>ndarray</em>) – y values.</p></li>
+<li><p><strong>bir</strong> (<em>ndarray</em>) – Contain the regions of interest, organised per line.
+For instance, roi = np.array([[100., 200.],[500.,600.]]) will
+define roi between 100 and 200 as well as between 500 and 600.
+Note: This is NOT used by the “als” and “arPLS” algorithms, but still is a requirement when calling the function.
+bir and method probably will become args in a futur iteration of rampy to solve this.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – <ul>
+<li><p>“poly”: polynomial fitting, with splinesmooth the degree of the polynomial.</p></li>
+<li><dl class="simple">
+<dt>”unispline”: spline with the UnivariateSpline function of Scipy, splinesmooth is</dt><dd><p>the spline smoothing factor (assume equal weight in the present case);</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>”gcvspline”: spline with the gcvspl.f algorythm, really robust.</dt><dd><p>Spectra must have x, y, ese in it, and splinesmooth is the smoothing factor;
+For gcvspline, if ese are not provided we assume ese = sqrt(y).
+Requires the installation of gcvspline with a “pip install gcvspline” call prior to use;</p>
+</dd>
+</dl>
+</li>
+<li><p>”exp”: exponential background;</p></li>
+<li><p>”log”: logarythmic background;</p></li>
+<li><p>”rubberband”: rubberband baseline fitting;</p></li>
+<li><p>”als”: (automatic) baseline least square fitting following Eilers and Boelens 2005;</p></li>
+<li><p>”arPLS”: (automatic) Baseline correction using asymmetrically reweighted penalized least squares smoothing. Baek et al. 2015, Analyst 140: 250-257;</p></li>
+<li><p>’drPLS’: (automatic) Baseline correction method based on doubly reweighted penalized least squares. Xu et al., Applied Optics 58(14):3913-3920.</p></li>
+</ul>
+</p></li>
+<li><p><strong>polynomial_order</strong> (<em>int</em><em>, </em><em>optional</em>) – The degree of the polynomial (0 for a constant), default = 1.</p></li>
+<li><p><strong>s</strong> (<em>float</em><em>, </em><em>optional</em>) – spline smoothing coefficient for the unispline and gcvspline algorithms.</p></li>
+<li><p><strong>lam</strong> (<em>float</em><em>, </em><em>optional</em>) – The lambda smoothness parameter for the ALS, ArPLS and drPLS algorithms. Typical values are between 10**2 to 10**9, default = 10**5 for ALS and ArPLS and default = 10**6 for drPLS.</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – For the ALS algorithm, advised value between 0.001 to 0.1, default = 0.01.</p></li>
+<li><p><strong>ratio</strong> (<em>float</em><em>, </em><em>optional</em>) – Ratio parameter of the arPLS and drPLS algorithm. default = 0.01 for arPLS and 0.001 for drPLS.</p></li>
+<li><p><strong>niter</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of iteration of the ALS and drPLS algorithm, default = 10 for ALS and default = 100 for drPLS.</p></li>
+<li><p><strong>eta</strong> (<em>float</em><em>, </em><em>optional</em>) – Roughness parameter for the drPLS algorithm, is between 0 and 1, default = 0.5</p></li>
+<li><p><strong>p0_exp</strong> (<em>list</em><em>, </em><em>optional</em>) – containg the starting parameter for the exp baseline fit with curve_fit. Default = [1.,1.,1.].</p></li>
+<li><p><strong>p0_log</strong> (<em>list</em><em>, </em><em>optional</em>) – containg the starting parameter for the log baseline fit with curve_fit. Default = [1.,1.,1.,1.].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>out1</strong> (<em>ndarray</em>) – Contain the corrected signal.</p></li>
+<li><p><strong>out2</strong> (<em>ndarray</em>) – Contain the baseline.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.baseline.get_portion_interest">
+<span class="sig-prename descclassname"><span class="pre">rampy.baseline.</span></span><span class="sig-name descname"><span class="pre">get_portion_interest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.baseline.get_portion_interest" title="Permalink to this definition"></a></dt>
+<dd><p>Extracts the signals indicated in the bir.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – the x axis</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – the y values</p></li>
+<li><p><strong>bir</strong> (<em>n x 2 array</em>) – the x values of regions where the signal needs to be extracted,
+must be a n x 2 dimension array, where n is the number of regions to extract
+and column 0 contains the low bounds, column 1 the high ones.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>yafit</strong> – a 2 columns x-y array containing the signals in the bir.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rampy.filters">
+<span id="rampy-filters-module"></span><h2>rampy.filters module<a class="headerlink" href="#module-rampy.filters" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.filters.smooth">
+<span class="sig-prename descclassname"><span class="pre">rampy.filters.</span></span><span class="sig-name descname"><span class="pre">smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'whittaker'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.filters.smooth" title="Permalink to this definition"></a></dt>
+<dd><p>smooth the provided y signal (sampled on x)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – Nx1 array of x values (equally spaced).</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Nx1 array of y values (equally spaced).</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – Method for smoothing the signal;
+choose between savgol (Savitzky-Golay), GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline, whittaker, flat, hanning, hamming, bartlett, blackman.</p></li>
+<li><p><strong>window_length</strong> (<em>int</em><em>, </em><em>optional</em>) – The length of the filter window (i.e. the number of coefficients). window_length must be a positive odd integer.</p></li>
+<li><p><strong>polyorder</strong> (<em>int</em><em>, </em><em>optional</em>) – The order of the polynomial used to fit the samples. polyorder must be less than window_length.</p></li>
+<li><p><strong>Lambda</strong> (<em>float</em><em>, </em><em>optional</em>) – smoothing parameter of the Whittaker filter described in Eilers (2003). The higher the smoother the fit.</p></li>
+<li><p><strong>d</strong> (<em>int</em><em>, </em><em>optional</em>) – d parameter in Whittaker filter, see Eilers (2003).</p></li>
+<li><p><strong>ese_y</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – errors associated with y (for the gcvspline algorithms)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y_smo</strong> – smoothed signal sampled on x.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Use of GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline requires installation of gcvspline. See gcvspline documentation.
+See also documentation for details on GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline.</p>
+<p>savgol uses the scipy.signal.savgol_filter() function.</p>
+<p class="rubric">References</p>
+<p>Eilers, P.H.C., 2003. A Perfect Smoother. Anal. Chem. 75, 3631–3636. <a class="reference external" href="https://doi.org/10.1021/ac034173t">https://doi.org/10.1021/ac034173t</a></p>
+<p>Scipy Cookbook: <a class="reference external" href="https://scipy-cookbook.readthedocs.io/items/SignalSmooth.html?highlight=smooth">https://scipy-cookbook.readthedocs.io/items/SignalSmooth.html?highlight=smooth</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.filters.spectrafilter">
+<span class="sig-prename descclassname"><span class="pre">rampy.filters.</span></span><span class="sig-name descname"><span class="pre">spectrafilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectre</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtertype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numtaps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.filters.spectrafilter" title="Permalink to this definition"></a></dt>
+<dd><p>Filter specific frequencies in spectra with a butterworth filter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spectre</strong> (<em>ndarray</em>) – Array of X-Y values of spectra. First column is X and subsequent n columns are Y values of n spectra. (see also spectraarray function)</p></li>
+<li><p><strong>filtertype</strong> (<em>string</em>) – type of filter; Choose between ‘low’, ‘high’, ‘bandstop’, ‘bandpass’.</p></li>
+<li><p><strong>fq</strong> (<em>ndarray</em>) – Frequency of the periodic signal you try to erase. If using a bandpass or band stop filter, fq must be an array containing the cutoff frequencies.</p></li>
+<li><p><strong>columns</strong> (<em>ndarray</em>) – An array defining which columns to treat.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong> – filtered signals.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.filters.whittaker">
+<span class="sig-prename descclassname"><span class="pre">rampy.filters.</span></span><span class="sig-name descname"><span class="pre">whittaker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.filters.whittaker" title="Permalink to this definition"></a></dt>
+<dd><p>smooth a signal with the Whittaker smoother</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>ndarray</em>) – An array with the values to smooth (equally spaced).</p></li>
+<li><p><strong>Lambda</strong> (<em>float</em><em>, </em><em>optional</em>) – The smoothing coefficient, the higher the smoother. Default = 10^5.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>z</strong> – An array containing the smoothed values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<ol class="upperalpha simple" start="16">
+<li><ol class="upperalpha simple" start="8">
+<li><ol class="upperalpha simple" start="3">
+<li><p>Eilers, A Perfect Smoother. Anal. Chem. 75, 3631–3636 (2003).</p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rampy.functions">
+<span id="rampy-functions-module"></span><h2>rampy.functions module<a class="headerlink" href="#module-rampy.functions" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.constant">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">constant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.constant" title="Permalink to this definition"></a></dt>
+<dd><p>returns a constant value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>1D array</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – array filled with a values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>1D array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.difffull">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">difffull</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.difffull" title="Permalink to this definition"></a></dt>
+<dd><p>Equation for the diffusion into a full slab, see Crank 1975</p>
+<p>Here we assume the profil to have 2 surfaces of contact on each side</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>C0</strong> (<em>float</em>) – the concentration in the core</p></li>
+<li><p><strong>C1</strong> (<em>float</em>) – the concentration at the border</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – the diffusion coefficient in log10 unit, m^2.s^-1</p></li>
+<li><p><strong>x2</strong> (<em>x1 and</em>) – the profil lengths from beginning and end respectively, in meters</p></li>
+<li><p><strong>t</strong> (<em>float</em>) – time in seconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.diffshort">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">diffshort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.diffshort" title="Permalink to this definition"></a></dt>
+<dd><p>1D equation for the diffusion into a semi-infinite slab, see Crank 1975</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>C0</strong> (<em>float</em>) – the concentration in the core</p></li>
+<li><p><strong>C1</strong> (<em>float</em>) – the concentration at the border</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – the diffusion coefficient in log10 unit, m^2.s^-1</p></li>
+<li><p><strong>x</strong> (<em>1D array</em>) – the profil length in meters</p></li>
+<li><p><strong>t</strong> (<em>float</em>) – time in seconds</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Cx</strong> – concentration at x</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>1D array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.funexp">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">funexp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.funexp" title="Permalink to this definition"></a></dt>
+<dd><p>exponential baseline function</p>
+<p>a*exp(b*(x-c))</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.funlog">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">funlog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.funlog" title="Permalink to this definition"></a></dt>
+<dd><p>log baseline function</p>
+<p>a * ln(-b <a href="#id1"><span class="problematic" id="id2">*</span></a>(x-c)) - d*x**2</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.gauss_lsq">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">gauss_lsq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.gauss_lsq" title="Permalink to this definition"></a></dt>
+<dd><p>predicts a sum of gaussian peaks with parameters params</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>params</strong> (<em>1D array</em>) – an array of the parameters of the peaks. The number of peaks is assumed to be equal to len(params)/3.
+In this array, list intensities first, then all peak positions, then all peak half width at half maximum.</p></li>
+<li><p><strong>x</strong> (<em>1D array</em>) – x axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – y values at position x</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>1D array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.gauss_lsq_lfix">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">gauss_lsq_lfix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.gauss_lsq_lfix" title="Permalink to this definition"></a></dt>
+<dd><p>predicts a sum of gaussian peaks with parameters params</p>
+<p>Assumes that all peaks share the same HWHM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>params</strong> (<em>1D array</em>) – an array of the parameters of the peaks. The number of peaks is assumed to be equal to len(params)/3.
+In this array, list intensities first, then all peak positions, then the last element is the peaks’ half width at half maximum.</p></li>
+<li><p><strong>x</strong> (<em>1D array</em>) – x axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – y values at position x</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>1D array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.linear">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">linear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.linear" title="Permalink to this definition"></a></dt>
+<dd><p>returns a + b*x</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.linear0">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">linear0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.linear0" title="Permalink to this definition"></a></dt>
+<dd><p>returns a*x</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.multigaussian">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">multigaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.multigaussian" title="Permalink to this definition"></a></dt>
+<dd><p>old attempt to have a multigaussian function, do not use. Will be removed soon.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.poly2">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">poly2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.poly2" title="Permalink to this definition"></a></dt>
+<dd><p>returns a + b*x + c*x*x</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rampy.maps">
+<span id="rampy-maps-module"></span><h2>rampy.maps module<a class="headerlink" href="#module-rampy.maps" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rampy.maps.map">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rampy.maps.</span></span><span class="sig-name descname"><span class="pre">map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrometer_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'horiba'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.map" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>treat maps of Raman spectra</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<em>str</em>) – filename, including path</p></li>
+<li><p><strong>spectrometer_type</strong> (<em>str</em>) – type of spectrometer, choose between “horiba” or “renishaw”</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.map.area">
+<span class="sig-name descname"><span class="pre">area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_to_investigate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.map.area" title="Permalink to this definition"></a></dt>
+<dd><p>get the area under the curve in the region to investigate.</p>
+<p>The area is calculated by trapezoidal integration, using np.trapz()
+Do not forget to smooth the signal if necessary prior to using this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>object intensities</em>) – the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.</p></li>
+<li><p><strong>region_to_investigate</strong> (<em>1x2 array</em>) – the x values of regions where the area will be measured</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>self.A</strong> – maximum to make a nice plot</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.map.area_ratio">
+<span class="sig-name descname"><span class="pre">area_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_to_investigate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.map.area_ratio" title="Permalink to this definition"></a></dt>
+<dd><p>get the area ratio between two regions of interest.</p>
+<p>The areas are calculated by trapezoidal integration, using np.trapz()
+Do not forget to smooth the signals if necessary prior to using this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>object intensities</em>) – the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.</p></li>
+<li><p><strong>region_to_investigate</strong> (<em>1x2 array</em>) – the x values of regions where the areas will be measured. The two lines record the two regions of interest.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>self.A_ratio</strong> – Area ratio = area region 1 / area region 2</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.map.background">
+<span class="sig-name descname"><span class="pre">background</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'poly'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.map.background" title="Permalink to this definition"></a></dt>
+<dd><p>correct a background from the initial signal I on a map using rampy.baseline</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bir</strong> (<em>ndarray</em>) – arrays of the backgroudn interpolation regions.</p></li>
+<li><p><strong>method</strong> (<em>string</em>) – see rampy.baseline documentation for methods available. Default is polynomial</p></li>
+<li><p><strong>there.</strong> (<em>All kwargs argument for rampy.baseline</em><em>(</em><em>) </em><em>will be forwarded and can be used</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Background and corrected spectra area available at self.background and self.I_corrected</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.map.centroid">
+<span class="sig-name descname"><span class="pre">centroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_to_investigate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.map.centroid" title="Permalink to this definition"></a></dt>
+<dd><p>calculate the centroid in a given region of interest</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>object intensities</em>) – the intensities to normalise. For instance, pass self.normalised for performing the calculation on normalised spectra.</p></li>
+<li><p><strong>region_to_investigate</strong> (<em>1x2 array</em>) – the x values of regions where the centroid will be measured</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>self.centroid_position</strong> – centroid position for the map</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.map.intensity">
+<span class="sig-name descname"><span class="pre">intensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_to_investigate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.map.intensity" title="Permalink to this definition"></a></dt>
+<dd><p>get the maximum intensity in the region to investigate.</p>
+<p>The intensity maximum is estimated from a simple np.max() search.
+Do not forget to smooth the signal if necessary prior to using this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>object intensities</em>) – the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.</p></li>
+<li><p><strong>region_to_investigate</strong> (<em>1x2 array</em>) – the x values of regions where the intensity will be measured</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>self.I_max</strong> – Intensity maximum</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.map.intensity_ratio">
+<span class="sig-name descname"><span class="pre">intensity_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_to_investigate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.map.intensity_ratio" title="Permalink to this definition"></a></dt>
+<dd><p>get the intensity ratio between two regions of interest.</p>
+<p>The intensity maxima are estimated from a simple np.max() search.
+Do not forget to smooth the signals if necessary prior to using this.
+:param y: the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.
+:type y: object intensities
+:param region_to_investigate: the x values of regions where the intensity ratios will be measured. The two lines record the two regions of interest.
+:type region_to_investigate: 2x2 array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>self.I_ratio</strong> – Intensity ratio</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.map.normalise">
+<span class="sig-name descname"><span class="pre">normalise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'intensity'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.map.normalise" title="Permalink to this definition"></a></dt>
+<dd><p>normalise the spectra to their max intensity, their area or min-max normalisation</p>
+<p>This uses the internals of rampy.normalise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>object intensities</em>) – the intensities to normalise. For instance, if you want to normalised the background corrected I, pass self.I_corrected.</p></li>
+<li><p><strong>method</strong> (<em>string</em>) – method used, choose between area, intensity, minmax</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The normalised spectra are available at self.I_normalised</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.map.smooth">
+<span class="sig-name descname"><span class="pre">smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'whittaker'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.map.smooth" title="Permalink to this definition"></a></dt>
+<dd><p>uses the smooth function of rampy to smooth the signals
+:param y: the intensities to normalise. For instance, if you want to normalised the background corrected I, pass self.I_corrected.
+:type y: object intensities
+:param method: Method for smoothing the signal;</p>
+<blockquote>
+<div><p>choose between savgol (Savitzky-Golay), GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline, whittaker, flat, hanning, hamming, bartlett, blackman.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>window_length</strong> (<em>int</em><em>, </em><em>optional</em>) – The length of the filter window (i.e. the number of coefficients). window_length must be a positive odd integer.</p></li>
+<li><p><strong>polyorder</strong> (<em>int</em><em>, </em><em>optional</em>) – The order of the polynomial used to fit the samples. polyorder must be less than window_length.</p></li>
+<li><p><strong>Lambda</strong> (<em>float</em><em>, </em><em>optional</em>) – smoothing parameter of the Whittaker filter described in Eilers (2003). The higher the smoother the fit.</p></li>
+<li><p><strong>d</strong> (<em>int</em><em>, </em><em>optional</em>) – d parameter in Whittaker filter, see Eilers (2003).</p></li>
+<li><p><strong>ese_y</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – errors associated with y (for the gcvspline algorithms)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>self.y_smoothed</strong> – the smoothed signal for the map</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.maps.peak">
+<span class="sig-prename descclassname"><span class="pre">rampy.maps.</span></span><span class="sig-name descname"><span class="pre">peak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambdas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Xrange</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Xmean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.peak" title="Permalink to this definition"></a></dt>
+<dd><p>to fit peaks in a map. Work in progress.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.maps.read_horiba">
+<span class="sig-prename descclassname"><span class="pre">rampy.maps.</span></span><span class="sig-name descname"><span class="pre">read_horiba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.read_horiba" title="Permalink to this definition"></a></dt>
+<dd><p>read Horiba csv maps</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – filename, including path</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>X</strong> (<em>m by n array</em>) – X positions</p></li>
+<li><p><strong>Y</strong> (<em>m by n array</em>) – Y position</p></li>
+<li><p><strong>lambdas</strong> (<em>m by n array</em>) – Raman shift</p></li>
+<li><p><strong>intensities</strong> (<em>m by n array</em>) – Intensities</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.maps.read_renishaw">
+<span class="sig-prename descclassname"><span class="pre">rampy.maps.</span></span><span class="sig-name descname"><span class="pre">read_renishaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.read_renishaw" title="Permalink to this definition"></a></dt>
+<dd><p>read Renishaw csv maps</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – filename, including path</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>X</strong> (<em>m by n array</em>) – X positions</p></li>
+<li><p><strong>Y</strong> (<em>m by n array</em>) – Y position</p></li>
+<li><p><strong>lambdas</strong> (<em>m by n array</em>) – Raman shift</p></li>
+<li><p><strong>intensities</strong> (<em>m by n array</em>) – Intensities</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rampy.mixing">
+<span id="rampy-mixing-module"></span><h2>rampy.mixing module<a class="headerlink" href="#module-rampy.mixing" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.mixing.mixing_sp">
+<span class="sig-prename descclassname"><span class="pre">rampy.mixing.</span></span><span class="sig-name descname"><span class="pre">mixing_sp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_fit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.mixing.mixing_sp" title="Permalink to this definition"></a></dt>
+<dd><p>mix two reference spectra to match the given ones</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_fit</strong> (<em>ndarray</em><em>, </em><em>shape m * n</em>) – an array containing the signals with m datapoints and n experiments</p></li>
+<li><p><strong>ref1</strong> (<em>ndarray</em><em>, </em><em>shape m</em>) – an array containing the first reference signal</p></li>
+<li><p><strong>ref2</strong> (<em>ndarray</em><em>, </em><em>shape m</em>) – an array containing the second reference signal</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong> – the fractions of ref1 in the mix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray, shape n</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>Performs the calculation by minimizing the sum of the least absolute value of the objective function:</dt><dd><p>obj = sum(abs(y_fit-(ref1*F1 + ref2*(1-F1))))</p>
+</dd>
+</dl>
+<p>Uses cvxpy to perform this calculation</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rampy.ml_classification">
+<span id="rampy-ml-classification-module"></span><h2>rampy.ml_classification module<a class="headerlink" href="#module-rampy.ml_classification" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rampy.ml_classification.</span></span><span class="sig-name descname"><span class="pre">mlclassificator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.ml_classification.mlclassificator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>use machine learning algorithms from scikit learn to perform classification of spectra.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.x" title="Permalink to this definition"></a></dt>
+<dd><p>Spectra; n_features = n_frequencies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>{array-like, sparse matrix}, shape = (n_samples, n_features)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.y">
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.y" title="Permalink to this definition"></a></dt>
+<dd><p>numeric labels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array, shape = (n_samples,)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.X_test">
+<span class="sig-name descname"><span class="pre">X_test</span></span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.X_test" title="Permalink to this definition"></a></dt>
+<dd><p>spectra organised in rows (1 row = one spectrum) that you want to use as a testing dataset. THose spectra should not be present in the x (training) dataset. The spectra should share a common X axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>{array-like, sparse matrix}, shape = (n_samples, n_features)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.y_test">
+<span class="sig-name descname"><span class="pre">y_test</span></span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.y_test" title="Permalink to this definition"></a></dt>
+<dd><p>numeric labels that you want to use as a testing dataset. Those targets should not be present in the y (training) dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array, shape = (n_samples,)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.algorithm">
+<span class="sig-name descname"><span class="pre">algorithm</span></span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.algorithm" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>“Nearest Neighbors”, “Linear SVM”, “RBF SVM”, “Gaussian Process”,</dt><dd><p>“Decision Tree”, “Random Forest”, “Neural Net”, “AdaBoost”,
+“Naive Bayes”, “QDA”</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>String,</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.scaling">
+<span class="sig-name descname"><span class="pre">scaling</span></span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.scaling" title="Permalink to this definition"></a></dt>
+<dd><p>True or False. If True, data will be scaled during fitting and prediction with the requested scaler (see below),</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.scaler">
+<span class="sig-name descname"><span class="pre">scaler</span></span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.scaler" title="Permalink to this definition"></a></dt>
+<dd><p>the type of scaling performed. Choose between MinMaxScaler or StandardScaler, see <a class="reference external" href="http://scikit-learn.org/stable/modules/preprocessing.html">http://scikit-learn.org/stable/modules/preprocessing.html</a> for details. Default = “MinMaxScaler”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.test_size">
+<span class="sig-name descname"><span class="pre">test_size</span></span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.test_size" title="Permalink to this definition"></a></dt>
+<dd><p>the fraction of the dataset to use as a testing dataset; only used if X_test and y_test are not provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.rand_state">
+<span class="sig-name descname"><span class="pre">rand_state</span></span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.rand_state" title="Permalink to this definition"></a></dt>
+<dd><p>the random seed that is used for reproductibility of the results. Default = 42.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Float64</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.params_">
+<span class="sig-name descname"><span class="pre">params_</span></span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.params_" title="Permalink to this definition"></a></dt>
+<dd><p>contain the values of the hyperparameters that should be provided to the algorithm. See scikit-learn documentation for details for each algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.prediction_train">
+<span class="sig-name descname"><span class="pre">prediction_train</span></span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.prediction_train" title="Permalink to this definition"></a></dt>
+<dd><p>the predicted target values for the training y dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Array{Float64}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.prediction_test">
+<span class="sig-name descname"><span class="pre">prediction_test</span></span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.prediction_test" title="Permalink to this definition"></a></dt>
+<dd><p>the predicted target values for the testing y_test dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Array{Float64}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.model" title="Permalink to this definition"></a></dt>
+<dd><p>A Scikit Learn object model, see scikit learn library documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Scikit learn model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.X_scaler">
+<span class="sig-name descname"><span class="pre">X_scaler</span></span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.X_scaler" title="Permalink to this definition"></a></dt>
+<dd><p>A Scikit Learn scaler object for the x values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>scikit learn scaler</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.Y_scaler">
+<span class="sig-name descname"><span class="pre">Y_scaler</span></span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.Y_scaler" title="Permalink to this definition"></a></dt>
+<dd><p>A Scikit Learn scaler object for the y values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>scikit learn scaler</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Example</p>
+<p>Given an array X of n samples by m frequencies, and Y an array of n x 1 concentrations
+&gt;&gt;&gt; model = rampy.mlclassificator(X,y)
+&gt;&gt;&gt; model.algorithm(“SVC”)
+&gt;&gt;&gt; model.user_kernel = ‘poly’
+&gt;&gt;&gt; model.fit()
+&gt;&gt;&gt; y_new = model.predict(X_new)</p>
+<p>For details on hyperparameters of each algorithms, please directly consult the documentation of SciKit Learn at:
+<a class="reference external" href="http://scikit-learn.org/stable/">http://scikit-learn.org/stable/</a></p>
+<p>In progress</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.fit" title="Permalink to this definition"></a></dt>
+<dd><p>Scale data and train the model with the indicated algorithm.</p>
+<p>Do not forget to tune the hyperparameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>algorithm</strong> (<em>String</em>) – algorithm to use. Choose between “Nearest Neighbors”, “Linear SVM”, “RBF SVM”, “Gaussian Process”,</p></li>
+<li><p><strong>Tree&quot;</strong> (<em>&quot;Decision</em>) – </p></li>
+<li><p><strong>Forest&quot;</strong> (<em>&quot;Random</em>) – </p></li>
+<li><p><strong>Net&quot;</strong> (<em>&quot;Neural</em>) – </p></li>
+<li><p><strong>&quot;AdaBoost&quot;</strong> – </p></li>
+<li><p><strong>Bayes&quot;</strong> (<em>&quot;Naive</em>) – </p></li>
+<li><p><strong>&quot;QDA&quot;</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.predict" title="Permalink to this definition"></a></dt>
+<dd><p>Predict using the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>{array-like</em><em>, </em><em>sparse matrix}</em><em>, </em><em>shape =</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Samples.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>C</strong> (<em>array, shape = (n_samples,)</em>) – Returns predicted values.</p></li>
+<li><p><em>Remark</em></p></li>
+<li><p><em>——</em></p></li>
+<li><p><em>if self.scaling == “yes”, scaling will be performed on the input X.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.ml_classification.mlclassificator.refit">
+<span class="sig-name descname"><span class="pre">refit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rampy.ml_classification.mlclassificator.refit" title="Permalink to this definition"></a></dt>
+<dd><p>Re-train a model previously trained with fit()</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rampy.ml_exploration">
+<span id="rampy-ml-exploration-module"></span><h2>rampy.ml_exploration module<a class="headerlink" href="#module-rampy.ml_exploration" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rampy.ml_exploration.mlexplorer">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rampy.ml_exploration.</span></span><span class="sig-name descname"><span class="pre">mlexplorer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.ml_exploration.mlexplorer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>use machine learning algorithms from scikit learn to explore spectroscopic datasets</p>
+<p>Performs automatic scaling and train/test split before NMF or PCA fit.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_exploration.mlexplorer.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#rampy.ml_exploration.mlexplorer.x" title="Permalink to this definition"></a></dt>
+<dd><p>Spectra; n_features = n_frequencies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>{array-like, sparse matrix}, shape = (n_samples, n_features)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_exploration.mlexplorer.X_test">
+<span class="sig-name descname"><span class="pre">X_test</span></span><a class="headerlink" href="#rampy.ml_exploration.mlexplorer.X_test" title="Permalink to this definition"></a></dt>
+<dd><p>spectra organised in rows (1 row = one spectrum) that you want to use as a testing dataset. THose spectra should not be present in the x (training) dataset. The spectra should share a common X axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>{array-like, sparse matrix}, shape = (n_samples, n_features)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_exploration.mlexplorer.algorithm">
+<span class="sig-name descname"><span class="pre">algorithm</span></span><a class="headerlink" href="#rampy.ml_exploration.mlexplorer.algorithm" title="Permalink to this definition"></a></dt>
+<dd><p>“PCA”, “NMF”, default = “PCA”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>String,</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_exploration.mlexplorer.scaling">
+<span class="sig-name descname"><span class="pre">scaling</span></span><a class="headerlink" href="#rampy.ml_exploration.mlexplorer.scaling" title="Permalink to this definition"></a></dt>
+<dd><p>True or False. If True, data will be scaled prior to fitting (see below),</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_exploration.mlexplorer.scaler">
+<span class="sig-name descname"><span class="pre">scaler</span></span><a class="headerlink" href="#rampy.ml_exploration.mlexplorer.scaler" title="Permalink to this definition"></a></dt>
+<dd><p>the type of scaling performed. Choose between MinMaxScaler or StandardScaler, see <a class="reference external" href="http://scikit-learn.org/stable/modules/preprocessing.html">http://scikit-learn.org/stable/modules/preprocessing.html</a> for details. Default = “MinMaxScaler”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_exploration.mlexplorer.test_size">
+<span class="sig-name descname"><span class="pre">test_size</span></span><a class="headerlink" href="#rampy.ml_exploration.mlexplorer.test_size" title="Permalink to this definition"></a></dt>
+<dd><p>the fraction of the dataset to use as a testing dataset; only used if X_test and y_test are not provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_exploration.mlexplorer.rand_state">
+<span class="sig-name descname"><span class="pre">rand_state</span></span><a class="headerlink" href="#rampy.ml_exploration.mlexplorer.rand_state" title="Permalink to this definition"></a></dt>
+<dd><p>the random seed that is used for reproductibility of the results. Default = 42.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Float64</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_exploration.mlexplorer.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#rampy.ml_exploration.mlexplorer.model" title="Permalink to this definition"></a></dt>
+<dd><p>A Scikit Learn object model, see scikit learn library documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Scikit learn model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_exploration.mlexplorer.Remarks">
+<span class="sig-name descname"><span class="pre">Remarks</span></span><a class="headerlink" href="#rampy.ml_exploration.mlexplorer.Remarks" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-------</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">For</span> <span class="pre">details</span> <span class="pre">on</span> <span class="pre">hyperparameters</span> <span class="pre">of</span> <span class="pre">each</span> <span class="pre">algorithms,</span> <span class="pre">please</span> <span class="pre">directly</span> <span class="pre">consult</span> <span class="pre">the</span> <span class="pre">documentation</span> <span class="pre">of</span> <span class="pre">SciKit</span> <span class="pre">Learn</span> <span class="pre">at</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_exploration.mlexplorer.http">
+<span class="sig-name descname"><span class="pre">http</span></span><a class="headerlink" href="#rampy.ml_exploration.mlexplorer.http" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>//scikit-learn.org/stable/</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Results</span> <span class="pre">for</span> <span class="pre">machine</span> <span class="pre">learning</span> <span class="pre">algorithms</span> <span class="pre">can</span> <span class="pre">vary</span> <span class="pre">from</span> <span class="pre">run</span> <span class="pre">to</span> <span class="pre">run.</span> <span class="pre">A</span> <span class="pre">way</span> <span class="pre">to</span> <span class="pre">solve</span> <span class="pre">that</span> <span class="pre">is</span> <span class="pre">to</span> <span class="pre">fix</span> <span class="pre">the</span> <span class="pre">random_state.</span></span></dt>
+<dd></dd></dl>
+
+<p class="rubric">Example</p>
+<p>Given an array X of n samples by m frequencies, and Y an array of n x 1 concentrations</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">explo</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">mlexplorer</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="c1"># X is an array of signals built by mixing two partial components</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">explo</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">=</span> <span class="s1">&#39;NMF&#39;</span> <span class="c1"># using Non-Negative Matrix factorization</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">explo</span><span class="o">.</span><span class="n">nb_compo</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># number of components to use</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">explo</span><span class="o">.</span><span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="c1"># size of test set</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">explo</span><span class="o">.</span><span class="n">scaler</span> <span class="o">=</span> <span class="s2">&quot;MinMax&quot;</span> <span class="c1"># scaler</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">explo</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span> <span class="c1"># fitting!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">W</span> <span class="o">=</span> <span class="n">explo</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">explo</span><span class="o">.</span><span class="n">X_train_sc</span><span class="p">)</span> <span class="c1"># getting the mixture array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">explo</span><span class="o">.</span><span class="n">X_scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">explo</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">components_</span><span class="p">)</span> <span class="c1"># components in the original space</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">H</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="c1"># plot the two components</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.ml_exploration.mlexplorer.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rampy.ml_exploration.mlexplorer.fit" title="Permalink to this definition"></a></dt>
+<dd><p>Train the model with the indicated algorithm.</p>
+<p>Do not forget to tune the hyperparameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.ml_exploration.mlexplorer.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.ml_exploration.mlexplorer.predict" title="Permalink to this definition"></a></dt>
+<dd><p>Predict using the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>{array-like</em><em>, </em><em>sparse matrix}</em><em>, </em><em>shape =</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Samples.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>C</strong> (<em>array, shape = (n_samples,)</em>) – Returns predicted values.</p></li>
+<li><p><em>Remark</em></p></li>
+<li><p><em>——</em></p></li>
+<li><p><em>if self.scaling == “yes”, scaling will be performed on the input X.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.ml_exploration.mlexplorer.refit">
+<span class="sig-name descname"><span class="pre">refit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rampy.ml_exploration.mlexplorer.refit" title="Permalink to this definition"></a></dt>
+<dd><p>Train the model with the indicated algorithm.</p>
+<p>Do not forget to tune the hyperparameters.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rampy.ml_regressor">
+<span id="rampy-ml-regressor-module"></span><h2>rampy.ml_regressor module<a class="headerlink" href="#module-rampy.ml_regressor" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.ml_regressor.chemical_splitting">
+<span class="sig-prename descclassname"><span class="pre">rampy.ml_regressor.</span></span><span class="sig-name descname"><span class="pre">chemical_splitting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Pandas_DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rand_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">42</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.ml_regressor.chemical_splitting" title="Permalink to this definition"></a></dt>
+<dd><p>split datasets depending on their chemistry</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Pandas_DataFrame</strong> (<em>Pandas DataFrame</em>) – The input DataFrame with in the first row the names of the different data compositions</p></li>
+<li><p><strong>label</strong> (<em>string</em>) – The target in the DataFrame according to which we will split the dataset</p></li>
+<li><p><strong>split_fraction</strong> (<em>float</em><em>, </em><em>between 0 and 1</em>) – This is the amount of splitting you want, in reference to the second output dataset (see OUTPUTS).</p></li>
+<li><p><strong>rand_state</strong> (<em>float64</em>) – the random seed that is used for reproductibility of the results. Default = 42.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>frame1</strong> (<em>Pandas DataFrame</em>) – A DataSet with (1-split_fraction) datas from the input dataset with unique chemical composition / names</p></li>
+<li><p><strong>frame2</strong> (<em>Pandas DataFrame</em>) – A DataSet with split_fraction datas from the input dataset with unique chemical composition / names</p></li>
+<li><p><strong>frame1_idx</strong> (<em>ndarray</em>) – Contains the indexes of the data picked in Pandas_DataFrame to construct frame1</p></li>
+<li><p><strong>frame2_idx</strong> (<em>ndarray</em>) – Contains the indexes of the data picked in Pandas_DataFrame to construct frame2</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function avoids the same chemical dataset to be found in different training/testing/validating datasets that are used in ML.</p>
+<p>Indeed, it is worthless to put data from the same original dataset / with the same chemical composition
+in the training / testing / validating datasets. This creates a initial bias in the splitting process…</p>
+<p>Another way of doing that would be to write:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">grouped</span> <span class="o">=</span> <span class="n">Pandas_DataFrame</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">grouped</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k_train</span><span class="p">,</span> <span class="n">k_valid</span> <span class="o">=</span> <span class="n">model_selection</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k</span><span class="p">),</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.40</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train</span> <span class="o">=</span> <span class="n">Pandas_DataFrame</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">Pandas_DataFrame</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">k_train</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">valid</span> <span class="o">=</span> <span class="n">Pandas_DataFrame</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">Pandas_DataFrame</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">k_valid</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>(results will vary slightly as variable k is sorted but not variable names in the function below)</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rampy.ml_regressor.</span></span><span class="sig-name descname"><span class="pre">mlregressor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.ml_regressor.mlregressor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>use machine learning algorithms from scikit learn to perform regression between spectra and an observed variable.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.x" title="Permalink to this definition"></a></dt>
+<dd><p>Spectra; n_features = n_frequencies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>{array-like, sparse matrix}, shape = (n_samples, n_features)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.y">
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.y" title="Permalink to this definition"></a></dt>
+<dd><p>Returns predicted values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array, shape = (n_samples,)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.X_test">
+<span class="sig-name descname"><span class="pre">X_test</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.X_test" title="Permalink to this definition"></a></dt>
+<dd><p>spectra organised in rows (1 row = one spectrum) that you want to use as a testing dataset. THose spectra should not be present in the x (training) dataset. The spectra should share a common X axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>{array-like, sparse matrix}, shape = (n_samples, n_features)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.y_test">
+<span class="sig-name descname"><span class="pre">y_test</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.y_test" title="Permalink to this definition"></a></dt>
+<dd><p>the target that you want to use as a testing dataset. Those targets should not be present in the y (training) dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array, shape = (n_samples,)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.algorithm">
+<span class="sig-name descname"><span class="pre">algorithm</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.algorithm" title="Permalink to this definition"></a></dt>
+<dd><p>“KernelRidge”, “SVM”, “LinearRegression”, “Lasso”, “ElasticNet”, “NeuralNet”, “BaggingNeuralNet”, default = “SVM”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>String,</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.scaling">
+<span class="sig-name descname"><span class="pre">scaling</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.scaling" title="Permalink to this definition"></a></dt>
+<dd><p>True or False. If True, data will be scaled during fitting and prediction with the requested scaler (see below),</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.scaler">
+<span class="sig-name descname"><span class="pre">scaler</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.scaler" title="Permalink to this definition"></a></dt>
+<dd><p>the type of scaling performed. Choose between MinMaxScaler or StandardScaler, see <a class="reference external" href="http://scikit-learn.org/stable/modules/preprocessing.html">http://scikit-learn.org/stable/modules/preprocessing.html</a> for details. Default = “MinMaxScaler”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.test_size">
+<span class="sig-name descname"><span class="pre">test_size</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.test_size" title="Permalink to this definition"></a></dt>
+<dd><p>the fraction of the dataset to use as a testing dataset; only used if X_test and y_test are not provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.rand_state">
+<span class="sig-name descname"><span class="pre">rand_state</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.rand_state" title="Permalink to this definition"></a></dt>
+<dd><p>the random seed that is used for reproductibility of the results. Default = 42.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Float64</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.param_kr">
+<span class="sig-name descname"><span class="pre">param_kr</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.param_kr" title="Permalink to this definition"></a></dt>
+<dd><p>contain the values of the hyperparameters that should be provided to KernelRidge and GridSearch for the Kernel Ridge regression algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.param_svm">
+<span class="sig-name descname"><span class="pre">param_svm</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.param_svm" title="Permalink to this definition"></a></dt>
+<dd><p>containg the values of the hyperparameters that should be provided to SVM and GridSearch for the Support Vector regression algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.param_neurons">
+<span class="sig-name descname"><span class="pre">param_neurons</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.param_neurons" title="Permalink to this definition"></a></dt>
+<dd><p>contains the parameters for the Neural Network (MLPregressor model in sklearn).
+Default= dict(hidden_layer_sizes=(3,),solver = ‘lbfgs’,activation=’relu’,early_stopping=True)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.param_bagging">
+<span class="sig-name descname"><span class="pre">param_bagging</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.param_bagging" title="Permalink to this definition"></a></dt>
+<dd><p>contains the parameters for the BaggingRegressor sklearn function that uses a MLPregressor base method.
+Default= dict(n_estimators=100, max_samples=1.0, max_features=1.0, bootstrap=True,</p>
+<blockquote>
+<div><p>bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=1, random_state=rand_state, verbose=0)</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.prediction_train">
+<span class="sig-name descname"><span class="pre">prediction_train</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.prediction_train" title="Permalink to this definition"></a></dt>
+<dd><p>the predicted target values for the training y dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Array{Float64}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.prediction_test">
+<span class="sig-name descname"><span class="pre">prediction_test</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.prediction_test" title="Permalink to this definition"></a></dt>
+<dd><p>the predicted target values for the testing y_test dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Array{Float64}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.model" title="Permalink to this definition"></a></dt>
+<dd><p>A Scikit Learn object model, see scikit learn library documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Scikit learn model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.X_scaler">
+<span class="sig-name descname"><span class="pre">X_scaler</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.X_scaler" title="Permalink to this definition"></a></dt>
+<dd><p>A Scikit Learn scaler object for the x values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.Y_scaler">
+<span class="sig-name descname"><span class="pre">Y_scaler</span></span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.Y_scaler" title="Permalink to this definition"></a></dt>
+<dd><p>A Scikit Learn scaler object for the y values.</p>
+</dd></dl>
+
+<p class="rubric">Example</p>
+<p>Given an array X of n samples by m frequencies, and Y an array of n x 1 concentrations</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">mlregressor</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">algorithm</span><span class="p">(</span><span class="s2">&quot;SVM&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">user_kernel</span> <span class="o">=</span> <span class="s1">&#39;poly&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_new</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_new</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For details on hyperparameters of each algorithms, please directly consult the documentation of SciKit Learn at:</p>
+<p><a class="reference external" href="http://scikit-learn.org/stable/">http://scikit-learn.org/stable/</a></p>
+<p>For Support Vector and Kernel Ridge regressions, mlregressor performs a cross_validation search with using 5 KFold cross validators.</p>
+<p>If the results are poor with Support Vector and Kernel Ridge regressions, you will have to tune the param_grid_kr or param_grid_svm dictionnary that records the hyperparameter space to investigate during the cross validation.</p>
+<p>Results for machine learning algorithms can vary from run to run. A way to solve that is to fix the random_state.
+For neural nets, results from multiple neural nets (bagging technique) may also generalise better, such that
+it may be better to use the BaggingNeuralNet function.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.fit" title="Permalink to this definition"></a></dt>
+<dd><p>Scale data and train the model with the indicated algorithm.</p>
+<p>Do not forget to tune the hyperparameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>algorithm</strong> (<em>String</em><em>,</em>) – algorithm to use. Choose between “KernelRidge”, “SVM”, “LinearRegression”, “Lasso”, “ElasticNet”, “NeuralNet”, “BaggingNeuralNet”, default = “SVM”</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.predict" title="Permalink to this definition"></a></dt>
+<dd><p>Predict using the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>{array-like</em><em>, </em><em>sparse matrix}</em><em>, </em><em>shape =</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Samples.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>C</strong> (<em>array, shape = (n_samples,)</em>) – Returns predicted values.</p></li>
+<li><p><em>Remark</em></p></li>
+<li><p><em>——</em></p></li>
+<li><p><em>if self.scaling == “yes”, scaling will be performed on the input X.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.ml_regressor.mlregressor.refit">
+<span class="sig-name descname"><span class="pre">refit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rampy.ml_regressor.mlregressor.refit" title="Permalink to this definition"></a></dt>
+<dd><p>Re-train a model previously trained with fit()</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rampy.peak_area">
+<span id="rampy-peak-area-module"></span><h2>rampy.peak_area module<a class="headerlink" href="#module-rampy.peak_area" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.peak_area.gaussianarea">
+<span class="sig-prename descclassname"><span class="pre">rampy.peak_area.</span></span><span class="sig-name descname"><span class="pre">gaussianarea</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HWHM</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.peak_area.gaussianarea" title="Permalink to this definition"></a></dt>
+<dd><p>returns the area of a Gaussian peak</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>amp</strong> (<em>float</em><em> or </em><em>ndarray</em>) – amplitude of the peak</p></li>
+<li><p><strong>HWHM</strong> (<em>float</em><em> or </em><em>ndarray</em>) – half-width at half-maximum</p></li>
+<li><p><strong>eseAmplitude</strong> (<em>float</em><em> or </em><em>ndarray</em><em>, </em><em>optional</em>) – standard deviation on amp; Default = None</p></li>
+<li><p><strong>eseHWHM</strong> (<em>float</em><em> or </em><em>ndarray</em><em>, </em><em>optional</em>) – standard deviation on HWHM; Default = None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>area</strong> (<em>float or ndarray</em>) – peak area</p></li>
+<li><p><strong>esearea</strong> (<em>float or ndarray</em>) – error on peak area; will be None if no errors on amp and HWHM were provided.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.peak_area.peakarea">
+<span class="sig-prename descclassname"><span class="pre">rampy.peak_area.</span></span><span class="sig-name descname"><span class="pre">peakarea</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.peak_area.peakarea" title="Permalink to this definition"></a></dt>
+<dd><p>returns the area of a peak</p>
+<p>(!experimental!)</p>
+<p>gaussian peak area is calculated analytically; areas for other peak shapes
+are calculated using trapezoidal integration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shape</strong> (<em>string</em>) – gaussian, lorentzian, pseudovoigt or pearson7</p></li>
+<li><p><strong>amp</strong> (<em>float</em><em> or </em><em>ndarray</em>) – amplitude of the peak</p></li>
+<li><p><strong>pos</strong> (<em>float</em><em> or </em><em>ndarray</em>) – peak position</p></li>
+<li><p><strong>HWHM</strong> (<em>float</em><em> or </em><em>ndarray</em>) – half-width at half-maximum</p></li>
+<li><p><strong>a3</strong> (<em>float</em><em> or </em><em>ndarray</em>) – a3 parameters for pearson7</p></li>
+<li><p><strong>eseAmplitude</strong> (<em>float</em><em> or </em><em>ndarray</em>) – standard deviation on amp; Default = None</p></li>
+<li><p><strong>eseHWHM</strong> (<em>float</em><em> or </em><em>ndarray</em>) – standard deviation on HWHM; Default = None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>area</strong> (<em>float or ndarray</em>) – peak area</p></li>
+<li><p><strong>esearea</strong> (<em>float or ndarray</em>) – error on peak area; will be None if no errors on amp and HWHM were provided.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rampy.peak_shapes">
+<span id="rampy-peak-shapes-module"></span><h2>rampy.peak_shapes module<a class="headerlink" href="#module-rampy.peak_shapes" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.peak_shapes.create_gauss">
+<span class="sig-prename descclassname"><span class="pre">rampy.peak_shapes.</span></span><span class="sig-name descname"><span class="pre">create_gauss</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rampy.peak_shapes.create_gauss" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.peak_shapes.create_lorenz">
+<span class="sig-prename descclassname"><span class="pre">rampy.peak_shapes.</span></span><span class="sig-name descname"><span class="pre">create_lorenz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rampy.peak_shapes.create_lorenz" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.peak_shapes.gaussian">
+<span class="sig-prename descclassname"><span class="pre">rampy.peak_shapes.</span></span><span class="sig-name descname"><span class="pre">gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HWHM</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.peak_shapes.gaussian" title="Permalink to this definition"></a></dt>
+<dd><p>compute a Gaussian peak</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – the positions at which the signal should be sampled</p></li>
+<li><p><strong>amp</strong> (<em>float</em><em> or </em><em>ndarray with size equal to x.shape</em>) – amplitude</p></li>
+<li><p><strong>freq</strong> (<em>float</em><em> or </em><em>ndarray with size equal to x.shape</em>) – frequency/position of the Gaussian component</p></li>
+<li><p><strong>HWHM</strong> (<em>float</em><em> or </em><em>ndarray with size equal to x.shape</em>) – half-width at half-maximum</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>out</strong> (<em>ndarray</em>) – the signal</p></li>
+<li><p><em>Remarks</em></p></li>
+<li><p><em>——-</em></p></li>
+<li><p><em>Formula is amp*np.exp(-np.log(2)*((x-freq)/HWHM)**2)</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.peak_shapes.lorentzian">
+<span class="sig-prename descclassname"><span class="pre">rampy.peak_shapes.</span></span><span class="sig-name descname"><span class="pre">lorentzian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HWHM</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.peak_shapes.lorentzian" title="Permalink to this definition"></a></dt>
+<dd><p>compute a Lorentzian peak</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – the positions at which the signal should be sampled</p></li>
+<li><p><strong>amp</strong> (<em>float</em><em> or </em><em>ndarray with size equal to x.shape</em>) – amplitude</p></li>
+<li><p><strong>freq</strong> (<em>float</em><em> or </em><em>ndarray with size equal to x.shape</em>) – frequency/position of the Gaussian component</p></li>
+<li><p><strong>HWHM</strong> (<em>float</em><em> or </em><em>ndarray with size equal to x.shape</em>) – half-width at half-maximum</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>out</strong> (<em>ndarray</em>) – the signal</p></li>
+<li><p><em>Remarks</em></p></li>
+<li><p><em>——-</em></p></li>
+<li><p><em>Formula is amp/(1+((x-freq)/HWHM)**2)</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.peak_shapes.pearson7">
+<span class="sig-prename descclassname"><span class="pre">rampy.peak_shapes.</span></span><span class="sig-name descname"><span class="pre">pearson7</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.peak_shapes.pearson7" title="Permalink to this definition"></a></dt>
+<dd><p>compute a Peason7 peak</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – the positions at which the signal should be sampled</p></li>
+<li><p><strong>a0</strong> (<em>float</em><em> or </em><em>ndarrays of size equal to x.shape</em>) – parameters of the Pearson7 equation</p></li>
+<li><p><strong>a1</strong> (<em>float</em><em> or </em><em>ndarrays of size equal to x.shape</em>) – parameters of the Pearson7 equation</p></li>
+<li><p><strong>a2</strong> (<em>float</em><em> or </em><em>ndarrays of size equal to x.shape</em>) – parameters of the Pearson7 equation</p></li>
+<li><p><strong>a3</strong> (<em>float</em><em> or </em><em>ndarrays of size equal to x.shape</em>) – parameters of the Pearson7 equation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>out</strong> (<em>ndarray</em>) – the signal</p></li>
+<li><p><em>Remarks</em></p></li>
+<li><p><em>——-</em></p></li>
+<li><p><em>Formula is a0 / ( (1.0 + ((x-a1)/a2)**2.0 * (2.0**(1.0/a3) -1.0))**a3 )</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.peak_shapes.pseudovoigt">
+<span class="sig-prename descclassname"><span class="pre">rampy.peak_shapes.</span></span><span class="sig-name descname"><span class="pre">pseudovoigt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HWHM</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L_ratio</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.peak_shapes.pseudovoigt" title="Permalink to this definition"></a></dt>
+<dd><p>compute a pseudo-Voigt peak</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – the positions at which the signal should be sampled. Can be provided as vector, nx1 or nxm array.</p></li>
+<li><p><strong>amp</strong> (<em>float</em><em> or </em><em>ndarray with size equal to x.shape</em>) – amplitude</p></li>
+<li><p><strong>freq</strong> (<em>float</em><em> or </em><em>ndarray with size equal to x.shape</em>) – frequency/position of the Gaussian component</p></li>
+<li><p><strong>HWHM</strong> (<em>float</em><em> or </em><em>ndarray with size equal to x.shape</em>) – half-width at half-maximum</p></li>
+<li><p><strong>L_ratio</strong> (<em>float</em><em> or </em><em>ndarray with size equal to x.shape</em>) – ratio of the Lorentzian component, should be between 0 and 1 (included)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>out</strong> (<em>ndarray of size equal to x.shape</em>) – the signal</p></li>
+<li><p><em>Remarks</em></p></li>
+<li><p><em>——-</em></p></li>
+<li><p><em>Formula is (1-L_ratio)*gaussian(amp,freq,HWHM) + L_ratio*lorentzian(amp,freq,HWHM)</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rampy.rameau">
+<span id="rampy-rameau-module"></span><h2>rampy.rameau module<a class="headerlink" href="#module-rampy.rameau" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.rameau.DG2017_calibrate">
+<span class="sig-prename descclassname"><span class="pre">rampy.rameau.</span></span><span class="sig-name descname"><span class="pre">DG2017_calibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictio</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.DG2017_calibrate" title="Permalink to this definition"></a></dt>
+<dd><p>Fit a calibration by optimizing the K coefficient in the DG2017 method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dictio</strong> (<em>dictionary</em>) – dictionary with arrays named “feo”, “rws” and “water”.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>popt</strong> – The optimize a and b parameters of the equation K = a * [FeO wt%] + b.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.rameau.DG2017_predict">
+<span class="sig-prename descclassname"><span class="pre">rampy.rameau.</span></span><span class="sig-name descname"><span class="pre">DG2017_predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.096</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.663</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.DG2017_predict" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the K coefficient for the DG2017 method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dictio</strong> (<em>dict</em>) – a dictionary with ndarrays named “feo” and “rws”</p></li>
+<li><p><strong>b</strong> (<em>a and</em>) – factors in the equation: K = a * [FeO wt%] + b; default values from Di Genova et al. (2017)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>H2O (wt %)</strong> – The water content of the glasses calculated as Rws * (a * [FeO wt%] + b)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.rameau.LL2012_calibrate">
+<span class="sig-prename descclassname"><span class="pre">rampy.rameau.</span></span><span class="sig-name descname"><span class="pre">LL2012_calibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictio</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.LL2012_calibrate" title="Permalink to this definition"></a></dt>
+<dd><p>Fit a calibration line following equations (2) and (3) from Le Losq et al. (2012)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dictio</strong> – dictionary with arrays named “feo”, “rws” and “water”.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>A</strong> – The parameter in the equation (3) of Le Losq et al. (2012).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.rameau.LL2012_predict">
+<span class="sig-prename descclassname"><span class="pre">rampy.rameau.</span></span><span class="sig-name descname"><span class="pre">LL2012_predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.007609</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.LL2012_predict" title="Permalink to this definition"></a></dt>
+<dd><p>Predict the water content using the equation (3) from Le Losq et al. (2012)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dictio</strong> (<em>dict</em>) – a dictionary with ndarray named “rws”</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The glass water contents in wt%</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>H2O</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.rameau.fit_spectra">
+<span class="sig-prename descclassname"><span class="pre">rampy.rameau.</span></span><span class="sig-name descname"><span class="pre">fit_spectra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_liste</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LL2012'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./raw/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">514.532</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spline_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poly_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.fit_spectra" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the ratios of water and silicate signals from Raman spectra</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_liste</strong> (<em>Pandas DataFrame</em>) – Contains the list of spectra, see provided file as an example</p></li>
+<li><p><strong>method</strong> (<em>string</em>) – The used method. LL2012: Le Losq et al. (2012); DG2017: Di Genova et al. (2017). See references.</p></li>
+<li><p><strong>delim</strong> (<em>string</em>) – File delimiter. Use ‘   ‘ for tabulated text or ‘,’ for comma separated text.</p></li>
+<li><p><strong>path_in</strong> (<em>string</em>) – Path for the spectra</p></li>
+<li><p><strong>laser</strong> (<em>float</em>) – Laser line wavelength in nm</p></li>
+<li><p><strong>spline_coeff</strong> (<em>float</em>) – Smoothing coefficient for the spline baseline. An array of size len(data_liste) can be provided. Default = 0.001.</p></li>
+<li><p><strong>poly_coeff</strong> (<em>int</em>) – Polynomial coefficient for the polynomial baseline function. Default = 3 (DG2017 method). Set to 2 for Behrens et al. (2006) method.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – Common x axis.</p></li>
+<li><p><strong>y_all</strong> (<em>ndarray</em>) – All raw spectra from data_liste in an array of length len(x) and with as many column as spectra.</p></li>
+<li><p><strong>y_all_corr</strong> (<em>ndarray</em>) – All corrected spectra from data_liste in an array of length len(x) and with as many column as spectra.</p></li>
+<li><p><strong>y_all_base</strong> (<em>ndarray</em>) – All baselines for spectra from data_liste in an array of length len(x) and with as many column as spectra.</p></li>
+<li><p><strong>rws</strong> (<em>ndarray</em>) – The ratio of the water integrated intensity over that of silicate signals.</p></li>
+<li><p><strong>rw</strong> (<em>ndarray</em>) – The integrated intensity of water signal.</p></li>
+<li><p><strong>rs</strong> (<em>ndarray</em>) – The integrated intensity of silicate signals.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>IOError</strong> – If method is not set to LL2012 or DG2017.</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<ol class="upperalpha simple" start="3">
+<li><p>Le Losq, D. R. Neuville, R. Moretti, J. Roux, Determination of water content in silicate glasses using Raman spectrometry: Implications for the study of explosive volcanism. American Mineralogist. 97, 779–790 (2012).</p></li>
+<li><p>Di Genova et al., Effect of iron and nanolites on Raman spectra of volcanic glasses: A reassessment of existing strategies to estimate the water content. Chemical Geology. 475, 76–86 (2017).</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rampy.rameau.rameau">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rampy.rameau.</span></span><span class="sig-name descname"><span class="pre">rameau</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_liste</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.rameau" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>treat Raman spectra of glass to retrieve the glass water content</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data_liste</strong> (<em>Pandas dataframe</em>) – A Pandas dataframe containing the data and various meta information.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.rameau.rameau.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#rampy.rameau.rameau.x" title="Permalink to this definition"></a></dt>
+<dd><p>a 1D array (Nx1) containing the common x axis (wavelength) of the spectra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.rameau.rameau.y">
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#rampy.rameau.rameau.y" title="Permalink to this definition"></a></dt>
+<dd><p>a NxM array (with M the number of spectra) containing the raw intensities of the spectra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.rameau.rameau.y_corr">
+<span class="sig-name descname"><span class="pre">y_corr</span></span><a class="headerlink" href="#rampy.rameau.rameau.y_corr" title="Permalink to this definition"></a></dt>
+<dd><p>a NxM array (with M the number of spectra) containing the corrected intensities of the spectra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.rameau.rameau.y_base">
+<span class="sig-name descname"><span class="pre">y_base</span></span><a class="headerlink" href="#rampy.rameau.rameau.y_base" title="Permalink to this definition"></a></dt>
+<dd><p>a NxM array (with M the number of spectra) containing the backgrounds of the spectra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.rameau.rameau.rws">
+<span class="sig-name descname"><span class="pre">rws</span></span><a class="headerlink" href="#rampy.rameau.rameau.rws" title="Permalink to this definition"></a></dt>
+<dd><p>a 1D array (Nx1) containing the ratio between the integrated intensities of the water and silicate signals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.rameau.rameau.rw">
+<span class="sig-name descname"><span class="pre">rw</span></span><a class="headerlink" href="#rampy.rameau.rameau.rw" title="Permalink to this definition"></a></dt>
+<dd><p>a 1D array (Nx1) containing the integrated intensities of the water signal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.rameau.rameau.rs">
+<span class="sig-name descname"><span class="pre">rs</span></span><a class="headerlink" href="#rampy.rameau.rameau.rs" title="Permalink to this definition"></a></dt>
+<dd><p>a 1D array (Nx1) containing the integrated intensities of the silicate signals.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.rameau.rameau.water">
+<span class="sig-name descname"><span class="pre">water</span></span><a class="headerlink" href="#rampy.rameau.rameau.water" title="Permalink to this definition"></a></dt>
+<dd><p>the known glass water content provided in data_liste (set to 0 if predicting for unknowns)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.rameau.rameau.water_predicted">
+<span class="sig-name descname"><span class="pre">water_predicted</span></span><a class="headerlink" href="#rampy.rameau.rameau.water_predicted" title="Permalink to this definition"></a></dt>
+<dd><p>the predicted glass water content provided in data_liste (set to 0 if predicting for unknowns)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.rameau.rameau.p">
+<span class="sig-name descname"><span class="pre">p</span></span><a class="headerlink" href="#rampy.rameau.rameau.p" title="Permalink to this definition"></a></dt>
+<dd><p>calibration coefficient(s) of the LL2012 or DG2017 method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.rameau.rameau.names">
+<span class="sig-name descname"><span class="pre">names</span></span><a class="headerlink" href="#rampy.rameau.rameau.names" title="Permalink to this definition"></a></dt>
+<dd><p>filenames indicated in the data_liste input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>pandas dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Notes</p>
+<p>Uses either the LL2012 method (Le Losq et al., 2012) or the DG2017 (Di Genova et al., 2017) method. See references.</p>
+<p>In the LL2012 method, a cubic spline is fitted to the regions of interest provided in self.data_liste (see example).
+The spline is smoothed by the spline_coeff of the data_reduction method. The water content is calculated following eq. (3) of LL2012, with the A coefficient either provided or calculated by the method self.calibrate().</p>
+<p>In the DG2017 method, a third-order polynomial is fitted to the spectra following the instructions of Di Genova et al. (2017).
+The water content is calculated as wt% H2O = Rws * (a * [FeO wt%] + b) with a and b the coefficients either provided or calculated by the method self.calibrate().</p>
+<p class="rubric">References</p>
+<p>LL2102: C. Le Losq, D. R. Neuville, R. Moretti, J. Roux, Determination of water content in silicate glasses using Raman spectrometry: Implications for the study of explosive volcanism. American Mineralogist. 97, 779–790 (2012).
+DG 2017 D. Di Genova et al., Effect of iron and nanolites on Raman spectra of volcanic glasses: A reassessment of existing strategies to estimate the water content. Chemical Geology. 475, 76–86 (2017).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.rameau.rameau.calibrate">
+<span class="sig-name descname"><span class="pre">calibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LL2012'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.rameau.calibrate" title="Permalink to this definition"></a></dt>
+<dd><p>Fit a calibration by optimizing the K coefficient(s)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<em>object</em>) – rameau object with treated spectra (see data_reduction method)</p></li>
+<li><p><strong>method</strong> (<em>string</em>) – the method used; choose between “LL2012” or “DG2017”, default = “LL2012”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>popt</strong> – The optimized parameter(s);
+if method = “DG2017”, popt=np.array([a,b]), parameters of the equation K = a * [FeO wt%] + b.
+if method = “LL2017”, popt = A (float), with A parameter in the equation (3) of Le Losq et al. (2012).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray or float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.rameau.rameau.data_reduction">
+<span class="sig-name descname"><span class="pre">data_reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LL2012'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./raw/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">514.532</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spline_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poly_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.rameau.data_reduction" title="Permalink to this definition"></a></dt>
+<dd><p>process Raman spectra of glass to calculate the Rws ratio</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<em>object</em>) – a rameau object that has been initiated.</p></li>
+<li><p><strong>method</strong> (<em>string</em>) – The used method. LL2012: Le Losq et al. (2012); DG2017: Di Genova et al. (2017). See references. Default = “LL2012”.</p></li>
+<li><p><strong>delim</strong> (<em>string</em>) – File delimiter. Use ‘       ‘ for tabulated text or ‘,’ for comma separated text. Default = ‘       ‘.</p></li>
+<li><p><strong>path_in</strong> (<em>string</em>) – Path for the spectra. Default = ‘./raw/’</p></li>
+<li><p><strong>laser</strong> (<em>float</em>) – Laser line wavelength in nm. Default = 514.532.</p></li>
+<li><p><strong>spline_coeff</strong> (<em>float</em>) – Smoothing coefficient for the spline baseline. An array of size len(data_liste) can be provided. Default = 0.001.</p></li>
+<li><p><strong>poly_coeff</strong> (<em>int</em>) – Polynomial coefficient for the polynomial baseline function. Default = 3 (DG2017 method; set to 2 for Behrens et al. (2006) method).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>self.x</strong> (<em>ndarray</em>) – Common x axis.</p></li>
+<li><p><strong>self.y_all</strong> (<em>ndarray</em>) – All raw spectra from data_liste in an array of length len(x) and with as many column as spectra.</p></li>
+<li><p><strong>self.y_all_corr</strong> (<em>ndarray</em>) – All corrected spectra from data_liste in an array of length len(x) and with as many column as spectra.</p></li>
+<li><p><strong>self.y_all_base</strong> (<em>ndarray</em>) – All baselines for spectra from data_liste in an array of length len(x) and with as many column as spectra.</p></li>
+<li><p><strong>self.rws</strong> (<em>ndarray</em>) – The ratio of the water integrated intensity over that of silicate signals.</p></li>
+<li><p><strong>self.rw</strong> (<em>ndarray</em>) – The integrated intensity of water signal.</p></li>
+<li><p><strong>self.rs</strong> (<em>ndarray</em>) – The integrated intensity of silicate signals.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">names</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#id0" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">p</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#id3" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.rameau.rameau.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LL2012'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.rameau.predict" title="Permalink to this definition"></a></dt>
+<dd><p>predict the water content from the Rws</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<em>object</em>) – rameau object with treated spectra (see data_reduction method).</p></li>
+<li><p><strong>method</strong> (<em>string</em>) – the method used; choose between “LL2012” or “DG2017”, default = “LL2012”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>H2O</strong> – The glass water contents in wt%</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">rs</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#id4" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">rw</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#id5" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">rws</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#id6" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">water</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#id7" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">water_predicted</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#id8" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">x</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#id9" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">y</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#id10" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">y_base</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#id11" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id12">
+<span class="sig-name descname"><span class="pre">y_corr</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#id12" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-rampy.spectranization">
+<span id="rampy-spectranization-module"></span><h2>rampy.spectranization module<a class="headerlink" href="#module-rampy.spectranization" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.spectranization.centroid">
+<span class="sig-prename descclassname"><span class="pre">rampy.spectranization.</span></span><span class="sig-name descname"><span class="pre">centroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.spectranization.centroid" title="Permalink to this definition"></a></dt>
+<dd><p>calculation of y signal centroid(s)</p>
+<p>as np.sum(y/np.sum(y)*x)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>Numpy array</em><em>, </em><em>m values by n samples</em>) – x values</p></li>
+<li><p><strong>y</strong> (<em>Numpy array</em><em>, </em><em>m values by n samples</em>) – y values</p></li>
+<li><p><strong>Options</strong> – </p></li>
+<li><p><strong>=======</strong> – </p></li>
+<li><p><strong>smoothing</strong> (<em>bool</em>) – True or False. Smooth the signals with arguments provided as kwargs. Default method is whittaker smoothing. See the rampy.smooth function for smoothing options and arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>centroid</strong> – signal centroid(s)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Numpy array, n samples</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.spectranization.flipsp">
+<span class="sig-prename descclassname"><span class="pre">rampy.spectranization.</span></span><span class="sig-name descname"><span class="pre">flipsp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.spectranization.flipsp" title="Permalink to this definition"></a></dt>
+<dd><p>Flip an array along the row dimension (dim = 1) if the row values are in decreasing order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sp</strong> (<em>ndarray</em>) – An array with n columns, the first one should contain the X axis (frequency, wavenumber, etc.)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>sp</strong> – The same array but sorted such that the values in the first column are in increasing order.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.spectranization.normalise">
+<span class="sig-prename descclassname"><span class="pre">rampy.spectranization.</span></span><span class="sig-name descname"><span class="pre">normalise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'intensity'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.spectranization.normalise" title="Permalink to this definition"></a></dt>
+<dd><p>normalise y signal(s)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em><em>, </em><em>m values by n samples</em>) – x values</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em><em>, </em><em>m values by n samples</em>) – corresponding y values</p></li>
+<li><p><strong>method</strong> (<em>string</em>) – method used, choose between area, intensity, minmax</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y_norm</strong> – Normalised signal(s)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Numpy array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.spectranization.resample">
+<span class="sig-prename descclassname"><span class="pre">rampy.spectranization.</span></span><span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_new</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.spectranization.resample" title="Permalink to this definition"></a></dt>
+<dd><p>Resample a y signal associated with x, along the x_new values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – The x values</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – The y values</p></li>
+<li><p><strong>x_new</strong> (<em>ndarray</em>) – The new X values</p></li>
+<li><p><strong>kind</strong> (<em>str</em><em> or </em><em>int</em><em>, </em><em>optional</em>) – Specifies the kind of interpolation as a string (‘linear’, ‘nearest’, ‘zero’, ‘slinear’, ‘quadratic’, ‘cubic’, ‘previous’, ‘next’, where ‘zero’, ‘slinear’, ‘quadratic’ and ‘cubic’ refer to a spline interpolation of zeroth, first, second or third order; ‘previous’ and ‘next’ simply return the previous or next value of the point) or as an integer specifying the order of the spline interpolator to use. Default is ‘linear’.</p></li>
+<li><p><strong>axis</strong> (<em>int</em><em>, </em><em>optional</em>) – Specifies the axis of y along which to interpolate. Interpolation defaults to the last axis of y.</p></li>
+<li><p><strong>copy</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the class makes internal copies of x and y. If False, references to x and y are used. The default is to copy.</p></li>
+<li><p><strong>bounds_error</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, a ValueError is raised any time interpolation is attempted on a value outside of the range of x (where extrapolation is necessary). If False, out of bounds values are assigned fill_value. By default, an error is raised unless fill_value=”extrapolate”.</p></li>
+<li><p><strong>fill_value</strong> (<em>array-like</em><em> or </em><em>(</em><em>array-like</em><em>, </em><em>array_like</em><em>) or </em><em>“extrapolate”</em><em>, </em><em>optional</em>) – <p>if a ndarray (or float), this value will be used to fill in for requested points outside of the data range. If not provided, then the default is NaN. The array-like must broadcast properly to the dimensions of the non-interpolation axes.
+If a two-element tuple, then the first element is used as a fill value for x_new &lt; x[0] and the second element is used for x_new &gt; x[-1]. Anything that is not a 2-element tuple (e.g., list or ndarray, regardless of shape) is taken to be a single array-like argument meant to be used for both bounds as below, above = fill_value, fill_value.</p>
+<p>New in scipy version 0.17.0.</p>
+<p>If “extrapolate”, then points outside the data range will be extrapolated.</p>
+<p>New in scipy version 0.17.0.</p>
+</p></li>
+<li><p><strong>assume_sorted</strong> (<em>bool</em><em>, </em><em>optional</em>) – If False, values of x can be in any order and they are sorted first. If True, x has to be an array of monotonically increasing values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>y_new</strong> (<em>ndarray</em>) – y values interpolated at x_new.</p></li>
+<li><p><em>Remarks</em></p></li>
+<li><p><em>——-</em></p></li>
+<li><p><strong>Uses scipy.interpolate.interp1d. Optional arguments are passed to scipy.interpolate.interp1d, see https</strong> (<em>//docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.spectranization.shiftsp">
+<span class="sig-prename descclassname"><span class="pre">rampy.spectranization.</span></span><span class="sig-name descname"><span class="pre">shiftsp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.spectranization.shiftsp" title="Permalink to this definition"></a></dt>
+<dd><p>Shift the X axis (frequency, wavenumber, etc.) of a given value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sp</strong> (<em>ndarray</em>) – An array with n columns, the first one should contain the X axis (frequency, wavenumber, etc.)</p></li>
+<li><p><strong>shift</strong> (<em>float</em>) – The shift value to apply.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>sp</strong> – The same array but sorted such that the values in the first column are in increasing order.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.spectranization.spectraoffset">
+<span class="sig-prename descclassname"><span class="pre">rampy.spectranization.</span></span><span class="sig-name descname"><span class="pre">spectraoffset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectre</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oft</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.spectranization.spectraoffset" title="Permalink to this definition"></a></dt>
+<dd><p>Vertical offset your spectra with values in offsets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spectre</strong> (<em>ndarray</em>) – array of spectra constructed with the spectrarray function</p></li>
+<li><p><strong>oft</strong> (<em>ndarray</em>) – array constructed with numpy and containing the coefficient for the offset to apply to spectra</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>out</strong> – Array with spectra separated by offsets defined in oft</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.spectranization.spectrarray">
+<span class="sig-prename descclassname"><span class="pre">rampy.spectranization.</span></span><span class="sig-name descname"><span class="pre">spectrarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.spectranization.spectrarray" title="Permalink to this definition"></a></dt>
+<dd><p>Construct a general array that contain common X values in first columns and all Y values in the subsequent columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>ndarray</em>) – Array containing the names of the files (should work with a dataframe too).</p></li>
+<li><p><strong>sh</strong> (<em>int</em>) – Number of header line in files to skip.</p></li>
+<li><p><strong>sf</strong> (<em>int</em>) – Number of footer lines in files to skip.</p></li>
+<li><p><strong>x</strong> (<em>ndarray</em>) – The common x axis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An array with the common X axis in first column and all the spectra in the subsequent columns.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>out</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.spectranization.spectrataux">
+<span class="sig-prename descclassname"><span class="pre">rampy.spectranization.</span></span><span class="sig-name descname"><span class="pre">spectrataux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectres</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.spectranization.spectrataux" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the increase/decrease rate of each frequencies in a set of spectra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>spectres</strong> (<em>ndarray</em>) – An array of spectra containing the common X axis in first column and all the spectra in the subsequent columns. (see spectrarray function)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>taux</strong> – The rate of change of each frequency, fitted by a 2nd order polynomial functions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rampy.tlcorrection">
+<span id="rampy-tlcorrection-module"></span><h2>rampy.tlcorrection module<a class="headerlink" href="#module-rampy.tlcorrection" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.tlcorrection.tlcorrection">
+<span class="sig-prename descclassname"><span class="pre">rampy.tlcorrection.</span></span><span class="sig-name descname"><span class="pre">tlcorrection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wave</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.tlcorrection.tlcorrection" title="Permalink to this definition"></a></dt>
+<dd><p>correct spectra from temperature and excitation line effects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – Raman shifts in cm-1</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Intensity values as counts</p></li>
+<li><p><strong>temp</strong> (<em>float</em>) – Temperature in °C</p></li>
+<li><p><strong>wave</strong> (<em>float</em>) – wavenumber of the laser that excited the sample, in nm</p></li>
+<li><p><strong>correction</strong> (<em>string</em><em>, </em><em>optional</em>) – Equation used for the correction. Choose between ‘long’, ‘galeener’, or ‘hehlen’. Default = ‘long’.</p></li>
+<li><p><strong>normalisation</strong> (<em>string</em><em>, </em><em>optional</em>) – Data normalisation procedure. Choose between ‘intensity’, ‘area’, or ‘no’. Default = ‘area’.</p></li>
+<li><p><strong>density</strong> (<em>float</em><em>, </em><em>optional</em>) – The density of the studied material in kg m-3, to be used with the ‘hehlen’ equation. Default = 2210.0 (density of silica).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>x</strong> (<em>1darray</em>) – Raman shifts values.</p></li>
+<li><p><strong>long</strong> (<em>1darray</em>) – corrected intensities.</p></li>
+<li><p><strong>eselong</strong> (<em>1darray</em>) – errors calculated as sqrt(y) on raw intensities and propagated after the correction.</p></li>
+<li><p><em>Remarks</em></p></li>
+<li><p><em>——-</em></p></li>
+<li><p><em>This correction uses the formula reported in Galeener and Sen (1978), Mysen et al. (1982), Brooker et al. (1988) and Hehlen et al. (2010).</em></p></li>
+<li><p><em>The ‘galeener’ equation is the exact one reported in Galeener and Sen (1978), which is a modification from Shuker and Gammon (1970) for accounting of (vo - v)^4 dependence of the Raman intensity. See also Brooker et al. (1988) for further discussion.</em></p></li>
+<li><p><em>The ‘long’ equation is that of Galeener and Sen (1978) corrected by a vo^3 coefficient for removing the cubic meter dimension of the equation of ‘galeener’. This equation has been used in Mysen et al. (1982), Neuville and Mysen (1996) and Le Losq et al. (2012).</em></p></li>
+<li><p><em>The ‘hehlen’ equation is that reported in Hehlen et al. (2010). It actually originates before this publication (Brooker et al. 1988). It uses a different correction that avoid crushing the signal below 500 cm-1. THerefore, it has the advantage of keeping intact the Boson peak signal in glasses.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rampy">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-rampy" title="Permalink to this headline"></a></h2>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
