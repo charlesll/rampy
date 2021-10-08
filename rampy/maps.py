@@ -88,19 +88,16 @@ class map():
             the intensities to normalise. For instance, if you want to normalised the background corrected I, pass self.I_corrected.
         method : str
             Method for smoothing the signal;
-            choose between savgol (Savitzky-Golay), GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline, whittaker, 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'.
-
-        kwargs
-        ======
-        window_length : int
+            choose between savgol (Savitzky-Golay), GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline, whittaker, flat, hanning, hamming, bartlett, blackman.
+        window_length : int, optional
             The length of the filter window (i.e. the number of coefficients). window_length must be a positive odd integer.
-        polyorder : int
+        polyorder : int, optional
             The order of the polynomial used to fit the samples. polyorder must be less than window_length.
-        Lambda : float
+        Lambda : float, optional
             smoothing parameter of the Whittaker filter described in Eilers (2003). The higher the smoother the fit.
-        d : int
+        d : int, optional
             d parameter in Whittaker filter, see Eilers (2003).
-        ese_y : ndarray
+        ese_y : ndarray, optional
             errors associated with y (for the gcvspline algorithms)
 
         Returns
@@ -139,7 +136,7 @@ class map():
 
         The intensity maximum is estimated from a simple np.max() search.
         Do not forget to smooth the signal if necessary prior to using this.
-        
+
         Parameters
         ----------
         y : object intensities
@@ -156,13 +153,13 @@ class map():
         for i in range(len(self.X)):
             sp_ = rp.get_portion_interest(self.w, y[:,i], region_to_investigate)
             self.I_max[i] = np.max(sp_[:,1])
-            
+
     def area(self, y, region_to_investigate):
         """get the area under the curve in the region to investigate.
 
-        The area is calculated by trapezoidal integration, using np.trapz()        
+        The area is calculated by trapezoidal integration, using np.trapz()
         Do not forget to smooth the signal if necessary prior to using this.
-        
+
         Parameters
         ----------
         y : object intensities
@@ -206,14 +203,14 @@ class map():
             I_max1 = np.max(sp_1[:,1])
             I_max2 = np.max(sp_2[:,1])
             self.I_ratio[i] = I_max1/I_max2
-            
-            
+
+
     def area_ratio(self, y, region_to_investigate):
         """get the area ratio between two regions of interest.
 
-        The areas are calculated by trapezoidal integration, using np.trapz()        
+        The areas are calculated by trapezoidal integration, using np.trapz()
         Do not forget to smooth the signals if necessary prior to using this.
-        
+
         Parameters
         ----------
         y : object intensities
@@ -297,8 +294,8 @@ def read_horiba(file):
     return X, Y, lambdas, intensities.T
 
 def peak(X, Y, lambdas, intensities, function, Xrange, amp, Xmean, sigma, y0, A):
-    """
-    #fitting
+    """to fit peaks in a map. Work in progress.
+    
     """
     if function=='gauss':
         fun=peak_shapes.create_gauss()

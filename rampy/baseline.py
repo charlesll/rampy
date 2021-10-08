@@ -58,39 +58,36 @@ def baseline(x_input,y_input,bir,method, **kwargs):
         Note: This is NOT used by the "als" and "arPLS" algorithms, but still is a requirement when calling the function.
         bir and method probably will become args in a futur iteration of rampy to solve this.
     method : str
-        "poly": polynomial fitting, with splinesmooth the degree of the polynomial.
-        "unispline": spline with the UnivariateSpline function of Scipy, splinesmooth is
+        - "poly": polynomial fitting, with splinesmooth the degree of the polynomial.
+        - "unispline": spline with the UnivariateSpline function of Scipy, splinesmooth is
                      the spline smoothing factor (assume equal weight in the present case);
-        "gcvspline": spline with the gcvspl.f algorythm, really robust.
+        - "gcvspline": spline with the gcvspl.f algorythm, really robust.
                      Spectra must have x, y, ese in it, and splinesmooth is the smoothing factor;
                      For gcvspline, if ese are not provided we assume ese = sqrt(y).
                      Requires the installation of gcvspline with a "pip install gcvspline" call prior to use;
-        "exp": exponential background;
-        "log": logarythmic background;
-        "rubberband": rubberband baseline fitting;
-        "als": (automatic) baseline least square fitting following Eilers and Boelens 2005;
-        "arPLS": (automatic) Baseline correction using asymmetrically reweighted penalized least squares smoothing. Baek et al. 2015, Analyst 140: 250-257;
-        'drPLS': (automatic) Baseline correction method based on doubly reweighted penalized least squares. Xu et al., Applied Optics 58(14):3913-3920.
-
-    kwargs
-    ------
-    polynomial_order : Int
+        - "exp": exponential background;
+        - "log": logarythmic background;
+        - "rubberband": rubberband baseline fitting;
+        - "als": (automatic) baseline least square fitting following Eilers and Boelens 2005;
+        - "arPLS": (automatic) Baseline correction using asymmetrically reweighted penalized least squares smoothing. Baek et al. 2015, Analyst 140: 250-257;
+        - 'drPLS': (automatic) Baseline correction method based on doubly reweighted penalized least squares. Xu et al., Applied Optics 58(14):3913-3920.
+    polynomial_order : int, optional
         The degree of the polynomial (0 for a constant), default = 1.
-    s : Float
+    s : float, optional
         spline smoothing coefficient for the unispline and gcvspline algorithms.
-    lam : Float
-        float, the lambda smoothness parameter for the ALS, ArPLS and drPLS algorithms. Typical values are between 10**2 to 10**9, default = 10**5 for ALS and ArPLS and default = 10**6 for drPLS.
-    p : Float
-        float, for the ALS algorithm, advised value between 0.001 to 0.1, default = 0.01.
-    ratio : float
-        ratio parameter of the arPLS and drPLS algorithm. default = 0.01 for arPLS and 0.001 for drPLS.
-    niter : Int
-        number of iteration of the ALS and drPLS algorithm, default = 10 for ALS and default = 100 for drPLS.
-    eta : Float
-        roughness parameter for the drPLS algorithm, is between 0 and 1, default = 0.5
-    p0_exp : List
+    lam : float, optional
+        The lambda smoothness parameter for the ALS, ArPLS and drPLS algorithms. Typical values are between 10**2 to 10**9, default = 10**5 for ALS and ArPLS and default = 10**6 for drPLS.
+    p : float, optional
+        For the ALS algorithm, advised value between 0.001 to 0.1, default = 0.01.
+    ratio : float, optional
+        Ratio parameter of the arPLS and drPLS algorithm. default = 0.01 for arPLS and 0.001 for drPLS.
+    niter : int, optional
+        Number of iteration of the ALS and drPLS algorithm, default = 10 for ALS and default = 100 for drPLS.
+    eta : float, optional
+        Roughness parameter for the drPLS algorithm, is between 0 and 1, default = 0.5
+    p0_exp : list, optional
         containg the starting parameter for the exp baseline fit with curve_fit. Default = [1.,1.,1.].
-    p0_log : List
+    p0_log : list, optional
         containg the starting parameter for the log baseline fit with curve_fit. Default = [1.,1.,1.,1.].
 
     Returns

@@ -10,8 +10,7 @@ import numpy as np
 from scipy.constants import c, h, k
 
 def tlcorrection(x,y,temp,wave, **kwargs):
-    """
-        tlcorrection(x,y,temp,wave,**kwargs)
+    """correct spectra from temperature and excitation line effects.
 
     Parameters
     ----------
@@ -23,14 +22,11 @@ def tlcorrection(x,y,temp,wave, **kwargs):
         Temperature in °C
     wave : float
         wavenumber of the laser that excited the sample, in nm
-
-    kwargs
-    ------
-    correction : string
+    correction : string, optional
         Equation used for the correction. Choose between 'long', 'galeener', or 'hehlen'. Default = 'long'.
-    normalisation : string
+    normalisation : string, optional
         Data normalisation procedure. Choose between 'intensity', 'area', or 'no'. Default = 'area'.
-    density : float
+    density : float, optional
         The density of the studied material in kg m-3, to be used with the 'hehlen' equation. Default = 2210.0 (density of silica).
 
     Returns

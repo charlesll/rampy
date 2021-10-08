@@ -12,28 +12,28 @@ def chemical_splitting(Pandas_DataFrame, target,split_fraction=0.30, rand_state=
     """split datasets depending on their chemistry
 
     Parameters
-    ==========
+    ----------
     Pandas_DataFrame : Pandas DataFrame
         The input DataFrame with in the first row the names of the different data compositions
     label : string
         The target in the DataFrame according to which we will split the dataset
-    split_fraction : Float, between 0 and 1
+    split_fraction : float, between 0 and 1
         This is the amount of splitting you want, in reference to the second output dataset (see OUTPUTS).
-    rand_state : Float64
+    rand_state : float64
         the random seed that is used for reproductibility of the results. Default = 42.
 
     Returns
-    =======
-        frame1 : Pandas DataFrame
-            A DataSet with (1-split_fraction) datas from the input dataset with unique chemical composition / names
-        frame2 : Pandas DataFrame
-            A DataSet with split_fraction datas from the input dataset with unique chemical composition / names
-        frame1_idx : ndarray
-            Contains the indexes of the data picked in Pandas_DataFrame to construct frame1
-        frame2_idx : ndarray
-            Contains the indexes of the data picked in Pandas_DataFrame to construct frame2
-    Note
-    ====
+    -------
+    frame1 : Pandas DataFrame
+        A DataSet with (1-split_fraction) datas from the input dataset with unique chemical composition / names
+    frame2 : Pandas DataFrame
+        A DataSet with split_fraction datas from the input dataset with unique chemical composition / names
+    frame1_idx : ndarray
+        Contains the indexes of the data picked in Pandas_DataFrame to construct frame1
+    frame2_idx : ndarray
+        Contains the indexes of the data picked in Pandas_DataFrame to construct frame2
+    Notes
+    -----
     This function avoids the same chemical dataset to be found in different training/testing/validating datasets that are used in ML.
 
     Indeed, it is worthless to put data from the same original dataset / with the same chemical composition
@@ -41,13 +41,11 @@ def chemical_splitting(Pandas_DataFrame, target,split_fraction=0.30, rand_state=
 
     Another way of doing that would be to write:
 
-    '''
-    grouped = Pandas_DataFrame.groupby(by='label')
-    k = [i for i in grouped.groups.keys()]
-    k_train, k_valid = model_selection.train_test_split(np.array(k),test_size=0.40,random_state=100)
-    train = Pandas_DataFrame.loc[Pandas_DataFrame['label'].isin(k_train)]
-    valid = Pandas_DataFrame.loc[Pandas_DataFrame['label'].isin(k_valid)]
-    '''
+    >>> grouped = Pandas_DataFrame.groupby(by='label')
+    >>> k = [i for i in grouped.groups.keys()]
+    >>> k_train, k_valid = model_selection.train_test_split(np.array(k),test_size=0.40,random_state=100)
+    >>> train = Pandas_DataFrame.loc[Pandas_DataFrame['label'].isin(k_train)]
+    >>> valid = Pandas_DataFrame.loc[Pandas_DataFrame['label'].isin(k_valid)]
 
     (results will vary slightly as variable k is sorted but not variable names in the function below)
 
@@ -71,7 +69,6 @@ def chemical_splitting(Pandas_DataFrame, target,split_fraction=0.30, rand_state=
 
 class mlregressor:
     """use machine learning algorithms from scikit learn to perform regression between spectra and an observed variable.
-
 
     Attributes
     ----------
@@ -223,7 +220,7 @@ class mlregressor:
         Parameters
         ----------
         algorithm : String,
-            "KernelRidge", "SVM", "LinearRegression", "Lasso", "ElasticNet", "NeuralNet", "BaggingNeuralNet", default = "SVM"
+            algorithm to use. Choose between "KernelRidge", "SVM", "LinearRegression", "Lasso", "ElasticNet", "NeuralNet", "BaggingNeuralNet", default = "SVM"
 
         """
         self.X_scaler.fit(self.X_train)

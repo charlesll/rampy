@@ -16,12 +16,12 @@ class rameau:
     """treat Raman spectra of glass to retrieve the glass water content
 
     Parameters
-    ==========
+    ----------
     data_liste: Pandas dataframe
         A Pandas dataframe containing the data and various meta information.
 
     Attributes
-    ==========
+    ----------
     x: ndarray
         a 1D array (Nx1) containing the common x axis (wavelength) of the spectra.
     y: ndarray
@@ -45,8 +45,8 @@ class rameau:
     names: pandas dataframe
         filenames indicated in the data_liste input
 
-    Note
-    ====
+    Notes
+    -----
     Uses either the LL2012 method (Le Losq et al., 2012) or the DG2017 (Di Genova et al., 2017) method. See references.
 
     In the LL2012 method, a cubic spline is fitted to the regions of interest provided in self.data_liste (see example).
@@ -56,7 +56,7 @@ class rameau:
     The water content is calculated as wt% H2O = Rws * (a * [FeO wt%] + b) with a and b the coefficients either provided or calculated by the method self.calibrate().
 
     References
-    ==========
+    ----------
     LL2102: C. Le Losq, D. R. Neuville, R. Moretti, J. Roux, Determination of water content in silicate glasses using Raman spectrometry: Implications for the study of explosive volcanism. American Mineralogist. 97, 779–790 (2012).
     DG 2017 D. Di Genova et al., Effect of iron and nanolites on Raman spectra of volcanic glasses: A reassessment of existing strategies to estimate the water content. Chemical Geology. 475, 76–86 (2017).
 
@@ -89,7 +89,7 @@ class rameau:
         """process Raman spectra of glass to calculate the Rws ratio
 
         Parameters
-        ==========
+        ----------
         self: object
             a rameau object that has been initiated.
         method: string
@@ -106,7 +106,7 @@ class rameau:
             Polynomial coefficient for the polynomial baseline function. Default = 3 (DG2017 method; set to 2 for Behrens et al. (2006) method).
 
         Returns
-        =======
+        -------
         self.x: ndarray
             Common x axis.
         self.y_all: ndarray
@@ -164,7 +164,7 @@ class rameau:
 
         Returns
         -------
-        H2O
+        H2O : array
             The glass water contents in wt%
         """
         dictio = {"feo": np.asarray(self.data_liste["FeO"]),

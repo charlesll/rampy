@@ -9,35 +9,32 @@ def smooth(x,y,method="whittaker",**kwargs):
     """smooth the provided y signal (sampled on x)
 
     Parameters
-    ==========
+    ----------
     x : ndarray
         Nx1 array of x values (equally spaced).
     y : ndarray
         Nx1 array of y values (equally spaced).
     method : str
         Method for smoothing the signal;
-        choose between savgol (Savitzky-Golay), GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline, whittaker, 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'.
-
-    kwargs
-    ======
-    window_length : int
+        choose between savgol (Savitzky-Golay), GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline, whittaker, flat, hanning, hamming, bartlett, blackman.
+    window_length : int, optional
         The length of the filter window (i.e. the number of coefficients). window_length must be a positive odd integer.
-    polyorder : int
+    polyorder : int, optional
         The order of the polynomial used to fit the samples. polyorder must be less than window_length.
-    Lambda : float
+    Lambda : float, optional
         smoothing parameter of the Whittaker filter described in Eilers (2003). The higher the smoother the fit.
-    d : int
+    d : int, optional
         d parameter in Whittaker filter, see Eilers (2003).
-    ese_y : ndarray
+    ese_y : ndarray, optional
         errors associated with y (for the gcvspline algorithms)
 
     Returns
-    =======
-    y_smo: ndarray
+    -------
+    y_smo : ndarray
         smoothed signal sampled on x.
 
-    Note
-    ====
+    Notes
+    -----
 
     Use of GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline requires installation of gcvspline. See gcvspline documentation.
     See also documentation for details on GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline.
@@ -45,7 +42,7 @@ def smooth(x,y,method="whittaker",**kwargs):
     savgol uses the scipy.signal.savgol_filter() function.
 
     References
-    ==========
+    ----------
     Eilers, P.H.C., 2003. A Perfect Smoother. Anal. Chem. 75, 3631–3636. https://doi.org/10.1021/ac034173t
 
     Scipy Cookbook: https://scipy-cookbook.readthedocs.io/items/SignalSmooth.html?highlight=smooth
@@ -101,17 +98,14 @@ def smooth(x,y,method="whittaker",**kwargs):
 def whittaker(y,**kwargs):
     """smooth a signal with the Whittaker smoother
 
-    Inputs
-    ------
+    Parameters
+    ----------
     y : ndarray
         An array with the values to smooth (equally spaced).
-
-    kwargs
-    ------
-    Lambda : float
+    Lambda : float, optional
         The smoothing coefficient, the higher the smoother. Default = 10^5.
 
-    Outputs
+    Returns
     -------
     z : ndarray
         An array containing the smoothed values.
@@ -137,8 +131,8 @@ def whittaker(y,**kwargs):
 def spectrafilter(spectre,filtertype,fq,numtaps,columns):
     """Filter specific frequencies in spectra with a butterworth filter
 
-    Inputs
-    ------
+    Parameters
+    ----------
     spectre : ndarray
         Array of X-Y values of spectra. First column is X and subsequent n columns are Y values of n spectra. (see also spectraarray function)
     filtertype : string
@@ -148,7 +142,7 @@ def spectrafilter(spectre,filtertype,fq,numtaps,columns):
     columns : ndarray
         An array defining which columns to treat.
 
-    Outputs
+    Returns
     -------
     out : ndarray
         filtered signals.

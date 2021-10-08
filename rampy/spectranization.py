@@ -148,11 +148,6 @@ def resample(x,y,x_new,**kwargs):
         The y values
     x_new : ndarray
         The new X values
-
-    Options
-    -------
-    Arguments to be passed to scipy.interpolate.interp1d, see https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html
-
     kind : str or int, optional
         Specifies the kind of interpolation as a string (‘linear’, ‘nearest’, ‘zero’, ‘slinear’, ‘quadratic’, ‘cubic’, ‘previous’, ‘next’, where ‘zero’, ‘slinear’, ‘quadratic’ and ‘cubic’ refer to a spline interpolation of zeroth, first, second or third order; ‘previous’ and ‘next’ simply return the previous or next value of the point) or as an integer specifying the order of the spline interpolator to use. Default is ‘linear’.
     axis : int, optional
@@ -181,7 +176,8 @@ def resample(x,y,x_new,**kwargs):
 
     Remarks
     -------
-    Uses scipy.interpolate.interp1d
+    Uses scipy.interpolate.interp1d. Optional arguments are passed to scipy.interpolate.interp1d, see https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html
+
     """
     f = interp1d(x,y,**kwargs)
     return f(x_new)

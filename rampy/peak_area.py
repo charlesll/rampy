@@ -11,13 +11,10 @@ def peakarea(shape,**options):
     gaussian peak area is calculated analytically; areas for other peak shapes
     are calculated using trapezoidal integration.
 
-    Inputs
-    ------
+    Parameters
+    ----------
     shape : string
         gaussian, lorentzian, pseudovoigt or pearson7
-
-    Options
-    -------
     amp : float or ndarray
         amplitude of the peak
     pos : float or ndarray
@@ -90,18 +87,15 @@ def peakarea(shape,**options):
 def gaussianarea(amp,HWHM,**options):
     """returns the area of a Gaussian peak
 
-    Inputs
-    ------
+    Parameters
+    ----------
     amp : float or ndarray
         amplitude of the peak
     HWHM : float or ndarray
         half-width at half-maximum
-
-    Options
-    -------
-    eseAmplitude : float or ndarray
+    eseAmplitude : float or ndarray, optional
         standard deviation on amp; Default = None
-    eseHWHM : float or ndarray
+    eseHWHM : float or ndarray, optional
         standard deviation on HWHM; Default = None
 
     Returns

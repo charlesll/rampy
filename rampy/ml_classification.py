@@ -18,7 +18,7 @@ from sklearn.ensemble import BaggingClassifier
 
 class mlclassificator:
     """use machine learning algorithms from scikit learn to perform classification of spectra.
-    
+
     Attributes
     ----------
     x : {array-like, sparse matrix}, shape = (n_samples, n_features)
@@ -32,7 +32,7 @@ class mlclassificator:
     algorithm : String,
         "Nearest Neighbors", "Linear SVM", "RBF SVM", "Gaussian Process",
          "Decision Tree", "Random Forest", "Neural Net", "AdaBoost",
-         "Naive Bayes", "QDA"  
+         "Naive Bayes", "QDA"
     scaling : Bool
         True or False. If True, data will be scaled during fitting and prediction with the requested scaler (see below),
     scaler : String
@@ -49,11 +49,11 @@ class mlclassificator:
         the predicted target values for the testing y_test dataset.
     model : Scikit learn model
         A Scikit Learn object model, see scikit learn library documentation.
-    X_scaler :
+    X_scaler : scikit learn scaler
         A Scikit Learn scaler object for the x values.
-    Y_scaler :
+    Y_scaler : scikit learn scaler
         A Scikit Learn scaler object for the y values.
-    
+
     Example
     -------
     Given an array X of n samples by m frequencies, and Y an array of n x 1 concentrations
@@ -62,12 +62,12 @@ class mlclassificator:
     >>> model.user_kernel = 'poly'
     >>> model.fit()
     >>> y_new = model.predict(X_new)
-    
+
     Remarks
     -------
     For details on hyperparameters of each algorithms, please directly consult the documentation of SciKit Learn at:
     http://scikit-learn.org/stable/
-    
+
     In progress
     """
 
@@ -95,7 +95,7 @@ class mlclassificator:
 
         # hyperparameters for the algorithms
         self.user_kernel = kwargs.get("kernel","rbf")
-        
+
         self.params_ = kwargs.get(
             "params_",None)
 
@@ -119,38 +119,39 @@ class mlclassificator:
             self.X_scaler = sklearn.preprocessing.MinMaxScaler()
         else:
             InputError("Choose the scaler between MinMaxScaler and StandardScaler")
-            
-            
+
+
         # now defining the model functions in a safe way:
-        self.dispatcher = {"Nearest Neighbors" : KNeighborsClassifier(3), 
+        self.dispatcher = {"Nearest Neighbors" : KNeighborsClassifier(3),
                       "Linear SVM" : SVC(kernel="linear", C=0.025),
                       "RBF SVM" : SVC(gamma=2, C=1),
                       "Gaussian Process" : GaussianProcessClassifier(),
-                      "Decision Tree" : DecisionTreeClassifier(max_depth=15), 
-                      "Random Forest" : RandomForestClassifier(max_depth=15, n_estimators=5, max_features=2), 
+                      "Decision Tree" : DecisionTreeClassifier(max_depth=15),
+                      "Random Forest" : RandomForestClassifier(max_depth=15, n_estimators=5, max_features=2),
                       "Neural Net": MLPClassifier(),
                       "AdaBoost": AdaBoostClassifier(),
-                      "Naive Bayes": GaussianNB(), 
+                      "Naive Bayes": GaussianNB(),
                       "QDA": QuadraticDiscriminantAnalysis()}
-                      
+
     def fit(self):
         """Scale data and train the model with the indicated algorithm.
+
         Do not forget to tune the hyperparameters.
+
         Parameters
         ----------
-        algorithm : String,
-            "Nearest Neighbors", "Linear SVM", "RBF SVM", "Gaussian Process",
-         "Decision Tree", "Random Forest", "Neural Net", "AdaBoost",
-         "Naive Bayes", "QDA"
+        algorithm : String
+            algorithm to use. Choose between "Nearest Neighbors", "Linear SVM", "RBF SVM", "Gaussian Process",
+        "Decision Tree", "Random Forest", "Neural Net", "AdaBoost", "Naive Bayes", "QDA"
         """
-        
+
         # scaling the data in all cases, it may not be used during the fit later
         self.X_scaler.fit(self.X_train)
         self.X_train_sc = self.X_scaler.transform(self.X_train)
         self.X_test_sc = self.X_scaler.transform(self.X_test)
 
         self.model = self.dispatcher[self.algorithm]
-        
+
         if self.params_ != None:
             self.model(**self.params)
             #self.model = BaggingRegressor(base_estimator = nn_m, **self.param_bag)
@@ -166,6 +167,7 @@ class mlclassificator:
 
     def refit(self):
         """Re-train a model previously trained with fit()
+
         """
         if self.scaling == True:
             self.model.fit(self.X_train_sc, self.y_train.reshape(-1,))
@@ -178,14 +180,17 @@ class mlclassificator:
 
     def predict(self,X):
         """Predict using the model.
+
         Parameters
         ----------
         X : {array-like, sparse matrix}, shape = (n_samples, n_features)
             Samples.
+
         Returns
         -------
         C : array, shape = (n_samples,)
             Returns predicted values.
+
         Remark
         ------
         if self.scaling == "yes", scaling will be performed on the input X.
