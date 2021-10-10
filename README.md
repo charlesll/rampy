@@ -10,7 +10,7 @@ Rampy is a Python library that aims at helping processing spectroscopic data, su
 
 - **Documentation:** http://charlesll.github.io/rampy/html/index.html
 - **Examples** https://github.com/charlesll/rampy/tree/master/examples
-- **Source code:** https://github.com/charlesll/rampy/rampy
+- **Source code:** https://github.com/charlesll/rampy/tree/master/rampy
 - **Contributing:** https://github.com/charlesll/rampy/blob/master/CONTRIBUTING.md
 - **Bug reports:** https://github.com/charlesll/rampy/issues
 - **Contact** lelosq@ipgp.fr
