@@ -42,6 +42,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#general-preparation">General preparation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rampy-installation">Rampy installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optional-dependencies">Optional dependencies</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
@@ -87,12 +88,23 @@ a set of tutorials for the beginner.</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rampy</span></code></p>
 </div></blockquote>
-<p>If you want to use gcvspline and cvxpy, also install those:</p>
+</div>
+<div class="section" id="optional-dependencies">
+<h2>Optional dependencies<a class="headerlink" href="#optional-dependencies" title="Permalink to this headline"></a></h2>
+<p>If you want to use the “gcvspline” option from the <code class="docutils literal notranslate"><span class="pre">baseline()</span></code> function, the <code class="docutils literal notranslate"><span class="pre">mixing()</span></code> function, or the <code class="docutils literal notranslate"><span class="pre">rampy.rameau()</span></code> class. please
+install the following libraries:</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">gcvspline</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">cvxpy</span></code></p>
-<p>Please note that gcvspline installation may require gfortran, see <a class="reference external" href="https://charlesll.github.io/gcvspline/">gcvspline documentation</a>.</p>
 </div></blockquote>
+<p>Please note that gcvspline installation requires gfortran, see <a class="reference external" href="https://charlesll.github.io/gcvspline/">gcvspline documentation</a>.
+For Windows, wheels for Python 2.7, 3.4 and 3.6 are provided for 64 bit Windows, and a wheel for Python 3.6 is provided for Windows 32 bits. If installation fails, please check if is due to a fortran compiler issue.</p>
+<p>As for gcvspline, the installation of cvxpy can cause problems for Windows users due to missing compiler. See instructions from cvxpy in this case.</p>
+<p>Additional libraries for model fitting may be wanted:</p>
+<ul class="simple">
+<li><p>lmfit &amp; aeval (<a class="reference external" href="http://cars9.uchicago.edu/software/python/lmfit/">http://cars9.uchicago.edu/software/python/lmfit/</a>)</p></li>
+<li><p>emcee</p></li>
+</ul>
 </div>
 </div>
 
