@@ -1,9 +1,11 @@
 Examples
 ========
 
-For complete examples of use, please directly see the `example Jupyter notebooks here <https://github.com/charlesll/rampy/tree/master/examples>`_
+You can consult the help of each function/class/method on this website, please click on the *rampy package* item on the navigation bar on the left side.
 
-Below, some quick examples are shown to highlight some of the possibilities offered by Rampy
+Below, some quick examples of the use of those functions/classes are shown to highlight some of the possibilities offered by Rampy.
+
+For complete examples of use, please directly see the `example Jupyter notebooks here <https://github.com/charlesll/rampy/tree/master/examples>`_
 
 Library importation
 -------------------
@@ -117,10 +119,15 @@ Baseline
 
 Rampy allows you to fit polynomial, spline, generalized cross-validated spline, logarithms, exponential, ALS, arPLS, drPLS and rubberband baselines to your spectra, in order to remove the background.
 
-See `this notebook <https://github.com/charlesll/rampy/blob/master/examples/baseline_fit.ipynb>`_ for an example of use, and the help of ``rampy.baseline()`` for details on each algorithm.
+See `this notebook <https://github.com/charlesll/rampy/blob/master/examples/Baseline.ipynb>`_ for an example of use, and the help of ``rampy.baseline()`` for details on each algorithm.
 
 .. image:: ./images/baseline.png
   :width: 500
+
+Temperature and excitation line effects
+---------------------------------------
+
+Raman spectra may need correction from temperature and excitation line effects. See the review of `Brooker et al. 1988 <http://onlinelibrary.wiley.com/doi/10.1002/jrs.1250190202/abstract>`_ for details. rampy offers several way to do so with the ``rampy.tlexcitation()`` function. See its documentation for details.
 
 Peak fitting
 ------------

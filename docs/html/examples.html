@@ -49,6 +49,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#normalisation">Normalisation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#smoothing">Smoothing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#baseline">Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#temperature-and-excitation-line-effects">Temperature and excitation line effects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#peak-fitting">Peak fitting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#machine-learning">Machine learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#linear-mixture">Linear mixture</a></li>
@@ -83,8 +84,9 @@
              
   <div class="section" id="examples">
 <h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h1>
+<p>You can consult the help of each function/class/method on this website, please click on the <em>rampy package</em> item on the navigation bar on the left side.</p>
+<p>Below, some quick examples of the use of those functions/classes are shown to highlight some of the possibilities offered by Rampy.</p>
 <p>For complete examples of use, please directly see the <a class="reference external" href="https://github.com/charlesll/rampy/tree/master/examples">example Jupyter notebooks here</a></p>
-<p>Below, some quick examples are shown to highlight some of the possibilities offered by Rampy</p>
 <div class="section" id="library-importation">
 <h2>Library importation<a class="headerlink" href="#library-importation" title="Permalink to this headline"></a></h2>
 <p>This is done with the usual Python way. A useful shortname for rampy is <code class="docutils literal notranslate"><span class="pre">rp</span></code>:</p>
@@ -170,8 +172,12 @@ This is simply solved by asking <code class="docutils literal notranslate"><span
 <div class="section" id="baseline">
 <h2>Baseline<a class="headerlink" href="#baseline" title="Permalink to this headline"></a></h2>
 <p>Rampy allows you to fit polynomial, spline, generalized cross-validated spline, logarithms, exponential, ALS, arPLS, drPLS and rubberband baselines to your spectra, in order to remove the background.</p>
-<p>See <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/baseline_fit.ipynb">this notebook</a> for an example of use, and the help of <code class="docutils literal notranslate"><span class="pre">rampy.baseline()</span></code> for details on each algorithm.</p>
+<p>See <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Baseline.ipynb">this notebook</a> for an example of use, and the help of <code class="docutils literal notranslate"><span class="pre">rampy.baseline()</span></code> for details on each algorithm.</p>
 <a class="reference internal image-reference" href="_images/baseline.png"><img alt="_images/baseline.png" src="_images/baseline.png" style="width: 500px;" /></a>
+</div>
+<div class="section" id="temperature-and-excitation-line-effects">
+<h2>Temperature and excitation line effects<a class="headerlink" href="#temperature-and-excitation-line-effects" title="Permalink to this headline"></a></h2>
+<p>Raman spectra may need correction from temperature and excitation line effects. See the review of <a class="reference external" href="http://onlinelibrary.wiley.com/doi/10.1002/jrs.1250190202/abstract">Brooker et al. 1988</a> for details. rampy offers several way to do so with the <code class="docutils literal notranslate"><span class="pre">rampy.tlexcitation()</span></code> function. See its documentation for details.</p>
 </div>
 <div class="section" id="peak-fitting">
 <h2>Peak fitting<a class="headerlink" href="#peak-fitting" title="Permalink to this headline"></a></h2>
