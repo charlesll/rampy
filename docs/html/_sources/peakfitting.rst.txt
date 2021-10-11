@@ -4,10 +4,10 @@ Peak fitting
 Rampy does not offer a dedicated function for peak fitting. Instead, we invite users to use lmfit or scipy.optimize to perform peak fitting, which is basically the action to fit a model (sum of peaks) to your data.
 
 Rampy offers functions for various peak shapes, including:
-- gaussian peaks > ``rampy.gaussian``
-- lorentzian peaks > ``rampy.lorentzian``
-- pseudo-voigt peaks > ``rampy.pseudovoigt``
-- pearson7 peaks > ``rampy.pearson7``
+* gaussian peaks > ``rampy.gaussian``
+* lorentzian peaks > ``rampy.lorentzian``
+* pseudo-voigt peaks > ``rampy.pseudovoigt``
+* pearson7 peaks > ``rampy.pearson7``
 
 See the help for each function on this website. Those can be used to easily create a model that will be fitted to your spectrum.
 
