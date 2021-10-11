@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Peak fitting &mdash; RamPy 0.4.9 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Machine learning" href="machinelearning.html" />
+    <link rel="prev" title="Preprocessing" href="preprocessing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> RamPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Peak fitting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#lmfit">lmfit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calculate-peak-areas">Calculate peak areas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#propagate-uncertainties">Propagate uncertainties</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rampy.html">rampy package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Peak fitting</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/peakfitting.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="peak-fitting">
+<h1>Peak fitting<a class="headerlink" href="#peak-fitting" title="Permalink to this headline"></a></h1>
+<p>Rampy does not offer a dedicated function for peak fitting. Instead, we invite users to use lmfit or scipy.optimize to perform peak fitting, which is basically the action to fit a model (sum of peaks) to your data.</p>
+<p>Rampy offers functions for various peak shapes, including:
+- gaussian peaks &gt; <code class="docutils literal notranslate"><span class="pre">rampy.gaussian</span></code>
+- lorentzian peaks &gt; <code class="docutils literal notranslate"><span class="pre">rampy.lorentzian</span></code>
+- pseudo-voigt peaks &gt; <code class="docutils literal notranslate"><span class="pre">rampy.pseudovoigt</span></code>
+- pearson7 peaks &gt; <code class="docutils literal notranslate"><span class="pre">rampy.pearson7</span></code></p>
+<p>See the help for each function on this website. Those can be used to easily create a model that will be fitted to your spectrum.</p>
+<p>We will upload soon an example of Bayesian peak fitting with a function integrated to rampy.</p>
+<div class="section" id="lmfit">
+<h2>lmfit<a class="headerlink" href="#lmfit" title="Permalink to this headline"></a></h2>
+<p>We provide an example of peak-fitting with the lmfit for instance. See <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Raman_spectrum_fitting.ipynb">this notebook</a> for an example of use.</p>
+</div>
+<div class="section" id="calculate-peak-areas">
+<h2>Calculate peak areas<a class="headerlink" href="#calculate-peak-areas" title="Permalink to this headline"></a></h2>
+<p>Peak area can be calculated using the <code class="docutils literal notranslate"><span class="pre">rampy.peakarea</span></code> function. For instance, for a Gaussian peak at 1100 cm-1 with an amplitude of 1.0 and a half-width at half maximum of 25.0, we can do:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">position</span> <span class="o">=</span> <span class="mf">1100.</span>
+<span class="n">amplitude</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">hwhm</span> <span class="o">=</span> <span class="mf">25.0</span>
+
+<span class="n">area</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">peakarea</span><span class="p">(</span><span class="s2">&quot;gaussian&quot;</span><span class="p">,</span> <span class="n">amp</span><span class="o">=</span><span class="n">amplitude</span><span class="p">,</span> <span class="n">HWHM</span><span class="o">=</span><span class="n">hwhm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="propagate-uncertainties">
+<h2>Propagate uncertainties<a class="headerlink" href="#propagate-uncertainties" title="Permalink to this headline"></a></h2>
+<p>The best way to propagate the uncertainties of your model is to directly use the <code class="docutils literal notranslate"><span class="pre">uncertainties</span></code> package, see the docs <a class="reference external" href="https://pythonhosted.org/uncertainties/">here</a>.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="preprocessing.html" class="btn btn-neutral float-left" title="Preprocessing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="machinelearning.html" class="btn btn-neutral float-right" title="Machine learning" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

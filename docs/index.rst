@@ -43,5 +43,8 @@ Indices and tables
 
    philosophy
    installation
-   examples
+   firststeps
+   preprocessing
+   peakfitting
+   machinelearning
    rampy
