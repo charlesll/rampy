@@ -50,6 +50,8 @@ def spectrarray(name,sh,sf,x):
 def spectrataux(spectres):
     """Calculate the increase/decrease rate of each frequencies in a set of spectra.
 
+    WARNING : experimental function to fix.
+
     Parameters
     ----------
     spectres : ndarray
@@ -269,7 +271,7 @@ def despiking(x, y, neigh=4, threshold = 3):
     """
     y_out = y.copy() # So we don’t overwrite y for i in np.arange(len(spikes)):
     
-    y_smo = rp.smooth(x, y, method="savgol")
+    y_smo = rampy.smooth(x, y, method="savgol")
     rmse_local = np.sqrt((y-y_smo)**2)
     rmse_mean = np.sqrt(np.mean((y-y_smo)**2))
 
