@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Installation &mdash; RamPy 0.4.9 documentation</title>
+  <title>Installation &mdash; RamPy 0.5.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -13,11 +14,12 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="next" title="First Steps" href="firststeps.html" />
     <link rel="prev" title="Philosophy" href="philosophy.html" /> 
 </head>
 
@@ -26,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> RamPy
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RamPy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -45,7 +51,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#optional-dependencies">Optional dependencies</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rampy.html">rampy package</a></li>
 </ul>
 
@@ -62,8 +71,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Installation</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -73,24 +82,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
-<div class="section" id="general-preparation">
-<h2>General preparation<a class="headerlink" href="#general-preparation" title="Permalink to this headline"></a></h2>
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
+<section id="general-preparation">
+<h2>General preparation<a class="headerlink" href="#general-preparation" title="Permalink to this heading"></a></h2>
 <p>Rampy runs with a traditional Python stack.</p>
 <p>If you are not familiar with Python, you can first have a look at the <a class="reference external" href="https://scipy-lectures.org/">scipy lecture notes</a>,
 a set of tutorials for the beginner.</p>
 <p>You can install <a class="reference external" href="https://www.anaconda.com/products/individual">Anaconda Python</a> to get a running Python distribution. See the documentation of Anaconda for those steps.</p>
-</div>
-<div class="section" id="rampy-installation">
-<h2>Rampy installation<a class="headerlink" href="#rampy-installation" title="Permalink to this headline"></a></h2>
+</section>
+<section id="rampy-installation">
+<h2>Rampy installation<a class="headerlink" href="#rampy-installation" title="Permalink to this heading"></a></h2>
 <p>Install with pip in the command line:</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rampy</span></code></p>
 </div></blockquote>
-</div>
-<div class="section" id="optional-dependencies">
-<h2>Optional dependencies<a class="headerlink" href="#optional-dependencies" title="Permalink to this headline"></a></h2>
+</section>
+<section id="optional-dependencies">
+<h2>Optional dependencies<a class="headerlink" href="#optional-dependencies" title="Permalink to this heading"></a></h2>
 <p>If you want to use the “gcvspline” option from the <code class="docutils literal notranslate"><span class="pre">baseline()</span></code> function, the <code class="docutils literal notranslate"><span class="pre">mixing()</span></code> function, or the <code class="docutils literal notranslate"><span class="pre">rampy.rameau()</span></code> class. please
 install the following libraries:</p>
 <blockquote>
@@ -105,21 +114,21 @@ For Windows, wheels for Python 2.7, 3.4 and 3.6 are provided for 64 bit Windows,
 <li><p>lmfit &amp; aeval (<a class="reference external" href="http://cars9.uchicago.edu/software/python/lmfit/">http://cars9.uchicago.edu/software/python/lmfit/</a>)</p></li>
 <li><p>emcee</p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="philosophy.html" class="btn btn-neutral float-left" title="Philosophy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="firststeps.html" class="btn btn-neutral float-right" title="First Steps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Charles Le Losq.</p>
+    <p>&#169; Copyright 2023, Charles Le Losq.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

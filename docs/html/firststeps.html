@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>First Steps &mdash; RamPy 0.4.9 documentation</title>
+  <title>First Steps &mdash; RamPy 0.5.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -13,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -26,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> RamPy
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RamPy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -65,8 +71,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>First Steps</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">First Steps</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/firststeps.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -76,13 +82,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="first-steps">
-<h1>First Steps<a class="headerlink" href="#first-steps" title="Permalink to this headline"></a></h1>
+  <section id="first-steps">
+<h1>First Steps<a class="headerlink" href="#first-steps" title="Permalink to this heading"></a></h1>
 <p>You can consult the help of each function/class/method on this website, please click on the <em>rampy package</em> item on the navigation bar on the left side.</p>
 <p>Below, some quick examples of the use of those functions/classes are shown to highlight some of the possibilities offered by Rampy.</p>
 <p>For complete examples of use, please directly see the <a class="reference external" href="https://github.com/charlesll/rampy/tree/master/examples">example Jupyter notebooks here</a></p>
-<div class="section" id="library-importation">
-<h2>Library importation<a class="headerlink" href="#library-importation" title="Permalink to this headline"></a></h2>
+<section id="library-importation">
+<h2>Library importation<a class="headerlink" href="#library-importation" title="Permalink to this heading"></a></h2>
 <p>Python does not come with a lot of possibilities. This is why you usually need to import a few libraries. You can assign a shortname to a library, as usually people import/use functions with libraries’ prefix, to avoid confusion (two libraries can have a function with the same name…). A useful shortname for rampy is <code class="docutils literal notranslate"><span class="pre">rp</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># importing rampy</span>
 <span class="kn">import</span> <span class="nn">rampy</span> <span class="k">as</span> <span class="nn">rp</span>
@@ -92,9 +98,9 @@
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="data-importation">
-<h2>Data importation<a class="headerlink" href="#data-importation" title="Permalink to this headline"></a></h2>
+</section>
+<section id="data-importation">
+<h2>Data importation<a class="headerlink" href="#data-importation" title="Permalink to this heading"></a></h2>
 <p>This is done using directly Pandas or numpy, except for:
 - importing multiple spectra can be done with the <code class="docutils literal notranslate"><span class="pre">rampy.spectrarray()</span></code> function;
 - maps for which rampy provides a function to import the CSV files generated by
@@ -109,9 +115,9 @@ the Renishaw or Horiba Raman spectrometers.</p>
 </pre></div>
 </div>
 <p>See the documentation of numpy for further details, as well as that of Pandas.</p>
-</div>
-<div class="section" id="plot-a-spectrum">
-<h2>Plot a spectrum<a class="headerlink" href="#plot-a-spectrum" title="Permalink to this headline"></a></h2>
+</section>
+<section id="plot-a-spectrum">
+<h2>Plot a spectrum<a class="headerlink" href="#plot-a-spectrum" title="Permalink to this heading"></a></h2>
 <p>This can be done with Matplotlib directly. For instance, to plot our spectrum we can do:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">spectrum</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="s1">&#39;k.&#39;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -122,8 +128,8 @@ the Renishaw or Horiba Raman spectrometers.</p>
 </div>
 <p>This will give the image:</p>
 <a class="reference internal image-reference" href="_images/spectrum.png"><img alt="_images/spectrum.png" src="_images/spectrum.png" style="width: 400px;" /></a>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -136,7 +142,7 @@ the Renishaw or Horiba Raman spectrometers.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Charles Le Losq.</p>
+    <p>&#169; Copyright 2023, Charles Le Losq.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
