@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 import scipy
 import rampy as rp
+import matplotlib.pyplot as plt
 
 class rameau:
     """treat Raman spectra of glass to retrieve the glass water content
@@ -124,15 +125,27 @@ class rameau:
         """
         self.x, self.y, self.y_corr, self.y_base, self.rws, self.rw, self.rs = fit_spectra(self.data_liste,method=method,delim=delim,path_in=path_in,spline_coeff=spline_coeff,poly_coeff=poly_coeff)
 
-    def calibrate(self,method="LL2012"):
-        """Fit a calibration by optimizing the K coefficient(s)
+    def calibrate(self,data_calib,method="LL2012", delim='\t',path_calib='./raw/',laser=488.0,spline_coeff=0.005,poly_coeff=3):
+        """Fit a calibration by optimizing the K coefficient(s) on a chosen dataset of calibration spectra
 
         Parameters
         ----------
         self: object
             rameau object with treated spectra (see data_reduction method)
+        data_calib: Pandas dataframe
+            A Pandas dataframe containing the calibration data (same informations as self.data_liste but for calibration spectra).
         method: string
-            the method used; choose between "LL2012" or "DG2017", default = "LL2012".
+            the method used for calibration; choose between "LL2012" or "DG2017", default = "LL2012".
+        delim: string
+            File delimiter. Use '\t' for tabulated text or ',' for comma separated text. Default = '\t'.
+        path_calib: string
+            Path for the calibration spectra. Default = './raw/'.
+        laser: float
+            Laser line wavelength in nm. Default = 488.0.
+        spline_coeff: float
+            Smoothing coefficient for the spline baseline. An array of size len(data_liste) can be provided. Default = 0.005.
+        poly_coeff: int
+            Polynomial coefficient for the polynomial baseline function. Default = 3 (DG2017 method; set to 2 for Behrens et al. (2006) method).
 
         Returns
         -------
@@ -140,10 +153,30 @@ class rameau:
             The optimized parameter(s);
             if method = "DG2017", popt=np.array([a,b]), parameters of the equation K = a * [FeO wt%] + b.
             if method = "LL2017", popt = A (float), with A parameter in the equation (3) of Le Losq et al. (2012).
+        self.x_calib: ndarray
+            Common x axis.
+        self.y_calib: ndarray
+            All raw calibration spectra from data_calib in an array of length len(x) and with as many column as spectra.
+        self.y_corr_calib: ndarray
+            All corrected calibration spectra from data_calib in an array of length len(x) and with as many column as spectra.
+        self.y_base_calib: ndarray
+            All baselines for calibration spectra from data_calib in an array of length len(x) and with as many column as spectra.
+        self.rws_calib: ndarray
+            The ratio of the water integrated intensity over that of silicate signals for calibration spectra from data_calib.
+        self.rw_calib: ndarray
+            The integrated intensity of water signal for calibration spectra from data_calib.
+        self.rs_calib: ndarray
+            The integrated intensity of silicate signals for calibration spectra from data_calib.
         """
-        dictio = {"water": self.water,
-         "feo": np.asarray(self.data_liste["FeO"]),
-         "rws": self.rws}
+        
+        self.data_calib = data_calib
+        
+        # reducton of reference spectra
+        self.x_calib, self.y_calib, self.y_corr_calib, self.y_base_calib, self.rws_calib, self.rw_calib, self.rs_calib = fit_spectra(self.data_calib,method=method,delim=delim,path_in=path_calib,spline_coeff=spline_coeff,poly_coeff=poly_coeff)
+        
+        dictio = {"water": np.asarray(self.data_calib["Water, wt%"]),
+         "feo": np.asarray(self.data_calib["FeO"]),
+         "rws": self.rws_calib}
         try:
             if method == "LL2012":
                 self.p = LL2012_calibrate(dictio)
@@ -182,7 +215,8 @@ class rameau:
                 raise TypeError("Bad p coefficient. Did you try predicting values with a different method than the calibration?")
         elif method == "DG2017":
             try:
-                if self.p != None:
+#                if self.p != None:
+                if self.p[0] != None and self.p[1] != None :
                     print("Using adjusted p coefficients: %f and %f" % (self.p[0],self.p[1]))
                     self.water_predicted = DG2017_predict(dictio,a=self.p[0], b=self.p[1])
                 else:
@@ -190,6 +224,97 @@ class rameau:
                     self.water_predicted = DG2017_predict(dictio)
             except:
                 raise TypeError("Bad p coefficients. Did you try predicting values with a different method than the calibration?")
+                
+
+    def external_calibration(self, path_samples = './raw/Microponces/', path_ref='./raw/Standards/', roi = np.array([[2900,3100],[3700, 3800]]), lb=3200, hb=3750, s = 0.001, show_fig = False):
+        """Predict water content using an external calibration and reference spectra. 
+        For this method, each spectrum from self.data_liste must have a reference spectrum with a known water concentration.
+    
+        Parameters
+        -------
+        path_sample : string
+            Path for the self.data_liste spectra.
+        path_ref : string
+            Path for reference spectra.
+        roi : array((2,2))
+            Region of interest at the beginning and the end of the water spike to fit the baseline.
+        lb : int
+            Lower limit for the water spike area calculation.
+        hb : int
+            Upper limit for the water spike area calculation.
+        s : float
+            spline smoothing coefficient for the unispline and gcvspline algorithms used in rampy.baseline function.
+        show_fig : boolean
+            to show figures of water spike and baseline for each spectrum from self.data_list and its reference spectrum.
+            
+        Returns
+        -------
+        wat_list: ndarray
+            Array containing predicted water for spectra from self.data_liste.
+        areas_list: ndarray
+            Array containing water spike area for spectra from self.data_liste.
+        areas_lref: ndarray
+            Array containing water spike area for reference spectra.
+    
+        """
+        wat_list = []
+        areas_list = []
+        areas_lref = []
+        
+        for i in range(len(self.data_liste)):
+            
+            # spectra importation
+            ref = np.genfromtxt(path_ref+self.data_liste['Ref'].iloc[i])
+            sample = np.genfromtxt(path_samples+self.data_liste['Name'].iloc[i])
+            # reference water content 
+            water_ref = self.data_liste['Water Ref'].iloc[i]
+    
+            # spectra are flipped if frequencies are in descending order
+            ref = rp.flipsp(ref)
+            sample = rp.flipsp(sample)
+    
+            # baselines for the reference and for the sample: straight line 
+            y_ref, bas_ref = rp.baseline(ref[:,0], ref[:,1], roi, "poly", polynomial_order = 1, s=s)
+            y_sample, bas_sample = rp.baseline(sample[:,0], sample[:,1], roi, "poly", polynomial_order = 1, s=s)
+            
+            # areas in range bounded by bl and hb
+            area_ref = np.trapz(y_ref[(ref[:,0]>lb)&(ref[:,0]<hb)].ravel(), 
+                                ref[(ref[:,0]>lb)&(ref[:,0]<hb),0])
+            area_sample = np.trapz(y_sample[(sample[:,0]>lb)&(sample[:,0]<hb)].ravel(), 
+                                   sample[(sample[:,0]>lb)&(sample[:,0]<hb),0])
+            
+            # sample water content by cross-multiplication
+            water = area_sample*water_ref/area_ref
+            
+            # water content and areas are added to their lists
+            wat_list.append(round(water, 2))           
+            areas_list.append(area_sample)
+            areas_lref.append(area_ref)
+            
+            # figures if wanted
+            if show_fig == True :
+
+                plt.figure()
+        
+                plt.subplot(1,2,2)
+                plt.plot(sample[(ref[:,0]>lb)&(ref[:,0]<hb),0], sample[(ref[:,0]>lb)&(ref[:,0]<hb),1])
+                plt.plot(sample[(ref[:,0]>lb)&(ref[:,0]<hb),0], bas_sample[(ref[:,0]>lb)&(ref[:,0]<hb),0])
+                plt.title(self.data_liste['Name'].iloc[i][:-4])
+
+                plt.subplot(1,2,1)
+                plt.plot(ref[(ref[:,0]>lb)&(ref[:,0]<hb),0], ref[(ref[:,0]>lb)&(ref[:,0]<hb),1])
+                plt.plot(ref[(ref[:,0]>lb)&(ref[:,0]<hb),0], bas_ref[(ref[:,0]>lb)&(ref[:,0]<hb),0])
+                plt.title(self.data_liste['Ref'].iloc[i][:-4])
+    
+                plt.tight_layout()         
+    
+        return np.array(wat_list), np.array(areas_list), np.array(areas_lref)
+                
+                
+                
+                
+                
+                
 
 def fit_spectra(data_liste,method="LL2012",delim='\t',path_in='./raw/',laser=514.532,spline_coeff=0.001, poly_coeff=3):
     """Calculate the ratios of water and silicate signals from Raman spectra
