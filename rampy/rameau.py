@@ -125,8 +125,8 @@ class rameau:
         """
         self.x, self.y, self.y_corr, self.y_base, self.rws, self.rw, self.rs = fit_spectra(self.data_liste,method=method,delim=delim,path_in=path_in,spline_coeff=spline_coeff,poly_coeff=poly_coeff)
 
-    def calibrate(self,data_calib,method="LL2012", delim='\t',path_calib='./raw/',laser=488.0,spline_coeff=0.005,poly_coeff=3):
-        """Fit a calibration by optimizing the K coefficient(s) on a chosen dataset of calibration spectra
+    def calibrate(self,data_calib=None,method="LL2012", delim='\t',path_calib='./raw/',laser=488.0,spline_coeff=0.005,poly_coeff=3):
+        """Fit a calibration by optimizing the K coefficient(s) on a chosen dataset of calibration spectra. 
 
         Parameters
         ----------
@@ -134,6 +134,7 @@ class rameau:
             rameau object with treated spectra (see data_reduction method)
         data_calib: Pandas dataframe
             A Pandas dataframe containing the calibration data (same informations as self.data_liste but for calibration spectra).
+            If data_calib is not given, the calibration is performed on self.data_liste.
         method: string
             the method used for calibration; choose between "LL2012" or "DG2017", default = "LL2012".
         delim: string
@@ -169,14 +170,22 @@ class rameau:
             The integrated intensity of silicate signals for calibration spectra from data_calib.
         """
         
-        self.data_calib = data_calib
+
+        if data_calib == None :
+            dictio = {"water": self.water,
+                "feo": np.asarray(self.data_liste["FeO"]),
+                "rws": self.rws}
         
-        # reducton of reference spectra
-        self.x_calib, self.y_calib, self.y_corr_calib, self.y_base_calib, self.rws_calib, self.rw_calib, self.rs_calib = fit_spectra(self.data_calib,method=method,delim=delim,path_in=path_calib,spline_coeff=spline_coeff,poly_coeff=poly_coeff)
+        else :        
+            self.data_calib = data_calib
         
-        dictio = {"water": np.asarray(self.data_calib["Water, wt%"]),
-         "feo": np.asarray(self.data_calib["FeO"]),
-         "rws": self.rws_calib}
+            # reducton of reference spectra
+            self.x_calib, self.y_calib, self.y_corr_calib, self.y_base_calib, self.rws_calib, self.rw_calib, self.rs_calib = fit_spectra(self.data_calib,method=method,delim=delim,path_in=path_calib,spline_coeff=spline_coeff,poly_coeff=poly_coeff)
+        
+            dictio = {"water": np.asarray(self.data_calib["Water, wt%"]),
+                "feo": np.asarray(self.data_calib["FeO"]),
+                "rws": self.rws_calib}
+            
         try:
             if method == "LL2012":
                 self.p = LL2012_calibrate(dictio)
@@ -228,7 +237,7 @@ class rameau:
 
     def external_calibration(self, path_samples = './raw/Microponces/', path_ref='./raw/Standards/', roi = np.array([[2900,3100],[3700, 3800]]), lb=3200, hb=3750, s = 0.001, show_fig = False):
         """Predict water content using an external calibration and reference spectra. 
-        For this method, each spectrum from self.data_liste must have a reference spectrum with a known water concentration.
+        For this method, each spectrum from self.data_liste must have a reference spectrum with a known water concentration (in columns "Ref" and "Water Ref" respectively).
     
         Parameters
         -------
