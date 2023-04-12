@@ -121,7 +121,9 @@ def shiftsp(sp, shift):
 
 
 def flipsp(sp):
-    """Flip an array along the row dimension (dim = 1) if the row values are in decreasing order.
+    """Flip or sort an array along the row dimension (dim = 1) if the row values are in decreasing order.
+
+    Starting from rampy v0.5, the new version is using argsort, such that the X values can be in any order.
 
     Parameters
     ----------
@@ -133,11 +135,7 @@ def flipsp(sp):
     sp : ndarray
         The same array but sorted such that the values in the first column are in increasing order.
     """
-    if sp[-1,0] < sp[0,0]:
-        sp = np.flip(sp,0)
-        return sp
-    else:
-        return sp
+    return sp[sp[:, 0].argsort()] # we actually use argsort to sort the array in ascending order
 
 def resample(x,y,x_new,**kwargs):
     """Resample a y signal associated with x, along the x_new values.

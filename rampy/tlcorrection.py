@@ -103,6 +103,6 @@ def tlcorrection(x,y,temp,wave, **kwargs):
     elif normalisation == 'no':
         print("No normalisation...")
     else:
-        Error("Set the optional normalisation parameter to area, intensity or no.")
+        raise print("Set the optional normalisation parameter to area, intensity or no.")
 
     return x, ycorr, ese*ycorr
