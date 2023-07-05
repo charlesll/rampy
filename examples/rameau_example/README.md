@@ -50,7 +50,7 @@ The virtual machine will see everything in the working directory, so after you j
 
 ## Jupyter notebook or rameau.py script ?
 
-- the Python_treatment.ipynb and Python_treatment_2.ipynb Jupyter notebooks provide some interactive examples with figures showcasing the different calibrations.
+- the Python_treatment.ipynb and Python_treatment_ext.ipynb Jupyter notebooks provide some interactive examples with figures showcasing the different calibrations.
 
 - however, the easiest usage is to work with the rameau.py script provided in this folder. This allows calling rameau directly from the terminal, providing a simple set of arguments.
 
