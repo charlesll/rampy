@@ -65,7 +65,7 @@ def spectrataux(spectres):
     # we need an organized function before calling the curve_fit algorithm
     freq = spectres[:,0]
     # output array
-    taux = np.zeros((len(freq),4));
+    taux = np.zeros((len(freq),4))
     taux[:,0] = freq[:]
 
     # We look a each frequency, we sort y data and fit them with a second order polynomial
