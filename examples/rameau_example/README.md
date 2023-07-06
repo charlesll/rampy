@@ -2,7 +2,7 @@
 
 Rameau is a set of functions and a class from the rampy library that provides a way to calculate the water content of a glass from its Raman spectrum.
 
-At this stage, it provides access to external Raman calibrations, from the Le Losq et al. (2012), Di Genova et al. (2017) and Thomas et al. (2008) articles.
+At this stage, it provides access to internal and external Raman calibrations, from the Le Losq et al. (2012), Di Genova et al. (2017) and Thomas et al. (2008) articles.
 
 # INSTALLATION
 
