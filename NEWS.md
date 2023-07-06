@@ -12,8 +12,6 @@ Licence: see LICENCE.md
 
 - Classification via 1D CNN and other algorithms using Keras or Pytorch
 
-- Addition of external calibration method in rameau
-
 - peak fitting for maps
 
 # 0.5.0 (stable)
@@ -23,6 +21,10 @@ Licence: see LICENCE.md
 - add the possiblity of importing lines of spectra for Horiba spectrometers
 
 - add a despiking() function
+
+- add external calibration in rameau
+
+- add the posibility to calibrate K coefficient(s) on another dataset of spectra
 
 - correction of a typo in mlclassificator function
 
