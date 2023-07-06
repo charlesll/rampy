@@ -24,6 +24,8 @@ Licence: see LICENCE.md
 
 - add a despiking() function
 
+- correction of a typo in mlclassificator function
+
 # 0.4.9
 
 - quick fix of a bug in read_horiba function (from rampy.maps) 
