@@ -119,7 +119,6 @@ def shiftsp(sp, shift):
     sp[:,0] = sp[:,0] - shift
     return sp
 
-
 def flipsp(sp):
     """Flip or sort an array along the row dimension (dim = 1) if the row values are in decreasing order.
 
