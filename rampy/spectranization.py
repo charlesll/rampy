@@ -50,6 +50,8 @@ def spectrarray(name,sh,sf,x):
 def spectrataux(spectres):
     """Calculate the increase/decrease rate of each frequencies in a set of spectra.
 
+    WARNING : experimental function to fix.
+
     Parameters
     ----------
     spectres : ndarray
@@ -63,7 +65,7 @@ def spectrataux(spectres):
     # we need an organized function before calling the curve_fit algorithm
     freq = spectres[:,0]
     # output array
-    taux = np.zeros((len(freq),4));
+    taux = np.zeros((len(freq),4))
     taux[:,0] = freq[:]
 
     # We look a each frequency, we sort y data and fit them with a second order polynomial
@@ -117,9 +119,10 @@ def shiftsp(sp, shift):
     sp[:,0] = sp[:,0] - shift
     return sp
 
-
 def flipsp(sp):
-    """Flip an array along the row dimension (dim = 1) if the row values are in decreasing order.
+    """Flip or sort an array along the row dimension (dim = 1) if the row values are in decreasing order.
+
+    Starting from rampy v0.5, the new version is using argsort, such that the X values can be in any order.
 
     Parameters
     ----------
@@ -131,11 +134,7 @@ def flipsp(sp):
     sp : ndarray
         The same array but sorted such that the values in the first column are in increasing order.
     """
-    if sp[-1,0] < sp[0,0]:
-        sp = np.flip(sp,0)
-        return sp
-    else:
-        return sp
+    return sp[sp[:, 0].argsort()] # we actually use argsort to sort the array in ascending order
 
 def resample(x,y,x_new,**kwargs):
     """Resample a y signal associated with x, along the x_new values.
@@ -244,3 +243,52 @@ def centroid(x,y,smoothing=False,**kwargs):
             y_[:,i] = rampy.smooth(x[:,i],y[:,i],**kwargs)
 
     return np.sum(y_/np.sum(y_,axis=0)*x,axis=0)
+
+def despiking(x, y, neigh=4, threshold = 3):
+    """remove spikes from the y 1D signal given a threeshold
+    
+    This function smooths the spectra, calculates the residual error RMSE and remove points above threshold*RMSE using the neighboring points
+    
+    Parameters
+    ----------
+    x : 1D array
+        signal to despike
+    y : 1D array
+        signal to despike
+    neigh: int
+        numbers of points around the spikes to select for calculating average value for despiking
+    threshold: int
+        multiplier of sigma, default = 3
+    
+    Returns
+    -------
+    y : 1D array
+        the signal without spikes
+    
+    """
+    y_out = y.copy() # So we don’t overwrite y for i in np.arange(len(spikes)):
+    
+    y_smo = rampy.smooth(x, y, method="savgol")
+    rmse_local = np.sqrt((y-y_smo)**2)
+    rmse_mean = np.sqrt(np.mean((y-y_smo)**2))
+
+    # if the point is at more than 3 sigmas, we consider it as an outlier
+    spikes = rmse_local > threshold* rmse_mean
+
+    for i in range(len(y)):
+        if spikes[i] != False: # If we have an spike in position i
+            
+            # we must be careful avoiding the boundaries
+            low_i = i-neigh
+            high_i = i+1+neigh
+        
+            if low_i < 0:
+                low_i = 0
+            if high_i > len(y):
+                high_i = len(y)
+            
+            w = np.arange(low_i,high_i) # we select 2 m + 1 points around our spike
+            w2 = w[spikes[w] == 0] # From such interval, we choose the ones which are not spikes
+            y_out[i] = np.mean(y[w2]) # and we average their values
+ 
+    return y_out

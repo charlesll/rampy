@@ -8,7 +8,7 @@ from scipy.optimize import curve_fit
 import rampy as rp
 from rampy import peak_shapes
 
-class map():
+class maps():
     """treat maps of Raman spectra
 
     Parameters
@@ -17,24 +17,41 @@ class map():
         filename, including path
 
     spectrometer_type : str
-        type of spectrometer, choose between "horiba" or "renishaw"
+        type of spectrometer, choose between "horiba" or "renishaw", default: 'horiba'
+
+    map_type : str
+        type of map, choose between "2D" or "1D", default: '2D'
     """
 
-    def __init__(self,file, spectrometer_type = "horiba"):
+    def __init__(self,file, spectrometer_type = "horiba", map_type = "2D", 
+                 despiking=False, neigh=4, threshold = 3):
         self.spectrometer_type = spectrometer_type
         self.filename = file
 
-        if spectrometer_type == "horiba":
-            self.X, self.Y, self.w, self.I = read_horiba(file)
-        elif spectrometer_type == "renishaw":
-            self.X, self.Y, self.w, self.I = read_renishaw(file)
+        if map_type == "2D":
+            if spectrometer_type == "horiba":
+                self.X, self.Y, self.w, self.I = read_horiba(file, map_type = "2D")
+            elif spectrometer_type == "renishaw":
+                self.X, self.Y, self.w, self.I = read_renishaw(file)
+            else:
+                print("Only renishaw or horiba are supported for 2D maps at the moment.")
+        elif map_type == "1D":
+            if spectrometer_type == "horiba":
+                self.X, self.w, self.I = read_horiba(file, map_type = "1D")
+            else:
+                print("Only horiba line maps are supported at the moment.")
         else:
-            print("Only renishaw or horiba are supported at the moment.")
+            raise ValueError("map_type should be set to either '1D' or '2D'")
 
         # here we check that the frequency axis w is increasing only:
         if self.w[0]>self.w[-1]:
             self.w = np.flip(self.w)
             self.I = np.flip(self.I,axis=0)
+
+        # here we remove spikes if the user wants it
+        if despiking == True:
+            for i in range(self.I.shape[1]):
+                self.I = despiking(self.w, self.I[:,i], neigh=neigh, threshold=threshold)
 
     def background(self, bir, method = "poly", **kwargs):
         """correct a background from the initial signal I on a map using rampy.baseline
@@ -266,32 +283,43 @@ def read_renishaw(file):
 
     return X, Y, lambdas_one, intensities
 
-def read_horiba(file):
-    """read Horiba csv maps
-
+def read_horiba(file, map_type="2D"):
+    """read Horiba csv maps (1D, 2D)
+    
     Parameters
     ==========
     file : str
         filename, including path
-
+    map_type : str
+        1D map (line) or 2D map, default: 2D
+        
     Returns
     -------
     X : m by n array
         X positions
     Y : m by n array
         Y position
-    lambdas : m by n array
+    lambdas : n array
         Raman shift
     intensities : m by n array
         Intensities
     """
 
     df = pd.read_csv(file,sep='\t')
-    intensities = df.iloc[:,2:].values
-    lambdas = df.columns.values[2:].astype(float)
-    X = df.iloc[:,0].values
-    Y = df.iloc[:,1].values
-    return X, Y, lambdas, intensities.T
+    
+    if map_type == "2D":
+        intensities = df.iloc[:,2:].values
+        lambdas = df.columns.values[2:].astype(float)
+        X = df.iloc[:,0].values
+        Y = df.iloc[:,1].values
+        return X, Y, lambdas, intensities.T
+    elif map_type == "1D":
+        intensities = df.iloc[:,1:].values
+        lambdas = df.columns.values[1:].astype(float)
+        X = df.iloc[:,0].values
+        return X, lambdas, intensities.T
+    else:
+        raise ValueError("Not implemented, set map_type to '1D' or '2D'")
 
 def peak(X, Y, lambdas, intensities, function, Xrange, amp, Xmean, sigma, y0, A):
     """to fit peaks in a map. Work in progress.

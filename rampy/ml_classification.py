@@ -199,4 +199,4 @@ class mlclassificator:
             X_sc = self.X_scaler.transform(X)
             return self.model.predict(X_sc)
         else:
-            return self.model.predict(self.X)
+            return self.model.predict(X)

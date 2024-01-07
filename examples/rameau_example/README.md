@@ -2,7 +2,7 @@
 
 Rameau is a set of functions and a class from the rampy library that provides a way to calculate the water content of a glass from its Raman spectrum.
 
-At this stage, it provides access to external Raman calibrations, from the Le Losq et al. (2012) and Di Genova et al. (2017) articles.
+At this stage, it provides access to internal and external Raman calibrations, from the Le Losq et al. (2012), Di Genova et al. (2017) and Thomas et al. (2008) articles.
 
 # INSTALLATION
 
@@ -50,13 +50,13 @@ The virtual machine will see everything in the working directory, so after you j
 
 ## Jupyter notebook or rameau.py script ?
 
-- the Python_treatment.ipynb Jupyter notebook provides some interactive example with figures showcasing the different calibrations.
+- the Python_treatment.ipynb and Python_treatment_ext.ipynb Jupyter notebooks provide some interactive examples with figures showcasing the different calibrations.
 
 - however, the easiest usage is to work with the rameau.py script provided in this folder. This allows calling rameau directly from the terminal, providing a simple set of arguments.
 
 ## Folder prepration
 
-- Put rameau.py or the notebook in your working directory (e.g. you can download this example directory and work in it)
+- Put rameau.py or the notebooks in your working directory (e.g. you can download this example directory and work in it)
 
 - Spectra should be in a subfolder called "raw".
 
@@ -135,3 +135,5 @@ $ python rameau.py -i dataset.xlsx -s 2018_RSES -o results.csv -l 532.0 -m predi
 C. Le Losq, D. R. Neuville, R. Moretti, J. Roux, Determination of water content in silicate glasses using Raman spectrometry: Implications for the study of explosive volcanism. American Mineralogist. 97, 779–790 (2012).
 
 D. Di Genova et al., Effect of iron and nanolites on Raman spectra of volcanic glasses: A reassessment of existing strategies to estimate the water content. Chemical Geology. 475, 76–86 (2017).
+
+S.-M. Thomas, R. Thomas, P. Davidson, P. Reichart, M. Koch-Muller, G. Dollinger, Application of Raman Spectroscopy to Quantify Trace Water Concentrations in Glasses and Garnets. American Mineralogist 2008, 93 (10), 1550–1557. https://doi.org/10.2138/am.2008.2834.

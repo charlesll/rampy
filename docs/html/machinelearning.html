@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Machine learning &mdash; RamPy 0.4.9 documentation</title>
+  <title>Machine learning &mdash; RamPy 0.5.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -13,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -26,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> RamPy
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RamPy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -66,8 +72,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Machine learning</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Machine learning</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/machinelearning.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -77,8 +83,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="machine-learning">
-<h1>Machine learning<a class="headerlink" href="#machine-learning" title="Permalink to this headline"></a></h1>
+  <section id="machine-learning">
+<h1>Machine learning<a class="headerlink" href="#machine-learning" title="Permalink to this heading"></a></h1>
 <p>Rampy offers three classes for performing classification, regression or unsupervised ML exploration of a set of spectra. Those are helpful ways to automatically perform usual scalling, test-train splitting and ML training of popular ML algorithms, and use <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> in the background.</p>
 <p>Those functions work (<code class="docutils literal notranslate"><span class="pre">rp.regressor</span></code> was used in <a class="reference external" href="https://doi.org/10.2138/am-2019-6887">this publication</a>) but still may evolve in the futur. For advanced, ML, I suggest using directly scikit-learn or other ML libraries.</p>
 <p>Do not hesitate to ask for new features depending on your needs !</p>
@@ -91,24 +97,24 @@
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
 </div>
-<div class="section" id="ml-exploration">
-<h2>ML Exploration<a class="headerlink" href="#ml-exploration" title="Permalink to this headline"></a></h2>
+<section id="ml-exploration">
+<h2>ML Exploration<a class="headerlink" href="#ml-exploration" title="Permalink to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">rampy.mlexplorer</span></code> class allows performing PCA and NMF at the moment (work in progress). See the <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Machine%20Learning%20Exploration.ipynb">example notebook</a>.</p>
-</div>
-<div class="section" id="ml-regression">
-<h2>ML regression<a class="headerlink" href="#ml-regression" title="Permalink to this headline"></a></h2>
+</section>
+<section id="ml-regression">
+<h2>ML regression<a class="headerlink" href="#ml-regression" title="Permalink to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">rampy.regressor</span></code> class allows linking variations in spectra to some known variations like the composition of a sample. See the <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Machine%20Learning%20Regression.ipynb">example notebook</a>.</p>
-</div>
-<div class="section" id="ml-classification">
-<h2>ML classification<a class="headerlink" href="#ml-classification" title="Permalink to this headline"></a></h2>
+</section>
+<section id="ml-classification">
+<h2>ML classification<a class="headerlink" href="#ml-classification" title="Permalink to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">rampy.classificator</span></code> class allows automatic recognition of substances/stuffs from spectra. See the <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/MachineLearning_Classification.ipynb">example notebook here</a>.</p>
-</div>
-<div class="section" id="linear-mixture">
-<h2>Linear mixture<a class="headerlink" href="#linear-mixture" title="Permalink to this headline"></a></h2>
+</section>
+<section id="linear-mixture">
+<h2>Linear mixture<a class="headerlink" href="#linear-mixture" title="Permalink to this heading"></a></h2>
 <p>If you have two endmember spectra, you can use the <code class="docutils literal notranslate"><span class="pre">rampy.mixing()</span></code> function. See the <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Mixing_spectra.ipynb">mixing example notebook here</a>.</p>
 <p>If you do not know the endmember spectra, then you may be interested in using directly the PyMCR library, see the documentation <a class="reference external" href="https://pages.nist.gov/pyMCR/">here</a> and an example notebook <a class="reference external" href="https://github.com/usnistgov/pyMCR/blob/master/Examples/Demo.ipynb">here</a>. We used it in <a class="reference external" href="https://doi.org/10.2138/am-2019-6887">this publication</a>, see the code <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Iron_AmMin_paper/Iron_MORB_code.ipynb">here</a>.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -121,7 +127,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Charles Le Losq.</p>
+    <p>&#169; Copyright 2023, Charles Le Losq.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

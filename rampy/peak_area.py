@@ -48,10 +48,10 @@ def peakarea(shape,**options):
                 return area, esearea
             else:
                 return area
-
+            
         except ValueError:
             print("amp and HWHM should be provided")
-
+            
     elif (shape == "lorentzian") or (shape == "pseudovoigt") or (shape == "pearson7"): # other shapes: trapezoidal integration
         try:
             amp=options.get("amp")

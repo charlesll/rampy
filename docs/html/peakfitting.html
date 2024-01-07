@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Peak fitting &mdash; RamPy 0.4.9 documentation</title>
+  <title>Peak fitting &mdash; RamPy 0.5.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -13,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -26,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> RamPy
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RamPy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -65,8 +71,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Peak fitting</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Peak fitting</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/peakfitting.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -76,8 +82,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="peak-fitting">
-<h1>Peak fitting<a class="headerlink" href="#peak-fitting" title="Permalink to this headline"></a></h1>
+  <section id="peak-fitting">
+<h1>Peak fitting<a class="headerlink" href="#peak-fitting" title="Permalink to this heading"></a></h1>
 <p>Rampy does not offer a dedicated function for peak fitting. Instead, we invite users to use lmfit or scipy.optimize to perform peak fitting, which is basically the action to fit a model (sum of peaks) to your data.</p>
 <p>Rampy offers functions for various peak shapes, including:
 * gaussian peaks &gt; <code class="docutils literal notranslate"><span class="pre">rampy.gaussian</span></code>
@@ -86,12 +92,12 @@
 * pearson7 peaks &gt; <code class="docutils literal notranslate"><span class="pre">rampy.pearson7</span></code></p>
 <p>See the help for each function on this website. Those can be used to easily create a model that will be fitted to your spectrum.</p>
 <p>We will upload soon an example of Bayesian peak fitting with a function integrated to rampy.</p>
-<div class="section" id="lmfit">
-<h2>lmfit<a class="headerlink" href="#lmfit" title="Permalink to this headline"></a></h2>
+<section id="lmfit">
+<h2>lmfit<a class="headerlink" href="#lmfit" title="Permalink to this heading"></a></h2>
 <p>We provide an example of peak-fitting with the lmfit for instance. See <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Raman_spectrum_fitting.ipynb">this notebook</a> for an example of use.</p>
-</div>
-<div class="section" id="calculate-peak-areas">
-<h2>Calculate peak areas<a class="headerlink" href="#calculate-peak-areas" title="Permalink to this headline"></a></h2>
+</section>
+<section id="calculate-peak-areas">
+<h2>Calculate peak areas<a class="headerlink" href="#calculate-peak-areas" title="Permalink to this heading"></a></h2>
 <p>Peak area can be calculated using the <code class="docutils literal notranslate"><span class="pre">rampy.peakarea</span></code> function. For instance, for a Gaussian peak at 1100 cm-1 with an amplitude of 1.0 and a half-width at half maximum of 25.0, we can do:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">position</span> <span class="o">=</span> <span class="mf">1100.</span>
 <span class="n">amplitude</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -100,12 +106,12 @@
 <span class="n">area</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">peakarea</span><span class="p">(</span><span class="s2">&quot;gaussian&quot;</span><span class="p">,</span> <span class="n">amp</span><span class="o">=</span><span class="n">amplitude</span><span class="p">,</span> <span class="n">HWHM</span><span class="o">=</span><span class="n">hwhm</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="propagate-uncertainties">
-<h2>Propagate uncertainties<a class="headerlink" href="#propagate-uncertainties" title="Permalink to this headline"></a></h2>
+</section>
+<section id="propagate-uncertainties">
+<h2>Propagate uncertainties<a class="headerlink" href="#propagate-uncertainties" title="Permalink to this heading"></a></h2>
 <p>The best way to propagate the uncertainties of your model is to directly use the <code class="docutils literal notranslate"><span class="pre">uncertainties</span></code> package, see the docs <a class="reference external" href="https://pythonhosted.org/uncertainties/">here</a>.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -118,7 +124,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Charles Le Losq.</p>
+    <p>&#169; Copyright 2023, Charles Le Losq.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

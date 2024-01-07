@@ -23,6 +23,16 @@ Some spectra come with decreasing X values. Rampy offers a simple function to fl
 
   spectrum_increasing = rp.flipsp(spectrum)
 
+Remove spikes
+-------------
+
+Spikes can be removed via the rp.despiking() function. It takes as input X and Y values of a spectrum and a threshold. 
+The threshold is the number of standard deviation above the mean noise value that a point must be to be considered as a spike. 
+For instance, if the threshold is 3, then a point will be considered as a spike if it is 3 standard deviation above the mean of the noise. 
+The function will then replace the spike by the mean of *k* points before and after the spike. 
+
+The function returns the new Y values.
+
 Resampling a spectrum
 ---------------------
 

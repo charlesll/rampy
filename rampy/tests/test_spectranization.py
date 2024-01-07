@@ -64,6 +64,14 @@ class TestSpectranization(unittest.TestCase):
         c1 = rampy.normalise(x,y,method="area")
         c2 = rampy.normalise(x,y,method="intensity")
         c3 = rampy.normalise(x,y,method="minmax")
+
+    def test_despiking(self):
+
+        x = np.ones((100,10))
+        y = 2*x
+
+        # we just test that it runs
+        yout = rampy.despiking(x, y)
                 
 if __name__ == '__main__':
     unittest.main()

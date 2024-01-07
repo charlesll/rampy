@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Preprocessing &mdash; RamPy 0.4.9 documentation</title>
+  <title>Preprocessing &mdash; RamPy 0.5.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -13,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -26,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> RamPy
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RamPy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -43,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Preprocessing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#flip-the-x-axis">Flip the X axis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#remove-spikes">Remove spikes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#resampling-a-spectrum">Resampling a spectrum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#normalisation">Normalisation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#smoothing">Smoothing</a></li>
@@ -68,8 +75,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Preprocessing</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Preprocessing</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/preprocessing.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -79,8 +86,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="preprocessing">
-<h1>Preprocessing<a class="headerlink" href="#preprocessing" title="Permalink to this headline"></a></h1>
+  <section id="preprocessing">
+<h1>Preprocessing<a class="headerlink" href="#preprocessing" title="Permalink to this heading"></a></h1>
 <p>Rampy offers handful functions to preprocess your spectra. Do not hesitate to propose/ask for new functionalities!</p>
 <p>In the following, we assume you already performed library importation as</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># importing rampy</span>
@@ -91,15 +98,23 @@
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
 </div>
-<div class="section" id="flip-the-x-axis">
-<h2>Flip the X axis<a class="headerlink" href="#flip-the-x-axis" title="Permalink to this headline"></a></h2>
+<section id="flip-the-x-axis">
+<h2>Flip the X axis<a class="headerlink" href="#flip-the-x-axis" title="Permalink to this heading"></a></h2>
 <p>Some spectra come with decreasing X values. Rampy offers a simple function to flip them. This can be necessary to resample them (as interpolation algorithms usually require the X values to increase). Here for our spectrum we can do:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spectrum_increasing</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">flipsp</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="resampling-a-spectrum">
-<h2>Resampling a spectrum<a class="headerlink" href="#resampling-a-spectrum" title="Permalink to this headline"></a></h2>
+</section>
+<section id="remove-spikes">
+<h2>Remove spikes<a class="headerlink" href="#remove-spikes" title="Permalink to this heading"></a></h2>
+<p>Spikes can be removed via the rp.despiking() function. It takes as input X and Y values of a spectrum and a threshold.
+The threshold is the number of standard deviation above the mean noise value that a point must be to be considered as a spike.
+For instance, if the threshold is 3, then a point will be considered as a spike if it is 3 standard deviation above the mean of the noise.
+The function will then replace the spike by the mean of <em>k</em> points before and after the spike.</p>
+<p>The function returns the new Y values.</p>
+</section>
+<section id="resampling-a-spectrum">
+<h2>Resampling a spectrum<a class="headerlink" href="#resampling-a-spectrum" title="Permalink to this heading"></a></h2>
 <p>We need sometime to resample a spectrum with a new X axis. <code class="docutils literal notranslate"><span class="pre">rampy.resample()</span></code> offers such ability. For instance,
 we have a spectrum that has a X axis from 400 to 1300 cm-1, with points each 0.9 cm-1. We want the same but with an X axis with a value each cm-1. We can do for our spectrum:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">400.</span><span class="p">,</span> <span class="mf">1300.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> <span class="c1"># we generate the new X values with numpy.arange()</span>
@@ -117,9 +132,9 @@ This is simply solved by asking <code class="docutils literal notranslate"><span
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spectrum_resample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x_new</span><span class="p">,</span><span class="n">y_new</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="normalisation">
-<h2>Normalisation<a class="headerlink" href="#normalisation" title="Permalink to this headline"></a></h2>
+</section>
+<section id="normalisation">
+<h2>Normalisation<a class="headerlink" href="#normalisation" title="Permalink to this heading"></a></h2>
 <p>Rampy provides the <code class="docutils literal notranslate"><span class="pre">rampy.normalisation()</span></code> function to normalise the Y values of a spectrum to</p>
 <ul class="simple">
 <li><p>the maximum intensity</p></li>
@@ -127,23 +142,23 @@ This is simply solved by asking <code class="docutils literal notranslate"><span
 <li><p>to min-max values of intensities</p></li>
 </ul>
 <p>See the <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Normalisation.ipynb">notebook on Github for examples</a></p>
-</div>
-<div class="section" id="smoothing">
-<h2>Smoothing<a class="headerlink" href="#smoothing" title="Permalink to this headline"></a></h2>
+</section>
+<section id="smoothing">
+<h2>Smoothing<a class="headerlink" href="#smoothing" title="Permalink to this heading"></a></h2>
 <p>Rampy provides the <code class="docutils literal notranslate"><span class="pre">rampy.smooth()</span></code> function to smooth a spectrum. 10 different algorithms are available, see the <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Smoothing.ipynb">notebook on Github</a> for examples of use.</p>
 <a class="reference internal image-reference" href="_images/smooth.png"><img alt="_images/smooth.png" src="_images/smooth.png" style="width: 400px;" /></a>
-</div>
-<div class="section" id="baseline">
-<h2>Baseline<a class="headerlink" href="#baseline" title="Permalink to this headline"></a></h2>
+</section>
+<section id="baseline">
+<h2>Baseline<a class="headerlink" href="#baseline" title="Permalink to this heading"></a></h2>
 <p>Rampy allows you to fit polynomial, spline, generalized cross-validated spline, logarithms, exponential, ALS, arPLS, drPLS and rubberband baselines to your spectra, in order to remove the background.</p>
 <p>See <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Baseline.ipynb">this notebook</a> for an example of use, and the help of <code class="docutils literal notranslate"><span class="pre">rampy.baseline()</span></code> for details on each algorithm.</p>
 <a class="reference internal image-reference" href="_images/baseline.png"><img alt="_images/baseline.png" src="_images/baseline.png" style="width: 500px;" /></a>
-</div>
-<div class="section" id="temperature-and-excitation-line-effects">
-<h2>Temperature and excitation line effects<a class="headerlink" href="#temperature-and-excitation-line-effects" title="Permalink to this headline"></a></h2>
+</section>
+<section id="temperature-and-excitation-line-effects">
+<h2>Temperature and excitation line effects<a class="headerlink" href="#temperature-and-excitation-line-effects" title="Permalink to this heading"></a></h2>
 <p>Raman spectra may need correction from temperature and excitation line effects. See the review of <a class="reference external" href="http://onlinelibrary.wiley.com/doi/10.1002/jrs.1250190202/abstract">Brooker et al. 1988</a> for details. rampy offers several way to do so with the <code class="docutils literal notranslate"><span class="pre">rampy.tlexcitation()</span></code> function. See its documentation for details.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
@@ -156,7 +171,7 @@ This is simply solved by asking <code class="docutils literal notranslate"><span
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Charles Le Losq.</p>
+    <p>&#169; Copyright 2023, Charles Le Losq.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
