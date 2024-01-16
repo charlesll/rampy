@@ -18,11 +18,11 @@
 # -- Project information -----------------------------------------------------
 
 project = 'RamPy'
-copyright = '2023, Charles Le Losq'
+copyright = '2024, Charles Le Losq'
 author = 'Charles Le Losq'
 
 # The full version, including alpha/beta/rc tags
-release = '0.5.0'
+release = '0.5.1'
 
 
 # -- General configuration ---------------------------------------------------

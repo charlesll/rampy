@@ -6,7 +6,7 @@
 Welcome to RamPy's documentation!
 =================================
 
-Copyright (2015-2021) C. Le Losq and co.
+Copyright (2015-2024) C. Le Losq and co.
 
 Charles Le Losq, Institut de physique du globe de Paris, University of Paris
 lelosq@ipgp.fr
