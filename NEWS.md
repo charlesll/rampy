@@ -1,6 +1,6 @@
 # Rampy News
 
-Copyright (c) 2014-2023 Dr. Charles Le Losq
+Copyright (c) 2014-2024 Dr. Charles Le Losq
 
 email: lelosq@ipgp.fr
 
@@ -19,7 +19,7 @@ Licence: see LICENCE.md
 - fix installation dependencies
 - fix an error in the despiking function: only vectors are treated
 
-# 0.5.0 (stable)
+# 0.5.0
 
 - map() function is now maps() to avoid any conflict with built-in Python map() function
 
