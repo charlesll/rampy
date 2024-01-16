@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rampy"
+version = "0.5.1"
+dependencies = [
+    "numpy>=1.12",
+    "scipy",
+    "scikit-learn",
+    "pandas",
+    "xlrd",
+    "matplotlib"
+]
+authors = [
+  {name = "Charles Le Losq", email = "lelosq@ipgp.fr"},
+]
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+description = "A Python module containing functions to treat spectroscopic (XANES, Raman, IR...) data"
+readme = "README.md"
+keywords = ["spectroscopy", "data", "treatment", "Raman", "XANES", "Infrared", "NMR"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Programming Language :: Python"
+]
+
+[tool.setuptools.packages.find]
+where = ["rampy"]
+
+[project.optional-dependencies]
+gcvspline = ["gcvspline"]
+mixing = ["cvxpy>=1.1"]
+
+[project.urls]
+Homepage = "https://github.com/charlesll/rampy/"
+Documentation = "http://charlesll.github.io/rampy/html/index.html"
+Repository = "https://github.com/charlesll/rampy.git"
+"Bug Tracker" = "https://github.com/charlesll/rampy/issues"
+Changelog = "https://github.com/charlesll/rampy/NEWS.md"

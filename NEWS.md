@@ -14,6 +14,11 @@ Licence: see LICENCE.md
 
 - peak fitting for maps
 
+# 0.5.1 (stable)
+
+- fix installation dependencies
+- fix an error in the despiking function: only vectors are treated
+
 # 0.5.0 (stable)
 
 - map() function is now maps() to avoid any conflict with built-in Python map() function

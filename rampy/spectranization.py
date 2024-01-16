@@ -266,9 +266,11 @@ def despiking(x, y, neigh=4, threshold = 3):
         the signal without spikes
     
     """
+    # we make sure we work with vectors
+    y = y.reshape(-1)
     y_out = y.copy() # So we don’t overwrite y for i in np.arange(len(spikes)):
     
-    y_smo = rampy.smooth(x, y, method="savgol")
+    y_smo = rampy.smooth(x.reshape(-1), y, method="savgol")
     rmse_local = np.sqrt((y-y_smo)**2)
     rmse_mean = np.sqrt(np.mean((y-y_smo)**2))
 
