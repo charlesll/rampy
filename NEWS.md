@@ -14,10 +14,13 @@ Licence: see LICENCE.md
 
 - peak fitting for maps
 
-# 0.5.1 (stable)
+# 0.5.2 (stable)
+
+- fix installation : something went bad as we switched to pyproject.toml in 0.5.1
+
+# 0.5.1
 
 - fix installation dependencies
-- fix an error in the despiking function: only vectors are treated
 
 # 0.5.0
 

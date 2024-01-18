@@ -1,0 +1,12 @@
+numpy>=1.12
+scipy
+scikit-learn
+pandas
+xlrd
+matplotlib
+
+[gcvspline]
+gcvspline
+
+[mixing]
+cvxpy>=1.1

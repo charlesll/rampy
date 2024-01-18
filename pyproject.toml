@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rampy"
-version = "0.5.1"
+version = "0.5.2"
 dependencies = [
     "numpy>=1.12",
     "scipy",
@@ -25,9 +25,6 @@ classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Programming Language :: Python"
 ]
-
-[tool.setuptools.packages.find]
-where = ["rampy"]
 
 [project.optional-dependencies]
 gcvspline = ["gcvspline"]
