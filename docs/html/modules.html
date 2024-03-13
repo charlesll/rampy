@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rampy &mdash; RamPy 0.5.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>rampy &mdash; RamPy 0.5.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8e576371"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -48,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="maps.html">Maps</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rampy.html">rampy package</a></li>
 </ul>
 
@@ -76,7 +79,7 @@
            <div itemprop="articleBody">
              
   <section id="rampy">
-<h1>rampy<a class="headerlink" href="#rampy" title="Permalink to this heading"></a></h1>
+<h1>rampy<a class="headerlink" href="#rampy" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="rampy.html">rampy package</a><ul>
@@ -84,19 +87,190 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="rampy.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.baseline">rampy.baseline module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.filters">rampy.filters module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.functions">rampy.functions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.maps">rampy.maps module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.mixing">rampy.mixing module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.ml_classification">rampy.ml_classification module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.ml_exploration">rampy.ml_exploration module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.ml_regressor">rampy.ml_regressor module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.peak_area">rampy.peak_area module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.peak_shapes">rampy.peak_shapes module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.rameau">rampy.rameau module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.spectranization">rampy.spectranization module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.tlcorrection">rampy.tlcorrection module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.baseline">rampy.baseline module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.baseline.baseline"><code class="docutils literal notranslate"><span class="pre">baseline()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.baseline.get_portion_interest"><code class="docutils literal notranslate"><span class="pre">get_portion_interest()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.filters">rampy.filters module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.filters.smooth"><code class="docutils literal notranslate"><span class="pre">smooth()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.filters.spectrafilter"><code class="docutils literal notranslate"><span class="pre">spectrafilter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.filters.whittaker"><code class="docutils literal notranslate"><span class="pre">whittaker()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.functions">rampy.functions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.functions.constant"><code class="docutils literal notranslate"><span class="pre">constant()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.functions.difffull"><code class="docutils literal notranslate"><span class="pre">difffull()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.functions.diffshort"><code class="docutils literal notranslate"><span class="pre">diffshort()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.functions.funexp"><code class="docutils literal notranslate"><span class="pre">funexp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.functions.funlog"><code class="docutils literal notranslate"><span class="pre">funlog()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.functions.gauss_lsq"><code class="docutils literal notranslate"><span class="pre">gauss_lsq()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.functions.gauss_lsq_lfix"><code class="docutils literal notranslate"><span class="pre">gauss_lsq_lfix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.functions.linear"><code class="docutils literal notranslate"><span class="pre">linear()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.functions.linear0"><code class="docutils literal notranslate"><span class="pre">linear0()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.functions.multigaussian"><code class="docutils literal notranslate"><span class="pre">multigaussian()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.functions.poly2"><code class="docutils literal notranslate"><span class="pre">poly2()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.maps">rampy.maps module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.maps.maps"><code class="docutils literal notranslate"><span class="pre">maps</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.maps.maps.area"><code class="docutils literal notranslate"><span class="pre">maps.area()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.maps.maps.area_ratio"><code class="docutils literal notranslate"><span class="pre">maps.area_ratio()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.maps.maps.background"><code class="docutils literal notranslate"><span class="pre">maps.background()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.maps.maps.centroid"><code class="docutils literal notranslate"><span class="pre">maps.centroid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.maps.maps.intensity"><code class="docutils literal notranslate"><span class="pre">maps.intensity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.maps.maps.intensity_ratio"><code class="docutils literal notranslate"><span class="pre">maps.intensity_ratio()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.maps.maps.normalise"><code class="docutils literal notranslate"><span class="pre">maps.normalise()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.maps.maps.smooth"><code class="docutils literal notranslate"><span class="pre">maps.smooth()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.maps.peak"><code class="docutils literal notranslate"><span class="pre">peak()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.maps.read_horiba"><code class="docutils literal notranslate"><span class="pre">read_horiba()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.maps.read_renishaw"><code class="docutils literal notranslate"><span class="pre">read_renishaw()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.mixing">rampy.mixing module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.mixing.mixing_sp"><code class="docutils literal notranslate"><span class="pre">mixing_sp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.ml_classification">rampy.ml_classification module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator"><code class="docutils literal notranslate"><span class="pre">mlclassificator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.x"><code class="docutils literal notranslate"><span class="pre">mlclassificator.x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.y"><code class="docutils literal notranslate"><span class="pre">mlclassificator.y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.X_test"><code class="docutils literal notranslate"><span class="pre">mlclassificator.X_test</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.y_test"><code class="docutils literal notranslate"><span class="pre">mlclassificator.y_test</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.algorithm"><code class="docutils literal notranslate"><span class="pre">mlclassificator.algorithm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.scaling"><code class="docutils literal notranslate"><span class="pre">mlclassificator.scaling</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.scaler"><code class="docutils literal notranslate"><span class="pre">mlclassificator.scaler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.test_size"><code class="docutils literal notranslate"><span class="pre">mlclassificator.test_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.rand_state"><code class="docutils literal notranslate"><span class="pre">mlclassificator.rand_state</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.params_"><code class="docutils literal notranslate"><span class="pre">mlclassificator.params_</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.prediction_train"><code class="docutils literal notranslate"><span class="pre">mlclassificator.prediction_train</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.prediction_test"><code class="docutils literal notranslate"><span class="pre">mlclassificator.prediction_test</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.model"><code class="docutils literal notranslate"><span class="pre">mlclassificator.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.X_scaler"><code class="docutils literal notranslate"><span class="pre">mlclassificator.X_scaler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.Y_scaler"><code class="docutils literal notranslate"><span class="pre">mlclassificator.Y_scaler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.fit"><code class="docutils literal notranslate"><span class="pre">mlclassificator.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.predict"><code class="docutils literal notranslate"><span class="pre">mlclassificator.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_classification.mlclassificator.refit"><code class="docutils literal notranslate"><span class="pre">mlclassificator.refit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.ml_exploration">rampy.ml_exploration module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.ml_exploration.mlexplorer"><code class="docutils literal notranslate"><span class="pre">mlexplorer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_exploration.mlexplorer.x"><code class="docutils literal notranslate"><span class="pre">mlexplorer.x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_exploration.mlexplorer.X_test"><code class="docutils literal notranslate"><span class="pre">mlexplorer.X_test</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_exploration.mlexplorer.algorithm"><code class="docutils literal notranslate"><span class="pre">mlexplorer.algorithm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_exploration.mlexplorer.scaling"><code class="docutils literal notranslate"><span class="pre">mlexplorer.scaling</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_exploration.mlexplorer.scaler"><code class="docutils literal notranslate"><span class="pre">mlexplorer.scaler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_exploration.mlexplorer.test_size"><code class="docutils literal notranslate"><span class="pre">mlexplorer.test_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_exploration.mlexplorer.rand_state"><code class="docutils literal notranslate"><span class="pre">mlexplorer.rand_state</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_exploration.mlexplorer.model"><code class="docutils literal notranslate"><span class="pre">mlexplorer.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_exploration.mlexplorer.Remarks"><code class="docutils literal notranslate"><span class="pre">mlexplorer.Remarks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_exploration.mlexplorer.http"><code class="docutils literal notranslate"><span class="pre">mlexplorer.http</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_exploration.mlexplorer.fit"><code class="docutils literal notranslate"><span class="pre">mlexplorer.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_exploration.mlexplorer.predict"><code class="docutils literal notranslate"><span class="pre">mlexplorer.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_exploration.mlexplorer.refit"><code class="docutils literal notranslate"><span class="pre">mlexplorer.refit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.ml_regressor">rampy.ml_regressor module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.ml_regressor.chemical_splitting"><code class="docutils literal notranslate"><span class="pre">chemical_splitting()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor"><code class="docutils literal notranslate"><span class="pre">mlregressor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.x"><code class="docutils literal notranslate"><span class="pre">mlregressor.x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.y"><code class="docutils literal notranslate"><span class="pre">mlregressor.y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.X_test"><code class="docutils literal notranslate"><span class="pre">mlregressor.X_test</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.y_test"><code class="docutils literal notranslate"><span class="pre">mlregressor.y_test</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.algorithm"><code class="docutils literal notranslate"><span class="pre">mlregressor.algorithm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.scaling"><code class="docutils literal notranslate"><span class="pre">mlregressor.scaling</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.scaler"><code class="docutils literal notranslate"><span class="pre">mlregressor.scaler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.test_size"><code class="docutils literal notranslate"><span class="pre">mlregressor.test_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.rand_state"><code class="docutils literal notranslate"><span class="pre">mlregressor.rand_state</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.param_kr"><code class="docutils literal notranslate"><span class="pre">mlregressor.param_kr</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.param_svm"><code class="docutils literal notranslate"><span class="pre">mlregressor.param_svm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.param_neurons"><code class="docutils literal notranslate"><span class="pre">mlregressor.param_neurons</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.param_bagging"><code class="docutils literal notranslate"><span class="pre">mlregressor.param_bagging</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.prediction_train"><code class="docutils literal notranslate"><span class="pre">mlregressor.prediction_train</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.prediction_test"><code class="docutils literal notranslate"><span class="pre">mlregressor.prediction_test</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.model"><code class="docutils literal notranslate"><span class="pre">mlregressor.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.X_scaler"><code class="docutils literal notranslate"><span class="pre">mlregressor.X_scaler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.Y_scaler"><code class="docutils literal notranslate"><span class="pre">mlregressor.Y_scaler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.fit"><code class="docutils literal notranslate"><span class="pre">mlregressor.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.predict"><code class="docutils literal notranslate"><span class="pre">mlregressor.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.ml_regressor.mlregressor.refit"><code class="docutils literal notranslate"><span class="pre">mlregressor.refit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.peak_area">rampy.peak_area module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.peak_area.gaussianarea"><code class="docutils literal notranslate"><span class="pre">gaussianarea()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.peak_area.peakarea"><code class="docutils literal notranslate"><span class="pre">peakarea()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.peak_shapes">rampy.peak_shapes module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.peak_shapes.create_gauss"><code class="docutils literal notranslate"><span class="pre">create_gauss()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.peak_shapes.create_lorenz"><code class="docutils literal notranslate"><span class="pre">create_lorenz()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.peak_shapes.gaussian"><code class="docutils literal notranslate"><span class="pre">gaussian()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.peak_shapes.lorentzian"><code class="docutils literal notranslate"><span class="pre">lorentzian()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.peak_shapes.pearson7"><code class="docutils literal notranslate"><span class="pre">pearson7()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.peak_shapes.pseudovoigt"><code class="docutils literal notranslate"><span class="pre">pseudovoigt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.rameau">rampy.rameau module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.rameau.DG2017_calibrate"><code class="docutils literal notranslate"><span class="pre">DG2017_calibrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.rameau.DG2017_predict"><code class="docutils literal notranslate"><span class="pre">DG2017_predict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.rameau.LL2012_calibrate"><code class="docutils literal notranslate"><span class="pre">LL2012_calibrate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.rameau.LL2012_predict"><code class="docutils literal notranslate"><span class="pre">LL2012_predict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.rameau.fit_spectra"><code class="docutils literal notranslate"><span class="pre">fit_spectra()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.rameau.rameau"><code class="docutils literal notranslate"><span class="pre">rameau</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.rameau.rameau.x"><code class="docutils literal notranslate"><span class="pre">rameau.x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.rameau.rameau.y"><code class="docutils literal notranslate"><span class="pre">rameau.y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.rameau.rameau.y_corr"><code class="docutils literal notranslate"><span class="pre">rameau.y_corr</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.rameau.rameau.y_base"><code class="docutils literal notranslate"><span class="pre">rameau.y_base</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.rameau.rameau.rws"><code class="docutils literal notranslate"><span class="pre">rameau.rws</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.rameau.rameau.rw"><code class="docutils literal notranslate"><span class="pre">rameau.rw</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.rameau.rameau.rs"><code class="docutils literal notranslate"><span class="pre">rameau.rs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.rameau.rameau.water"><code class="docutils literal notranslate"><span class="pre">rameau.water</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.rameau.rameau.water_predicted"><code class="docutils literal notranslate"><span class="pre">rameau.water_predicted</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.rameau.rameau.p"><code class="docutils literal notranslate"><span class="pre">rameau.p</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.rameau.rameau.names"><code class="docutils literal notranslate"><span class="pre">rameau.names</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.rameau.rameau.calibrate"><code class="docutils literal notranslate"><span class="pre">rameau.calibrate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.rameau.rameau.data_reduction"><code class="docutils literal notranslate"><span class="pre">rameau.data_reduction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.rameau.rameau.external_calibration"><code class="docutils literal notranslate"><span class="pre">rameau.external_calibration()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#id0"><code class="docutils literal notranslate"><span class="pre">rameau.names</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#id4"><code class="docutils literal notranslate"><span class="pre">rameau.p</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#rampy.rameau.rameau.predict"><code class="docutils literal notranslate"><span class="pre">rameau.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#id5"><code class="docutils literal notranslate"><span class="pre">rameau.rs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#id6"><code class="docutils literal notranslate"><span class="pre">rameau.rw</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#id7"><code class="docutils literal notranslate"><span class="pre">rameau.rws</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#id8"><code class="docutils literal notranslate"><span class="pre">rameau.water</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#id9"><code class="docutils literal notranslate"><span class="pre">rameau.water_predicted</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#id10"><code class="docutils literal notranslate"><span class="pre">rameau.x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#id11"><code class="docutils literal notranslate"><span class="pre">rameau.y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#id12"><code class="docutils literal notranslate"><span class="pre">rameau.y_base</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rampy.html#id13"><code class="docutils literal notranslate"><span class="pre">rameau.y_corr</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.spectranization">rampy.spectranization module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.spectranization.centroid"><code class="docutils literal notranslate"><span class="pre">centroid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.spectranization.despiking"><code class="docutils literal notranslate"><span class="pre">despiking()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.spectranization.flipsp"><code class="docutils literal notranslate"><span class="pre">flipsp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.spectranization.normalise"><code class="docutils literal notranslate"><span class="pre">normalise()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.spectranization.resample"><code class="docutils literal notranslate"><span class="pre">resample()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.spectranization.shiftsp"><code class="docutils literal notranslate"><span class="pre">shiftsp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.spectranization.spectraoffset"><code class="docutils literal notranslate"><span class="pre">spectraoffset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.spectranization.spectrarray"><code class="docutils literal notranslate"><span class="pre">spectrarray()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.spectranization.spectrataux"><code class="docutils literal notranslate"><span class="pre">spectrataux()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.tlcorrection">rampy.tlcorrection module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rampy.html#rampy.tlcorrection.tlcorrection"><code class="docutils literal notranslate"><span class="pre">tlcorrection()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy">Module contents</a></li>
 </ul>
 </li>
@@ -112,7 +286,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, Charles Le Losq.</p>
+    <p>&#169; Copyright 2024, Charles Le Losq.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

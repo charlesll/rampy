@@ -47,4 +47,5 @@ Indices and tables
    preprocessing
    peakfitting
    machinelearning
+   maps
    rampy

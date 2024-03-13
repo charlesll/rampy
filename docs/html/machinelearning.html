@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Machine learning &mdash; RamPy 0.5.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Machine learning &mdash; RamPy 0.5.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8e576371"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="rampy package" href="rampy.html" />
+    <link rel="next" title="Maps" href="maps.html" />
     <link rel="prev" title="Peak fitting" href="peakfitting.html" /> 
 </head>
 
@@ -56,6 +58,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#linear-mixture">Linear mixture</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="maps.html">Maps</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rampy.html">rampy package</a></li>
 </ul>
 
@@ -84,7 +87,7 @@
            <div itemprop="articleBody">
              
   <section id="machine-learning">
-<h1>Machine learning<a class="headerlink" href="#machine-learning" title="Permalink to this heading"></a></h1>
+<h1>Machine learning<a class="headerlink" href="#machine-learning" title="Link to this heading"></a></h1>
 <p>Rampy offers three classes for performing classification, regression or unsupervised ML exploration of a set of spectra. Those are helpful ways to automatically perform usual scalling, test-train splitting and ML training of popular ML algorithms, and use <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a> in the background.</p>
 <p>Those functions work (<code class="docutils literal notranslate"><span class="pre">rp.regressor</span></code> was used in <a class="reference external" href="https://doi.org/10.2138/am-2019-6887">this publication</a>) but still may evolve in the futur. For advanced, ML, I suggest using directly scikit-learn or other ML libraries.</p>
 <p>Do not hesitate to ask for new features depending on your needs !</p>
@@ -98,19 +101,19 @@
 </pre></div>
 </div>
 <section id="ml-exploration">
-<h2>ML Exploration<a class="headerlink" href="#ml-exploration" title="Permalink to this heading"></a></h2>
+<h2>ML Exploration<a class="headerlink" href="#ml-exploration" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">rampy.mlexplorer</span></code> class allows performing PCA and NMF at the moment (work in progress). See the <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Machine%20Learning%20Exploration.ipynb">example notebook</a>.</p>
 </section>
 <section id="ml-regression">
-<h2>ML regression<a class="headerlink" href="#ml-regression" title="Permalink to this heading"></a></h2>
+<h2>ML regression<a class="headerlink" href="#ml-regression" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">rampy.regressor</span></code> class allows linking variations in spectra to some known variations like the composition of a sample. See the <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Machine%20Learning%20Regression.ipynb">example notebook</a>.</p>
 </section>
 <section id="ml-classification">
-<h2>ML classification<a class="headerlink" href="#ml-classification" title="Permalink to this heading"></a></h2>
+<h2>ML classification<a class="headerlink" href="#ml-classification" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">rampy.classificator</span></code> class allows automatic recognition of substances/stuffs from spectra. See the <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/MachineLearning_Classification.ipynb">example notebook here</a>.</p>
 </section>
 <section id="linear-mixture">
-<h2>Linear mixture<a class="headerlink" href="#linear-mixture" title="Permalink to this heading"></a></h2>
+<h2>Linear mixture<a class="headerlink" href="#linear-mixture" title="Link to this heading"></a></h2>
 <p>If you have two endmember spectra, you can use the <code class="docutils literal notranslate"><span class="pre">rampy.mixing()</span></code> function. See the <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Mixing_spectra.ipynb">mixing example notebook here</a>.</p>
 <p>If you do not know the endmember spectra, then you may be interested in using directly the PyMCR library, see the documentation <a class="reference external" href="https://pages.nist.gov/pyMCR/">here</a> and an example notebook <a class="reference external" href="https://github.com/usnistgov/pyMCR/blob/master/Examples/Demo.ipynb">here</a>. We used it in <a class="reference external" href="https://doi.org/10.2138/am-2019-6887">this publication</a>, see the code <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Iron_AmMin_paper/Iron_MORB_code.ipynb">here</a>.</p>
 </section>
@@ -121,13 +124,13 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="peakfitting.html" class="btn btn-neutral float-left" title="Peak fitting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rampy.html" class="btn btn-neutral float-right" title="rampy package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="maps.html" class="btn btn-neutral float-right" title="Maps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, Charles Le Losq.</p>
+    <p>&#169; Copyright 2024, Charles Le Losq.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -1,17 +1,8 @@
 Maps
 ====
 
-Rampy offers the possiblity to analyse maps from Raman spectrometers.
+Rampy offers the possiblity to analyse maps from Raman spectrometers using the ``rampy.maps`` module.
 
-In the following, we assume you already performed library importation as
+Line and 2D Maps saved in CSV or TXT format from Horiba and Renishaw spectrometers can be loaded, and various data treatments can be performed afterwards.
 
-.. code-block:: python
-
-  # importing rampy
-  import rampy as rp
-  # and for numpy we will respect the usual name:
-  import numpy as np
-  # for matplotlib
-  import matplotlib.pyplot as plt
-
-IN CONSTRUCTION
+An Jupyter notebook example of processing a map of Raman spectra is `provided here <https://github.com/charlesll/rampy/blob/master/examples/Maps_example.ipynb>`_.
