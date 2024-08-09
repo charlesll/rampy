@@ -245,9 +245,10 @@ def centroid(x,y,smoothing=False,**kwargs):
     return np.sum(y_/np.sum(y_,axis=0)*x,axis=0)
 
 def despiking(x, y, neigh=4, threshold = 3):
-    """remove spikes from the y 1D signal given a threeshold
-    
-    This function smooths the spectra, calculates the residual error RMSE and remove points above threshold*RMSE using the neighboring points
+    """remove spikes from the y 1D signal given a threshold
+
+    To determine the spikes, this function smooths the spectra, calculates the residual error RMSE
+    and replaces points above threshold*RMSE using the mean of neighboring points. All other points are left unchanged.
     
     Parameters
     ----------
@@ -257,6 +258,7 @@ def despiking(x, y, neigh=4, threshold = 3):
         signal to despike
     neigh: int
         numbers of points around the spikes to select for calculating average value for despiking
+        and window length for smoothing, default = 4
     threshold: int
         multiplier of sigma, default = 3
     
@@ -270,7 +272,7 @@ def despiking(x, y, neigh=4, threshold = 3):
     y = y.reshape(-1)
     y_out = y.copy() # So we don’t overwrite y for i in np.arange(len(spikes)):
     
-    y_smo = rampy.smooth(x.reshape(-1), y, method="savgol")
+    y_smo = rampy.smooth(x.reshape(-1), y, method="savgol", window_length=neigh)
     rmse_local = np.sqrt((y-y_smo)**2)
     rmse_mean = np.sqrt(np.mean((y-y_smo)**2))
 
