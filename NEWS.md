@@ -1,6 +1,6 @@
 # Rampy News
 
-Copyright (c) 2014-2024 Dr. Charles Le Losq
+Copyright (c) 2014-2024 Dr. Charles Le Losq et al.
 
 email: lelosq@ipgp.fr
 
@@ -14,7 +14,11 @@ Licence: see LICENCE.md
 
 - peak fitting for maps
 
-# 0.5.2 (stable)
+# 0.5.3 (stable)
+
+- Correction in despiking function (thanks Kevin Yuan)
+
+# 0.5.2
 
 - fix installation : something went bad as we switched to pyproject.toml in 0.5.1
 

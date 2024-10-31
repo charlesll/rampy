@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rampy package &mdash; RamPy 0.5.2 documentation</title>
+  <title>rampy package &mdash; RamPy 0.5.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -15,8 +15,8 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=8e576371"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/documentation_options.js?v=2a2fe768"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -208,7 +208,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#rampy.rameau.rameau.names"><code class="docutils literal notranslate"><span class="pre">rameau.names</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rampy.rameau.rameau.calibrate"><code class="docutils literal notranslate"><span class="pre">rameau.calibrate()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rampy.rameau.rameau.data_reduction"><code class="docutils literal notranslate"><span class="pre">rameau.data_reduction()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rampy.rameau.rameau.external_calibration"><code class="docutils literal notranslate"><span class="pre">rameau.external_calibration()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">rameau.names</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">rameau.p</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rampy.rameau.rameau.predict"><code class="docutils literal notranslate"><span class="pre">rameau.predict()</span></code></a></li>
@@ -460,7 +459,7 @@ See also documentation for details on GCVSmoothedNSpline, MSESmoothedNSpline, DO
 <dd><p>returns a constant value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>x</strong> (<em>1D array</em>) – </p>
+<dd class="field-odd"><p><strong>x</strong> (<em>1D array</em>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>y</strong> – array filled with a values</p>
@@ -598,7 +597,7 @@ In this array, list intensities first, then all peak positions, then the last el
 <span id="rampy-maps-module"></span><h2>rampy.maps module<a class="headerlink" href="#module-rampy.maps" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="rampy.maps.maps">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.maps.</span></span><span class="sig-name descname"><span class="pre">maps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrometer_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'horiba'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2D'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">despiking</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neigh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.maps.</span></span><span class="sig-name descname"><span class="pre">maps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrometer_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'horiba'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2D'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>treat maps of Raman spectra</p>
 <dl class="field-list simple">
@@ -663,7 +662,7 @@ Do not forget to smooth the signals if necessary prior to using this.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bir</strong> (<em>ndarray</em>) – arrays of the backgroudn interpolation regions.</p></li>
 <li><p><strong>method</strong> (<em>string</em>) – see rampy.baseline documentation for methods available. Default is polynomial</p></li>
-<li><p><strong>there.</strong> (<em>All kwargs argument for rampy.baseline</em><em>(</em><em>) </em><em>will be forwarded and can be used</em>) – </p></li>
+<li><p><strong>there.</strong> (<em>All kwargs argument for rampy.baseline</em><em>(</em><em>) </em><em>will be forwarded and can be used</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -1060,12 +1059,12 @@ Do not forget to smooth the signals if necessary prior to using this.
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>algorithm</strong> (<em>String</em>) – algorithm to use. Choose between “Nearest Neighbors”, “Linear SVM”, “RBF SVM”, “Gaussian Process”,</p></li>
-<li><p><strong>Tree&quot;</strong> (<em>&quot;Decision</em>) – </p></li>
-<li><p><strong>Forest&quot;</strong> (<em>&quot;Random</em>) – </p></li>
-<li><p><strong>Net&quot;</strong> (<em>&quot;Neural</em>) – </p></li>
-<li><p><strong>&quot;AdaBoost&quot;</strong> – </p></li>
-<li><p><strong>Bayes&quot;</strong> (<em>&quot;Naive</em>) – </p></li>
-<li><p><strong>&quot;QDA&quot;</strong> – </p></li>
+<li><p><strong>Tree&quot;</strong> (<em>&quot;Decision</em>)</p></li>
+<li><p><strong>Forest&quot;</strong> (<em>&quot;Random</em>)</p></li>
+<li><p><strong>Net&quot;</strong> (<em>&quot;Neural</em>)</p></li>
+<li><p><strong>&quot;AdaBoost&quot;</strong></p></li>
+<li><p><strong>Bayes&quot;</strong> (<em>&quot;Naive</em>)</p></li>
+<li><p><strong>&quot;QDA&quot;</strong></p></li>
 </ul>
 </dd>
 </dl>
@@ -1859,15 +1858,12 @@ are calculated using trapezoidal integration.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="rampy.rameau.rameau">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.rameau.</span></span><span class="sig-name descname"><span class="pre">rameau</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_liste</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_spectra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./raw/'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.rameau" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.rameau.</span></span><span class="sig-name descname"><span class="pre">rameau</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_liste</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.rameau" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>treat Raman spectra of glass to retrieve the glass water content</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data_liste</strong> (<em>Pandas dataframe</em>) – A Pandas dataframe containing the data and various meta information.</p></li>
-<li><p><strong>path_spectra</strong> (<em>string</em>) – Path for the spectra. Default = ‘./raw/’</p></li>
-</ul>
+<dd class="field-odd"><p><strong>data_liste</strong> (<em>Pandas dataframe</em>) – A Pandas dataframe containing the data and various meta information.</p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -1977,55 +1973,39 @@ are calculated using trapezoidal integration.</p>
 </dd></dl>
 
 <p class="rubric">Notes</p>
-<p>Uses either the LL2012 method (Le Losq et al., 2012), the DG2017 method (Di Genova et al., 2017) or the external calibration method (Thomas et al., 2008). See references.</p>
+<p>Uses either the LL2012 method (Le Losq et al., 2012) or the DG2017 (Di Genova et al., 2017) method. See references.</p>
 <p>In the LL2012 method, a cubic spline is fitted to the regions of interest provided in self.data_liste (see example).
 The spline is smoothed by the spline_coeff of the data_reduction method. The water content is calculated following eq. (3) of LL2012, with the A coefficient either provided or calculated by the method self.calibrate().</p>
 <p>In the DG2017 method, a third-order polynomial is fitted to the spectra following the instructions of Di Genova et al. (2017).
 The water content is calculated as wt% H2O = Rws * (a * [FeO wt%] + b) with a and b the coefficients either provided or calculated by the method self.calibrate().</p>
-<p>In the external calibration method, a cross-multiplication is computed using a reference spectrum and the proportionality relation between the water content of the glass and the water peak area of its spectrum.</p>
 <p class="rubric">References</p>
 <p>LL2102: C. Le Losq, D. R. Neuville, R. Moretti, J. Roux, Determination of water content in silicate glasses using Raman spectrometry: Implications for the study of explosive volcanism. American Mineralogist. 97, 779–790 (2012).
-DG2017: D. Di Genova et al., Effect of iron and nanolites on Raman spectra of volcanic glasses: A reassessment of existing strategies to estimate the water content. Chemical Geology. 475, 76–86 (2017).
-External calibration: S.-M. Thomas, R. Thomas, P. Davidson, P. Reichart, M. Koch-Muller, G. Dollinger, Application of Raman Spectroscopy to Quantify Trace Water Concentrations in Glasses and Garnets. American Mineralogist 2008, 93 (10), 1550–1557.</p>
+DG 2017 D. Di Genova et al., Effect of iron and nanolites on Raman spectra of volcanic glasses: A reassessment of existing strategies to estimate the water content. Chemical Geology. 475, 76–86 (2017).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="rampy.rameau.rameau.calibrate">
-<span class="sig-name descname"><span class="pre">calibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_calib</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LL2012'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_calib</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./raw/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">488.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spline_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.005</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poly_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.rameau.calibrate" title="Link to this definition"></a></dt>
-<dd><p>Fit a calibration by optimizing the K coefficient(s) on a chosen dataset of calibration spectra.</p>
+<span class="sig-name descname"><span class="pre">calibrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LL2012'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.rameau.calibrate" title="Link to this definition"></a></dt>
+<dd><p>Fit a calibration by optimizing the K coefficient(s)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>self</strong> (<em>object</em>) – rameau object with treated spectra (see data_reduction method)</p></li>
-<li><p><strong>data_calib</strong> (<em>Pandas dataframe</em>) – A Pandas dataframe containing the calibration data (same informations as self.data_liste but for calibration spectra).
-If data_calib is not given, the calibration is performed on self.data_liste.</p></li>
-<li><p><strong>method</strong> (<em>string</em>) – the method used for calibration; choose between “LL2012” or “DG2017”, default = “LL2012”.</p></li>
-<li><p><strong>delim</strong> (<em>string</em>) – File delimiter. Use ‘       ‘ for tabulated text or ‘,’ for comma separated text. Default = ‘       ‘.</p></li>
-<li><p><strong>path_calib</strong> (<em>string</em>) – Path for the calibration spectra. Default = ‘./raw/’.</p></li>
-<li><p><strong>laser</strong> (<em>float</em>) – Laser line wavelength in nm of the calibration spectra. Default = 488.0.</p></li>
-<li><p><strong>spline_coeff</strong> (<em>float</em>) – Smoothing coefficient for the spline baseline. An array of size len(data_liste) can be provided. Default = 0.005.</p></li>
-<li><p><strong>poly_coeff</strong> (<em>int</em>) – Polynomial coefficient for the polynomial baseline function. Default = 3 (DG2017 method; set to 2 for Behrens et al. (2006) method).</p></li>
+<li><p><strong>method</strong> (<em>string</em>) – the method used; choose between “LL2012” or “DG2017”, default = “LL2012”.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>popt</strong> (<em>ndarray or float</em>) – The optimized parameter(s);
+<dd class="field-even"><p><strong>popt</strong> – The optimized parameter(s);
 if method = “DG2017”, popt=np.array([a,b]), parameters of the equation K = a * [FeO wt%] + b.
-if method = “LL2017”, popt = A (float), with A parameter in the equation (3) of Le Losq et al. (2012).</p></li>
-<li><p><strong>self.x_calib</strong> (<em>ndarray</em>) – Common x axis.</p></li>
-<li><p><strong>self.y_calib</strong> (<em>ndarray</em>) – All raw calibration spectra from data_calib in an array of length len(x) and with as many column as spectra.</p></li>
-<li><p><strong>self.y_corr_calib</strong> (<em>ndarray</em>) – All corrected calibration spectra from data_calib in an array of length len(x) and with as many column as spectra.</p></li>
-<li><p><strong>self.y_base_calib</strong> (<em>ndarray</em>) – All baselines for calibration spectra from data_calib in an array of length len(x) and with as many column as spectra.</p></li>
-<li><p><strong>self.rws_calib</strong> (<em>ndarray</em>) – The ratio of the water integrated intensity over that of silicate signals for calibration spectra from data_calib.</p></li>
-<li><p><strong>self.rw_calib</strong> (<em>ndarray</em>) – The integrated intensity of water signal for calibration spectra from data_calib.</p></li>
-<li><p><strong>self.rs_calib</strong> (<em>ndarray</em>) – The integrated intensity of silicate signals for calibration spectra from data_calib.</p></li>
-</ul>
-</p>
+if method = “LL2017”, popt = A (float), with A parameter in the equation (3) of Le Losq et al. (2012).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray or float</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rampy.rameau.rameau.data_reduction">
-<span class="sig-name descname"><span class="pre">data_reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LL2012'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">514.532</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spline_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poly_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.rameau.data_reduction" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">data_reduction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LL2012'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'\t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./raw/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">514.532</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spline_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poly_coeff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.rameau.data_reduction" title="Link to this definition"></a></dt>
 <dd><p>process Raman spectra of glass to calculate the Rws ratio</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2033,6 +2013,7 @@ if method = “LL2017”, popt = A (float), with A parameter in the equation (3)
 <li><p><strong>self</strong> (<em>object</em>) – a rameau object that has been initiated.</p></li>
 <li><p><strong>method</strong> (<em>string</em>) – The used method. LL2012: Le Losq et al. (2012); DG2017: Di Genova et al. (2017). See references. Default = “LL2012”.</p></li>
 <li><p><strong>delim</strong> (<em>string</em>) – File delimiter. Use ‘       ‘ for tabulated text or ‘,’ for comma separated text. Default = ‘       ‘.</p></li>
+<li><p><strong>path_in</strong> (<em>string</em>) – Path for the spectra. Default = ‘./raw/’</p></li>
 <li><p><strong>laser</strong> (<em>float</em>) – Laser line wavelength in nm. Default = 514.532.</p></li>
 <li><p><strong>spline_coeff</strong> (<em>float</em>) – Smoothing coefficient for the spline baseline. An array of size len(data_liste) can be provided. Default = 0.001.</p></li>
 <li><p><strong>poly_coeff</strong> (<em>int</em>) – Polynomial coefficient for the polynomial baseline function. Default = 3 (DG2017 method; set to 2 for Behrens et al. (2006) method).</p></li>
@@ -2047,33 +2028,6 @@ if method = “LL2017”, popt = A (float), with A parameter in the equation (3)
 <li><p><strong>self.rws</strong> (<em>ndarray</em>) – The ratio of the water integrated intensity over that of silicate signals.</p></li>
 <li><p><strong>self.rw</strong> (<em>ndarray</em>) – The integrated intensity of water signal.</p></li>
 <li><p><strong>self.rs</strong> (<em>ndarray</em>) – The integrated intensity of silicate signals.</p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rampy.rameau.rameau.external_calibration">
-<span class="sig-name descname"><span class="pre">external_calibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./raw/Standards/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([[2900,</span> <span class="pre">3100],</span> <span class="pre">[3700,</span> <span class="pre">3800]])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3750</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.rameau.rameau.external_calibration" title="Link to this definition"></a></dt>
-<dd><p>Predict water content using an external calibration and reference spectra.
-For this method, each spectrum from self.data_liste must have a reference spectrum with a known water concentration (filled in columns “Ref” and “Water Ref” respectively).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>self</strong> (<em>object</em>) – a rameau object that has been initiated.</p></li>
-<li><p><strong>path_ref</strong> (<em>string</em>) – Path for reference spectra.</p></li>
-<li><p><strong>roi</strong> (<em>array</em><em>(</em><em>(</em><em>2</em><em>,</em><em>2</em><em>)</em><em>)</em>) – Region of interest at the beginning and the end of the water peak to fit the baseline.</p></li>
-<li><p><strong>lb</strong> (<em>int</em>) – Lower limit for the water peak area calculation.</p></li>
-<li><p><strong>hb</strong> (<em>int</em>) – Upper limit for the water peak area calculation.</p></li>
-<li><p><strong>show_fig</strong> (<em>boolean</em>) – to show figures of water peak and baseline for each spectrum from self.data_list and its reference spectrum.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>wat_list</strong> (<em>ndarray</em>) – Array containing predicted water for spectra from self.data_liste.</p></li>
-<li><p><strong>areas_list</strong> (<em>ndarray</em>) – Array containing water peak area for spectra from self.data_liste.</p></li>
-<li><p><strong>areas_lref</strong> (<em>ndarray</em>) – Array containing water peak area for reference spectra.</p></li>
 </ul>
 </p>
 </dd>
@@ -2170,8 +2124,8 @@ For this method, each spectrum from self.data_liste must have a reference spectr
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> (<em>Numpy array</em><em>, </em><em>m values by n samples</em>) – x values</p></li>
 <li><p><strong>y</strong> (<em>Numpy array</em><em>, </em><em>m values by n samples</em>) – y values</p></li>
-<li><p><strong>Options</strong> – </p></li>
-<li><p><strong>=======</strong> – </p></li>
+<li><p><strong>Options</strong></p></li>
+<li><p><strong>=======</strong></p></li>
 <li><p><strong>smoothing</strong> (<em>bool</em>) – True or False. Smooth the signals with arguments provided as kwargs. Default method is whittaker smoothing. See the rampy.smooth function for smoothing options and arguments.</p></li>
 </ul>
 </dd>
@@ -2210,8 +2164,7 @@ For this method, each spectrum from self.data_liste must have a reference spectr
 <dl class="py function">
 <dt class="sig sig-object py" id="rampy.spectranization.flipsp">
 <span class="sig-prename descclassname"><span class="pre">rampy.spectranization.</span></span><span class="sig-name descname"><span class="pre">flipsp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.spectranization.flipsp" title="Link to this definition"></a></dt>
-<dd><p>Flip or sort an array along the row dimension (dim = 1) if the row values are in decreasing order.</p>
-<p>Starting from rampy v0.5, the new version is using argsort, such that the X values can be in any order.</p>
+<dd><p>Flip an array along the row dimension (dim = 1) if the row values are in decreasing order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>sp</strong> (<em>ndarray</em>) – An array with n columns, the first one should contain the X axis (frequency, wavenumber, etc.)</p>
@@ -2347,7 +2300,6 @@ If a two-element tuple, then the first element is used as a fill value for x_new
 <dt class="sig sig-object py" id="rampy.spectranization.spectrataux">
 <span class="sig-prename descclassname"><span class="pre">rampy.spectranization.</span></span><span class="sig-name descname"><span class="pre">spectrataux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectres</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.spectranization.spectrataux" title="Link to this definition"></a></dt>
 <dd><p>Calculate the increase/decrease rate of each frequencies in a set of spectra.</p>
-<p>WARNING : experimental function to fix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>spectres</strong> (<em>ndarray</em>) – An array of spectra containing the common X axis in first column and all the spectra in the subsequent columns. (see spectrarray function)</p>
