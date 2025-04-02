@@ -1,1 +1,4 @@
 furo==2021.11.16
+nbsphinx
+sphinx_gallery
+sphinx_rtd_theme
