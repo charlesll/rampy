@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smoothing and filtering &mdash; RamPy 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8fa8b3e9"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Plotting" href="plotting.html" />
+    <link rel="prev" title="Baseline" href="baseline.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RamPy
+              <img src="_static/Rampy.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">Rampy News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="baseline.html">Baseline</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Smoothing and filtering</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#smoothing">Smoothing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.filters.smooth"><code class="docutils literal notranslate"><span class="pre">smooth</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.filters.whittaker"><code class="docutils literal notranslate"><span class="pre">whittaker</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#filtering">Filtering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.filters.spectrafilter"><code class="docutils literal notranslate"><span class="pre">spectrafilter</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signalparams.html">Signal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="maps.html">Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Example notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">rampy API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Smoothing and filtering</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/smoothing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="smoothing-and-filtering">
+<h1>Smoothing and filtering<a class="headerlink" href="#smoothing-and-filtering" title="Link to this heading"></a></h1>
+<p>Functions are provided to smooth and filter spectra. Smoothing is useful to remove noise from spectra, while filtering can be used to remove specific frequency components.</p>
+<p>Below you will find the documentation of the relevant functions, and have a look at the example notebooks too: <a class="reference internal" href="examples.html#rst-notebooks"><span class="std std-ref">Example notebooks</span></a></p>
+<section id="smoothing">
+<h2>Smoothing<a class="headerlink" href="#smoothing" title="Link to this heading"></a></h2>
+<a class="reference internal image-reference" href="_images/smooth.png"><img alt="_images/smooth.png" src="_images/smooth.png" style="width: 400px;" /></a>
+<p>Rampy provides the <code class="docutils literal notranslate"><span class="pre">rampy.smooth()</span></code> function to smooth a spectrum. 10 different algorithms are available, see the <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Smoothing.ipynb">notebook on Github</a> for examples of use.</p>
+<p>You can also directly use the Whittaker smoother. This can be useful if you want to use weights, which can allow you to avoid smoothing some regions for instance, or it can offer you more control.</p>
+<p>You will find example notebooks below as well as the docstrings of the functions!</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="rampy.filters.smooth">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.filters.</span></span><span class="sig-name descname"><span class="pre">smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'whittaker'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.filters.smooth" title="Link to this definition"></a></dt>
+<dd><p>Bases:</p>
+<p>Smooths the provided signal using various smoothing algorithms.</p>
+<p>This function applies different smoothing techniques to the input signal,
+including Whittaker smoothing, Savitzky-Golay filtering, spline-based methods,
+and window-based filters. Each method is designed to reduce noise while preserving
+signal features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – The x-axis values (e.g., time or wavelength). For window-based methods,
+these values should be equally spaced.</p></li>
+<li><p><strong>y</strong> (<em>np.ndarray</em>) – <p>The y-axis values to be smoothed.
+method (str): The smoothing method to apply. Default is “whittaker”.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Available options:</dt><dd><ul>
+<li><p>”whittaker”: Whittaker smoother (Eilers 2003).</p></li>
+<li><p>”savgol”: Savitzky-Golay filter.</p></li>
+<li><p>”GCVSmoothedNSpline”: Spline with generalized cross-validation.</p></li>
+<li><p>”MSESmoothedNSpline”: Spline with mean squared error criterion
+(requires the gcvspline library).</p></li>
+<li><p>”DOFSmoothedNSpline”: Spline with degrees of freedom criterion
+(requires the gcvspline library).</p></li>
+<li><p>”flat”: Moving average window.</p></li>
+<li><p>”hanning”, “hamming”, “bartlett”, “blackman”: Various window filters.</p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+</p></li>
+<li><p><strong>**kwargs</strong> – <p>Additional parameters specific to the chosen method.
+- window_length (int): Length of the filter window for window-based methods</p>
+<blockquote>
+<div><p>and Savitzky-Golay filter. Must be a positive odd integer. Default is 5.</p>
+</div></blockquote>
+<ul>
+<li><p>polyorder (int): Polynomial order for Savitzky-Golay filter. Must be less
+than <cite>window_length</cite>. Default is 2.</p></li>
+<li><p>Lambda (float): Smoothing parameter for the Whittaker filter. Higher values
+produce smoother fits. Default is (10^5).</p></li>
+<li><p>d (int): Difference order in the Whittaker filter. Default is 2.</p></li>
+<li><p>ese_y (float or np.ndarray): Errors associated with y values for spline methods.
+Default is 1.0.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The smoothed signal sampled on <cite>x</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the input vector is smaller than the window size or if an invalid
+    smoothing method is specified.</p></li>
+<li><p><strong>ImportError</strong> – If <cite>gcvspline</cite> is not installed when using MSESmoothedNSpline or DOFSmoothedNSpline.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The “whittaker” method implements the perfect smoother described by Eilers (2003).</p></li>
+<li><p>The “savgol” method uses <cite>scipy.signal.savgol_filter()</cite>.</p></li>
+<li><p>Spline methods require <cite>scipy &gt;= 1.10.0</cite> or the <cite>gcvspline</cite> package.</p></li>
+<li><p>Window-based methods are implemented following the SciPy Cookbook.</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<p>Smooth a noisy signal using Savitzky-Golay filtering:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">smoothed_signal</span> <span class="o">=</span> <span class="n">smooth</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;savgol&quot;</span><span class="p">,</span> <span class="n">window_length</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">polyorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Apply Whittaker smoothing:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">smoothed_signal</span> <span class="o">=</span> <span class="n">smooth</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;whittaker&quot;</span><span class="p">,</span> <span class="n">Lambda</span><span class="o">=</span><span class="mf">1e6</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Use a moving average window:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">smoothed_signal</span> <span class="o">=</span> <span class="n">smooth</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;flat&quot;</span><span class="p">,</span> <span class="n">window_length</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rampy.filters.whittaker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.filters.</span></span><span class="sig-name descname"><span class="pre">whittaker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.filters.whittaker" title="Link to this definition"></a></dt>
+<dd><p>Bases:</p>
+<p>Smooths a signal using the Whittaker smoother.</p>
+<p>This function applies Whittaker smoothing to reduce noise in a signal while preserving
+its features. It uses penalized least squares optimization with a specified smoothing
+coefficient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>np.ndarray</em>) – An array containing the values to smooth. The data should be equally spaced.</p></li>
+<li><p><strong>weights</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – Weights for the signal. Regions with weight 0 will not</p></li>
+<li><p><strong>points.</strong> (<em>be smoothed. Default is uniform weights across all</em>) – </p></li>
+<li><p><strong>**kwargs</strong> – <p>Additional parameters for Whittaker smoothing.
+- Lambda (float): The smoothing coefficient; higher values produce smoother results.</p>
+<blockquote>
+<div><p>Default is (10^5).</p>
+</div></blockquote>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An array containing the smoothed values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <cite>y</cite> or <cite>weights</cite> are invalid.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This implementation follows the description provided by Eilers (2003).</p></li>
+</ul>
+<p class="rubric">References</p>
+<p>Eilers, P.H.C., 2003. A Perfect Smoother. Anal. Chem. 75, 3631–3636.</p>
+<p class="rubric">Examples</p>
+<p>Smooth a noisy signal using default weights and Lambda:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">smoothed_signal</span> <span class="o">=</span> <span class="n">whittaker</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Apply custom weights and Lambda:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span><span class="p">[</span><span class="mi">40</span><span class="p">:</span><span class="mi">60</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Do not smooth this region</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">smoothed_signal</span> <span class="o">=</span> <span class="n">whittaker</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> <span class="n">Lambda</span><span class="o">=</span><span class="mf">1e6</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="filtering">
+<h2>Filtering<a class="headerlink" href="#filtering" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">rampy.spectrafilter()</span></code> function allows you to filter your spectra using a Butterworth filter. Low, high, bandstop and bandpass filters are possible. Can be useful to remove wavelets from FTIR spectra for instance!</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="rampy.filters.spectrafilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.filters.</span></span><span class="sig-name descname"><span class="pre">spectrafilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectre</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filtertype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numtaps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.filters.spectrafilter" title="Link to this definition"></a></dt>
+<dd><p>Bases:</p>
+<p>Applies a Butterworth filter to specific columns of spectral data.</p>
+<p>This function filters specific frequencies in the provided spectral data using a Butterworth filter.
+It supports low-pass, high-pass, band-pass, and band-stop filtering. The input spectra must be
+provided as an array where the first column represents the x-axis (e.g., wavelength or time),
+and subsequent columns represent the y-axis values of multiple spectra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spectre</strong> (<em>np.ndarray</em>) – A 2D array of spectral data. The first column contains x-axis values
+(e.g., time or wavelength), and subsequent columns contain y-axis values for multiple spectra.</p></li>
+<li><p><strong>filtertype</strong> (<em>str</em>) – The type of filter to apply. Choose from:
+- ‘low’: Low-pass filter.
+- ‘high’: High-pass filter.
+- ‘bandpass’: Band-pass filter.
+- ‘bandstop’: Band-stop filter.</p></li>
+<li><p><strong>fq</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – The cutoff frequency/frequencies for the filter. For ‘low’ or ‘high’ filters,
+this is a single float value. For ‘bandpass’ or ‘bandstop’, this must be a sequence of two values
+<cite>[low_cutoff, high_cutoff]</cite>.</p></li>
+<li><p><strong>numtaps</strong> (<em>int</em>) – The order of the Butterworth filter. Higher values result in sharper transitions but may
+introduce more ringing artifacts.</p></li>
+<li><p><strong>columns</strong> (<em>np.ndarray</em>) – An array specifying which columns in the input <cite>spectre</cite> to apply the filter to.
+Each value should correspond to a valid column index.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 2D array with the same shape as <cite>spectre</cite>, where the specified columns have been filtered.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an invalid <cite>filtertype</cite> is provided or if <cite>fq</cite> is improperly specified for ‘bandpass’ or
+    ‘bandstop’ filters.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The x-axis values (first column) are copied directly to the output without modification.</p></li>
+<li><p>The cutoff frequencies (<cite>fq</cite>) are normalized based on the Nyquist frequency, which is calculated from
+the sampling rate inferred from the x-axis spacing.</p></li>
+<li><p>The Butterworth filter is applied using zero-phase filtering (<cite>scipy.signal.filtfilt</cite>) to avoid phase distortion.</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<p>Apply a low-pass filter to a single spectrum:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">rampy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>  <span class="c1"># Time axis</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">50</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>  <span class="c1"># Signal with two frequencies</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spectre</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filtered_spectre</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">spectrafilter</span><span class="p">(</span><span class="n">spectre</span><span class="p">,</span> <span class="n">filtertype</span><span class="o">=</span><span class="s1">&#39;low&#39;</span><span class="p">,</span> <span class="n">fq</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">numtaps</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>Apply a band-pass filter to multiple spectra:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">spectre</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">))</span>  <span class="c1"># Two spectra</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filtered_spectre</span> <span class="o">=</span> <span class="n">spectrafilter</span><span class="p">(</span><span class="n">spectre</span><span class="p">,</span> <span class="n">filtertype</span><span class="o">=</span><span class="s1">&#39;bandpass&#39;</span><span class="p">,</span> <span class="n">fq</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span> <span class="n">numtaps</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Butterworth Filter Design: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.butter.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.butter.html</a></p></li>
+<li><p>Zero-Phase Filtering: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.filtfilt.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.filtfilt.html</a></p></li>
+</ul>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="baseline.html" class="btn btn-neutral float-left" title="Baseline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plotting.html" class="btn btn-neutral float-right" title="Plotting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Installation &mdash; RamPy 0.5.3 documentation</title>
+  <title>Installation &mdash; RamPy 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -15,14 +15,15 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=2a2fe768"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/documentation_options.js?v=8fa8b3e9"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="First Steps" href="firststeps.html" />
-    <link rel="prev" title="Philosophy" href="philosophy.html" /> 
+    <link rel="prev" title="Rampy News" href="news.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -35,6 +36,7 @@
           
           <a href="index.html" class="icon icon-home">
             RamPy
+              <img src="_static/Rampy.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -47,6 +49,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">Rampy News</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#general-preparation">General preparation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rampy-installation">Rampy installation</a></li>
@@ -55,10 +58,17 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
 <li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signalparams.html">Signal parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="maps.html">Maps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rampy.html">rampy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Example notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">rampy API</a></li>
 </ul>
 
         </div>
@@ -103,20 +113,12 @@ a set of tutorials for the beginner.</p>
 </section>
 <section id="optional-dependencies">
 <h2>Optional dependencies<a class="headerlink" href="#optional-dependencies" title="Link to this heading"></a></h2>
-<p>If you want to use the “gcvspline” option from the <code class="docutils literal notranslate"><span class="pre">baseline()</span></code> function, the <code class="docutils literal notranslate"><span class="pre">mixing()</span></code> function, or the <code class="docutils literal notranslate"><span class="pre">rampy.rameau()</span></code> class. please
-install the following libraries:</p>
+<p>If you want to use the “MSESmoothedNSpline” or “DOFSmoothedNSpline” options from the <code class="docutils literal notranslate"><span class="pre">smooth()</span></code> function, please install the following library:</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">gcvspline</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">cvxpy</span></code></p>
 </div></blockquote>
-<p>Please note that gcvspline installation requires gfortran, see <a class="reference external" href="https://charlesll.github.io/gcvspline/">gcvspline documentation</a>.
-For Windows, wheels for Python 2.7, 3.4 and 3.6 are provided for 64 bit Windows, and a wheel for Python 3.6 is provided for Windows 32 bits. If installation fails, please check if is due to a fortran compiler issue.</p>
-<p>As for gcvspline, the installation of cvxpy can cause problems for Windows users due to missing compiler. See instructions from cvxpy in this case.</p>
-<p>Additional libraries for model fitting may be wanted:</p>
-<ul class="simple">
-<li><p>lmfit &amp; aeval (<a class="reference external" href="http://cars9.uchicago.edu/software/python/lmfit/">http://cars9.uchicago.edu/software/python/lmfit/</a>)</p></li>
-<li><p>emcee</p></li>
-</ul>
+<p>Please note that gcvspline installation requires gfortran, see <a class="reference external" href="https://charlesll.github.io/gcvspline/">gcvspline documentation</a>.</p>
+<p>Installation is done? Have a look here if you are new to Python: <a class="reference internal" href="firststeps.html#rst-first"><span class="std std-ref">First Steps</span></a></p>
 </section>
 </section>
 
@@ -124,14 +126,14 @@ For Windows, wheels for Python 2.7, 3.4 and 3.6 are provided for 64 bit Windows,
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="philosophy.html" class="btn btn-neutral float-left" title="Philosophy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="news.html" class="btn btn-neutral float-left" title="Rampy News" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="firststeps.html" class="btn btn-neutral float-right" title="First Steps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, Charles Le Losq.</p>
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

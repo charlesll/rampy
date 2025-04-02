@@ -1,7 +1,6 @@
 .DS_STORE
 /dist/
 /docs/doctrees/
-/docs/html/
 /docs/build/
 /build/
 .ipynb_checkpoints/

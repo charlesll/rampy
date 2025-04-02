@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ML regression with rampy.ml_regressor &mdash; RamPy 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8fa8b3e9"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example: Maps tool of RamPy" href="Maps.html" />
+    <link rel="prev" title="Example of use of the mlexplorer() function" href="ML_Exploration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RamPy
+              <img src="../_static/Rampy.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news.html">Rampy News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../signalparams.html">Signal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../peakfitting.html">Peak fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../maps.html">Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Example notebooks</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#processing">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#peak-fitting">Peak fitting</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../examples.html#machine-learning">Machine learning</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Mixing.html">Mixing endmember spectra</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ML_Classification.html">Machine learning classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ML_Exploration.html">Example of use of the mlexplorer() function</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ML regression with rampy.ml_regressor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Machine-Learning">Machine Learning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Choice-of-the-algorithm">Choice of the algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#We-can-test-to-refit-the-data-with-a-different-kernel">We can test to refit the data with a different kernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Neural-Nets">Neural Nets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Predicting-new-values-from-this-model">Predicting new values from this model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Predictions!">Predictions!</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Comparison!">Comparison!</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#RMSE!">RMSE!</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#maps">Maps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">rampy API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../examples.html">Example notebooks</a></li>
+      <li class="breadcrumb-item active">ML regression with rampy.ml_regressor</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/notebooks/ML_Regression.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ML-regression-with-rampy.ml_regressor">
+<h1>ML regression with rampy.ml_regressor<a class="headerlink" href="#ML-regression-with-rampy.ml_regressor" title="Link to this heading"></a></h1>
+<p>Author: Charles Le Losq</p>
+<p><strong>The ``rampy.mlregressor`` class performs automatic data scaling, hyperparameter grid search and provides access to popular algorithms (Support Vector, Kernel Rdige, Neural Nets) for using machine learning in a regression task implying spectroscopic data.</strong> This function allows one to link any variable to a set of spectra with using a machine learning technique.</p>
+<p>Let’s assume for the sack of example that we observe spectra D that are the combination of <span class="math notranslate nohighlight">\(k\)</span> endmember spectra S with concentrations C, such that:</p>
+<div class="math notranslate nohighlight">
+\[D_{i,j} = C_{i,k} \times S_{k,j}\]</div>
+<p>Here we assume a linear combination. In Python, assuming that the partial spectra are simple Gaussians, we can write the following.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%matplotlib inline
+import numpy as np
+np.random.seed(42) # fixing the seed
+import matplotlib
+import matplotlib.pyplot as plt
+import rampy as rp
+from scipy.stats import norm
+
+# create some fake data
+x = np.arange(0,600,1.0)
+nb_samples = 300 # number of samples in our dataset
+
+S_1 = norm.pdf(x,loc=200.,scale=130.)
+S_2 = norm.pdf(x,loc=400,scale=70)
+S_true = np.vstack((S_1,S_2))
+print(&quot;Number of samples:&quot;+str(nb_samples))
+print(&quot;Shape of partial spectra matrix:&quot;+str(S_true.shape))
+
+C_ = np.random.rand(nb_samples) #60 samples with random concentrations between 0 and 1
+C_true = np.vstack((C_,(1-C_))).T
+print(&quot;Shape of concentration matrix:&quot;+str(C_true.shape))
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Number of samples:300
+Shape of partial spectra matrix:(2, 600)
+Shape of concentration matrix:(300, 2)
+</pre></div></div>
+</div>
+<p>We make some observations with random noise</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>Obs = np.dot(C_true,S_true) + np.random.randn(nb_samples,len(x))*1e-4
+
+# norm is a class which, when called, can normalize data into the
+# [0.0, 1.0] interval.
+norm = matplotlib.colors.Normalize(
+    vmin=np.min(C_),
+    vmax=np.max(C_))
+
+# choose a colormap
+c_m = matplotlib.cm.jet
+
+# create a ScalarMappable and initialize a data structure
+s_m = matplotlib.cm.ScalarMappable(cmap=c_m, norm=norm)
+s_m.set_array([])
+
+ax = plt.subplot()
+
+# plotting spectra
+# calling the ScalarMappable that was initialised with c_m and norm
+for i in range(C_.shape[0]):
+    plt.plot(x,
+             Obs[i,:].T,
+             color=s_m.to_rgba(C_[i]))
+
+# we plot the colorbar, using again our
+# ScalarMappable
+c_bar = plt.colorbar(s_m, ax=ax)
+c_bar.set_label(r&quot;C_&quot;)
+
+plt.xlabel(&#39;X&#39;)
+plt.ylabel(&#39;Y&#39;)
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Regression_3_0.png" src="../_images/notebooks_ML_Regression_3_0.png" />
+</div>
+</div>
+<section id="Machine-Learning">
+<h2>Machine Learning<a class="headerlink" href="#Machine-Learning" title="Link to this heading"></a></h2>
+<p>We can train a machine learning algorithm to follow changes in D as a function of C, assuming we measured both quantities.</p>
+<p>Rampy uses scikit_learn algorithms to do so in a easy way, with under-the-hood standardization and cross-validation. This is to use for “simple” projects, while more complicated things will required an ad hoc approach, directly using scikit-learn or any other relevant ML library.</p>
+<p>For now, we will show how we can train neural networks to link D and C, such that we can predict C from new observations of D.</p>
+<p>Let’s first print the help to read the documentation…</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>help(rp.mlregressor)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Help on class mlregressor in module rampy.ml_regressor:
+
+class mlregressor(builtins.object)
+ |  mlregressor(x, y, **kwargs)
+ |
+ |  use machine learning algorithms from scikit learn to perform regression between spectra and an observed variable.
+ |
+ |  Attributes
+ |  ----------
+ |  x : {array-like, sparse matrix}, shape = (n_samples, n_features)
+ |      Spectra; n_features = n_frequencies.
+ |  y : array, shape = (n_samples,)
+ |      Returns predicted values.
+ |  X_test : {array-like, sparse matrix}, shape = (n_samples, n_features)
+ |      spectra organised in rows (1 row = one spectrum) that you want to use as a testing dataset. THose spectra should not be present in the x (training) dataset. The spectra should share a common X axis.
+ |  y_test : array, shape = (n_samples,)
+ |      the target that you want to use as a testing dataset. Those targets should not be present in the y (training) dataset.
+ |  algorithm : String,
+ |      &#34;KernelRidge&#34;, &#34;SVM&#34;, &#34;LinearRegression&#34;, &#34;Lasso&#34;, &#34;ElasticNet&#34;, &#34;NeuralNet&#34;, &#34;BaggingNeuralNet&#34;, default = &#34;SVM&#34;
+ |  scaling : Bool
+ |      True or False. If True, data will be scaled during fitting and prediction with the requested scaler (see below),
+ |  scaler : String
+ |      the type of scaling performed. Choose between MinMaxScaler or StandardScaler, see http://scikit-learn.org/stable/modules/preprocessing.html for details. Default = &#34;MinMaxScaler&#34;.
+ |  test_size : float
+ |      the fraction of the dataset to use as a testing dataset; only used if X_test and y_test are not provided.
+ |  rand_state : Float64
+ |      the random seed that is used for reproductibility of the results. Default = 42.
+ |  param_kr : Dictionary
+ |      contain the values of the hyperparameters that should be provided to KernelRidge and GridSearch for the Kernel Ridge regression algorithm.
+ |  param_svm : Dictionary
+ |      containg the values of the hyperparameters that should be provided to SVM and GridSearch for the Support Vector regression algorithm.
+ |  param_neurons : Dictionary
+ |      contains the parameters for the Neural Network (MLPregressor model in sklearn).
+ |      Default= dict(hidden_layer_sizes=(3,),solver = &#39;lbfgs&#39;,activation=&#39;relu&#39;,early_stopping=True)
+ |  param_bagging : Dictionary
+ |      contains the parameters for the BaggingRegressor sklearn function that uses a MLPregressor base method.
+ |      Default= dict(n_estimators=100, max_samples=1.0, max_features=1.0, bootstrap=True,
+ |                    bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=1, random_state=rand_state, verbose=0)
+ |  prediction_train : Array{Float64}
+ |      the predicted target values for the training y dataset.
+ |  prediction_test : Array{Float64}
+ |      the predicted target values for the testing y_test dataset.
+ |  model : Scikit learn model
+ |      A Scikit Learn object model, see scikit learn library documentation.
+ |  X_scaler :
+ |      A Scikit Learn scaler object for the x values.
+ |  Y_scaler :
+ |      A Scikit Learn scaler object for the y values.
+ |
+ |  Example
+ |  -------
+ |
+ |  Given an array X of n samples by m frequencies, and Y an array of n x 1 concentrations
+ |
+ |  &gt;&gt;&gt; model = rampy.mlregressor(X,y)
+ |  &gt;&gt;&gt; model.algorithm(&#34;SVM&#34;)
+ |  &gt;&gt;&gt; model.user_kernel = &#39;poly&#39;
+ |  &gt;&gt;&gt; model.fit()
+ |  &gt;&gt;&gt; y_new = model.predict(X_new)
+ |
+ |  Remarks
+ |  -------
+ |
+ |  For details on hyperparameters of each algorithms, please directly consult the documentation of SciKit Learn at:
+ |
+ |  http://scikit-learn.org/stable/
+ |
+ |  For Support Vector and Kernel Ridge regressions, mlregressor performs a cross_validation search with using 5 KFold cross validators.
+ |
+ |  If the results are poor with Support Vector and Kernel Ridge regressions, you will have to tune the param_grid_kr or param_grid_svm dictionnary that records the hyperparameter space to investigate during the cross validation.
+ |
+ |  Results for machine learning algorithms can vary from run to run. A way to solve that is to fix the random_state.
+ |  For neural nets, results from multiple neural nets (bagging technique) may also generalise better, such that
+ |  it may be better to use the BaggingNeuralNet function.
+ |
+ |  Methods defined here:
+ |
+ |  __init__(self, x, y, **kwargs)
+ |      Parameters
+ |      ----------
+ |      x : array{Float64}
+ |          the spectra organised in rows (1 row = one spectrum). The spectra should share a common X axis.
+ |      y : Array{Float64}
+ |          Target. Only a single target is possible for now.
+ |
+ |  fit(self)
+ |      Scale data and train the model with the indicated algorithm.
+ |
+ |      Do not forget to tune the hyperparameters.
+ |
+ |      Parameters
+ |      ----------
+ |      algorithm : String,
+ |          algorithm to use. Choose between &#34;KernelRidge&#34;, &#34;SVM&#34;, &#34;LinearRegression&#34;, &#34;Lasso&#34;, &#34;ElasticNet&#34;, &#34;NeuralNet&#34;, &#34;BaggingNeuralNet&#34;, default = &#34;SVM&#34;
+ |
+ |  predict(self, X)
+ |      Predict using the model.
+ |
+ |      Parameters
+ |      ----------
+ |      X : {array-like, sparse matrix}, shape = (n_samples, n_features)
+ |          Samples.
+ |
+ |      Returns
+ |      -------
+ |      C : array, shape = (n_samples,)
+ |          Returns predicted values.
+ |
+ |      Remark
+ |      ------
+ |      if self.scaling == &#34;yes&#34;, scaling will be performed on the input X.
+ |
+ |  refit(self)
+ |      Re-train a model previously trained with fit()
+ |
+ |  ----------------------------------------------------------------------
+ |  Data descriptors defined here:
+ |
+ |  __dict__
+ |      dictionary for instance variables
+ |
+ |  __weakref__
+ |      list of weak references to the object
+
+</pre></div></div>
+</div>
+</section>
+<section id="Choice-of-the-algorithm">
+<h2>Choice of the algorithm<a class="headerlink" href="#Choice-of-the-algorithm" title="Link to this heading"></a></h2>
+<p>Many popular algorithms are possible: <a class="reference external" href="http://scikit-learn.org/stable/modules/kernel_ridge.html">KernelRidge</a>, <a class="reference external" href="http://scikit-learn.org/stable/modules/kernel_ridge.html">SVM</a>, <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html">LinearRegression</a>, <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html">Lasso</a>, <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ElasticNet.html">ElasticNet</a>,
+<a class="reference external" href="http://scikit-learn.org/stable/modules/neural_networks_supervised.html">NeuralNet</a>, <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingRegressor.html#sklearn.ensemble.BaggingRegressor">BaggingNeuralNet</a>.</p>
+<p>LinearRegression, Lasso and ElasticNet are borned to linear problems, while KernelRidge, SVM, NeuralNet or BaggingNeuralNet can do both linear and non-linear problems. See the documentation of scikit-learn for further details, and all the articles online on those techniques. Those techniques need hyperparameters that are provided as a dictionary to <code class="docutils literal notranslate"><span class="pre">rampy.mlregressor</span></code>. I strongly encourage you to read the documentation on scikit-learn for the technique you want to use, in order to set those
+hyperparameters in the good range.</p>
+<p>In the present case, we are dealing with a linear problem. We thus can use the <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html">Lasso</a> or <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ElasticNet.html">ElasticNet</a> algorithms.</p>
+<p>Machine learning algorithms need a training dataset, and their performance is evaluated on a “testing” dataset that is unseen of the algorithm. <code class="docutils literal notranslate"><span class="pre">rp.mlregressor</span></code> can split your dataset automatically, or you can choose to provide the two different datasets. Parameters for each algorithm are provided as a dictionary, see the documentation of <a class="reference external" href="http://scikit-learn.org/stable/index.html">scikit-learn</a> for further details on them. The datasets are also standardized/normalised inside the function
+(if you don’t know what this means, click <a class="reference external" href="http://scikit-learn.org/stable/modules/preprocessing.html">here</a>). The type of scaling is changed by the <code class="docutils literal notranslate"><span class="pre">scaler</span></code> option.</p>
+<p><code class="docutils literal notranslate"><span class="pre">rp.mlregressor</span></code> creates an object that possess many attributes that are set by default but can be tweaked as preferred. The object also possess two methods: fit and predict, similar to the scikit-learn API. However, contrary to scikit-learn and due to the aim of the rampy.mlregressor class, the dataset is loaded upon initialisation of the object. Fit is performed at a second stage as one can switch easily between different algorithms.</p>
+<p>The predict function works as that of a scikit-learn model, predicting new values from a new X dataset. Scaling is performed if rampy.mlregressor.scaling is set to True.</p>
+<p>For now, we are going to load our data and create our mlregressor object:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>model = rp.mlregressor(Obs,C_true[:,0].reshape(-1,1))
+</pre></div>
+</div>
+</div>
+<p>This default implementation takes care of splitting the dataset in training and testing subsets in a ratio 70/30, then scaled it with a standard scaler. The test size can be seen (and then set) as:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>model.test_sz
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.3
+</pre></div></div>
+</div>
+<p>The scaler is accessed as</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>model.scaler
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;MinMaxScaler&#39;
+</pre></div></div>
+</div>
+<p>Is scaling active?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>model.scaling
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+</pre></div></div>
+</div>
+<p>Now we are going to fit the data switching between the available algorithms in a loop. We use the default dictionnaries for hyperparameters, which will be optimised by gridsearch for most of the algorithms. This should be further tuned in a real-life application.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for i in [&quot;KernelRidge&quot;, &quot;SVM&quot;, &quot;LinearRegression&quot;, &quot;NeuralNet&quot;, &quot;BaggingNeuralNet&quot;]:
+    model.algorithm = i
+    model.user_kernel = &#39;poly&#39;
+    model.fit()
+    plt.figure()
+    plt.title(model.algorithm)
+    plt.plot(model.y_test,model.prediction_test,&quot;r.&quot;,label=&quot;Test&quot;)
+    plt.plot(model.y_train,model.prediction_train,&quot;k.&quot;,label=&quot;Train&quot;)
+    plt.xlabel(&quot;Y observed&quot;)
+    plt.ylabel(&quot;Y predicted&quot;)
+    plt.plot([0,1],[0,1],&quot;k--&quot;,label=&quot;1:1 line&quot;)
+    plt.legend()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Regression_15_0.png" src="../_images/notebooks_ML_Regression_15_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Regression_15_1.png" src="../_images/notebooks_ML_Regression_15_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Regression_15_2.png" src="../_images/notebooks_ML_Regression_15_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Regression_15_3.png" src="../_images/notebooks_ML_Regression_15_3.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Regression_15_4.png" src="../_images/notebooks_ML_Regression_15_4.png" />
+</div>
+</div>
+<p>The support vector machine algorithm did not work well. We can try using a linear kernel, as the default one is set to radial basis function:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>model.user_kernel
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;poly&#39;
+</pre></div></div>
+</div>
+<p>and the hyperparameters are</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>model.param_svm
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;C&#39;: [1.0,
+  2.0,
+  5.0,
+  10.0,
+  50.0,
+  100.0,
+  500.0,
+  1000.0,
+  5000.0,
+  10000.0,
+  50000.0,
+  100000.0],
+ &#39;gamma&#39;: array([1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00, 1.e+01, 1.e+02, 1.e+03,
+        1.e+04])}
+</pre></div></div>
+</div>
+<p>We can update it, and even provide other parameters if looking at sklearn help for SVM regressor.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>model.param_grid_svm = dict(C= np.logspace(-5,5,40), gamma= np.logspace(-5,5,40))
+</pre></div>
+</div>
+</div>
+<p>We also update the kernel…</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>model.user_kernel = &#39;linear&#39;
+</pre></div>
+</div>
+</div>
+<p>And run the training again… This will take longer as we explore a larger hyperparameter space…</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>model.algorithm = &quot;SVM&quot;
+model.fit()
+
+plt.figure()
+plt.title(model.algorithm)
+plt.plot(model.y_test,model.prediction_test,&quot;r.&quot;,label=&quot;Test&quot;)
+plt.plot(model.y_train,model.prediction_train,&quot;k.&quot;,label=&quot;Train&quot;)
+plt.plot([0,1],[0,1],&quot;k--&quot;,label=&quot;1:1 line&quot;)
+plt.xlabel(&quot;Y observed&quot;)
+plt.ylabel(&quot;Y predicted&quot;)
+plt.legend()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x7af70c138550&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Regression_25_1.png" src="../_images/notebooks_ML_Regression_25_1.png" />
+</div>
+</div>
+</section>
+<section id="We-can-test-to-refit-the-data-with-a-different-kernel">
+<h2>We can test to refit the data with a different kernel<a class="headerlink" href="#We-can-test-to-refit-the-data-with-a-different-kernel" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>model.user_kernel = &#39;poly&#39;
+model.refit() # refit avoid running again model declaration and data standardisation.
+
+plt.figure()
+plt.title(model.algorithm)
+plt.plot(model.y_test,model.prediction_test,&quot;r.&quot;,label=&quot;Test&quot;)
+plt.plot(model.y_train,model.prediction_train,&quot;k.&quot;,label=&quot;Train&quot;)
+plt.plot([0,1],[0,1],&quot;k--&quot;,label=&quot;1:1 line&quot;)
+plt.xlabel(&quot;Y observed&quot;)
+plt.ylabel(&quot;Y predicted&quot;)
+plt.legend()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x7af6343173d0&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Regression_27_1.png" src="../_images/notebooks_ML_Regression_27_1.png" />
+</div>
+</div>
+<p>Not really better. Maybe SVM is not the best technique for this problem, or we have a problem in the hyperparameters…</p>
+<p>Let’s try other algorithms, like neural nets and their ensemble version.</p>
+</section>
+<section id="Neural-Nets">
+<h2>Neural Nets<a class="headerlink" href="#Neural-Nets" title="Link to this heading"></a></h2>
+<p>We see above that our ensemble method that trains 100 neural nets and get an estimate from their mean. It seems to work well. We can play with the hyperparameters.</p>
+<p>First, we now train 1000 networks, not 100, by setting n_estimators to 1000.</p>
+<p>We also tune the architecture of the network, by putting 10 activation functions in a single hidden layer.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>model.algorithm = &quot;BaggingNeuralNet&quot;
+model.param_bagging = dict(n_estimators=1000, max_samples=100, max_features=len(x), bootstrap=True, bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=2, verbose=0)
+
+print(&quot;Shape of the hidden layers:&quot;+str(model.param_neurons[&#39;hidden_layer_sizes&#39;]))
+print(&quot;Activation functions in the hidden layers:&quot;+str(model.param_neurons[&#39;activation&#39;]))
+
+model.fit()
+plt.figure()
+plt.title(model.algorithm)
+plt.plot(model.y_test,model.prediction_test,&quot;r.&quot;,label=&quot;Test&quot;)
+plt.plot(model.y_train,model.prediction_train,&quot;k.&quot;,label=&quot;Train&quot;)
+plt.plot([0,1],[0,1],&quot;k--&quot;,label=&quot;1:1 line&quot;)
+plt.xlabel(&quot;Y observed&quot;)
+plt.ylabel(&quot;Y predicted&quot;)
+plt.legend()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Shape of the hidden layers:(3,)
+Activation functions in the hidden layers:relu
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x7af634382650&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Regression_29_2.png" src="../_images/notebooks_ML_Regression_29_2.png" />
+</div>
+</div>
+<p>The networks perform not very well with this setup… The <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingRegressor.html">BaggingRegressor</a> uses a base model, which actually is the MLPregressor used when setting <code class="docutils literal notranslate"><span class="pre">rampy.mlregressor.algorithm</span> <span class="pre">=</span> <span class="pre">&quot;NeuralNets&quot;</span></code>. It is possible to tweak the hyperparameters of the base regressor to try improving the fit.</p>
+<p>We see above that we have 1 hidden layer with 3 RELU units. Let’s have 3 layers with 10 units in each layer. This is a deeper network that can work well on complex problems. We increase the number of hidden layers (in a tuple), as described in scikit-learn <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html">MLPregressor help</a>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>model.param_neurons[&#39;hidden_layer_sizes&#39;] = (10,)
+model.param_neurons[&#39;activation&#39;] = &quot;relu&quot; # we also could try changing the activation to tanh. Try it!
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>model.algorithm = &quot;BaggingNeuralNet&quot;
+print(&quot;Shape of the hidden layers:&quot;+str(model.param_neurons[&#39;hidden_layer_sizes&#39;]))
+print(&quot;Activation functions in the hidden layers:&quot;+str(model.param_neurons[&#39;activation&#39;]))
+model.fit()
+plt.figure()
+plt.title(model.algorithm)
+plt.plot(model.y_test,model.prediction_test,&quot;r.&quot;,label=&quot;Test&quot;)
+plt.plot(model.y_train,model.prediction_train,&quot;k.&quot;,label=&quot;Train&quot;)
+plt.plot([0,1],[0,1],&quot;k--&quot;,label=&quot;1:1 line&quot;)
+plt.xlabel(&quot;Y observed&quot;)
+plt.ylabel(&quot;Y predicted&quot;)
+plt.legend()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Shape of the hidden layers:(10,)
+Activation functions in the hidden layers:relu
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x7af634382b50&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Regression_32_2.png" src="../_images/notebooks_ML_Regression_32_2.png" />
+</div>
+</div>
+</section>
+<section id="Predicting-new-values-from-this-model">
+<h2>Predicting new values from this model<a class="headerlink" href="#Predicting-new-values-from-this-model" title="Link to this heading"></a></h2>
+<p>Now we have made new observations, and we want to predict C given D. We can do that easily:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(&quot;generating 10 new observations&quot;)
+C_new_ = np.random.rand(10) #10 samples with random concentrations between 0 and 1
+C_new_true = np.vstack((C_new_,(1-C_new_))).T
+print(&quot;Shape of concentration matrix:&quot;+str(C_new_true.shape))
+
+noise_new = np.random.randn(len(x))*1e-4
+Obs_new = np.dot(C_new_true,S_true) + noise_new
+
+plt.plot(x,Obs_new.T)
+plt.xlabel(&#39;X&#39;)
+plt.ylabel(&#39;Y&#39;)
+plt.title(&quot;Our new observations in the same chemical system&quot;)
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+generating 10 new observations
+Shape of concentration matrix:(10, 2)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Regression_34_1.png" src="../_images/notebooks_ML_Regression_34_1.png" />
+</div>
+</div>
+</section>
+<section id="Predictions!">
+<h2>Predictions!<a class="headerlink" href="#Predictions!" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>C_new_predicted = model.predict(Obs_new)
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Comparison!">
+<h2>Comparison!<a class="headerlink" href="#Comparison!" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.figure()
+plt.title(&quot;New predictions with algorithm &quot;+model.algorithm)
+plt.plot(C_new_,C_new_predicted,&quot;ko&quot;)
+plt.plot([0,1],[0,1],&quot;k--&quot;,label=&quot;1:1 line&quot;)
+plt.xlabel(&quot;Y observed&quot;)
+plt.ylabel(&quot;Y predicted&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0, 0.5, &#39;Y predicted&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Regression_38_1.png" src="../_images/notebooks_ML_Regression_38_1.png" />
+</div>
+</div>
+</section>
+<section id="RMSE!">
+<h2>RMSE!<a class="headerlink" href="#RMSE!" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from sklearn.metrics import mean_squared_error as mse
+
+print(&quot;mean RMSE between newly predicted and observed data:&quot; + str(np.sqrt(mse(C_new_,C_new_predicted))))
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+mean RMSE between newly predicted and observed data:0.009187505874316186
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ML_Exploration.html" class="btn btn-neutral float-left" title="Example of use of the mlexplorer() function" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Maps.html" class="btn btn-neutral float-right" title="Example: Maps tool of RamPy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

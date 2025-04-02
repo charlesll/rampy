@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to RamPy’s documentation! &mdash; RamPy 0.5.3 documentation</title>
+  <title>Welcome to RamPy’s documentation! &mdash; RamPy 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -15,9 +15,10 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=2a2fe768"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/documentation_options.js?v=8fa8b3e9"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,6 +35,7 @@
           
           <a href="#" class="icon icon-home">
             RamPy
+              <img src="_static/Rampy.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -46,13 +48,21 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">Rampy News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
 <li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signalparams.html">Signal parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="maps.html">Maps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rampy.html">rampy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Example notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">rampy API</a></li>
 </ul>
 
         </div>
@@ -81,8 +91,8 @@
              
   <section id="welcome-to-rampy-s-documentation">
 <h1>Welcome to RamPy’s documentation!<a class="headerlink" href="#welcome-to-rampy-s-documentation" title="Link to this heading"></a></h1>
-<p>Copyright (2015-2024) C. Le Losq and co.</p>
-<p>Charles Le Losq, Institut de physique du globe de Paris, University of Paris
+<p>Copyright (2015-2025) C. Le Losq and co.</p>
+<p>Charles Le Losq, Institut de physique du globe de Paris, Université Paris Cité
 <a class="reference external" href="mailto:lelosq&#37;&#52;&#48;ipgp&#46;fr">lelosq<span>&#64;</span>ipgp<span>&#46;</span>fr</a></p>
 <a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.1168729"><img alt="https://zenodo.org/badge/DOI/10.5281/zenodo.1168729.svg" src="https://zenodo.org/badge/DOI/10.5281/zenodo.1168729.svg" /></a>
 <section id="the-rampy-project">
@@ -96,6 +106,7 @@ It aims at facilitating the use of Python in processing spectroscopic data.</p>
 <h2>Integration with other packages<a class="headerlink" href="#integration-with-other-packages" title="Link to this heading"></a></h2>
 <p>Rampy integrates within a workflow that uses Numpy/Scipy/Matplotlib as well as optimisation libraries such as lmfit, emcee, PyMC3 for instance.</p>
 <p>Rampy can be used also to analyse the output of the <a class="reference external" href="https://radis.readthedocs.io/en/latest/">RADIS</a> package. See the discussion about this <a class="reference external" href="https://github.com/charlesll/rampy/issues/13">here</a></p>
+<p>For more advanced baseline algorithms, please also check the <a class="reference external" href="https://pybaselines.readthedocs.io/">Pybaselines package</a>.</p>
 </section>
 </section>
 <section id="indices-and-tables">
@@ -109,61 +120,21 @@ It aims at facilitating the use of Python in processing spectroscopic data.</p>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="philosophy.html">Philosophy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#general-preparation">General preparation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#rampy-installation">Rampy installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#optional-dependencies">Optional dependencies</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="firststeps.html#library-importation">Library importation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firststeps.html#data-importation">Data importation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="firststeps.html#plot-a-spectrum">Plot a spectrum</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#flip-the-x-axis">Flip the X axis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#remove-spikes">Remove spikes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#resampling-a-spectrum">Resampling a spectrum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#normalisation">Normalisation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#smoothing">Smoothing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#baseline">Baseline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#temperature-and-excitation-line-effects">Temperature and excitation line effects</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="peakfitting.html#lmfit">lmfit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="peakfitting.html#calculate-peak-areas">Calculate peak areas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="peakfitting.html#propagate-uncertainties">Propagate uncertainties</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="machinelearning.html#ml-exploration">ML Exploration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="machinelearning.html#ml-regression">ML regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="machinelearning.html#ml-classification">ML classification</a></li>
-<li class="toctree-l2"><a class="reference internal" href="machinelearning.html#linear-mixture">Linear mixture</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">Rampy News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signalparams.html">Signal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="maps.html">Maps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rampy.html">rampy package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#subpackages">Subpackages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.baseline">rampy.baseline module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.filters">rampy.filters module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.functions">rampy.functions module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.maps">rampy.maps module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.mixing">rampy.mixing module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.ml_classification">rampy.ml_classification module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.ml_exploration">rampy.ml_exploration module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.ml_regressor">rampy.ml_regressor module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.peak_area">rampy.peak_area module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.peak_shapes">rampy.peak_shapes module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.rameau">rampy.rameau module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.spectranization">rampy.spectranization module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy.tlcorrection">rampy.tlcorrection module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rampy.html#module-rampy">Module contents</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Example notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">rampy API</a></li>
 </ul>
 </div>
 </section>
@@ -178,7 +149,7 @@ It aims at facilitating the use of Python in processing spectroscopic data.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, Charles Le Losq.</p>
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

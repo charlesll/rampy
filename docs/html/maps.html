@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Maps &mdash; RamPy 0.5.3 documentation</title>
+  <title>Maps &mdash; RamPy 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -15,13 +15,14 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=2a2fe768"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/documentation_options.js?v=8fa8b3e9"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="rampy package" href="rampy.html" />
+    <link rel="next" title="Diamond Anvil Cell Utilities" href="dac.html" />
     <link rel="prev" title="Machine learning" href="machinelearning.html" /> 
 </head>
 
@@ -35,6 +36,7 @@
           
           <a href="index.html" class="icon icon-home">
             RamPy
+              <img src="_static/Rampy.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -47,13 +49,37 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">Rampy News</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
 <li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signalparams.html">Signal parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Maps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rampy.html">rampy package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Maps</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.maps.maps"><code class="docutils literal notranslate"><span class="pre">maps</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.maps.maps.background"><code class="docutils literal notranslate"><span class="pre">maps.background()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.maps.maps.normalise"><code class="docutils literal notranslate"><span class="pre">maps.normalise()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.maps.maps.smooth"><code class="docutils literal notranslate"><span class="pre">maps.smooth()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.maps.maps.centroid"><code class="docutils literal notranslate"><span class="pre">maps.centroid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.maps.maps.intensity"><code class="docutils literal notranslate"><span class="pre">maps.intensity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.maps.maps.area"><code class="docutils literal notranslate"><span class="pre">maps.area()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.maps.maps.intensity_ratio"><code class="docutils literal notranslate"><span class="pre">maps.intensity_ratio()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.maps.maps.area_ratio"><code class="docutils literal notranslate"><span class="pre">maps.area_ratio()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.maps.read_renishaw"><code class="docutils literal notranslate"><span class="pre">read_renishaw()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.maps.read_horiba"><code class="docutils literal notranslate"><span class="pre">read_horiba()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.maps.peak"><code class="docutils literal notranslate"><span class="pre">peak()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Example notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">rampy API</a></li>
 </ul>
 
         </div>
@@ -84,7 +110,247 @@
 <h1>Maps<a class="headerlink" href="#maps" title="Link to this heading"></a></h1>
 <p>Rampy offers the possiblity to analyse maps from Raman spectrometers using the <code class="docutils literal notranslate"><span class="pre">rampy.maps</span></code> module.</p>
 <p>Line and 2D Maps saved in CSV or TXT format from Horiba and Renishaw spectrometers can be loaded, and various data treatments can be performed afterwards.</p>
-<p>An Jupyter notebook example of processing a map of Raman spectra is <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Maps_example.ipynb">provided here</a>.</p>
+<p>Below you will find the documentation of the <code class="docutils literal notranslate"><span class="pre">rampy.maps</span></code> module, and have a look at the example notebooks too for further examples of use: <a class="reference internal" href="examples.html#rst-notebooks"><span class="std std-ref">Example notebooks</span></a></p>
+<dl class="py class" id="module-rampy.maps">
+<dt class="sig sig-object py" id="rampy.maps.maps">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.maps.</span></span><span class="sig-name descname"><span class="pre">maps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrometer_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'horiba'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2D'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">despiking</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neigh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps" title="Link to this definition"></a></dt>
+<dd><p>A class for treating maps of Raman spectra.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<em>str</em>) – Filename including path</p></li>
+<li><p><strong>spectrometer_type</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default=&quot;horiba&quot;</em>) – Type of spectrometer, choose between “horiba” or “renishaw”</p></li>
+<li><p><strong>map_type</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default=&quot;2D&quot;</em>) – Type of map, choose between “2D” or “1D”</p></li>
+<li><p><strong>despiking</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default=False</em>) – Whether to apply despiking to remove spikes from the spectra</p></li>
+<li><p><strong>neigh</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default=4</em>) – Number of points around spikes to select for calculating average value for despiking</p></li>
+<li><p><strong>threshold</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default=3</em>) – Multiplier of sigma (RMSE) for spike detection</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The class automatically flips the frequency axis if it’s decreasing to ensure it’s always increasing.</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.maps.background">
+<span class="sig-name descname"><span class="pre">background</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'poly'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.background" title="Link to this definition"></a></dt>
+<dd><p>Correct a background from the initial signal I on a map using rampy.baseline.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bir</strong> (<em>ndarray</em>) – Arrays of the background interpolation regions</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default=&quot;poly&quot;</em>) – Method for baseline correction, see rampy.baseline documentation for available methods</p></li>
+<li><p><strong>**kwargs</strong> – <p>Additional parameters for rampy.baseline()</p>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None, but sets self.I_background and self.I_corrected attributes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.maps.normalise">
+<span class="sig-name descname"><span class="pre">normalise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'intensity'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.normalise" title="Link to this definition"></a></dt>
+<dd><p>Normalise the spectra to their max intensity, their area, or min-max normalisation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>ndarray</em>) – The intensities to normalise (e.g., self.I_corrected)</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default=&quot;intensity&quot;</em>) – Method used, choose between “area”, “intensity”, “minmax”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None, but sets self.I_normalised attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.maps.smooth">
+<span class="sig-name descname"><span class="pre">smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'whittaker'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.smooth" title="Link to this definition"></a></dt>
+<dd><p>Uses the smooth function of rampy to smooth the signals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>ndarray</em>) – The intensities to smooth (e.g., self.I_corrected)</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default=&quot;whittaker&quot;</em>) – Method for smoothing the signal</p></li>
+<li><p><strong>**kwargs</strong> – <p>Additional parameters for the smoothing method</p>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None, but sets self.y_smoothed attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.maps.centroid">
+<span class="sig-name descname"><span class="pre">centroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_to_investigate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.centroid" title="Link to this definition"></a></dt>
+<dd><p>Calculate the centroid in a given region of interest.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>ndarray</em>) – The intensities to analyze (e.g., self.I_normalised)</p></li>
+<li><p><strong>region_to_investigate</strong> (<em>1x2 array</em>) – The x values of regions where the centroid will be measured</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None, but sets self.centroid_position attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.maps.intensity">
+<span class="sig-name descname"><span class="pre">intensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_to_investigate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.intensity" title="Link to this definition"></a></dt>
+<dd><p>Get the maximum intensity in the region to investigate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>ndarray</em>) – The intensities to consider (e.g., self.I_normalised)</p></li>
+<li><p><strong>region_to_investigate</strong> (<em>1x2 array</em>) – The x values of regions where the intensity will be measured</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None, but sets self.I_max attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.maps.area">
+<span class="sig-name descname"><span class="pre">area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_to_investigate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.area" title="Link to this definition"></a></dt>
+<dd><p>Get the area under the curve in the region to investigate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>ndarray</em>) – The intensities to consider (e.g., self.I_normalised)</p></li>
+<li><p><strong>region_to_investigate</strong> (<em>1x2 array</em>) – The x values of regions where the area will be measured</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None, but sets self.A attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.maps.intensity_ratio">
+<span class="sig-name descname"><span class="pre">intensity_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_to_investigate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.intensity_ratio" title="Link to this definition"></a></dt>
+<dd><p>Get the intensity ratio between two regions of interest.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>ndarray</em>) – The intensities to consider (e.g., self.I_normalised)</p></li>
+<li><p><strong>region_to_investigate</strong> (<em>2x2 array</em>) – The x values of regions where the intensity ratios will be measured</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None, but sets self.I_ratio attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.maps.maps.area_ratio">
+<span class="sig-name descname"><span class="pre">area_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_to_investigate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.area_ratio" title="Link to this definition"></a></dt>
+<dd><p>Get the area ratio between two regions of interest.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>ndarray</em>) – The intensities to consider (e.g., self.I_normalised)</p></li>
+<li><p><strong>region_to_investigate</strong> (<em>2x2 array</em>) – The x values of regions where the areas will be measured</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None, but sets self.A_ratio attribute</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.maps.read_renishaw">
+<span class="sig-prename descclassname"><span class="pre">rampy.maps.</span></span><span class="sig-name descname"><span class="pre">read_renishaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.read_renishaw" title="Link to this definition"></a></dt>
+<dd><p>Read Renishaw csv maps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file</strong> (<em>str</em>) – Filename including path</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple containing (X, Y, lambdas, intensities)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p>X: m by n array of X positions</p></li>
+<li><p>Y: m by n array of Y positions</p></li>
+<li><p>lambdas: m by n array of Raman shifts</p></li>
+<li><p>intensities: m by n array of intensities</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.maps.read_horiba">
+<span class="sig-prename descclassname"><span class="pre">rampy.maps.</span></span><span class="sig-name descname"><span class="pre">read_horiba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2D'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.read_horiba" title="Link to this definition"></a></dt>
+<dd><p>Read Horiba csv maps (1D, 2D).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<em>str</em>) – Filename including path</p></li>
+<li><p><strong>map_type</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default=&quot;2D&quot;</em>) – 1D map (line) or 2D map</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>For 2D maps: Tuple containing (X, Y, lambdas, intensities)</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>For 1D maps: Tuple containing (X, lambdas, intensities)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If map_type is not ‘1D’ or ‘2D’</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.maps.peak">
+<span class="sig-prename descclassname"><span class="pre">rampy.maps.</span></span><span class="sig-name descname"><span class="pre">peak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambdas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Xrange</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Xmean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.peak" title="Link to this definition"></a></dt>
+<dd><p>Fit peaks in a map. Work in progress.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>ndarray</em>) – X positions</p></li>
+<li><p><strong>Y</strong> (<em>ndarray</em>) – Y positions</p></li>
+<li><p><strong>lambdas</strong> (<em>ndarray</em>) – Raman shifts</p></li>
+<li><p><strong>intensities</strong> (<em>ndarray</em>) – Intensities</p></li>
+<li><p><strong>function</strong> (<em>str</em>) – Type of function to fit (‘gauss’ or ‘lorenz’)</p></li>
+<li><p><strong>Xrange</strong> (<em>list</em><em> or </em><em>ndarray</em>) – Range of X values to fit</p></li>
+<li><p><strong>amp</strong> (<em>float</em>) – Initial amplitude</p></li>
+<li><p><strong>Xmean</strong> (<em>float</em>) – Initial mean position</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – Initial width</p></li>
+<li><p><strong>y0</strong> (<em>float</em>) – Initial y-offset</p></li>
+<li><p><strong>A</strong> (<em>float</em>) – Initial area</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple containing (results, rmap)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
@@ -92,13 +358,13 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="machinelearning.html" class="btn btn-neutral float-left" title="Machine learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rampy.html" class="btn btn-neutral float-right" title="rampy package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dac.html" class="btn btn-neutral float-right" title="Diamond Anvil Cell Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, Charles Le Losq.</p>
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mixing endmember spectra &mdash; RamPy 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8fa8b3e9"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Machine learning classification" href="ML_Classification.html" />
+    <link rel="prev" title="Peak fitting with LMfit" href="Raman_fitting.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RamPy
+              <img src="../_static/Rampy.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news.html">Rampy News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../signalparams.html">Signal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../peakfitting.html">Peak fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../maps.html">Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Example notebooks</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#processing">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#peak-fitting">Peak fitting</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../examples.html#machine-learning">Machine learning</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Mixing endmember spectra</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Problem-setting">Problem setting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Resolutiuon-with-rampy.mixing_sp()">Resolutiuon with rampy.mixing_sp()</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ML_Classification.html">Machine learning classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ML_Exploration.html">Example of use of the mlexplorer() function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ML_Regression.html">ML regression with rampy.ml_regressor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#maps">Maps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">rampy API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../examples.html">Example notebooks</a></li>
+      <li class="breadcrumb-item active">Mixing endmember spectra</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/notebooks/Mixing.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Mixing-endmember-spectra">
+<h1>Mixing endmember spectra<a class="headerlink" href="#Mixing-endmember-spectra" title="Link to this heading"></a></h1>
+<p>Author: Charles Le Losq</p>
+<p>This function allows one to mix two endmembers spectra, <span class="math notranslate nohighlight">\(ref1\)</span> and <span class="math notranslate nohighlight">\(ref2\)</span>, to an observed one <span class="math notranslate nohighlight">\(obs\)</span>:</p>
+<p><span class="math notranslate nohighlight">\(obs = ref1 * F1 + ref2 * (1-F1)\)</span> .</p>
+<p>The calculation is done with performing least absolute regression, which presents advantages compared to least squares to fit problems with outliers as well as non-Gaussian character (see <a class="reference external" href="https://en.wikipedia.org/wiki/Least_absolute_deviations">wikipedia</a> for instance).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+import rampy as rp
+</pre></div>
+</div>
+</div>
+<section id="Problem-setting">
+<h2>Problem setting<a class="headerlink" href="#Problem-setting" title="Link to this heading"></a></h2>
+<p>We will setup a simple problem in which we mix two Gaussian peaks in different ratios. The code below is going to create those peaks, and to plot them for reference.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>x = np.arange(0,100,1.0) # a dummy x axis
+ref1 = 50.0*np.exp(-1/2*((x-40)/20)**2) + np.random.randn(len(x)) # a gaussian with added noise
+ref2 = 70.0*np.exp(-1/2*((x-60)/15)**2) + np.random.randn(len(x)) # a gaussian with added noise
+plt.figure()
+plt.plot(x,ref1,label=&quot;ref1&quot;)
+plt.plot(x,ref2,label=&quot;ref2&quot;)
+plt.xlabel(&quot;X&quot;)
+plt.ylabel(&quot;Y&quot;)
+plt.legend()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x7d0a263e0490&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Mixing_3_1.png" src="../_images/notebooks_Mixing_3_1.png" />
+</div>
+</div>
+<p>We now create 4 intermediate <span class="math notranslate nohighlight">\(obs\)</span> signals, with <span class="math notranslate nohighlight">\(F1\)</span> = 20%,40%,60% and 80% of ref1.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>F1_true = np.array([0.80,0.60,0.40,0.20])
+obs = np.dot(ref1.reshape(-1,1),F1_true.reshape(1,-1)) + np.dot(ref2.reshape(-1,1),(1-F1_true.reshape(1,-1)))
+plt.figure()
+plt.plot(x,obs)
+plt.xlabel(&quot;X&quot;)
+plt.ylabel(&quot;Y&quot;)
+plt.title(&quot;Observed signals&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;Observed signals&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Mixing_5_1.png" src="../_images/notebooks_Mixing_5_1.png" />
+</div>
+</div>
+</section>
+<section id="Resolutiuon-with-rampy.mixing_sp()">
+<h2>Resolutiuon with rampy.mixing_sp()<a class="headerlink" href="#Resolutiuon-with-rampy.mixing_sp()" title="Link to this heading"></a></h2>
+<p>Now we can use rp.mixing_sp() to retrieve <span class="math notranslate nohighlight">\(F1\)</span>.</p>
+<p>We suppose here that we have some knowledge of <span class="math notranslate nohighlight">\(ref1\)</span> and <span class="math notranslate nohighlight">\(ref2\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>F1_meas = rp.mixing_sp(obs,ref1,ref2)
+plt.figure()
+plt.plot(F1_true,F1_meas,&#39;ro&#39;,label=&quot;Measurements&quot;)
+plt.plot([0,1],[0,1],&#39;k-&#39;,label=&quot;1:1 line&quot;)
+plt.xlabel(&quot;True $F1$ value&quot;)
+plt.ylabel(&quot;Determined $F1$ value&quot;)
+plt.legend()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x7d0aecb32990&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Mixing_7_1.png" src="../_images/notebooks_Mixing_7_1.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Raman_fitting.html" class="btn btn-neutral float-left" title="Peak fitting with LMfit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ML_Classification.html" class="btn btn-neutral float-right" title="Machine learning classification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -6,9 +6,9 @@
 Welcome to RamPy's documentation!
 =================================
 
-Copyright (2015-2024) C. Le Losq and co.
+Copyright (2015-2025) C. Le Losq and co.
 
-Charles Le Losq, Institut de physique du globe de Paris, University of Paris
+Charles Le Losq, Institut de physique du globe de Paris, Université Paris Cité
 lelosq@ipgp.fr
 
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1168729.svg
@@ -30,6 +30,8 @@ Rampy integrates within a workflow that uses Numpy/Scipy/Matplotlib as well as o
 
 Rampy can be used also to analyse the output of the `RADIS <https://radis.readthedocs.io/en/latest/>`_ package. See the discussion about this `here <https://github.com/charlesll/rampy/issues/13>`_
 
+For more advanced baseline algorithms, please also check the `Pybaselines package <https://pybaselines.readthedocs.io/>`_.
+
 Indices and tables
 ==================
 
@@ -38,14 +40,22 @@ Indices and tables
 * :ref:`search`
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    philosophy
+   news
    installation
    firststeps
    preprocessing
+   baseline
+   smoothing
+   plotting
+   signalparams
    peakfitting
    machinelearning
    maps
-   rampy
+   dac
+   examples
+   utils
+   API

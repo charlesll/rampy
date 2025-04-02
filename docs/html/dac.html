@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diamond Anvil Cell Utilities &mdash; RamPy 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8fa8b3e9"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Example notebooks" href="examples.html" />
+    <link rel="prev" title="Maps" href="maps.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RamPy
+              <img src="_static/Rampy.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">Rampy News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signalparams.html">Signal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="maps.html">Maps</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Diamond Anvil Cell Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-rampy.dac">Pressure calculations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.dac.borate_T_corr"><code class="docutils literal notranslate"><span class="pre">borate_T_corr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.dac.pressure_sensor"><code class="docutils literal notranslate"><span class="pre">pressure_sensor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.dac.ruby_T_corr"><code class="docutils literal notranslate"><span class="pre">ruby_T_corr()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Example notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">rampy API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Diamond Anvil Cell Utilities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/dac.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="diamond-anvil-cell-utilities">
+<h1>Diamond Anvil Cell Utilities<a class="headerlink" href="#diamond-anvil-cell-utilities" title="Link to this heading"></a></h1>
+<p>Rampy can be useful if you are performing Diamond Anvil Cell experiments, to process florescence spectra of pressure sensors for instance, or remove the diamond background.</p>
+<p>Here is some helper functions for DAC experiments!</p>
+<section id="module-rampy.dac">
+<span id="pressure-calculations"></span><h2>Pressure calculations<a class="headerlink" href="#module-rampy.dac" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.dac.borate_T_corr">
+<span class="sig-prename descclassname"><span class="pre">rampy.dac.</span></span><span class="sig-name descname"><span class="pre">borate_T_corr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T_K</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.dac.borate_T_corr" title="Link to this definition"></a></dt>
+<dd><p>Computes the temperature correction for the SrB4O7:Sm2+ pressure scale.</p>
+<p>This function calculates the temperature-dependent correction to the
+wavelength of the SrB4O7:Sm2+ fluorescence line, based on Datchi et al. (2007), Eq. 9.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T_K</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Temperature in Kelvin.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Temperature correction in nanometers.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p>Datchi, F., et al. (2007). Optical pressure sensors for high-pressure–high-temperature
+studies in a diamond anvil cell. High Pressure Research, 27, 447–463.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.dac.pressure_sensor">
+<span class="sig-prename descclassname"><span class="pre">rampy.dac.</span></span><span class="sig-name descname"><span class="pre">pressure_sensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lbd_nm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_K</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'ruby'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lbd_0_ruby</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">694.22</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lbd_0_borate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">685.44</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">borate_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'datchi2007'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.dac.pressure_sensor" title="Link to this definition"></a></dt>
+<dd><p>Converts the wavelength of fluorescence lines into pressure in GPa.</p>
+<p>This function calculates pressure using either the Ruby R1 fluorescence line
+or the SrB4O7:Sm2+ fluorescence line, with optional temperature corrections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lbd_nm</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Measured wavelength of the fluorescence line in nanometers.</p></li>
+<li><p><strong>T_K</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Temperature in Kelvin.</p></li>
+<li><p><strong>scale</strong> (<em>str</em><em>, </em><em>optional</em>) – Pressure scale to use (‘ruby’ or ‘borate’). Default is ‘ruby’.</p></li>
+<li><p><strong>lbd_0_ruby</strong> (<em>float</em><em>, </em><em>optional</em>) – Reference wavelength of the R1 Ruby line at ambient conditions. Default is 694.22 nm.</p></li>
+<li><p><strong>lbd_0_borate</strong> (<em>float</em><em>, </em><em>optional</em>) – Reference wavelength of the SrB4O7:Sm2+ line at ambient conditions. Default is 685.44 nm.</p></li>
+<li><p><strong>borate_scale</strong> (<em>str</em><em>, </em><em>optional</em>) – Borate pressure scale to use (‘datchi2007’ or ‘rashchenko2015’). Default is ‘datchi2007’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pressure in GPa.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an invalid scale or borate_scale is specified.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The Ruby pressure scale follows Shen et al. (2020).</p></li>
+<li><p>The Borate pressure scales are based on Datchi et al. (2007) and Rashchenko et al. (2015).</p></li>
+<li><p>Temperature corrections are applied using Datchi et al. (2007). To disable temperature corrections, set <cite>T_K=296.0</cite>.</p></li>
+</ul>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Datchi, F., et al. (2007). High Pressure Research, 27, 447–463.</p></li>
+<li><p>Rashchenko, S.V., et al. (2015). Journal of Applied Physics, 117, 145902.</p></li>
+<li><p>Shen, G., et al. (2020). High Pressure Research, 40, 299–314.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.dac.ruby_T_corr">
+<span class="sig-prename descclassname"><span class="pre">rampy.dac.</span></span><span class="sig-name descname"><span class="pre">ruby_T_corr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T_K</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.dac.ruby_T_corr" title="Link to this definition"></a></dt>
+<dd><p>Computes the temperature correction for the Ruby pressure scale.</p>
+<p>This function calculates the temperature-dependent correction to the
+wavelength of the R1 Ruby fluorescence line, based on Datchi et al. (2007), Eq. 2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T_K</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Temperature in Kelvin.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Temperature correction in nanometers.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p>Datchi, F., et al. (2007). Optical pressure sensors for high-pressure–high-temperature
+studies in a diamond anvil cell. High Pressure Research, 27, 447–463.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="maps.html" class="btn btn-neutral float-left" title="Maps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="Example notebooks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

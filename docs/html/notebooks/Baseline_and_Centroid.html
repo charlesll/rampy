@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baseline removal and Centroid measurement &mdash; RamPy 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8fa8b3e9"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Peak fitting with LMfit" href="Raman_fitting.html" />
+    <link rel="prev" title="Example: fit a baseline" href="Baseline.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RamPy
+              <img src="../_static/Rampy.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news.html">Rampy News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../signalparams.html">Signal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../peakfitting.html">Peak fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../maps.html">Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Example notebooks</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../examples.html#processing">Processing</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Normalisation.html">Use of normalisation function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Smoothing.html">Smooth a signal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Smoothing.html#Figures">Figures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Baseline.html">Example: fit a baseline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Baseline.html#Automatic-selection-of-smoothing-coefficient-for-GCV-spline">Automatic selection of smoothing coefficient for GCV spline</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Baseline removal and Centroid measurement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Problem-definition">Problem definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Baseline-fit">Baseline fit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Centroid-determination">Centroid determination</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#peak-fitting">Peak fitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#machine-learning">Machine learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#maps">Maps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">rampy API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../examples.html">Example notebooks</a></li>
+      <li class="breadcrumb-item active">Baseline removal and Centroid measurement</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/notebooks/Baseline_and_Centroid.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Baseline-removal-and-Centroid-measurement">
+<h1>Baseline removal and Centroid measurement<a class="headerlink" href="#Baseline-removal-and-Centroid-measurement" title="Link to this heading"></a></h1>
+<p>Author: Charles Le Losq</p>
+<p>This notebook illustrates the use of the <code class="docutils literal notranslate"><span class="pre">rampy.centroid()</span></code> function to measure the centroid of a peak.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%matplotlib inline
+import numpy as np
+np.random.seed(42) # fixing the seed
+import matplotlib
+import matplotlib.pyplot as plt
+import rampy as rp
+import scipy
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Problem-definition">
+<h1>Problem definition<a class="headerlink" href="#Problem-definition" title="Link to this heading"></a></h1>
+<p>The rampy.centroid function will calculate the centroid of the signal you provide to it.</p>
+<p>In this case, we have a combination of two Gaussian peaks with some noise. This example is that used in the Machine Learning Regression notebook.</p>
+<p>The example signals <span class="math notranslate nohighlight">\(D_{i,j}\)</span> are generated from a linear combination of two Gaussian peaks <span class="math notranslate nohighlight">\(S_{k,j}\)</span>, and are affected by a constant background <span class="math notranslate nohighlight">\(\epsilon_{i,j}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[D_{i,j} = C_{i,k} \times S_{k,j} + \epsilon_{i,j}\]</div>
+<p>We thus will remove the background, then calculate the centroid, and plot it against <span class="math notranslate nohighlight">\(C_{i,k}\)</span> which is known in the present case.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>x = np.arange(0,600,1.0)
+nb_samples = 100 # number of samples in our dataset
+
+# partial spectra
+S_1 = scipy.stats.norm.pdf(x,loc=300.,scale=40.)
+S_2 = scipy.stats.norm.pdf(x,loc=400,scale=20)
+S_true = np.vstack((S_1,S_2))
+print(&quot;Number of samples:&quot;+str(nb_samples))
+print(&quot;Shape of partial spectra matrix:&quot;+str(S_true.shape))
+
+# concentrations
+C_ = np.random.rand(nb_samples) #60 samples with random concentrations between 0 and 1
+C_true = np.vstack((C_,(1-C_))).T
+print(&quot;Shape of concentration matrix:&quot;+str(C_true.shape))
+
+# background
+E_ = 1e-8*x**2
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Number of samples:100
+Shape of partial spectra matrix:(2, 600)
+Shape of concentration matrix:(100, 2)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>true_sig = np.dot(C_true,S_true)
+Obs = np.dot(C_true,S_true) + E_ + np.random.randn(nb_samples,len(x))*1e-4
+
+# prepare figure
+ax = plt.subplot()
+
+# norm is a class which, when called, can normalize data into the
+# [0.0, 1.0] interval.
+norm = matplotlib.colors.Normalize(
+    vmin=np.min(C_),
+    vmax=np.max(C_))
+
+# choose a colormap
+c_m = matplotlib.cm.jet
+
+# create a ScalarMappable and initialize a data structure
+s_m = matplotlib.cm.ScalarMappable(cmap=c_m, norm=norm)
+s_m.set_array([])
+
+# plotting spectra
+# calling the ScalarMappable that was initialised with c_m and norm
+for i in range(C_.shape[0]):
+    plt.plot(x,
+             Obs[i,:].T,
+             color=s_m.to_rgba(C_[i]))
+
+# we plot the colorbar, using again our
+# ScalarMappable
+c_bar = plt.colorbar(s_m, ax=ax)
+c_bar.set_label(r&quot;C_&quot;)
+
+plt.xlabel(&#39;X&#39;)
+plt.ylabel(&#39;Y&#39;)
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Baseline_and_Centroid_4_0.png" src="../_images/notebooks_Baseline_and_Centroid_4_0.png" />
+</div>
+</div>
+</section>
+<section id="Baseline-fit">
+<h1>Baseline fit<a class="headerlink" href="#Baseline-fit" title="Link to this heading"></a></h1>
+<p>We will use the rampy.baseline function with the gcvspline option, without specifying the smoothing coefficient. It will be automatically determined using the GCV algorithm.</p>
+<p>We first create the array to store baseline-corrected spectra</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>Obs_corr = np.ones(Obs.shape)
+print(Obs_corr.shape)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(100, 600)
+</pre></div></div>
+</div>
+<p>We define regions of interest ROI where the baseline will fit the signals. From the previous figure, this is clear that it should be between 0 and 100, and 500 and 600.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ROI = np.array([[0.,100.],[500.,600.]])
+print(ROI)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[  0. 100.]
+ [500. 600.]]
+</pre></div></div>
+</div>
+<p>Then we loop to save the baseline corrected data in this array.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for i in range(nb_samples):
+    sig_corr, bas_, = rp.baseline(x,Obs[i,:].T,ROI,method=&quot;gcvspline&quot;)
+    Obs_corr[i,:] = sig_corr.reshape(1,-1)
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># plotting spectra
+# calling the ScalarMappable that was initialised with c_m and norm
+
+plt.figure(figsize=(8,4))
+ax1 = plt.subplot(1,2,1)
+
+for i in range(C_.shape[0]):
+    plt.plot(x,
+             Obs[i,:].T,
+             color=s_m.to_rgba(C_[i]), alpha=0.3)
+
+plt.plot(x,bas_,&quot;k-&quot;,linewidth=2.0,label=&quot;baseline&quot;)
+
+plt.xlabel(&#39;X&#39;)
+plt.ylabel(&#39;Y&#39;)
+plt.ylim(-0.001,0.026)
+plt.legend()
+plt.title(&quot;A) Baseline fit&quot;)
+
+ax2 = plt.subplot(1,2,2)
+
+for i in range(C_.shape[0]):
+    plt.plot(x,
+             Obs_corr[i,:].T,
+             color=s_m.to_rgba(C_[i]), alpha=0.3)
+
+
+c_bar = plt.colorbar(s_m, ax=ax2, )
+c_bar.set_label(r&quot;C_&quot;)
+
+plt.xlabel(&#39;X&#39;)
+plt.ylim(-0.001,0.026)
+plt.title(&quot;B) Corrected spectra&quot;)
+plt.show()
+plt.tight_layout()
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Baseline_and_Centroid_11_0.png" src="../_images/notebooks_Baseline_and_Centroid_11_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Figure size 640x480 with 0 Axes&gt;
+</pre></div></div>
+</div>
+</section>
+<section id="Centroid-determination">
+<h1>Centroid determination<a class="headerlink" href="#Centroid-determination" title="Link to this heading"></a></h1>
+<p>Now we can calculate the centroid of the signal. rampy.centroid calculates it as</p>
+<p><code class="docutils literal notranslate"><span class="pre">centroid</span> <span class="pre">=</span> <span class="pre">np.sum(y_/np.sum(y_)*x)</span></code></p>
+<p>It accepts arrays of spectrum, organised as n points by m samples.</p>
+<p>Smoothing can be done if wanted, by indicating <code class="docutils literal notranslate"><span class="pre">smoothing</span> <span class="pre">=</span> <span class="pre">True</span></code>. We will compare both in the following code.</p>
+<p>A tweak is to prepare an array fo x with the same shape as y, and the good x values in each columns.</p>
+<p>Furthermore, do not forget that arrays should be provided as n points by m samples. So use <code class="docutils literal notranslate"><span class="pre">.T</span></code> if needed to transpose your array. We need it below!</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>x_array = np.ones((len(x),nb_samples))
+for i in range(nb_samples):
+    x_array[:,i] = x
+
+centroids_no_smooth = rp.centroid(x_array,Obs_corr.T)
+centroids_smooth = rp.centroid(x_array,Obs_corr.T,smoothing=True)
+centroids_true_sig = rp.centroid(x_array,true_sig.T,smoothing=True)
+</pre></div>
+</div>
+</div>
+<p>Now we can plot the centroids against the chemical ratio C_ for instance.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.figure()
+plt.plot(C_,centroids_true_sig,&quot;r-&quot;,markersize=3.,label=&quot;true values&quot;)
+plt.plot(C_,centroids_no_smooth,&quot;k.&quot;,markersize=5., label=&quot;non-smoothed centroids&quot;)
+plt.plot(C_,centroids_smooth,&quot;b+&quot;,markersize=3., label=&quot;smoothed centroids&quot;)
+plt.xlabel(&quot;Fraction C_&quot;)
+plt.ylabel(&quot;Signal centroid&quot;)
+plt.legend()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x7df91e120650&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Baseline_and_Centroid_16_1.png" src="../_images/notebooks_Baseline_and_Centroid_16_1.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Baseline.html" class="btn btn-neutral float-left" title="Example: fit a baseline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Raman_fitting.html" class="btn btn-neutral float-right" title="Peak fitting with LMfit" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

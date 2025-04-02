@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example: Maps tool of RamPy &mdash; RamPy 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8fa8b3e9"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Utilities" href="../utils.html" />
+    <link rel="prev" title="ML regression with rampy.ml_regressor" href="ML_Regression.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RamPy
+              <img src="../_static/Rampy.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news.html">Rampy News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../signalparams.html">Signal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../peakfitting.html">Peak fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../maps.html">Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Example notebooks</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#processing">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#peak-fitting">Peak fitting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#machine-learning">Machine learning</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../examples.html#maps">Maps</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Example: Maps tool of RamPy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Data-import">Data import</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Remove-background">Remove background</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Normalisation-of-the-signal-to-total-area">Normalisation of the signal to total area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Calculate-the-centroid-of-the-peak-near-2700-cm^{-1}">Calculate the centroid of the peak near 2700 cm<span class="math notranslate nohighlight">\(^{-1}\)</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Calculate-the-ratio-of-the-intensities-of-peak-at-2700-and-that-at-1522-cm-1,-and-make-a-contour-plot.">Calculate the ratio of the intensities of peak at 2700 and that at 1522 cm-1, and make a contour plot.</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Calculate-the-area-ratio-of-the-two-peaks-to-make-a-contour-map">Calculate the area ratio of the two peaks to make a contour map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Under-development-:-peak-fitting">Under development : peak fitting</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">rampy API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../examples.html">Example notebooks</a></li>
+      <li class="breadcrumb-item active">Example: Maps tool of RamPy</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/notebooks/Maps.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Example:-Maps-tool-of-RamPy">
+<h1>Example: Maps tool of RamPy<a class="headerlink" href="#Example:-Maps-tool-of-RamPy" title="Link to this heading"></a></h1>
+<p>Everything is handle through an object <code class="docutils literal notranslate"><span class="pre">maps</span></code>.</p>
+<p>This object allows us to import a map file from a Horiba or Renishaw spectrometer (CSV format), then allows performing some data treatment. More will come in the future.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%matplotlib inline
+
+import pandas as pd
+import numpy as np
+import rampy
+from rampy.maps import maps
+from rampy import peak_shapes
+from scipy.optimize import curve_fit
+import matplotlib.pyplot as plt
+<br/></pre></div>
+</div>
+</div>
+<section id="Data-import">
+<h2>Data import<a class="headerlink" href="#Data-import" title="Link to this heading"></a></h2>
+<p>This is a Renishaw map</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># file name
+file=&#39;./data/4338-NDC1-(31)_4X4.txt&#39;
+</pre></div>
+</div>
+</div>
+<p>We create a map object providing the above file name (with relative path)</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>my_map = maps(file, spectrometer_type=&quot;renishaw&quot;)
+</pre></div>
+</div>
+</div>
+<p>This object has attributes that save the X, Y, Raman shift and intensities.</p>
+<p>We can access them like my_map.X, my_map.Y, my_map.w, my_map.I</p>
+<p>We can use that to make a first plot:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.figure()
+plt.plot(my_map.w, my_map.I[:,1])
+plt.xlabel(&#39;Raman shift, cm$^{-1}$&#39;)
+plt.ylabel(&quot;Intensities&quot;)
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Maps_7_0.png" src="../_images/notebooks_Maps_7_0.png" />
+</div>
+</div>
+</section>
+<section id="Remove-background">
+<h2>Remove background<a class="headerlink" href="#Remove-background" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>bir = np.array([[1300,1350],[2000,2400],[2800,2850]])
+my_map.background(bir, method=&quot;poly&quot;, polynomial_order=2)
+</pre></div>
+</div>
+</div>
+<p>We make a nice figure to see the background</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.figure()
+
+# we plot the original signal
+plt.plot(my_map.w, my_map.I[:,1])
+
+# we plot the background
+plt.plot(my_map.w, my_map.I_background[:,1])
+
+# we plot the corrected spectra
+plt.plot(my_map.w, my_map.I_corrected[:,1])
+
+plt.xlabel(&#39;Raman shift, cm$^{-1}$&#39;)
+plt.ylabel(&quot;Intensities&quot;)
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Maps_11_0.png" src="../_images/notebooks_Maps_11_0.png" />
+</div>
+</div>
+</section>
+<section id="Normalisation-of-the-signal-to-total-area">
+<h2>Normalisation of the signal to total area<a class="headerlink" href="#Normalisation-of-the-signal-to-total-area" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>my_map.normalise(my_map.I_corrected, method = &quot;area&quot;)
+
+plt.figure()
+
+# we plot the normalised spectra
+plt.plot(my_map.w, my_map.I_normalised[:,1])
+
+plt.xlabel(&#39;Raman shift, cm$^{-1}$&#39;)
+plt.ylabel(&quot;Intensities&quot;)
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Maps_13_0.png" src="../_images/notebooks_Maps_13_0.png" />
+</div>
+</div>
+</section>
+<section id="Calculate-the-centroid-of-the-peak-near-2700-cm^{-1}">
+<h2>Calculate the centroid of the peak near 2700 cm<span class="math notranslate nohighlight">\(^{-1}\)</span><a class="headerlink" href="#Calculate-the-centroid-of-the-peak-near-2700-cm^{-1}" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>region_of_interest = np.array([[2600,2850]])
+my_map.centroid(my_map.I_normalised, region_of_interest)
+my_map.intensity(my_map.I_normalised*1000, region_of_interest)
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.figure()
+plt.tricontourf(my_map.X, my_map.Y, my_map.I_max)
+plt.xlabel(&quot;X&quot;)
+plt.ylabel(&quot;Y&quot;)
+cbar = plt.colorbar()
+cbar.set_label(&quot;Intensity near 2700 cm-1&quot;)
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Maps_16_0.png" src="../_images/notebooks_Maps_16_0.png" />
+</div>
+</div>
+</section>
+<section id="Calculate-the-ratio-of-the-intensities-of-peak-at-2700-and-that-at-1522-cm-1,-and-make-a-contour-plot.">
+<h2>Calculate the ratio of the intensities of peak at 2700 and that at 1522 cm-1, and make a contour plot.<a class="headerlink" href="#Calculate-the-ratio-of-the-intensities-of-peak-at-2700-and-that-at-1522-cm-1,-and-make-a-contour-plot." title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>region_of_interest_for_ratio = np.array([[1500,1600],[2600,2850]])
+my_map.intensity_ratio(my_map.I_normalised, region_of_interest_for_ratio)
+
+plt.figure()
+plt.tricontourf(my_map.X, my_map.Y, my_map.I_ratio)
+plt.xlabel(&quot;X&quot;)
+plt.ylabel(&quot;Y&quot;)
+cbar = plt.colorbar()
+cbar.set_label(&quot;Intensity ratio 1522 cm-1 / 2700 cm-1&quot;)
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Maps_18_0.png" src="../_images/notebooks_Maps_18_0.png" />
+</div>
+</div>
+</section>
+<section id="Calculate-the-area-ratio-of-the-two-peaks-to-make-a-contour-map">
+<h2>Calculate the area ratio of the two peaks to make a contour map<a class="headerlink" href="#Calculate-the-area-ratio-of-the-two-peaks-to-make-a-contour-map" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>region_of_interest_for_ratio = np.array([[1500,1600],[2600,2850]])
+my_map.area_ratio(my_map.I_normalised, region_of_interest_for_ratio)
+
+plt.figure()
+plt.tricontourf(my_map.X, my_map.Y, my_map.A_ratio)
+plt.xlabel(&quot;X&quot;)
+plt.ylabel(&quot;Y&quot;)
+cbar = plt.colorbar()
+cbar.set_label(&quot;Area ratio 1522 cm-1 / 2700 cm-1&quot;)
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_Maps_20_0.png" src="../_images/notebooks_Maps_20_0.png" />
+</div>
+</div>
+</section>
+<section id="Under-development-:-peak-fitting">
+<h2>Under development : peak fitting<a class="headerlink" href="#Under-development-:-peak-fitting" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ML_Regression.html" class="btn btn-neutral float-left" title="ML regression with rampy.ml_regressor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../utils.html" class="btn btn-neutral float-right" title="Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example notebooks &mdash; RamPy 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-gallery.css?v=26227f6e" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8fa8b3e9"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Use of normalisation function" href="notebooks/Normalisation.html" />
+    <link rel="prev" title="Diamond Anvil Cell Utilities" href="dac.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RamPy
+              <img src="_static/Rampy.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">Rampy News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signalparams.html">Signal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="maps.html">Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example notebooks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#processing">Processing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Normalisation.html">Use of normalisation function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Smoothing.html">Smooth a signal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Smoothing.html#Figures">Figures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Baseline.html">Example: fit a baseline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Baseline.html#Automatic-selection-of-smoothing-coefficient-for-GCV-spline">Automatic selection of smoothing coefficient for GCV spline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Baseline_and_Centroid.html">Baseline removal and Centroid measurement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Baseline_and_Centroid.html#Problem-definition">Problem definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Baseline_and_Centroid.html#Baseline-fit">Baseline fit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Baseline_and_Centroid.html#Centroid-determination">Centroid determination</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#peak-fitting">Peak fitting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Raman_fitting.html">Peak fitting with LMfit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Raman_fitting.html#Importing-and-looking-at-the-data">Importing and looking at the data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Raman_fitting.html#Fitting">Fitting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Raman_fitting.html#Error-estimations">Error estimations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Raman_fitting.html#Conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#machine-learning">Machine learning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Mixing.html">Mixing endmember spectra</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/ML_Classification.html">Machine learning classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/ML_Exploration.html">Example of use of the mlexplorer() function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/ML_Regression.html">ML regression with rampy.ml_regressor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#maps">Maps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Maps.html">Example: Maps tool of RamPy</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">rampy API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Example notebooks</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/examples.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="example-notebooks">
+<span id="rst-notebooks"></span><h1>Example notebooks<a class="headerlink" href="#example-notebooks" title="Link to this heading"></a></h1>
+<section id="processing">
+<h2>Processing<a class="headerlink" href="#processing" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<div class="nbsphinx-gallery">
+<a class="reference internal" href="notebooks/Normalisation.html">
+  <div><img alt="" src="./_static/nbsphinx-no-thumbnail.svg"></div>
+  <div>Use of normalisation function</div>
+</a>
+<a class="reference internal" href="notebooks/Smoothing.html">
+  <div><img alt="" src="./_images/notebooks_Smoothing_3_1.png"></div>
+  <div>Smooth a signal</div>
+</a>
+<a class="reference internal" href="notebooks/Baseline.html">
+  <div><img alt="" src="./_static/nbsphinx-no-thumbnail.svg"></div>
+  <div>Example: fit a baseline</div>
+</a>
+<a class="reference internal" href="notebooks/Baseline_and_Centroid.html">
+  <div><img alt="" src="./_images/notebooks_Baseline_and_Centroid_16_1.png"></div>
+  <div>Baseline removal and Centroid measurement</div>
+</a>
+</div>
+</div>
+</section>
+<section id="peak-fitting">
+<h2>Peak fitting<a class="headerlink" href="#peak-fitting" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<div class="nbsphinx-gallery">
+<a class="reference internal" href="notebooks/Raman_fitting.html">
+  <div><img alt="" src="./_images/notebooks_Raman_fitting_46_1.png"></div>
+  <div>Peak fitting with LMfit</div>
+</a>
+</div>
+</div>
+</section>
+<section id="machine-learning">
+<h2>Machine learning<a class="headerlink" href="#machine-learning" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<div class="nbsphinx-gallery">
+<a class="reference internal" href="notebooks/Mixing.html">
+  <div><img alt="" src="./_images/notebooks_Mixing_7_1.png"></div>
+  <div>Mixing endmember spectra</div>
+</a>
+<a class="reference internal" href="notebooks/ML_Classification.html">
+  <div><img alt="" src="./_images/notebooks_ML_Classification_1_1.png"></div>
+  <div>Machine learning classification</div>
+</a>
+<a class="reference internal" href="notebooks/ML_Exploration.html">
+  <div><img alt="" src="./_images/notebooks_ML_Exploration_14_1.png"></div>
+  <div>Example of use of the mlexplorer() function</div>
+</a>
+<a class="reference internal" href="notebooks/ML_Regression.html">
+  <div><img alt="" src="./_images/notebooks_ML_Regression_38_1.png"></div>
+  <div>ML regression with rampy.ml_regressor</div>
+</a>
+</div>
+</div>
+</section>
+<section id="maps">
+<h2>Maps<a class="headerlink" href="#maps" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<div class="nbsphinx-gallery">
+<a class="reference internal" href="notebooks/Maps.html">
+  <div><img alt="" src="./_images/notebooks_Maps_20_0.png"></div>
+  <div>Example: Maps tool of RamPy</div>
+</a>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dac.html" class="btn btn-neutral float-left" title="Diamond Anvil Cell Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="notebooks/Normalisation.html" class="btn btn-neutral float-right" title="Use of normalisation function" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

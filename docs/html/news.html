@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rampy News &mdash; RamPy 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8fa8b3e9"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="Philosophy" href="philosophy.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RamPy
+              <img src="_static/Rampy.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="philosophy.html">Philosophy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Rampy News</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#wanted-features-planned">Wanted features (planned)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stable">0.6.0 (stable)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">0.5.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">0.5.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">0.5.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">0.5.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">0.4.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">0.4.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">0.4.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">0.4.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">0.4.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">0.4.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">0.4.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">0.4.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">0.4.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">0.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id15">0.3.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id16">0.3.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id17">0.3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id18">0.3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id19">0.3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id20">0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id21">0.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id22">0.2.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id23">0.2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id24">0.2.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id25">0.2.6</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signalparams.html">Signal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="maps.html">Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Example notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">rampy API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Rampy News</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/news.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rampy-news">
+<h1>Rampy News<a class="headerlink" href="#rampy-news" title="Link to this heading"></a></h1>
+<p>Copyright (c) 2014-2025 Dr. Charles Le Losq et al.</p>
+<p>email: <a class="reference external" href="mailto:lelosq&#37;&#52;&#48;ipgp&#46;fr">lelosq<span>&#64;</span>ipgp<span>&#46;</span>fr</a></p>
+<p>Licence: see LICENCE.md</p>
+<section id="wanted-features-planned">
+<h2>Wanted features (planned)<a class="headerlink" href="#wanted-features-planned" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Addition of more unsupervised machine learning techniques</p></li>
+<li><p>Classification via 1D CNN and other algorithms using Keras or Pytorch</p></li>
+<li><p>peak fitting (in particular for maps): working on a Scikit-Learn API</p></li>
+</ul>
+</section>
+<section id="stable">
+<h2>0.6.0 (stable)<a class="headerlink" href="#stable" title="Link to this heading"></a></h2>
+<p>Improvements:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>baseline(): we use the make_smoothing_spline function from Scipy for the GCVSmoothedNSpline smoothing mode (smooth function) and the gcvspline baseline, in replaced of the call to the gcvspline library.  make_smoothing_spline is a reimplenetation of the Woltring Fortran code in gcvspline library, so modulo numerical errors, it returns the same results. This offers now the gcvspline baseline to all, without problem of Fortran compilation.</p></li>
+<li><p>baseline(): bir are now an optional argument in rampy.baseline (because they do not appear in als, arPLS and drPLS algorithms)</p></li>
+<li><p>peakarea(): function is improved and a test is added.</p></li>
+<li><p>mlclassificator(): this class was badly handling model parameters. This is now fixed. The code has been improved.</p></li>
+<li><p>various improvements of the code formatting</p></li>
+<li><p>tests &amp; examples updated</p></li>
+<li><p>docstrings re-written in Google Style</p></li>
+<li><p>docs updated</p></li>
+</ul>
+</div></blockquote>
+<p>Additions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>plot_spectrum(): makes an interactive plot of a signal, and also possibly of added baselines and smoothed signals.</p></li>
+<li><p>whittaker(): it is now possible to pass weights</p></li>
+<li><p>baseline(): Whittaker and Gaussian process baselines going through regions of interest is also available in the baseline() function</p></li>
+<li><p>ruby_T_corr(): Computes the temperature correction for the Ruby pressure scale.</p></li>
+<li><p>borate_T_corr(): Computes the temperature correction for the SrB4O7:Sm2+ pressure scale.</p></li>
+<li><p>pressure_sensor(): Converts the wavelength of fluorescence lines into pressure in GPa.</p></li>
+</ul>
+</div></blockquote>
+<p>Deprecation:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>get_portion_interest() becomes extract_signal(). get_portion_interest() still works but it will be removed in a future release</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id1">
+<h2>0.5.3<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Correction in despiking function (thanks Kevin Yuan)</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id2">
+<h2>0.5.2<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>fix installation : something went bad as we switched to pyproject.toml in 0.5.1</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id3">
+<h2>0.5.1<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>fix installation dependencies</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id4">
+<h2>0.5.0<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>map() function is now maps() to avoid any conflict with built-in Python map() function</p></li>
+<li><p>add the possiblity of importing lines of spectra for Horiba spectrometers</p></li>
+<li><p>add a despiking() function</p></li>
+<li><p>add external calibration in rameau</p></li>
+<li><p>add the posibility to calibrate K coefficient(s) on another dataset of spectra</p></li>
+<li><p>correction of a typo in mlclassificator function</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id5">
+<h2>0.4.9<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>quick fix of a bug in read_horiba function (from rampy.maps)</p></li>
+</ul>
+</section>
+<section id="id6">
+<h2>0.4.8<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>area and area ratio calculations available for maps</p></li>
+<li><p>read_horiba function (from rampy.maps) corrected (Github issue #25)</p></li>
+<li><p>rubberband baseline was fixed, test added, fit_baseline example update (Github issue #1, thanks &#64;sjfraser05)</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id7">
+<h2>0.4.7<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>urgent correction of a bug in rp.pseudovoigt() &gt; float entries were resulting in an error message…</p></li>
+<li><p>map treatment available for HORIBA and RENISHAW spectrometer (see example folder). Please report any bug!</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id8">
+<h2>0.4.6<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>doc improvements</p></li>
+<li><p>cvxpy 1.1 or higher is an optional dependency.</p></li>
+<li><p>switch to setup.cfg</p></li>
+<li><p>add shiftsp() function</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id9">
+<h2>0.4.5<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>update docs</p></li>
+<li><p>enhancing the pseudovoigt section for its use with arrays</p></li>
+<li><p>adding an experimental “peakarea” function</p></li>
+<li><p>drPLS algorithm added in baselines (thanks &#64;Snijderfrey)</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id10">
+<h2>0.4.4<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Cleaning the code</p></li>
+<li><p>Correction of a bug in tlcorrection</p></li>
+<li><p>add lorentzian() and pearson7() peak shape functions</p></li>
+<li><p>add mlexplorator function for easy PCA/NMF on spectroscopic data</p></li>
+<li><p>update docs</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id11">
+<h2>0.4.3<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Improvements in documentation of mlregressor.</p></li>
+<li><p>Improvements of rampy.normalise and rampy.centroid. Those functions can treat arrays of spectra now.</p></li>
+<li><p>Correction of a bug in rampy.normalize that caused the “area” method to not work when entering x.</p></li>
+<li><p>Better tests</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id12">
+<h2>0.4.2<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Removing dependency to cvxpy that does not build well in Windows… It affects the use of the rampy.mixing function</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id13">
+<h2>0.4.1<a class="headerlink" href="#id13" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Correction of an error in <cite>mlregressor</cite> which made impossible to import X_test datasets.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id14">
+<h2>0.4.0<a class="headerlink" href="#id14" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>BREAKING CHANGE: <cite>mlregressor</cite> is now a class and not a function anymore. You can provide directly sklearn arguments to the algorithms through dictionaries.
+The use of the class simplifies the use of <cite>mlregressor</cite>, as the created objects saves everything!
+It also makes it very easy to change the algorithm and try something else. See the example in the example folder!</p></li>
+<li><p>addition of the <cite>centroid()</cite> function, that calculates the centroid of a signal.</p></li>
+<li><p>addition of tests and examples for the <cite>mlregressor()</cite> class, the <cite>resample()</cite> and <cite>flipsp()</cite> functions.</p></li>
+<li><p><cite>chemical_splitting()</cite> allows one to select the random seed.</p></li>
+<li><p>Correction of the <cite>mixing_sp()</cite> function, rampy is now compatible with cvxpy v1.0.</p></li>
+<li><p>arguments can be provided to <cite>resample()</cite> to use different techniques of interpolation in <cite>scipy.interpolate.interp1d</cite>.</p></li>
+<li><p>Various documentation improvements</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id15">
+<h2>0.3.6<a class="headerlink" href="#id15" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Correction of the <cite>tlcorrection()</cite> function: the ‘hehlen’ correction was missing a frequency term to be complete (eq. 2 and 3 in Hehlen 2010 J. Phys. Condes. Matter 22: 025401).</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id16">
+<h2>0.3.5<a class="headerlink" href="#id16" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Addition of the <cite>rampy.mixing_sp()</cite> function. See <cite>help(rampy.mixing_sp())</cite>, as well as the example folder.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id17">
+<h2>0.3.4<a class="headerlink" href="#id17" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>gcvspline is not a requirement anymore. Error messages will outputs when trying to use it, inviting to install it manually. This is implemented to avoid problems with FORTRAN compilation for people not interested in using gcvspline.</p></li>
+<li><p>Add early stopping in` mlregressor` neural networks.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id18">
+<h2>0.3.3<a class="headerlink" href="#id18" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Minor dependency correction</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id19">
+<h2>0.3.2<a class="headerlink" href="#id19" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Adding the names in the <cite>rameau</cite> object</p></li>
+<li><p>Improvements of the <cite>mlregressor</cite> function, with addition of neural nets and bagging neural nets algorithms</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id20">
+<h2>0.3.1<a class="headerlink" href="#id20" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Rameau is now an object-oriented interface</p></li>
+<li><p><cite>smooth()</cite> function updated; 10 algorithms are available.</p></li>
+<li><p>updated example of peak fitting</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id21">
+<h2>0.3.0<a class="headerlink" href="#id21" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Documentation improvements</p></li>
+<li><p>Python 3 compatible</p></li>
+<li><p>Addition of the Rameau function</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id22">
+<h2>0.2.9<a class="headerlink" href="#id22" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>addition of gaussian baseline</p></li>
+<li><p>addition of <cite>flipsp()</cite> to flip spectra along the axis 0</p></li>
+<li><p>addition of <cite>resample()</cite> to resample spectra with scipy.interpolate</p></li>
+<li><p>improvement of <cite>tlcorrection</cite></p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id23">
+<h2>0.2.8<a class="headerlink" href="#id23" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>addition of the <cite>tlcorrection()</cite> function to replace the Long function</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id24">
+<h2>0.2.7<a class="headerlink" href="#id24" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Minor correction of the <cite>baseline()</cite> documentation and removing a <cite>print()</cite> command.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id25">
+<h2>0.2.6<a class="headerlink" href="#id25" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>standardizatin in the <cite>baseline()</cite> function is now included (improve polynomial fits);</p></li>
+<li><p>addition of the arPLS algorithm from Baek et al. (2015) to automatic fit the baseline;</p></li>
+<li><p>addition of the whittaker smoother to fit the baseline (Eiler 2003);</p></li>
+<li><p>addition of the ALS algorithm (Eilers and Boelens 2005).</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="philosophy.html" class="btn btn-neutral float-left" title="Philosophy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

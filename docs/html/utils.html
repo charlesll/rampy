@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Utilities &mdash; RamPy 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8fa8b3e9"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="rampy API" href="API.html" />
+    <link rel="prev" title="Example: Maps tool of RamPy" href="notebooks/Maps.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RamPy
+              <img src="_static/Rampy.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">Rampy News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signalparams.html">Signal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="maps.html">Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Example notebooks</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.functions.constant"><code class="docutils literal notranslate"><span class="pre">constant()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.functions.difffull"><code class="docutils literal notranslate"><span class="pre">difffull()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.functions.diffshort"><code class="docutils literal notranslate"><span class="pre">diffshort()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.functions.funexp"><code class="docutils literal notranslate"><span class="pre">funexp()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.functions.funlog"><code class="docutils literal notranslate"><span class="pre">funlog()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.functions.gauss_lsq"><code class="docutils literal notranslate"><span class="pre">gauss_lsq()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.functions.gauss_lsq_lfix"><code class="docutils literal notranslate"><span class="pre">gauss_lsq_lfix()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.functions.linear"><code class="docutils literal notranslate"><span class="pre">linear()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.functions.linear0"><code class="docutils literal notranslate"><span class="pre">linear0()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.functions.multigaussian"><code class="docutils literal notranslate"><span class="pre">multigaussian()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.functions.poly2"><code class="docutils literal notranslate"><span class="pre">poly2()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">rampy API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Utilities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="utilities">
+<h1>Utilities<a class="headerlink" href="#utilities" title="Link to this heading"></a></h1>
+<p>Some functions are included in rampy and have a minor role. They are listed below for reference.</p>
+<dl class="py function" id="module-rampy.functions">
+<dt class="sig sig-object py" id="rampy.functions.constant">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">constant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.constant" title="Link to this definition"></a></dt>
+<dd><p>returns a constant value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>1D array</em>) – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>y</strong> – array filled with a values</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>1D array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.difffull">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">difffull</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#rampy.functions.difffull" title="Link to this definition"></a></dt>
+<dd><p>Equation for the diffusion into a full slab, see Crank 1975</p>
+<p>Here we assume the profil to have 2 surfaces of contact on each side</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>C0</strong> (<em>float</em>) – the concentration in the core</p></li>
+<li><p><strong>C1</strong> (<em>float</em>) – the concentration at the border</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – the diffusion coefficient in log10 unit, m^2.s^-1</p></li>
+<li><p><strong>x2</strong> (<em>x1 and</em>) – the profil lengths from beginning and end respectively, in meters</p></li>
+<li><p><strong>t</strong> (<em>float</em>) – time in seconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.diffshort">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">diffshort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.functions.diffshort" title="Link to this definition"></a></dt>
+<dd><p>1D equation for the diffusion into a semi-infinite slab, see Crank 1975</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>1D array</em>) – the profil length in meters</p></li>
+<li><p><strong>t</strong> (<em>float</em>) – time in seconds</p></li>
+<li><p><strong>C0</strong> (<em>float</em>) – the concentration in the core</p></li>
+<li><p><strong>C1</strong> (<em>float</em>) – the concentration at the border</p></li>
+<li><p><strong>D</strong> (<em>float</em>) – the diffusion coefficient in log10 unit, m^2.s^-1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Cx</strong> – concentration at x</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>1D array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.funexp">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">funexp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.funexp" title="Link to this definition"></a></dt>
+<dd><p>exponential baseline function</p>
+<p>a*exp(b*(x-c))</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.funlog">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">funlog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.funlog" title="Link to this definition"></a></dt>
+<dd><p>log baseline function</p>
+<p>a * ln(-b <a href="#id1"><span class="problematic" id="id2">*</span></a>(x-c)) - d*x**2</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.gauss_lsq">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">gauss_lsq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.gauss_lsq" title="Link to this definition"></a></dt>
+<dd><p>predicts a sum of gaussian peaks with parameters params</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>params</strong> (<em>1D array</em>) – an array of the parameters of the peaks. The number of peaks is assumed to be equal to len(params)/3.
+In this array, list intensities first, then all peak positions, then all peak half width at half maximum.</p></li>
+<li><p><strong>x</strong> (<em>1D array</em>) – x axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>y</strong> – y values at position x</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>1D array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.gauss_lsq_lfix">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">gauss_lsq_lfix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.gauss_lsq_lfix" title="Link to this definition"></a></dt>
+<dd><p>predicts a sum of gaussian peaks with parameters params</p>
+<p>Assumes that all peaks share the same HWHM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>params</strong> (<em>1D array</em>) – an array of the parameters of the peaks. The number of peaks is assumed to be equal to len(params)/3.
+In this array, list intensities first, then all peak positions, then the last element is the peaks’ half width at half maximum.</p></li>
+<li><p><strong>x</strong> (<em>1D array</em>) – x axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>y</strong> – y values at position x</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>1D array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.linear">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">linear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.linear" title="Link to this definition"></a></dt>
+<dd><p>returns a + b*x</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.linear0">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">linear0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.linear0" title="Link to this definition"></a></dt>
+<dd><p>returns a*x</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.multigaussian">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">multigaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.multigaussian" title="Link to this definition"></a></dt>
+<dd><p>old attempt to have a multigaussian function, do not use. Will be removed soon.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.functions.poly2">
+<span class="sig-prename descclassname"><span class="pre">rampy.functions.</span></span><span class="sig-name descname"><span class="pre">poly2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.functions.poly2" title="Link to this definition"></a></dt>
+<dd><p>returns a + b*x + c*x*x</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="notebooks/Maps.html" class="btn btn-neutral float-left" title="Example: Maps tool of RamPy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="API.html" class="btn btn-neutral float-right" title="rampy API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
