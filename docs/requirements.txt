@@ -1,5 +1,5 @@
 furo==2021.11.16
-sphinx==7.2.6
+sphinx>=7.0.0
 nbsphinx
 sphinx_gallery
 sphinx_rtd_theme
