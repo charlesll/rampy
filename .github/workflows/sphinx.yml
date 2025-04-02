@@ -11,6 +11,8 @@ jobs:
     - uses: actions/checkout@v4
       with:
         persist-credentials: false
+    - name: Install Pandoc
+      run: sudo apt-get install pandoc
     - name: Build HTML
       uses: ammaraskar/sphinx-action@master
     - name: Upload artifacts
