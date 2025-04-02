@@ -1,6 +1,6 @@
 # Rampy News
 
-Copyright (c) 2014-2024 Dr. Charles Le Losq et al.
+Copyright (c) 2014-2025 Dr. Charles Le Losq et al.
 
 email: lelosq@ipgp.fr
 
@@ -14,7 +14,21 @@ Licence: see LICENCE.md
 
 - peak fitting for maps
 
-# 0.5.3 (stable)
+# 0.5.4 (stable)
+
+## improvements
+
+- we use the make_smoothing_spline function from Scipy for the GCVSmoothedNSpline smoothing mode (smooth function) and the gcvspline baseline, in replaced of the call to the gcvspline library.  make_smoothing_spline is a reimplenetation of the Woltring Fortran code in gcvspline library, so modulo numerical errors, it returns the same results. This offers now the gcvspline baseline to all, without problem of Fortran compilation.
+- bir are now an optional argument in rampy.baseline (because they do not appear in als, arPLS and drPLS algorithms)
+- various improvements of the code formatting
+- tests & examples updated
+
+## additions
+- plot_spectrum(): makes an interactive plot of a signal, and also possibly of added baselines and smoothed signals.
+- whittaker(): it is now possible to pass weights
+- baseline(): a whittaker baseline going through regions of interest is also available in the baseline() function 
+
+# 0.5.3
 
 - Correction in despiking function (thanks Kevin Yuan)
 

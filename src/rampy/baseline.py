@@ -1,293 +1,413 @@
 # -*- coding: utf-8 -*-
+#############################################################################
+#Copyright (c) 2018-2025 Charles Le Losq
+#
+# Licence GNU-GPL
+#
+#
+#############################################################################
 import numpy as np
 from scipy.optimize import curve_fit
-from scipy.interpolate import UnivariateSpline
+from scipy.interpolate import UnivariateSpline, make_smoothing_spline
 from scipy.spatial import ConvexHull
 import scipy.sparse as sparse
 from numpy.linalg import norm
 from sklearn import preprocessing
-
+from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.gaussian_process.kernels import RBF
+import warnings
 import rampy
 
-def get_portion_interest(x,y,bir):
-    """Extracts the signals indicated in the bir.
+def get_portion_interest(x: np.ndarray, y: np.ndarray, roi) -> np.ndarray:
+    print('Warning: get_portion_interest will be renamed extract_signal in a next version. You can already use the new name!')
+    return extract_signal(x, y, roi)
+
+def extract_signal(x: np.ndarray, y: np.ndarray, roi) -> np.ndarray:
+    """Extracts the signal from specified regions of interest (ROI) in the x-y data.
+
+    This function selects and extracts portions of the input x-y data based on the 
+    specified regions of interest (ROI) provided in `roi`. Each region is defined 
+    by a lower and upper bound along the x-axis.
+
+    Args:
+        x (ndarray): The x-axis values (e.g., time, wavelength, or other independent variables).
+        y (ndarray): The y-axis values corresponding to the x-axis values (e.g., signal intensity).
+        roi (ndarray or list of lists): Regions of interest (ROI) where the signal should be extracted.
+            Must be an n x 2 array or a list of lists, where `n` is the number of regions to extract.
+            Each sublist or row should contain two elements:
+              - The lower bound of the region (inclusive).
+              - The upper bound of the region (inclusive).
+
+            Example:
+                - Array: `np.array([[10, 20], [50, 70]])`
+                - List: `[[10, 20], [50, 70]]`
+
+    Returns:
+        ndarray: A 2-column array containing the extracted x-y signals from the specified regions.
+            The first column contains the x values, and the second column contains the corresponding y values.
+
+    Raises:
+        ValueError: If `roi` is not a valid n x 2 array or list of lists, or if any region in `roi` 
+            falls outside the range of `x`.
+
+    Notes:
+        - Overlapping regions in `roi` are not merged; they are processed as separate regions.
+        - If no valid regions are found within `roi`, an empty array is returned.
+
+    Examples:
+        Extracting signal from two regions in an x-y dataset:
+
+        >>> import numpy as np
+        >>> x = np.linspace(0, 100, 101)
+        >>> y = np.sin(x / 10) + np.random.normal(0, 0.1, size=x.size)
+        >>> roi = [[10, 20], [50, 70]]
+        >>> extracted_signal = extract_signal(x, y, roi)
+        >>> print(extracted_signal)
+    """
+    
+    # Check if roi is a numpy array or a list of lists, and convert
+    if isinstance(roi, list):
+        roi = np.array(roi)
+    
+    # check the size
+    if roi.ndim != 2 or roi.shape[1] != 2:
+        raise ValueError("roi must be an n x 2 array.")
+
+    xy = np.column_stack((x, y))
+    extracted_regions = [xy[(xy[:, 0] > bounds[0]) & (xy[:, 0] < bounds[1])] for bounds in roi]
+    return np.vstack(extracted_regions)
+
+def validate_input(x: np.ndarray, y: np.ndarray, roi):
+    """Validate the input arrays."""
+    if not isinstance(x, np.ndarray) or not isinstance(y, np.ndarray):
+        raise TypeError("x and y must be numpy arrays.")
+
+    if x.shape != y.shape:
+        raise ValueError("x and y must have the same shape.")
+
+    # Check if roi is a numpy array or a list of lists
+    if isinstance(roi, np.ndarray):
+        if roi.ndim != 2 or roi.shape[1] != 2:
+            raise ValueError("roi must be an n x 2 array.")
+    elif isinstance(roi, list):
+        if not all(isinstance(region, list) and len(region) == 2 for region in roi):
+            raise ValueError("roi must be a list of lists, where each sublist contains two elements.")
+    else:
+        raise TypeError("roi must be either a numpy array or a list of lists.")
+
+
+def standardize_data(x: np.ndarray, y: np.ndarray):
+    """Standardize the data using sklearn's StandardScaler."""
+    X_scaler = preprocessing.StandardScaler().fit(x.reshape(-1, 1))
+    Y_scaler = preprocessing.StandardScaler().fit(y.reshape(-1, 1))
+    x_scaled = X_scaler.transform(x.reshape(-1, 1)).flatten()
+    y_scaled = Y_scaler.transform(y.reshape(-1, 1)).flatten()
+    return x_scaled, y_scaled, X_scaler, Y_scaler
+
+def baseline(x_input: np.ndarray, 
+             y_input: np.ndarray, 
+             roi = np.array([[0, 100]]), 
+             method: str = "poly", 
+             **kwargs) -> tuple:
+    """Subtracts a baseline from an x-y spectrum using various methods.
+
+    This function performs baseline subtraction on spectroscopic data by fitting a model 
+    to the background signal. It supports multiple correction methods, including polynomial 
+    fitting, splines, and advanced penalized least squares techniques.
+
+    Args:
+        x_input (ndarray): The x-axis values (e.g., wavelength or wavenumber).
+        y_input (ndarray): The y-axis values (e.g., intensity or absorbance).
+        roi (ndarray or list of lists, optional): Regions of interest (ROI) for baseline fitting.
+            Must be an n x 2 array or list of lists where each row specifies the start and end 
+            of a region. Default is `np.array([[0, 100]])`.
+            Example:
+                - Array: `np.array([[100., 200.], [500., 600.]])`
+                - List: `[[100., 200.], [500., 600.]]`
+            Note: Some methods (e.g., "als", "arPLS") do not use the `roi` parameter but require it to be specified.
+        method (str, optional): The method used for baseline fitting. Default is "poly".
+            Available options:
+                - "poly": Polynomial fitting. Requires `polynomial_order`.
+                - "unispline": Spline fitting using Scipy's `UnivariateSpline`. Requires `s`.
+                - "gcvspline": Spline fitting using GCVSpline. Requires `s` and optionally `ese_y`.
+                - "gaussian": Gaussian function fitting. Requires `p0_gaussian`.
+                - "exp": Exponential background fitting. Requires `p0_exp`.
+                - "log": Logarithmic background fitting. Requires `p0_log`.
+                - "rubberband": Rubberband correction using convex hull interpolation.
+                - "als": Asymmetric Least Squares correction. Requires `lam`, `p`, and `niter`.
+                - "arPLS": Asymmetrically Reweighted Penalized Least Squares smoothing. Requires `lam` and `ratio`.
+                - "drPLS": Doubly Reweighted Penalized Least Squares smoothing. Requires `niter`, `lam`, `eta`, and `ratio`.
+                - "whittaker": Whittaker smoothing with weights applied to regions of interest. Requires `lam`.
+                - "GP": Gaussian process method using a rational quadratic kernel.
+
+        **kwargs: Additional parameters specific to the chosen method.
+            - polynomial_order (int): Degree of the polynomial for the "poly" method. Default is 1.
+            - s (float): Spline smoothing coefficient for "unispline" and "gcvspline". Default is 2.0.
+            - ese_y (ndarray): Errors associated with y_input for the "gcvspline" method.
+              Defaults to sqrt(abs(y_input)) if not provided.
+            - lam (float): Smoothness parameter for methods like "als", "arPLS", and others. Default is 1e5.
+            - p (float): Weighting parameter for ALS method. Recommended values are between 0.001 and 0.1. Default is 0.01.
+            - ratio (float): Convergence ratio parameter for arPLS/drPLS methods. Default is 0.01 for arPLS and 0.001 for drPLS.
+            - niter (int): Number of iterations for ALS/drPLS methods. Defaults are 10 for ALS and 100 for drPLS.
+            - eta (float): Roughness parameter for drPLS method, between 0 and 1. Default is 0.5.
+            - p0_gaussian (list): Initial parameters [a, b, c] for Gaussian fitting: 
+              \(y = a \cdot \exp(-\log(2) \cdot ((x-b)/c)^2)\). Default is [1., 1., 1.].
+            - p0_exp (list): Initial parameters [a, b, c] for exponential fitting: 
+              \(y = a \cdot \exp(b \cdot (x-c))\). Default is [1., 1., 0.].
+            - p0_log (list): Initial parameters [a, b, c, d] for logarithmic fitting: 
+              \(y = a \cdot \log(-b \cdot (x-c)) - d \cdot x^2\). Default is [1., 1., 1., 1.].
+
+    Returns:
+        tuple:
+            corrected_signal (ndarray): The signal after baseline subtraction.
+            baseline_fitted (ndarray): The fitted baseline.
+
+    Raises:
+        ValueError: If the specified method is not recognized or invalid parameters are provided.
+
+    Notes:
+        The input data is standardized before fitting to improve numerical stability during optimization.
+        The fitted baseline is transformed back to the original scale before subtraction.
+
+    Examples:
+        Example with polynomial baseline correction:
+
+        >>> import numpy as np
+        >>> x = np.linspace(50, 500, nb_points)
+        >>> noise = 2.0 * np.random.normal(size=nb_points)
+        >>> background = 5 * np.sin(x / 50) + 0.1 * x
+        >>> peak = rampy.gaussian(x, 100.0, 250.0, 7.0)
+        >>> y = peak + background + noise
+        >>> roi = np.array([[0, 200], [300, 500]])
+        >>> corrected_signal, baseline = baseline(x, y, method="poly", polynomial_order=5)
+
+        Example with GCVSpline algorithm:
+
+        >>> corrected_signal, baseline = baseline(x, y, method="gcvspline", s=2.0)
+
+        Example with Whittaker smoothing:
+
+        >>> corrected_signal, baseline = baseline(x, y, roi=roi, method="whittaker")
+
+        Example with Gaussian process:
+
+        >>> corrected_signal, baseline = baseline(x, y, roi=roi, method="GP")
+
+        Example with rubberband correction:
+
+        >>> corrected_signal, baseline = baseline(x, y, method="rubberband")
+
+        Example with ALS algorithm:
+
+        >>> corrected_signal, baseline = baseline(x, y, method="als", lam=1e5, p=0.01)
+    """
+
+
+    if np.array_equal(roi, np.array([[0, 100]])):
+        warnings.warn(
+            "The 'roi' parameter now has a default value of np.array([[0, 100]]). "
+            "Please specify 'roi' explicitly in future calls to avoid this warning.",
+            DeprecationWarning,
+            stacklevel=2
+        )
+
+    validate_input(x_input, y_input, roi)
+
+    yafit_unscaled = extract_signal(x_input, y_input, roi)
+    x, y, X_scaler, Y_scaler = standardize_data(x_input, y_input)
+
+    yafit = np.copy(yafit_unscaled)
+    yafit[:, 0] = X_scaler.transform(yafit_unscaled[:, 0].reshape(-1, 1)).flatten()
+    yafit[:, 1] = Y_scaler.transform(yafit_unscaled[:, 1].reshape(-1, 1)).flatten()
+    roi_scaled = X_scaler.transform(np.array(roi).reshape(-1,1)).reshape(-1, 2)
+
+    baseline_fitted = fit_baseline(x, y, roi_scaled, yafit, method, **kwargs)
+
+    corrected_signal = y_input.reshape(-1, 1) - Y_scaler.inverse_transform(baseline_fitted.reshape(-1, 1))
+    return corrected_signal, Y_scaler.inverse_transform(baseline_fitted.reshape(-1, 1))
+
+def fit_baseline(x: np.ndarray, y: np.ndarray, roi: np.ndarray, yafit: np.ndarray, method: str, **kwargs) -> np.ndarray:
+    """Fit the baseline using the specified method."""
+    if method == 'poly':
+        poly_order = kwargs.get('polynomial_order', 1)
+        coeffs = np.polyfit(yafit[:, 0], yafit[:, 1], poly_order)
+        return np.polyval(coeffs, x)
+
+    elif method == 'unispline':
+        spline = UnivariateSpline(yafit[:, 0], 
+                                  yafit[:, 1], 
+                                  s=kwargs.get('s', 2.0))
+        return spline(x)
+
+    elif method == 'gcvspline':
+        splinesmooth = kwargs.get('s', None)
+        if splinesmooth is not None:
+            splinesmooth /= 10
+        ese = kwargs.get('ese_y', np.sqrt(np.abs(yafit[:, 1])))
+        spline = make_smoothing_spline(yafit[:, 0], yafit[:, 1], w=ese, lam=splinesmooth)
+        return spline(x)
+
+    elif method == 'gaussian':
+        p0_gauss = kwargs.get('p0_gaussian', [1., 1., 1.])
+        coeffs, _ = curve_fit(rampy.gaussian, yafit[:, 0], yafit[:, 1], p0=p0_gauss)
+        return rampy.gaussian(x, *coeffs)
+
+    elif method == 'exp':
+        p0_exp = kwargs.get('p0_exp', [1., 1., 0.])
+        coeffs, _ = curve_fit(rampy.funexp, yafit[:, 0], yafit[:, 1], p0=p0_exp)
+        return rampy.funexp(x, *coeffs)
+
+    elif method == 'log':
+        p0_log = kwargs.get('p0_log', [1., 1., 1., 1.])
+        coeffs, _ = curve_fit(rampy.funlog, yafit[:, 0], yafit[:, 1], p0=p0_log)
+        return rampy.funlog(x, *coeffs)
+
+    elif method == 'rubberband':
+        return rubberband_baseline(x, y)
+
+    elif method == 'als':
+        return als_baseline(y, 
+                            kwargs.get('lam', 1.0e5), 
+                            kwargs.get('p', 0.01), 
+                            kwargs.get('niter', 10))
+
+    elif method == 'arPLS':
+        return arPLS_baseline(y, 
+                              kwargs.get('lam', 1.0e5), 
+                              kwargs.get('ratio', 0.01))
+
+    elif method == 'drPLS':
+        return drPLS_baseline(y, 
+                              kwargs.get('niter', 100), 
+                              kwargs.get('lam', 1.0e5), 
+                              kwargs.get('eta', 0.5), 
+                              kwargs.get('ratio', 0.001))
+    
+    elif method == 'whittaker':
+        # Create weights array with 0s outside the regions of interest
+        weights = np.zeros_like(x)
+        for bounds in roi:
+            weights[(x >= bounds[0]) & (x <= bounds[1])] = 1
+
+        return rampy.whittaker(y, 
+                               weights=weights, 
+                               Lambda=kwargs.get('lam', 1.0e5))
+
+    elif method == "GP":
+        # Gaussian process method with the rational quadratic kernel
+        gp_scale = 1.0
+        kernel = np.std(y) * RBF(length_scale=gp_scale*(np.max(yafit[:,0])-np.min(yafit[:,0])), 
+                                length_scale_bounds=[0.001,100000])
+
+        # declare a GP, with a noise alpha estimated from yafit
+        gaussian_process = GaussianProcessRegressor(kernel=kernel, 
+                                                    alpha=np.std(yafit[:,1]), # noise in data a priori
+                                                    n_restarts_optimizer=1)
+
+        # perform the fit
+        gaussian_process.fit(yafit[:,0].reshape(-1,1), yafit[:,1])
+
+        # get result
+        return gaussian_process.predict(x.reshape(-1,1))
+
+    else:
+        raise ValueError("Method not found, check you entered the right name.")
+
+def rubberband_baseline(x: np.ndarray, y: np.ndarray) -> np.ndarray:
+    """
+    Perform rubberband baseline correction.
 
     Parameters
     ----------
     x : ndarray
-        the x axis
+        The x-axis values.
     y : ndarray
-        the y values
-    bir : n x 2 array
-        the x values of regions where the signal needs to be extracted,
-        must be a n x 2 dimension array, where n is the number of regions to extract
-        and column 0 contains the low bounds, column 1 the high ones.
+        The y values corresponding to x.
 
     Returns
     -------
-    yafit : ndarray
-        a 2 columns x-y array containing the signals in the bir.
+    baseline_fitted : ndarray
+        The fitted baseline.
 
+    Raises
+    ------
+    ValueError
+        If the convex hull does not have enough points for interpolation.
     """
-    birlen = np.array(bir.shape[0])
+    # Ensure x and y are numpy arrays
+    x = np.asarray(x)
+    y = np.asarray(y)
 
-    sp = np.transpose(np.vstack((x.reshape(-1),y.reshape(-1))))
-    ### selection of bir data
-    for i in range(birlen):
-        if i == 0:
-            yafit = sp[np.where((sp[:,0]> bir[i,0]) & (sp[:,0] < bir[i,1]))]
+    # Find the convex hull
+    points = np.column_stack((x, y))
+    hull = ConvexHull(points)
+    vertices = hull.vertices
+
+    # Roll the vertices to start from the lowest x-value
+    vertices = np.roll(vertices, -vertices.argmin())
+
+    # Ensure there are enough points for interpolation
+    if len(vertices) < 2:
+        raise ValueError("Convex hull does not have enough points for interpolation.")
+
+    # Leave only the ascending part
+    vertices = vertices[:vertices.argmax() + 1]
+
+    # Perform linear interpolation
+    baseline_fitted = np.interp(x, x[vertices], y[vertices], left=y[vertices[0]], right=y[vertices[-1]])
+
+    return baseline_fitted
+
+def als_baseline(y: np.ndarray, lam: float, p: float, niter: int) -> np.ndarray:
+    """Asymmetric Least Squares baseline fitting."""
+    L = len(y)
+    D = sparse.csc_matrix(np.diff(np.eye(L), 2))
+    w = np.ones(L)
+    for _ in range(niter):
+        W = sparse.spdiags(w, 0, L, L)
+        Z = W + lam * D.dot(D.transpose())
+        z = sparse.linalg.spsolve(Z, w * y)
+        w = p * (y > z) + (1 - p) * (y < z)
+    return z
+
+def arPLS_baseline(y: np.ndarray, lam: float, ratio: float) -> np.ndarray:
+    """Asymmetrically Reweighted Penalized Least Squares baseline fitting."""
+    N = len(y)
+    D = sparse.csc_matrix(np.diff(np.eye(N), 2))
+    H = lam * D.dot(D.transpose())
+    w = np.ones(N)
+    while True:
+        W = sparse.spdiags(w, 0, N, N)
+        Z = W + H
+        z = sparse.linalg.spsolve(Z, w * y)
+        d = y - z
+        dn = d[d < 0]
+        m = np.mean(dn)
+        s = np.std(dn)
+        wt = 1.0 / (1 + np.exp(2 * (d - (2 * s - m)) / s))
+        if norm(w - wt) / norm(w) < ratio:
+            break
+        w = wt
+    return z
+
+def drPLS_baseline(y: np.ndarray, niter: int, lam: float, eta: float, ratio: float) -> np.ndarray:
+    """Doubly Reweighted Penalized Least Squares baseline fitting."""
+    L = len(y)
+    D = sparse.diags([1, -2, 1], [0, -1, -2], shape=(L, L - 2), format='csr').dot(sparse.diags([1, -2, 1], [0, -1, -2], shape=(L, L - 2), format='csr').transpose())
+    D_1 = sparse.diags([-1, 1], [0, -1], shape=(L, L - 1), format='csr').dot(sparse.diags([-1, 1], [0, -1], shape=(L, L - 1), format='csr').transpose())
+    w = np.ones(L)
+    W = sparse.diags(w, format='csr')
+    Z = w
+    for _ in range(niter):
+        W.setdiag(w)
+        Z_prev = Z
+        Z = sparse.linalg.spsolve(W + D_1 + lam * (sparse.diags(np.ones(L), format='csr') - eta * W) * D, W * y, permc_spec='NATURAL')
+        if np.linalg.norm(Z - Z_prev) > ratio:
+            d = y - Z
+            d_negative = d[d < 0]
+            sigma_negative = np.std(d_negative)
+            mean_negative = np.mean(d_negative)
+            w = 0.5 * (1 - np.exp(_) * (d - (-mean_negative + 2 * sigma_negative)) / sigma_negative / (1 + np.abs(np.exp(_) * (d - (-mean_negative + 2 * sigma_negative)) / sigma_negative)))
         else:
-            je = sp[np.where((sp[:,0]> bir[i,0]) & (sp[:,0] < bir[i,1]))]
-            yafit = np.vstack((yafit,je))
-
-    return yafit
-
-def baseline(x_input,y_input,bir,method, **kwargs):
-    """Allows subtracting a baseline under a x y spectrum.
-
-    Parameters
-    ----------
-    x_input : ndarray
-        x values.
-    y_input : ndarray
-        y values.
-    bir : ndarray
-        Contain the regions of interest, organised per line.
-        For instance, roi = np.array([[100., 200.],[500.,600.]]) will
-        define roi between 100 and 200 as well as between 500 and 600.
-        Note: This is NOT used by the "als" and "arPLS" algorithms, but still is a requirement when calling the function.
-        bir and method probably will become args in a futur iteration of rampy to solve this.
-    method : str
-        - "poly": polynomial fitting, with splinesmooth the degree of the polynomial.
-        - "unispline": spline with the UnivariateSpline function of Scipy, splinesmooth is
-                     the spline smoothing factor (assume equal weight in the present case);
-        - "gcvspline": spline with the gcvspl.f algorythm, really robust.
-                     Spectra must have x, y, ese in it, and splinesmooth is the smoothing factor;
-                     For gcvspline, if ese are not provided we assume ese = sqrt(y).
-                     Requires the installation of gcvspline with a "pip install gcvspline" call prior to use;
-        - "exp": exponential background;
-        - "log": logarythmic background;
-        - "rubberband": rubberband baseline fitting;
-        - "als": (automatic) baseline least square fitting following Eilers and Boelens 2005;
-        - "arPLS": (automatic) Baseline correction using asymmetrically reweighted penalized least squares smoothing. Baek et al. 2015, Analyst 140: 250-257;
-        - 'drPLS': (automatic) Baseline correction method based on doubly reweighted penalized least squares. Xu et al., Applied Optics 58(14):3913-3920.
-    polynomial_order : int, optional
-        The degree of the polynomial (0 for a constant), default = 1.
-    s : float, optional
-        spline smoothing coefficient for the unispline and gcvspline algorithms.
-    lam : float, optional
-        The lambda smoothness parameter for the ALS, ArPLS and drPLS algorithms. Typical values are between 10**2 to 10**9, default = 10**5 for ALS and ArPLS and default = 10**6 for drPLS.
-    p : float, optional
-        For the ALS algorithm, advised value between 0.001 to 0.1, default = 0.01.
-    ratio : float, optional
-        Ratio parameter of the arPLS and drPLS algorithm. default = 0.01 for arPLS and 0.001 for drPLS.
-    niter : int, optional
-        Number of iteration of the ALS and drPLS algorithm, default = 10 for ALS and default = 100 for drPLS.
-    eta : float, optional
-        Roughness parameter for the drPLS algorithm, is between 0 and 1, default = 0.5
-    p0_exp : list, optional
-        containg the starting parameter for the exp baseline fit with curve_fit. Default = [1.,1.,1.].
-    p0_log : list, optional
-        containg the starting parameter for the log baseline fit with curve_fit. Default = [1.,1.,1.,1.].
-
-    Returns
-    -------
-    out1 : ndarray
-        Contain the corrected signal.
-    out2 : ndarray
-        Contain the baseline.
-
-    """
-    # we get the signals in the bir
-    yafit_unscaled = get_portion_interest(x_input,y_input,bir)
-
-    # signal standard standardization with sklearn
-    # this helps for polynomial fitting
-    X_scaler = preprocessing.StandardScaler().fit(x_input.reshape(-1, 1))
-    Y_scaler = preprocessing.StandardScaler().fit(y_input.reshape(-1, 1))
-
-    # transformation
-    x = X_scaler.transform(x_input.reshape(-1, 1))
-    y = Y_scaler.transform(y_input.reshape(-1, 1))
-
-    yafit = np.copy(yafit_unscaled)
-    yafit[:,0] = X_scaler.transform(yafit_unscaled[:,0].reshape(-1, 1))[:,0]
-    yafit[:,1] = Y_scaler.transform(yafit_unscaled[:,1].reshape(-1, 1))[:,0]
-
-    y = y.reshape(len(y_input))
-
-    if method == 'poly':
-
-        # optional parameters
-        poly_order = kwargs.get('polynomial_order',1)
-
-        coeffs = np.polyfit(yafit[:,0],yafit[:,1],poly_order)
-
-        baseline_fitted = np.polyval(coeffs,x)
-
-    elif method == 'unispline':
-
-        # optional parameters
-        splinesmooth = kwargs.get('s',2.0)
-
-        # fit of the baseline
-        coeffs = UnivariateSpline(yafit[:,0],yafit[:,1], s=splinesmooth)
-
-        baseline_fitted = coeffs(x)
-
-    elif method == 'gcvspline':
-
-        try:
-            from gcvspline import gcvspline, splderivative
-        except ImportError:
-            print('ERROR: Install gcvspline to use this mode (needs a working FORTRAN compiler).')
-
-        # optional parameters
-        splinesmooth = kwargs.get('s',2.0)
-
-        # Spline baseline with mode 1 of gcvspl.f, see gcvspline documentation
-        c, wk, ier = gcvspline(yafit[:,0],yafit[:,1],np.sqrt(np.abs(yafit[:,1])),splinesmooth,splmode = 1) # gcvspl with mode 1 and smooth factor
-
-        baseline_fitted = splderivative(x,yafit[:,0],c)
-
-    elif method == 'gaussian':
-        ### Baseline is of the type y = a*exp(-log(2)*((x-b)/c)**2)
-        # optional parameters
-        p0_gauss = kwargs.get('p0_gaussian',[1.,1.,1.])
-        ## fit of the baseline
-        coeffs, pcov = curve_fit(rampy.gaussian,yafit[:,0],yafit[:,1],p0 = p0_gauss)
-
-        baseline_fitted = rampy.gaussian(x,coeffs[0],coeffs[1],coeffs[2])
-
-    elif method == 'exp':
-        ### Baseline is of the type y = a*exp(b*(x-xo))
-
-        # optional parameters
-        p0_exp = kwargs.get('p0_exp',[1.,1.,0.])
-        ## fit of the baseline
-        coeffs, pcov = curve_fit(rampy.funexp,yafit[:,0],yafit[:,1],p0 = p0_exp)
-
-        baseline_fitted = rampy.funexp(x,coeffs[0],coeffs[1],coeffs[2])
-
-    elif method == 'log':
-        ### Baseline is of the type y = a*np.log(-b*(x-c))-d*x**2
-
-        # optional parameters
-        p0_log = kwargs.get('p0_log',[1.,1.,1.,1.])
-        ## fit of the baseline
-        coeffs, pcov = curve_fit(rampy.funlog,yafit[:,0],yafit[:,1],p0 = p0_log)
-
-        baseline_fitted = rampy.funlog(x,coeffs[0],coeffs[1],coeffs[2],coeffs[3])
-
-    elif method == 'rubberband':
-        # code from this stack-exchange forum
-        #https://dsp.stackexchange.com/questions/2725/how-to-perform-a-rubberband-correction-on-spectroscopic-data
-
-        x = x.flatten()
-        # Find the convex hull
-        v = ConvexHull(np.array(list(zip(x, y))), incremental=True).vertices
-        #v = ConvexHull(np.vstack((x.ravel(), y.ravel())).T).vertices
-
-        # Rotate convex hull vertices until they start from the lowest one
-        v = np.roll(v, -v.argmin())
-        # Leave only the ascending part
-        v = v[:v.argmax()]
-
-        # Create baseline using linear interpolation between vertices
-        baseline_fitted = np.interp(x, x[v], y[v])
-
-    elif method == 'als':
-        # Matlab code in Eilers et Boelens 2005
-        # Python addaptation found on stackoverflow: https://stackoverflow.com/questions/29156532/python-baseline-correction-library
-
-        # optional parameters
-        lam = kwargs.get('lam',1.0*10**5)
-        p = kwargs.get('p',0.01)
-        niter = kwargs.get('niter',10)
-
-        # starting the algorithm
-        L = len(y)
-        D = sparse.csc_matrix(np.diff(np.eye(L), 2))
-        w = np.ones(L)
-        for i in range(niter):
-            W = sparse.spdiags(w, 0, L, L)
-            Z = W + lam * D.dot(D.transpose())
-            z = sparse.linalg.spsolve(Z, w*y)
-            w = p * (y > z) + (1-p) * (y < z)
-
-        baseline_fitted = z
-
-    elif method == 'arPLS':
-        # Adaptation of the Matlab code in Baek et al 2015
-
-        # optional parameters
-        lam = kwargs.get('lam',1.0*10**5)
-        ratio = kwargs.get('ratio',0.01)
-
-        N = len(y)
-        D = sparse.csc_matrix(np.diff(np.eye(N), 2))
-        w = np.ones(N)
-
-        while True:
-            W = sparse.spdiags(w, 0, N, N)
-            Z = W + lam * D.dot(D.transpose())
-            z = sparse.linalg.spsolve(Z, w*y)
-            d = y - z
-            # make d- and get w^t with m and s
-            dn = d[d<0]
-            m = np.mean(dn)
-            s = np.std(dn)
-            wt = 1.0/(1 + np.exp( 2* (d-(2*s-m))/s ) )
-            # check exit condition and backup
-            if norm(w-wt)/norm(w) < ratio:
-                break
-            w = wt
-
-        baseline_fitted = z
-
-    elif method == 'drPLS':
-        #according to Applied Optics, 2019, 58, 3913-3920.
-
-        #optional parameters
-        niter = kwargs.get('niter',100)
-        lam = kwargs.get('lam',1000000)
-        eta = kwargs.get('eta',0.5)
-        ratio = kwargs.get('ratio',0.001)
-
-        #optional smoothing in the next line, currently commented out
-        #y = np.around(savgol_filter(raw_data,19,2,deriv=0,axis=1),decimals=6)
-
-        L = len(y)
-
-        D = sparse.diags([1,-2,1],[0,-1,-2],shape=(L,L-2),format='csr')
-        D = D.dot(D.transpose())
-        D_1 = sparse.diags([-1,1],[0,-1],shape=(L,L-1),format='csr')
-        D_1 = D_1.dot(D_1.transpose())
-
-        w_0 = np.ones(L)
-        I_n = sparse.diags(w_0,format='csr')
-
-        #this is the code for the fitting procedure
-        w = w_0
-        W = sparse.diags(w,format='csr')
-        Z = w_0
-
-        for jj in range(int(niter)):
-            W.setdiag(w)
-            Z_prev = Z
-            Z = sparse.linalg.spsolve(W + D_1 + lam * (I_n - eta*W) * D,W*y,permc_spec='NATURAL')
-            if np.linalg.norm(Z - Z_prev) > ratio:
-                d = y - Z
-                d_negative = d[d<0]
-                sigma_negative = np.std(d_negative)
-                mean_negative = np.mean(d_negative)
-                w = 0.5 * (1 - np.exp(jj) * (d - (-mean_negative + 2*sigma_negative))/sigma_negative / (1 + np.abs(np.exp(jj) * (d - (-mean_negative + 2*sigma_negative))/sigma_negative)))
-            else:
-                break
-        #end of fitting procedure
-
-        baseline_fitted = Z
-    else:
-        raise ValueError("method not found, check you entered the right name.")
-
-    return y_input.reshape(-1,1)-Y_scaler.inverse_transform(baseline_fitted.reshape(-1, 1)), Y_scaler.inverse_transform(baseline_fitted.reshape(-1, 1))
+            break
+    return Z

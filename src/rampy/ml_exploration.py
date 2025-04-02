@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+#############################################################################
+#Copyright (c) 2018-2025 Charles Le Losq
+#
+# Licence GNU-GPL
+#
+#
+#############################################################################
 import sklearn
 from sklearn.decomposition import PCA, NMF
 

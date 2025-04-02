@@ -1,169 +1,164 @@
+# -*- coding: utf-8 -*-
+#############################################################################
+#Copyright (c) 2018-2025 Charles Le Losq
+#
+# Licence GNU-GPL
+#
+#
+#############################################################################
 import numpy as np
 
 import sklearn
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import GridSearchCV
-from sklearn.preprocessing import StandardScaler
-from sklearn.datasets import make_moons, make_circles, make_classification
-from sklearn.neural_network import MLPClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.svm import SVC
-from sklearn.gaussian_process import GaussianProcessClassifier
-from sklearn.gaussian_process.kernels import RBF
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
-from sklearn.ensemble import BaggingClassifier
 
 class mlclassificator:
-    """use machine learning algorithms from scikit learn to perform classification of spectra.
+    """Perform automatic classification of spectral data using scikit-learn machine learning algorithms.
 
-    Attributes
-    ----------
-    x : {array-like, sparse matrix}, shape = (n_samples, n_features)
-        Spectra; n_features = n_frequencies.
-    y : array, shape = (n_samples,)
-        numeric labels.
-    X_test : {array-like, sparse matrix}, shape = (n_samples, n_features)
-        spectra organised in rows (1 row = one spectrum) that you want to use as a testing dataset. THose spectra should not be present in the x (training) dataset. The spectra should share a common X axis.
-    y_test : array, shape = (n_samples,)
-        numeric labels that you want to use as a testing dataset. Those targets should not be present in the y (training) dataset.
-    algorithm : String,
-        "Nearest Neighbors", "Linear SVM", "RBF SVM", "Gaussian Process",
-         "Decision Tree", "Random Forest", "Neural Net", "AdaBoost",
-         "Naive Bayes", "QDA"
-    scaling : Bool
-        True or False. If True, data will be scaled during fitting and prediction with the requested scaler (see below),
-    scaler : String
-        the type of scaling performed. Choose between MinMaxScaler or StandardScaler, see http://scikit-learn.org/stable/modules/preprocessing.html for details. Default = "MinMaxScaler".
-    test_size : float
-        the fraction of the dataset to use as a testing dataset; only used if X_test and y_test are not provided.
-    rand_state : Float64
-        the random seed that is used for reproductibility of the results. Default = 42.
-    params_ : Dictionary
-        contain the values of the hyperparameters that should be provided to the algorithm. See scikit-learn documentation for details for each algorithm.
-    prediction_train : Array{Float64}
-        the predicted target values for the training y dataset.
-    prediction_test : Array{Float64}
-        the predicted target values for the testing y_test dataset.
-    model : Scikit learn model
-        A Scikit Learn object model, see scikit learn library documentation.
-    X_scaler : scikit learn scaler
-        A Scikit Learn scaler object for the x values.
-    Y_scaler : scikit learn scaler
-        A Scikit Learn scaler object for the y values.
+    This class supports various classification algorithms and allows customization of hyperparameters. 
+    It also handles scaling and splitting of training and testing datasets.
 
-    Example
-    -------
-    Given an array X of n samples by m frequencies, and Y an array of n x 1 concentrations
-    >>> model = rampy.mlclassificator(X,y)
-    >>> model.algorithm("SVC")
-    >>> model.user_kernel = 'poly'
-    >>> model.fit()
-    >>> y_new = model.predict(X_new)
-
-    Remarks
-    -------
-    For details on hyperparameters of each algorithms, please directly consult the documentation of SciKit Learn at:
-    http://scikit-learn.org/stable/
-
-    In progress
+    Attributes:
+        x (np.ndarray): Training spectra organized in rows (1 row = one spectrum).
+        y (np.ndarray): Target labels for training data.
+        X_test (np.ndarray): Testing spectra organized in rows.
+        y_test (np.ndarray): Target labels for testing data.
+        algorithm (str): Machine learning algorithm to use. Options:
+            "Nearest Neighbors", "Linear SVM", "RBF SVM", "Gaussian Process",
+            "Decision Tree", "Random Forest", "Neural Net", "AdaBoost",
+            "Naive Bayes", "QDA".
+        scaling (bool): Whether to scale the data during fitting and prediction.
+        scaler (str): Type of scaler to use ("MinMaxScaler" or "StandardScaler").
+        test_size (float): Fraction of the dataset to use as a testing dataset if X_test and y_test are not provided.
+        rand_state (int): Random seed for reproducibility. Default is 42.
+        params_ (dict): Hyperparameters for the selected algorithm.
+        model: Scikit-learn model instance.
+        X_scaler: Scikit-learn scaler instance for X values.
     """
 
     def __init__(self,x,y,**kwargs):
-        """
-        Parameters
-        ----------
-        x : array{Float64}
-            the spectra organised in rows (1 row = one spectrum). The spectra should share a common X axis.
-        y : Array{Float64}
-            Target. Only a single target is possible for now.
+        """Initialize the mlclassificator.
+
+        Args:
+            x (np.ndarray): Training spectra organized in rows.
+            y (np.ndarray): Target labels for training data.
+
+        Keyword Args:
+            X_test (np.ndarray, optional): Testing spectra. Default is None.
+            y_test (np.ndarray, optional): Testing labels. Default is None.
+            algorithm (str, optional): Machine learning algorithm to use. Default is "Nearest Neighbors".
+            test_size (float, optional): Fraction of data used for testing if X_test and y_test are not provided. Default is 0.3.
+            scaling (bool, optional): Whether to scale data. Default is True.
+            scaler (str, optional): Type of scaler ("MinMaxScaler" or "StandardScaler"). Default is "MinMaxScaler".
+            rand_state (int, optional): Random seed for reproducibility. Default is 42.
+            params_ (dict, optional): Hyperparameters for the selected algorithm. Default is None.
+
+        Raises:
+            ValueError: If X_test has a different number of features than x.
         """
         self.x = x
         self.y = y
-        #
-        # Kwargs extractions
-        #
-        self.X_test = kwargs.get("X_test",[0.0])
-        self.y_test = kwargs.get("y_test",[0.0])
-        self.algorithm = kwargs.get("algorithm","Nearest Neighbors")
-        self.test_sz = kwargs.get("test_size",0.3)
-        self.scaling = kwargs.get("scaling",True)
-        self.scaler = kwargs.get("scaler","MinMaxScaler")
-        self.rand_state = kwargs.get("rand_state",42)
+        self.X_test = kwargs.get("X_test", None)
+        self.y_test = kwargs.get("y_test", None)
+        self.algorithm = kwargs.get("algorithm", "Nearest Neighbors")
+        self.test_size = kwargs.get("test_size", 0.3)
+        self.scaling = kwargs.get("scaling", True)
+        self.scaler = kwargs.get("scaler", "MinMaxScaler")
+        self.rand_state = kwargs.get("rand_state", 42)
+        self.params_ = kwargs.get("params_", None)
 
-        # hyperparameters for the algorithms
-        self.user_kernel = kwargs.get("kernel","rbf")
-
-        self.params_ = kwargs.get(
-            "params_",None)
-
-        if len(self.X_test) == 1:
-            self.X_train, self.X_test, self.y_train, self.y_test = sklearn.model_selection.train_test_split(
-            self.x, self.y.reshape(-1, 1), test_size=self.test_sz, random_state=self.rand_state)
-        elif self.X_test.shape[1] == self.x.shape[1]:
+        # Split data if no test set is provided
+        if self.X_test is None or self.y_test is None:
+            from sklearn.model_selection import train_test_split
+            self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
+                self.x, self.y, test_size=self.test_size, random_state=self.rand_state
+            )
+        else:
+            if self.X_test.shape[1] != self.x.shape[1]:
+                raise ValueError("X_test must have the same number of features as x.")
             self.X_train = np.copy(self.x)
             self.y_train = np.copy(self.y)
-        else:
-            ValueError("You tried to provide a testing dataset that has a different number of features (in columns) than the training set. Please correct this.")
 
-        # to avoid any problem with SciKit Learn quite annoying demands for the shape of arrays...
-        self.y_train = self.y_train.reshape(-1,1)
-        self.y_test = self.y_test.reshape(-1, 1)
-
-        # initialising the preprocessor scaler
+        # Initialize scaler
         if self.scaler == "StandardScaler":
-            self.X_scaler = sklearn.preprocessing.StandardScaler()
+            from sklearn.preprocessing import StandardScaler
+            self.X_scaler = StandardScaler()
         elif self.scaler == "MinMaxScaler":
-            self.X_scaler = sklearn.preprocessing.MinMaxScaler()
+            from sklearn.preprocessing import MinMaxScaler
+            self.X_scaler = MinMaxScaler()
         else:
-            InputError("Choose the scaler between MinMaxScaler and StandardScaler")
+            raise ValueError("Invalid scaler type. Choose 'MinMaxScaler' or 'StandardScaler'.")
+        
+        # Define dispatcher for algorithms
+        from sklearn.neighbors import KNeighborsClassifier
+        from sklearn.svm import SVC
+        from sklearn.gaussian_process import GaussianProcessClassifier
+        from sklearn.tree import DecisionTreeClassifier
+        from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+        from sklearn.naive_bayes import GaussianNB
+        from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+        from sklearn.neural_network import MLPClassifier
 
+        self.dispatcher = {
+            "Nearest Neighbors": KNeighborsClassifier,
+            "SVC": SVC,
+            "Gaussian Process": GaussianProcessClassifier,
+            "Decision Tree": DecisionTreeClassifier,
+            "Random Forest": RandomForestClassifier,
+            "Neural Net": MLPClassifier,
+            "AdaBoost": AdaBoostClassifier,
+            "Naive Bayes": GaussianNB,
+            "QDA": QuadraticDiscriminantAnalysis,
+        }
 
-        # now defining the model functions in a safe way:
-        self.dispatcher = {"Nearest Neighbors" : KNeighborsClassifier(3),
-                      "Linear SVM" : SVC(kernel="linear", C=0.025),
-                      "RBF SVM" : SVC(gamma=2, C=1),
-                      "Gaussian Process" : GaussianProcessClassifier(),
-                      "Decision Tree" : DecisionTreeClassifier(max_depth=15),
-                      "Random Forest" : RandomForestClassifier(max_depth=15, n_estimators=5, max_features=2),
-                      "Neural Net": MLPClassifier(),
-                      "AdaBoost": AdaBoostClassifier(),
-                      "Naive Bayes": GaussianNB(),
-                      "QDA": QuadraticDiscriminantAnalysis()}
-
-    def fit(self):
-        """Scale data and train the model with the indicated algorithm.
-
-        Do not forget to tune the hyperparameters.
-
-        Parameters
-        ----------
-        algorithm : String
-            algorithm to use. Choose between "Nearest Neighbors", "Linear SVM", "RBF SVM", "Gaussian Process",
-        "Decision Tree", "Random Forest", "Neural Net", "AdaBoost", "Naive Bayes", "QDA"
-        """
-
-        # scaling the data in all cases, it may not be used during the fit later
-        self.X_scaler.fit(self.X_train)
-        self.X_train_sc = self.X_scaler.transform(self.X_train)
+    def scale_data(self):
+        """Scale training and testing data."""
+        if not hasattr(self, 'X_scaler'):
+            raise AttributeError("Scaler has not been initialized.")
+        
+        # Fit and transform training data; transform testing data
+        self.X_train_sc = self.X_scaler.fit_transform(self.X_train)
         self.X_test_sc = self.X_scaler.transform(self.X_test)
 
-        self.model = self.dispatcher[self.algorithm]
+    def fit(self, params_: dict = None):
+        """Scale data and train or re-train the model with the specified algorithm.
 
-        if self.params_ != None:
-            self.model(**self.params)
-            #self.model = BaggingRegressor(base_estimator = nn_m, **self.param_bag)
+        This method initializes and trains the model if it hasn't been trained yet. If a model
+        already exists (from a previous fit), it reuses the existing model and optionally updates
+        its hyperparameters.
 
-        if self.scaling == True:
-            self.model.fit(self.X_train_sc, self.y_train.reshape(-1,))
-            self.prediction_train = self.model.predict(self.X_train_sc)
-            self.prediction_test = self.model.predict(self.X_test_sc)
+        Args:
+            params_ (dict, optional): Hyperparameters for the selected algorithm. If provided,
+                these parameters will override any previously set parameters.
+
+        Raises:
+            ValueError: If an invalid algorithm is specified or if scaling is inconsistent.
+        """
+        # Update hyperparameters if provided
+        if params_ is not None:
+            self.params_ = params_
+
+        # Ensure params_ is always a valid dictionary
+        self.params_ = self.params_ or {}
+
+        # Initialize or reuse the model
+        ModelClass = self.dispatcher[self.algorithm]
+        self.model = ModelClass(**self.params_)
+
+        # Scale data if required
+        if self.scaling:
+            self.X_scaler.fit(self.X_train)
+            self.X_train_sc = self.X_scaler.transform(self.X_train)
+            self.X_test_sc = self.X_scaler.transform(self.X_test)
+            X_train_used = self.X_train_sc
+            X_test_used = self.X_test_sc
         else:
-            self.model.fit(self.X_train, self.y_train.reshape(-1,))
-            self.prediction_train = self.model.predict(self.X_train)
-            self.prediction_test = self.model.predict(self.X_test)
+            X_train_used = self.X_train
+            X_test_used = self.X_test
+
+        # Fit the model on training data and make predictions
+        self.model.fit(X_train_used, self.y_train.reshape(-1,))
+        self.prediction_train = self.model.predict(X_train_used)
+        self.prediction_test = self.model.predict(X_test_used)
+
 
     def refit(self):
         """Re-train a model previously trained with fit()
@@ -179,21 +174,19 @@ class mlclassificator:
             self.prediction_test = self.model.predict(self.X_test)
 
     def predict(self,X):
-        """Predict using the model.
+        """Predict target values using the trained model.
 
-        Parameters
-        ----------
-        X : {array-like, sparse matrix}, shape = (n_samples, n_features)
-            Samples.
+        Args:
+            X (np.ndarray): Samples to predict with shape `(n_samples, n_features)`.
 
-        Returns
-        -------
-        C : array, shape = (n_samples,)
-            Returns predicted values.
+        Returns:
+            np.ndarray: Predicted target values with shape `(n_samples,)`.
 
-        Remark
-        ------
-        if self.scaling == "yes", scaling will be performed on the input X.
+        Notes:
+            - If `scaling` is enabled, input samples will be scaled before prediction.
+
+        Raises:
+           ValueError: If the model has not been fitted yet.
         """
         if self.scaling == True:
             X_sc = self.X_scaler.transform(X)

@@ -5,7 +5,6 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1168729.svg)](https://doi.org/10.5281/zenodo.1168729) [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/charlesll/rampy.git/master)
 ![GitHub](https://img.shields.io/github/license/charlesll/rampy)
 
-
 Rampy is a Python library that aims at helping processing spectroscopic data, such as Raman, Infrared or XAS spectra.
 
 - **Documentation:** http://charlesll.github.io/rampy/html/index.html

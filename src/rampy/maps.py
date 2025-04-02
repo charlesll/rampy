@@ -1,5 +1,11 @@
-#!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+#############################################################################
+#Copyright (c) 2018-2025 Charles Le Losq
+#
+# Licence GNU-GPL
+#
+#
+#############################################################################
 
 import pandas as pd
 import numpy as np
@@ -145,7 +151,7 @@ class maps():
         """
         self.centroid_position = np.copy(self.X)
         for i in range(len(self.X)):
-            sp_ = rp.get_portion_interest(self.w, y[:,i], region_to_investigate)
+            sp_ = rp.extract_signal(self.w, y[:,i], region_to_investigate)
             self.centroid_position[i] = rp.centroid(sp_[:,0], sp_[:,1])
 
     def intensity(self, y, region_to_investigate):
@@ -168,7 +174,7 @@ class maps():
         """
         self.I_max = np.copy(self.X)
         for i in range(len(self.X)):
-            sp_ = rp.get_portion_interest(self.w, y[:,i], region_to_investigate)
+            sp_ = rp.extract_signal(self.w, y[:,i], region_to_investigate)
             self.I_max[i] = np.max(sp_[:,1])
 
     def area(self, y, region_to_investigate):
@@ -191,7 +197,7 @@ class maps():
         """
         self.A = np.copy(self.X)
         for i in range(len(self.X)):
-            sp_ = rp.get_portion_interest(self.w, y[:,i], region_to_investigate)
+            sp_ = rp.extract_signal(self.w, y[:,i], region_to_investigate)
             self.A[i] = np.trapz(sp_[:,1],sp_[:,0])
 
     def intensity_ratio(self, y, region_to_investigate):
@@ -215,8 +221,8 @@ class maps():
         I_max1 = np.copy(self.X)
         I_max2 = np.copy(self.X)
         for i in range(len(self.X)):
-            sp_1 = rp.get_portion_interest(self.w, y[:,i], region_to_investigate[0,:].reshape(1,2))
-            sp_2 = rp.get_portion_interest(self.w, y[:,i], region_to_investigate[1,:].reshape(1,2))
+            sp_1 = rp.extract_signal(self.w, y[:,i], region_to_investigate[0,:].reshape(1,2))
+            sp_2 = rp.extract_signal(self.w, y[:,i], region_to_investigate[1,:].reshape(1,2))
             I_max1 = np.max(sp_1[:,1])
             I_max2 = np.max(sp_2[:,1])
             self.I_ratio[i] = I_max1/I_max2
@@ -244,8 +250,8 @@ class maps():
         A_max1 = np.copy(self.X)
         A_max2 = np.copy(self.X)
         for i in range(len(self.X)):
-            sp_1 = rp.get_portion_interest(self.w, y[:,i], region_to_investigate[0,:].reshape(1,2))
-            sp_2 = rp.get_portion_interest(self.w, y[:,i], region_to_investigate[1,:].reshape(1,2))
+            sp_1 = rp.extract_signal(self.w, y[:,i], region_to_investigate[0,:].reshape(1,2))
+            sp_2 = rp.extract_signal(self.w, y[:,i], region_to_investigate[1,:].reshape(1,2))
             A_max1 = np.trapz(sp_1[:,1],sp_1[:,0])
             A_max2 = np.trapz(sp_2[:,1],sp_2[:,0])
             self.A_ratio[i] = A_max1/A_max2

@@ -1,19 +1,11 @@
 # RamPy -- Examples
 ===================
 
-Copyright (2015-2023) C. Le Losq.
+Copyright (2015-2025) C. Le Losq.
 
 lelosq@ipgp.fr
 
-This folder contains examples for the use of Rampy. Feel free to send PR if you have more examples or improvements to propose, as well as ideas for examples you would like to see there.
-
-The examples showcase the basic use of Rampy. Additional information is provided
-in the docstrings of functions that can be access like 'help(rampy.baseline)'
-for instance in Python or using the documentation viewer in Jupyter.
-
-The './data/' folder contains data necessary for some of the examples.
-
-The following folders contain codes related to publications using Rampy:
+Example notebooks are now shown in the documentation. This folder contain codes related to publications using Rampy:
 
   - rameau_example showcases the use of the rampy.rameau function,
   which uses the methods shown in:

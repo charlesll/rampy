@@ -3,6 +3,7 @@ README.md
 pyproject.toml
 src/rampy/__init__.py
 src/rampy/baseline.py
+src/rampy/dac.py
 src/rampy/filters.py
 src/rampy/functions.py
 src/rampy/maps.py
@@ -12,6 +13,7 @@ src/rampy/ml_exploration.py
 src/rampy/ml_regressor.py
 src/rampy/peak_area.py
 src/rampy/peak_shapes.py
+src/rampy/plotting.py
 src/rampy/rameau.py
 src/rampy/spectranization.py
 src/rampy/tlcorrection.py
@@ -22,10 +24,13 @@ src/rampy.egg-info/requires.txt
 src/rampy.egg-info/top_level.txt
 src/rampy/notused/IRTABS.py
 tests/test_baseline.py
+tests/test_dac.py
 tests/test_mixing.py
 tests/test_mlclassificator.py
 tests/test_mlexplorer.py
 tests/test_mlregressor.py
+tests/test_peakarea.py
+tests/test_plotting.py
 tests/test_rameau.py
 tests/test_smooth.py
 tests/test_spectranization.py

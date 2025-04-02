@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+#############################################################################
+#Copyright (c) 2018-2025 Charles Le Losq
+#
+# Licence GNU-GPL
+#
+#
+#############################################################################
 import sklearn
 from sklearn import model_selection
 from sklearn.neural_network import MLPRegressor
@@ -8,7 +16,7 @@ from sklearn.ensemble import BaggingRegressor
 import pandas as pd
 import numpy as np
 
-def chemical_splitting(Pandas_DataFrame, target,split_fraction=0.30, rand_state=42):
+def chemical_splitting(Pandas_DataFrame, target, split_fraction=0.30, rand_state=42):
     """split datasets depending on their chemistry
 
     Parameters
@@ -259,7 +267,7 @@ class mlregressor:
         elif self.algorithm == "BaggingNeuralNet":
             nn_m = MLPRegressor(**self.param_neurons)
 
-            self.model = BaggingRegressor(base_estimator = nn_m, **self.param_bag)
+            self.model = BaggingRegressor(estimator = nn_m, **self.param_bag)
 
         if self.scaling == True:
             self.model.fit(self.X_train_sc, self.y_train_sc.reshape(-1,))

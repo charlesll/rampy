@@ -1,6 +1,6 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: rampy
-Version: 0.5.2
+Version: 0.6.0
 Summary: A Python module containing functions to treat spectroscopic (XANES, Raman, IR...) data
 Author-email: Charles Le Losq <lelosq@ipgp.fr>
 License: GNU GENERAL PUBLIC LICENSE
@@ -351,19 +351,20 @@ Project-URL: Changelog, https://github.com/charlesll/rampy/NEWS.md
 Keywords: spectroscopy,data,treatment,Raman,XANES,Infrared,NMR
 Classifier: Development Status :: 5 - Production/Stable
 Classifier: Programming Language :: Python
-Requires-Python: >=3.8
+Requires-Python: >=3.9
 Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: numpy>=1.12
-Requires-Dist: scipy
-Requires-Dist: scikit-learn
+Requires-Dist: scipy>=1.10.0
+Requires-Dist: scikit-learn>=1.0.0
 Requires-Dist: pandas
 Requires-Dist: xlrd
 Requires-Dist: matplotlib
+Requires-Dist: cvxpy>=1.1
+Requires-Dist: plotly
 Provides-Extra: gcvspline
 Requires-Dist: gcvspline; extra == "gcvspline"
-Provides-Extra: mixing
-Requires-Dist: cvxpy>=1.1; extra == "mixing"
+Dynamic: license-file
 
 # RamPy
 =======

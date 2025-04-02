@@ -4,19 +4,21 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rampy"
-version = "0.5.3"
+version = "0.6.0"
 dependencies = [
     "numpy>=1.12",
-    "scipy",
-    "scikit-learn",
+    "scipy>=1.10.0",
+    "scikit-learn>=1.0.0",
     "pandas",
     "xlrd",
-    "matplotlib"
+    "matplotlib",
+    "cvxpy>=1.1",
+    "plotly"
 ]
 authors = [
   {name = "Charles Le Losq", email = "lelosq@ipgp.fr"},
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 license = {file = "LICENSE"}
 description = "A Python module containing functions to treat spectroscopic (XANES, Raman, IR...) data"
 readme = "README.md"
@@ -28,7 +30,6 @@ classifiers = [
 
 [project.optional-dependencies]
 gcvspline = ["gcvspline"]
-mixing = ["cvxpy>=1.1"]
 
 [project.urls]
 Homepage = "https://github.com/charlesll/rampy/"

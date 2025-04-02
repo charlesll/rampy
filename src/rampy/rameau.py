@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #############################################################################
-#Copyright (c) 2018 Charles Le Losq
+#Copyright (c) 2018-2025 Charles Le Losq
 #
 # Licence GNU-GPL
 #
@@ -81,16 +81,11 @@ class rameau:
     p = None
     names = []
 
-    def __init__(self,data_liste,path_spectra='./raw/'):
+    def __init__(self, data_liste, path_spectra='./raw/'):
         self.data_liste = data_liste
         self.water = np.asarray(data_liste["Water, wt%"])
         self.names = data_liste["Name"]
         self.path_spectra = path_spectra
-
-        try: # we test if gcvspline is installed
-            import gcvspline
-        except ImportError:
-            print('gcvspline module not found. Please install it and check it works (requires a FORTRAN compiler).')
 
     def data_reduction(self,method="LL2012",delim='\t',laser=514.532,spline_coeff=0.001,poly_coeff=3):
         """process Raman spectra of glass to calculate the Rws ratio
@@ -323,12 +318,6 @@ class rameau:
     
         return np.array(wat_list), np.array(areas_list), np.array(areas_lref)
                 
-                
-                
-                
-                
-                
-
 def fit_spectra(data_liste,method="LL2012",delim='\t',path_in='./raw/',laser=514.532,spline_coeff=0.001, poly_coeff=3):
     """Calculate the ratios of water and silicate signals from Raman spectra
 
@@ -376,8 +365,6 @@ def fit_spectra(data_liste,method="LL2012",delim='\t',path_in='./raw/',laser=514
     C. Le Losq, D. R. Neuville, R. Moretti, J. Roux, Determination of water content in silicate glasses using Raman spectrometry: Implications for the study of explosive volcanism. American Mineralogist. 97, 779–790 (2012).
     D. Di Genova et al., Effect of iron and nanolites on Raman spectra of volcanic glasses: A reassessment of existing strategies to estimate the water content. Chemical Geology. 475, 76–86 (2017).
     """
-
-    import gcvspline
 
     x_all_lf = np.arange(50,1400,1.0)
     x_all_hf = np.arange(2800,3800,1.0)

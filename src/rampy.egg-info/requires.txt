@@ -1,12 +1,11 @@
 numpy>=1.12
-scipy
-scikit-learn
+scipy>=1.10.0
+scikit-learn>=1.0.0
 pandas
 xlrd
 matplotlib
+cvxpy>=1.1
+plotly
 
 [gcvspline]
 gcvspline
-
-[mixing]
-cvxpy>=1.1

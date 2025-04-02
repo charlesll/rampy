@@ -1,37 +1,43 @@
-#!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+#############################################################################
+#Copyright (c) 2018-2025 Charles Le Losq
+#
+# Licence GNU-GPL
+#
+#
+#############################################################################
 
 import numpy as np
 from scipy.special import erfc
 
 ############ SIMPLE MATHEMATICAL FUNCTIONS ###########
-def funlog(x,a,b,c,d):
+def funlog(x, a, b, c, d):
     """log baseline function
 
     a * ln(-b *(x-c)) - d*x**2
     """
     return a*np.log(-b*(x-c))-d*x**2
 
-def funexp(x,a,b,c):
+def funexp(x, a, b, c):
     """exponential baseline function
 
     a*exp(b*(x-c))
     """
     return a*np.exp(b*(x-c))
 
-def poly2(x,a,b,c):
+def poly2(x, a, b, c):
     """returns a + b*x + c*x*x"""
     return a + b*x + c*x*x
 
-def linear(x,a,b):
+def linear(x, a, b):
     """returns a + b*x"""
     return a + b*x
 
-def linear0(x,a):
+def linear0(x, a):
     """returns a*x"""
     return a*x
 
-def constant(x,a):
+def constant(x, a):
     """returns a constant value
 
     Parameters
@@ -128,23 +134,21 @@ def gauss_lsq_lfix(params,x):
 
 ########### SPECIFIC FUNCTIONS FOR CHEMICAL DIFFUSION
 
-
-
-def diffshort(x, t, C0, C1, D):
+def diffshort(x: np.ndarray, t: float, C0: float, C1: float, D: float) -> np.ndarray:
     """1D equation for the diffusion into a semi-infinite slab, see Crank 1975
 
     Parameters
     ----------
+    x : 1D array
+        the profil length in meters
+    t : float
+        time in seconds
     C0 : float
         the concentration in the core
     C1 : float
         the concentration at the border
     D : float
         the diffusion coefficient in log10 unit, m^2.s^-1
-    x : 1D array
-        the profil length in meters
-    t : float
-        time in seconds
 
     Returns
     -------
@@ -156,7 +160,7 @@ def diffshort(x, t, C0, C1, D):
 
     return Cx
 
-def difffull(x1, x2, t, C0, C1, D):
+def difffull(x1: float, x2: float, t: float, C0: float, C1: float, D: float) -> float:
     """Equation for the diffusion into a full slab, see Crank 1975
 
     Here we assume the profil to have 2 surfaces of contact on each side

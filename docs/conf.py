@@ -14,15 +14,14 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-
 # -- Project information -----------------------------------------------------
 
 project = 'RamPy'
-copyright = '2024, Charles Le Losq'
+copyright = '2025, Charles Le Losq'
 author = 'Charles Le Losq'
 
 # The full version, including alpha/beta/rc tags
-release = '0.5.3'
+release = '0.6.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -30,7 +29,7 @@ release = '0.5.3'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc','sphinx.ext.napoleon'
+extensions = ['sphinx.ext.autodoc','sphinx.ext.napoleon', 'nbsphinx', 'nbconvert'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -53,3 +52,12 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+html_logo = 'images/Rampy.png'
+tml_js_files = [
+    "require.min.js",  # Add to your _static
+    "custom.js",
+]
+
+# Here is for the plotly graphs
+import plotly.io as pio
+pio.renderers.default = 'sphinx_gallery'

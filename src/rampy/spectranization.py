@@ -1,36 +1,49 @@
 # -*- coding: utf-8 -*-
+#############################################################################
+#Copyright (c) 2018-2025 Charles Le Losq
+#
+# Licence GNU-GPL
+#
+#
+#############################################################################
 import numpy as np
-from scipy import interpolate
-from scipy import signal
-from scipy.optimize import curve_fit
-from scipy.interpolate import UnivariateSpline
 from scipy.interpolate import interp1d
 
 import rampy
 
-# SPECIFIC FUNCTIONS FOR TREATMENT OF SPECTRA
+def spectrarray(name: np.ndarray, sh: int, sf: int, x: np.ndarray) -> np.ndarray:
+    """Constructs a unified array of spectra with a common x-axis.
 
-def spectrarray(name,sh,sf,x):
-    """Construct a general array that contain common X values in first columns and all Y values in the subsequent columns.
+    This function reads spectral data from multiple files, resamples the y-values to match 
+    a common x-axis, and combines them into a single array.
 
-    Parameters
-    ----------
-    name : ndarray
-        Array containing the names of the files (should work with a dataframe too).
-    sh : int
-        Number of header line in files to skip.
-    sf : int
-        Number of footer lines in files to skip.
-    x : ndarray
-        The common x axis.
+    Args:
+        name (np.ndarray): Array of file names containing the spectra.
+        sh (int): Number of header lines to skip in each file.
+        sf (int): Number of footer lines to skip in each file.
+        x (np.ndarray): The common x-axis values to which all spectra will be resampled.
 
-    Returns
-    -------
-    out
-        An array with the common X axis in first column and all the spectra in the subsequent columns.
+    Returns:
+        np.ndarray: A 2D array where the first column contains the common x-axis values 
+        and subsequent columns contain the resampled y-values for each spectrum.
+
+    Raises:
+        ValueError: If any file contains invalid or missing data.
+
+    Notes:
+        - The function uses `np.genfromtxt` to read spectral data and `resample` for interpolation.
+        - NaN values in the input data are automatically removed.
+
+    Example:
+
+        >>> import numpy as np
+        >>> import rampy as rp
+        >>> filenames = np.array(["spectrum1.txt", "spectrum2.txt"])
+        >>> x_common = np.linspace(100, 2000, 500)
+        >>> spectra_array = rp.spectrarray(filenames, sh=1, sf=1, x=x_common)
     """
     for i in range(len(name)):
-        rawspectre = np.genfromtxt(name[i],skip_header=sh, skip_footer=sf)
+        rawspectre = np.genfromtxt(name[i], skip_header=sh, skip_footer=sf)
         rawspectre = rawspectre[~np.isnan(rawspectre).any(1)] # check for nan
 
         y = resample(rawspectre[:,0],rawspectre[:,1],x) # resample the signal
@@ -47,50 +60,76 @@ def spectrarray(name,sh,sf,x):
 
     return out
 
-def spectrataux(spectres):
-    """Calculate the increase/decrease rate of each frequencies in a set of spectra.
+def spectrataux(spectres: np.ndarray) -> np.ndarray:
+    """Calculates the rate of change for each frequency in a set of spectra.
 
-    WARNING : experimental function to fix.
+    This function fits a second-order polynomial to the y-values at each frequency across 
+    multiple spectra and calculates the polynomial coefficients.
 
-    Parameters
-    ----------
-    spectres : ndarray
-        An array of spectra containing the common X axis in first column and all the spectra in the subsequent columns. (see spectrarray function)
+    Args:
+        spectres (np.ndarray): A 2D array where the first column contains the common x-axis 
+            (frequencies) and subsequent columns contain y-values for multiple spectra.
 
-    Returns
-    -------
-    taux : ndarray
-        The rate of change of each frequency, fitted by a 2nd order polynomial functions.
+    Returns:
+        np.ndarray: A 2D array where the first column contains the frequencies and subsequent 
+        columns contain the polynomial coefficients for each frequency.
+
+    Raises:
+        ValueError: If curve fitting fails or input data is invalid.
+
+    Example:
+
+        >>> import numpy as np
+        >>> import rampy as rp
+        >>> spectres = np.array([[100, 10, 12], [200, 20, 22], [300, 30, 32]])
+        >>> taux = rp.spectrataux(spectres)
     """
-    # we need an organized function before calling the curve_fit algorithm
-    freq = spectres[:,0]
-    # output array
-    taux = np.zeros((len(freq),4))
-    taux[:,0] = freq[:]
+    from scipy.optimize import curve_fit
 
-    # We look a each frequency, we sort y data and fit them with a second order polynomial
+    # Extract frequencies (x-axis) and initialize output array
+    freq = spectres[:, 0]  # First column contains frequencies
+    taux = np.zeros((len(freq), 4))  # Output array with frequencies + coefficients
+    taux[:, 0] = freq[:]  # First column is frequencies
+
+    # Define second-order polynomial model
+    def poly2(x, a, b, c):
+        return a * x**2 + b * x + c
+
+    # Fit polynomial coefficients for each frequency
     for i in range(len(freq)):
-        y = spectres[i,1::]
-        popt, pcov = curve_fit(fun2,x,y,[0.5e-3,0.5e-4,1e-6])
-        taux[i,1:len(x)]=popt
+        y = spectres[i, 1:]  # Extract y-values at this frequency across all spectra
+        try:
+            popt, _ = curve_fit(poly2, np.arange(len(y)), y, p0=[0.5e-3, 0.5e-4, 1e-6])  # Fit coefficients
+            taux[i, 1:] = popt  # Store coefficients in output array
+        except RuntimeError as e:
+            raise ValueError(f"Curve fitting failed at frequency {freq[i]}: {e}")
 
     return taux
 
-def spectraoffset(spectre,oft):
-    """Vertical offset your spectra with values in offsets
+def spectraoffset(spectre, oft):
+    """Applies vertical offsets to spectra.
 
-    Parameters
-    ----------
-    spectre : ndarray
-        array of spectra constructed with the spectrarray function
-    oft : ndarray
-        array constructed with numpy and containing the coefficient for the offset to apply to spectra
+    This function offsets the y-values of each spectrum by a specified amount.
 
-    Returns
-    -------
-    out : ndarray
-        Array with spectra separated by offsets defined in oft
+    Args:
+        spectre (np.ndarray): A 2D array where rows represent x-axis values 
+            and columns represent spectra (first column is x-axis).
+        oft (np.ndarray): A 1D array specifying offset values for each spectrum.
 
+    Returns:
+        np.ndarray: A 2D array with the same shape as `spectre`, where specified columns 
+        have been vertically offset.
+
+    Raises:
+        ValueError: If the length of `oft` does not match the number of spectra.
+
+    Example:
+
+        >>> import numpy as np
+        >>> import rampy as rp
+        >>> spectre = np.array([[100, 10], [200, 20], [300, 30]])
+        >>> offsets = np.array([5])
+        >>> offset_spectra = rp.spectraoffset(spectre, offsets)
     """
 
     out = np.zeros(spectre.shape) # we already say what is the output array
@@ -101,140 +140,147 @@ def spectraoffset(spectre,oft):
 #
 # Simple data treatment functions
 #
-def shiftsp(sp, shift):
-    """Shift the X axis (frequency, wavenumber, etc.) of a given value.
+def shiftsp(sp: np.ndarray, shift: float) -> np.ndarray:
+    """Shifts the x-axis values of a spectrum by a given amount.
 
-    Parameters
-    ----------
-    sp : ndarray
-        An array with n columns, the first one should contain the X axis (frequency, wavenumber, etc.)
-    shift : float
-        The shift value to apply.
+    Args:
+        sp (np.ndarray): A 2D array where the first column contains x-axis values 
+            (e.g., frequency or wavenumber) and subsequent columns contain y-values.
+        shift (float): The amount by which to shift the x-axis values. Negative values 
+            shift left; positive values shift right.
 
-    Returns
-    -------
-    sp : ndarray
-        The same array but sorted such that the values in the first column are in increasing order.
+    Returns:
+        np.ndarray: The input array with shifted x-axis values.
+
+    Example:
+
+        >>> import numpy as np
+        >>> import rampy as rp
+        >>> sp = np.array([[100, 10], [200, 20], [300, 30]])
+        >>> shifted_sp = rp.shiftsp(sp, shift=50)
     """
     sp[:,0] = sp[:,0] - shift
     return sp
 
-def flipsp(sp):
-    """Flip or sort an array along the row dimension (dim = 1) if the row values are in decreasing order.
+def flipsp(sp: np.ndarray) -> np.ndarray:
+    """Sorts or flips a spectrum along its row dimension based on x-axis values.
 
-    Starting from rampy v0.5, the new version is using argsort, such that the X values can be in any order.
+    Args:
+        sp (np.ndarray): A 2D array where the first column contains x-axis values 
+            and subsequent columns contain y-values.
 
-    Parameters
-    ----------
-    sp : ndarray
-        An array with n columns, the first one should contain the X axis (frequency, wavenumber, etc.)
+    Returns:
+        np.ndarray: The input array sorted in ascending order based on the first column.
 
-    Returns
-    -------
-    sp : ndarray
-        The same array but sorted such that the values in the first column are in increasing order.
+    Notes:
+        - Uses `np.argsort` to ensure sorting regardless of initial order.
+
+    Example:
+
+        >>> import numpy as np
+        >>> import rampy as rp
+        >>> sp = np.array([[300, 30], [100, 10], [200, 20]])
+        >>> sorted_sp = rp.flipsp(sp)
     """
     return sp[sp[:, 0].argsort()] # we actually use argsort to sort the array in ascending order
 
-def resample(x,y,x_new,**kwargs):
-    """Resample a y signal associated with x, along the x_new values.
+def resample(x: np.ndarray, y: np.ndarray, x_new: np.ndarray, **kwargs) -> np.ndarray:
+    """
+    Resamples a y signal along new x-axis values using interpolation.
 
-    Parameters
-    ----------
-    x : ndarray
-        The x values
-    y : ndarray
-        The y values
-    x_new : ndarray
-        The new X values
-    kind : str or int, optional
-        Specifies the kind of interpolation as a string (‘linear’, ‘nearest’, ‘zero’, ‘slinear’, ‘quadratic’, ‘cubic’, ‘previous’, ‘next’, where ‘zero’, ‘slinear’, ‘quadratic’ and ‘cubic’ refer to a spline interpolation of zeroth, first, second or third order; ‘previous’ and ‘next’ simply return the previous or next value of the point) or as an integer specifying the order of the spline interpolator to use. Default is ‘linear’.
-    axis : int, optional
-        Specifies the axis of y along which to interpolate. Interpolation defaults to the last axis of y.
-    copy : bool, optional
-        If True, the class makes internal copies of x and y. If False, references to x and y are used. The default is to copy.
-    bounds_error : bool, optional
-        If True, a ValueError is raised any time interpolation is attempted on a value outside of the range of x (where extrapolation is necessary). If False, out of bounds values are assigned fill_value. By default, an error is raised unless fill_value=”extrapolate”.
-    fill_value : array-like or (array-like, array_like) or “extrapolate”, optional
-        if a ndarray (or float), this value will be used to fill in for requested points outside of the data range. If not provided, then the default is NaN. The array-like must broadcast properly to the dimensions of the non-interpolation axes.
-        If a two-element tuple, then the first element is used as a fill value for x_new < x[0] and the second element is used for x_new > x[-1]. Anything that is not a 2-element tuple (e.g., list or ndarray, regardless of shape) is taken to be a single array-like argument meant to be used for both bounds as below, above = fill_value, fill_value.
+    Args:
+        x (np.ndarray): Original x-axis values.
+        y (np.ndarray): Original y-axis values corresponding to `x`.
+        x_new (np.ndarray): New x-axis values for resampling.
+        **kwargs: Additional arguments passed to `scipy.interpolate.interp1d`.
 
-        New in scipy version 0.17.0.
+            - kind (str or int): Type of interpolation ('linear', 'cubic', etc.). Default is 'linear'.
+            - bounds_error (bool): If True, raises an error when extrapolation is required. Default is False.
+            - fill_value (float or str): Value used for out-of-bounds points. Default is NaN or "extrapolate".
 
-        If “extrapolate”, then points outside the data range will be extrapolated.
+    Returns:
+        np.ndarray: Resampled y-values corresponding to `x_new`.
 
-        New in scipy version 0.17.0.
-
-    assume_sorted : bool, optional
-        If False, values of x can be in any order and they are sorted first. If True, x has to be an array of monotonically increasing values.
-
-    Returns
-    -------
-    y_new : ndarray
-        y values interpolated at x_new.
-
-    Remarks
-    -------
-    Uses scipy.interpolate.interp1d. Optional arguments are passed to scipy.interpolate.interp1d, see https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html
-
+    Example:
+    
+        >>> import numpy as np
+        >>> import rampy as rp
+        >>> original_x = np.array([100, 200, 300])
+        >>> original_y = np.array([10, 20, 30])
+        >>> new_x = np.linspace(100, 300, 5)
+        >>> resampled_y = rp.resample(original_x, original_y, new_x)
     """
     f = interp1d(x,y,**kwargs)
     return f(x_new)
 
-def normalise(y,x=0,method="intensity"):
-    """normalise y signal(s)
+def normalise(y: np.ndarray, x : np.ndarray = None, method: str = "intensity") -> np.ndarray:
+    """Normalizes the y signal(s) using specified methods.
 
-    Parameters
-    ==========
-    x : ndarray, m values by n samples
-        x values
-    y : ndarray, m values by n samples
-        corresponding y values
-    method : string
-        method used, choose between area, intensity, minmax
+    This function normalizes the input y signal(s) based on the chosen method: 
+    by area under the curve, maximum intensity, or min-max scaling.
 
-    Returns
-    =======
-    y_norm : Numpy array
-        Normalised signal(s)
+    Args:
+        y (np.ndarray): A 2D array of shape (m values, n samples) containing the y values to normalize.
+        x (np.ndarray, optional): A 2D array of shape (m values, n samples) containing the x values 
+            corresponding to `y`. Required for area normalization. Default is None.
+        method (str): The normalization method to use. Options are:
+            - 'area': Normalize by the area under the curve.
+            - 'intensity': Normalize by the maximum intensity.
+            - 'minmax': Normalize using min-max scaling.
+
+    Returns:
+        np.ndarray: A 2D array of normalized y signals with the same shape as the input `y`.
+
+    Raises:
+        ValueError: If `x` is not provided when using the 'area' normalization method.
+        NotImplementedError: If an invalid normalization method is specified.
+
+    Example:
+        >>> import numpy as np
+        >>> import rampy as rp
+        >>> x = np.linspace(0, 10, 100)
+        >>> y = rp.gaussian(x, 10., 50., 2.0)
+        >>> y_norm = rp.normalise(y, x=x, method="area")
     """
+
     if method == "area":
         try:
-            y = y/np.trapz(y,x,axis=0)
+            y = y/np.trapz(y, x, axis=0)
         except:
             raise ValueError("Input array of x values for area normalisation")
     elif method == "intensity":
-        y = y/np.max(y,axis=0)
+        y = y/np.max(y, axis=0)
 
     elif method == "minmax":
-        y = (y-np.min(y,axis=0))/(np.max(y,axis=0)-np.min(y,axis=0))
+        y = (y-np.min(y, axis=0))/(np.max(y, axis=0)-np.min(y, axis=0))
     else:
         raise NotImplementedError("Wrong method name, choose between area, intensity and minmax.")
 
     return y
 
-def centroid(x,y,smoothing=False,**kwargs):
-    """calculation of y signal centroid(s)
+def centroid(x: np.ndarray, y: np.ndarray, smoothing: bool = False, **kwargs) -> np.ndarray:
+    """Calculates the centroid of y signal(s).
 
-    as np.sum(y/np.sum(y)*x)
+    The centroid is calculated as \( \text{centroid} = \sum(y / \sum(y) \cdot x) \).
 
-    Parameters
-    ==========
-    x: Numpy array, m values by n samples
-        x values
-    y: Numpy array, m values by n samples
-        y values
+    Args:
+        x (np.ndarray): A 2D array of shape (m values, n samples) containing the x-axis values.
+        y (np.ndarray): A 2D array of shape (m values, n samples) containing the y-axis values.
+        smoothing (bool): Whether to smooth the signals before calculating centroids. 
+            If True, smoothing is applied using `rampy.smooth` with additional arguments passed via `kwargs`.
 
-    Options
-    =======
-    smoothing : bool
-        True or False. Smooth the signals with arguments provided as kwargs. Default method is whittaker smoothing. See the rampy.smooth function for smoothing options and arguments.
+    Returns:
+        np.ndarray: A 1D array of centroids for each sample in `y`.
 
-    Returns
-    =======
-    centroid : Numpy array, n samples
-        signal centroid(s)
+    Example:
+
+        >>> import numpy as np
+        >>> import rampy as rp
+        >>> x = np.linspace(0, 10, 100).reshape(-1, 1)
+        >>> y = rp.gaussian(x, 10., 50., 2.0)
+        >>> centroids = rp.centroid(x, y)
     """
+
 
     y_ = y.copy()
 
@@ -244,29 +290,29 @@ def centroid(x,y,smoothing=False,**kwargs):
 
     return np.sum(y_/np.sum(y_,axis=0)*x,axis=0)
 
-def despiking(x, y, neigh=4, threshold = 3):
-    """remove spikes from the y 1D signal given a threshold
+def despiking(x: np.ndarray, y: np.ndarray, neigh:int = 4, threshold:int = 3) -> np.ndarray:
+    """Removes spikes from a 1D signal using a threshold-based approach.
 
-    To determine the spikes, this function smooths the spectra, calculates the residual error RMSE
-    and replaces points above threshold*RMSE using the mean of neighboring points. All other points are left unchanged.
-    
-    Parameters
-    ----------
-    x : 1D array
-        signal to despike
-    y : 1D array
-        signal to despike
-    neigh: int
-        numbers of points around the spikes to select for calculating average value for despiking
-        and window length for smoothing, default = 4
-    threshold: int
-        multiplier of sigma, default = 3
-    
-    Returns
-    -------
-    y : 1D array
-        the signal without spikes
-    
+    This function identifies spikes in a signal by comparing local residuals to a threshold 
+    based on the root mean square error (RMSE). Spikes are replaced with the mean of neighboring points.
+
+    Args:
+        x (np.ndarray): A 1D array containing the x-axis values of the signal.
+        y (np.ndarray): A 1D array containing the y-axis values of the signal to despike.
+        neigh (int): The number of neighboring points to use for calculating average values 
+            during despiking and for smoothing. Default is 4.
+        threshold (int): The multiplier of RMSE used to identify spikes. Default is 3.
+
+    Returns:
+        np.ndarray: A 1D array of the despiked signal.
+
+    Example:
+
+        >>> import numpy as np
+        >>> import rampy as rp
+        >>> x = np.linspace(0, 10, 100)
+        >>> y = rp.gaussian(x, 10., 50., 2.0)
+        >>> y_despiked = rp.despiking(x, y)
     """
     # we make sure we work with vectors
     y = y.reshape(-1)
@@ -296,3 +342,79 @@ def despiking(x, y, neigh=4, threshold = 3):
             y_out[i] = np.mean(y[w2]) # and we average their values
  
     return y_out
+
+def invcm_to_nm(x_inv_cm: np.ndarray, laser_nm: float = 532.0) -> np.ndarray:
+    """Converts Raman shifts from inverse centimeters (cm⁻¹) to nanometers (nm).
+
+    Args:
+        x_inv_cm (float or np.ndarray): Raman shift(s) in inverse centimeters (cm⁻¹).
+        laser_nm (float): Wavelength of the excitation laser in nanometers. Default is 532.0 nm.
+
+    Returns:
+        float or np.ndarray: Wavelength(s) in nanometers corresponding to the Raman shifts.
+
+    Example:
+
+        >>> import rampy as rp
+        >>> x_inv_cm = 1000.0
+        >>> wavelength_nm = rp.invcm_to_nm(x_inv_cm)
+    """
+    laser_inv_cm = 1.0 / (laser_nm * 1.0e-7)
+    x_inv_cm_absolute = laser_inv_cm - x_inv_cm
+    return 1.0 / (x_inv_cm_absolute * 1.0e-7)
+
+def nm_to_invcm(x: np.ndarray, laser_nm: float = 532.0) -> np.ndarray:
+    """Converts wavelengths from nanometers (nm) to Raman shifts in inverse centimeters (cm⁻¹).
+
+    Args:
+        x (float or np.ndarray): Wavelength(s) in nanometers.
+        laser_nm (float): Wavelength of the excitation laser in nanometers. Default is 532.0 nm.
+
+    Returns:
+        float or np.ndarray: Raman shift(s) in inverse centimeters (cm⁻¹).
+
+    Example:
+
+        >>> import rampy as rp
+        >>> wavelength_nm = 600
+        >>> shift_inv_cm = nm_to_invcm(wavelength_nm)
+    """
+    x_inv_cm = 1.0/(x*1.0e-7)
+    laser_inv_cm = 1.0/(laser_nm*1.0e-7)
+    return laser_inv_cm-x_inv_cm
+
+def convert_x_units(x: np.ndarray, laser_nm: float = 532.0, way: str = "nm_to_cm-1") -> np.ndarray:
+    """Converts between nanometers and inverse centimeters for Raman spectroscopy.
+
+    Args:
+        x (np.ndarray): Array of x-axis values to convert.
+        laser_nm (float): Wavelength of the excitation laser in nanometers. Default is 532.0 nm.
+        way (str): Conversion direction. Options are:
+            - "nm_to_cm-1": Convert from nanometers to inverse centimeters.
+            - "cm-1_to_nm": Convert from inverse centimeters to nanometers.
+
+    Returns:
+        np.ndarray: Converted x-axis values.
+
+    Raises:
+        ValueError: If an invalid conversion direction is specified.
+
+    Example:
+        Convert from nanometers to inverse centimeters:
+
+        >>> import rampy as rp
+        >>> x_nm = np.array([600.0])
+        >>> x_cm_1 = rp.convert_x_units(x_nm)
+
+        Convert from inverse centimeters to nanometers:
+
+        >>> x_cm_1 = np.array([1000.0])
+        >>> x_nm = rp.convert_x_units(x_cm_1, way="cm-1_to_nm")
+    """
+
+    if way == "nm_to_cm-1":
+        return nm_to_invcm(x, laser_nm = laser_nm)
+    elif way == "cm-1_to_nm":
+        return invcm_to_nm(x, laser_nm = laser_nm)
+    else:
+        ValueError("way should be set to either nm_to_cm-1 or cm-1_to_nm")

@@ -31,7 +31,7 @@ class TestSmooth(unittest.TestCase):
         y = p1 + p2 + p3 + p4 + p5 + noise +bkg
 
         # calculating the baselines
-        #y_smo_1 = rp.smooth(x,y,method="GCVSmoothedNSpline")
+        y_smo_1 = rp.smooth(x,y,method="GCVSmoothedNSpline")
         #y_smo_2 = rp.smooth(x,y,method="DOFSmoothedNSpline")
         #y_smo_3 = rp.smooth(x,y,method="MSESmoothedNSpline")
         y_smo_4 = rp.smooth(x,y,method="savgol",window_length=5,polyorder=2)
@@ -43,7 +43,7 @@ class TestSmooth(unittest.TestCase):
         y_smo_10 = rp.smooth(x,y,method="blackman",window_length=5)
 
         # Testing the shapes
-        #np.testing.assert_equal(y_smo_1.shape,y.shape)
+        np.testing.assert_equal(y_smo_1.shape,y.shape)
         #np.testing.assert_equal(y_smo_2.shape,y.shape)
         #np.testing.assert_equal(y_smo_3.shape,y.shape)
         np.testing.assert_equal(y_smo_4.shape,y.shape)
@@ -54,8 +54,8 @@ class TestSmooth(unittest.TestCase):
         np.testing.assert_equal(y_smo_9.shape,y.shape)
         np.testing.assert_equal(y_smo_10.shape,y.shape)
 
-        #testing the y values, difference should be less than a percent
-        #self.assertTrue(np.sum(np.abs(y-y_smo_1))/np.sum(y)<0.1)
+        #testing the y values, difference should be less than some fraction
+        self.assertTrue(np.sum(np.abs(y-y_smo_1))/np.sum(y)<0.1)
         #self.assertTrue(np.sum(np.abs(y-y_smo_2))/np.sum(y)<0.1)
         #self.assertTrue(np.sum(np.abs(y-y_smo_3))/np.sum(y)<0.1)
         self.assertTrue(np.sum(np.abs(y-y_smo_4))/np.sum(y)<0.1)
