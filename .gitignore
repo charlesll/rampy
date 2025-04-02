@@ -2,6 +2,7 @@
 /dist/
 /docs/doctrees/
 /docs/html/
+/docs/build/
 /build/
 .ipynb_checkpoints/
 /rampy.egg-info/
@@ -9,5 +10,3 @@
 /.cache/
 __pycache__
 .pyc
-make.bat
-Makefile
