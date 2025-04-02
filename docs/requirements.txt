@@ -1,8 +1,6 @@
-furo==2021.11.16
-sphinx>=7.0.0
+sphinx>=5.0.0  # Compatible with furo theme
 nbsphinx
 sphinx_gallery
 sphinx_rtd_theme
-pandoc
-plotly
+plotly  # Include other dependencies as needed
 rampy

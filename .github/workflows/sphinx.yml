@@ -10,16 +10,21 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        persist-credentials: false
-    - name: Install Pandoc
-      run: sudo apt-get install pandoc
+        persist-credentials: false    
+    - name: Install dependencies
+      run: |
+        pip install -r docs/requirements.txt
+        sudo apt-get update && sudo apt-get install -y pandoc
+
     - name: Build HTML
       uses: ammaraskar/sphinx-action@master
+
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: html-docs
         path: docs/build/html/
+
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       if: github.ref == 'refs/heads/main'
