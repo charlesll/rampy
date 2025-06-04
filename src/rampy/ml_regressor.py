@@ -17,7 +17,7 @@ import pandas as pd
 import numpy as np
 
 def chemical_splitting(Pandas_DataFrame, target, split_fraction=0.30, rand_state=42):
-    """split datasets depending on their chemistry
+    """split datasets depending on a target (e.g. sample composition)
 
     Parameters
     ----------

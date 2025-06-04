@@ -8,7 +8,7 @@ Rampy allows you to fit polynomial, spline, generalized cross-validated spline, 
 
 Below you will find the documentation of the relevant functions, and have a look at the example notebooks too: :ref:`RST Notebooks`
 
-.. autoclass:: rampy.baseline.baseline
+.. autofunction:: rampy.baseline.baseline
    :members:
    :undoc-members:
    :show-inheritance:

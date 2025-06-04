@@ -14,7 +14,7 @@ Machine learning classification
 
 Based on a set of spectra and their labels, the ``rampy.ml_classification`` module allows you to perform a classification of the spectra using a supervised ML algorithm. The class will take care of splitting the data into training and test sets, scaling the data, and training the model. You can then use the trained model to predict the labels of new spectra.
 
-.. automodule:: rampy.ml_classification
+.. autoclass:: rampy.ml_classification
    :members:
    :undoc-members:
    :show-inheritance:
@@ -24,7 +24,7 @@ Machine learning exploration
 
 The ``rampy.ml_exploration`` module allows you to perform unsupervised ML exploration of a set of spectra. The class will take care of scaling the data and training the model. You can then use the trained model to explore the data and find patterns.
 
-.. automodule:: rampy.ml_exploration
+.. autoclass:: rampy.ml_exploration
    :members:
    :undoc-members:
    :show-inheritance:
@@ -32,10 +32,9 @@ The ``rampy.ml_exploration`` module allows you to perform unsupervised ML explor
 Machine learning regression
 ---------------------------
 
-
 Based on a set of spectra and their labels, the ``rampy.ml_regressor`` module allows you to perform a regression using the spectra and a supervised ML algorithm. The class will take care of splitting the data into training and test sets, scaling the data, and training the model. You can then use the trained model to predict the new values of your target from new spectra.
 
-.. automodule:: rampy.ml_regressor
+.. autoclass:: rampy.ml_regressor
    :members:
    :undoc-members:
    :show-inheritance:
@@ -49,7 +48,17 @@ If you have the two endmember spectra, you can use the ``rampy.mixing()`` functi
 
 If you do not know the endmember spectra, then you may be interested in using directly the PyMCR library, see the documentation `here <https://pages.nist.gov/pyMCR/>`_ and an example notebook `here <https://github.com/usnistgov/pyMCR/blob/master/Examples/Demo.ipynb>`_. We used it in `this publication <https://doi.org/10.2138/am-2019-6887>`_, see the code `here <https://github.com/charlesll/rampy/blob/master/examples/Iron_AmMin_paper/Iron_MORB_code.ipynb>`_.
 
-.. autoclass:: rampy.mixing.mixing_sp
+.. autofunction:: rampy.mixing.mixing_sp
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Helper functions
+-------------------------------
+
+The ``rampy.chemical_splitting`` function allows you to split datasets depending on a target (e.g. sample composition).
+
+.. autofunction:: rampy.chemical_splitting
    :members:
    :undoc-members:
    :show-inheritance:
