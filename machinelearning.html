@@ -69,8 +69,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#rampy.ml_regressor"><code class="docutils literal notranslate"><span class="pre">ml_regressor</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#linear-mixture">Linear mixture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#helper-functions">Helper functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linear-mixture">Linear mixture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.mixing_sp"><code class="docutils literal notranslate"><span class="pre">mixing_sp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#helper-functions">Helper functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.chemical_splitting"><code class="docutils literal notranslate"><span class="pre">chemical_splitting()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="maps.html">Maps</a></li>
@@ -145,10 +151,89 @@
 <p>This function helps you solve a simple problem: you have spectra that are obtained by a linear combination of two endmember spectra.</p>
 <p>If you have the two endmember spectra, you can use the <code class="docutils literal notranslate"><span class="pre">rampy.mixing()</span></code> function to know the fraction of each endmember in the mixture.</p>
 <p>If you do not know the endmember spectra, then you may be interested in using directly the PyMCR library, see the documentation <a class="reference external" href="https://pages.nist.gov/pyMCR/">here</a> and an example notebook <a class="reference external" href="https://github.com/usnistgov/pyMCR/blob/master/Examples/Demo.ipynb">here</a>. We used it in <a class="reference external" href="https://doi.org/10.2138/am-2019-6887">this publication</a>, see the code <a class="reference external" href="https://github.com/charlesll/rampy/blob/master/examples/Iron_AmMin_paper/Iron_MORB_code.ipynb">here</a>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.mixing_sp">
+<span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">mixing_sp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_fit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.mixing_sp" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Mixes two reference spectra to match given experimental signals.</p>
+<p>This function calculates the fractions of the first reference spectrum (<cite>ref1</cite>)
+in a linear combination of <cite>ref1</cite> and <cite>ref2</cite> that best matches the provided signals (<cite>y_fit</cite>).
+The calculation minimizes the sum of the least absolute values of the objective function:
+(  ext{obj} = sum left| y_{      ext{fit}} - (F_1 cdot  ext{ref1} + (1 - F_1) cdot     ext{ref2})</p>
+</div></blockquote>
+<p>ight| ).</p>
+<blockquote>
+<div><dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>y_fit (np.ndarray): Array containing the experimental signals with shape <cite>(m, n)</cite>,</dt><dd><p>where <cite>m</cite> is the number of data points and <cite>n</cite> is the number of experiments.</p>
+</dd>
+</dl>
+<p>ref1 (np.ndarray): Array containing the first reference signal with shape <cite>(m,)</cite>.
+ref2 (np.ndarray): Array containing the second reference signal with shape <cite>(m,)</cite>.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Array of shape <cite>(n,)</cite> containing the fractions of <cite>ref1</cite> in the mix.
+Values range between 0 and 1.</p>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
+<li><p>The calculation is performed using <cite>cvxpy</cite> for optimization.</p></li>
+<li><p>Ensure that <cite>y_fit</cite>, <cite>ref1</cite>, and <cite>ref2</cite> have compatible dimensions.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_fit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ref1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ref2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fractions</span> <span class="o">=</span> <span class="n">mixing_sp</span><span class="p">(</span><span class="n">y_fit</span><span class="p">,</span> <span class="n">ref1</span><span class="p">,</span> <span class="n">ref2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">fractions</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</dd></dl>
+
 </section>
 <section id="helper-functions">
 <h2>Helper functions<a class="headerlink" href="#helper-functions" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">rampy.chemical_splitting</span></code> function allows you to split datasets depending on a target (e.g. sample composition).</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.chemical_splitting">
+<span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">chemical_splitting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Pandas_DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rand_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">42</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.chemical_splitting" title="Link to this definition"></a></dt>
+<dd><p>split datasets depending on their chemistry</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Pandas_DataFrame</strong> (<em>Pandas DataFrame</em>) – The input DataFrame with in the first row the names of the different data compositions</p></li>
+<li><p><strong>label</strong> (<em>string</em>) – The target in the DataFrame according to which we will split the dataset</p></li>
+<li><p><strong>split_fraction</strong> (<em>float</em><em>, </em><em>between 0 and 1</em>) – This is the amount of splitting you want, in reference to the second output dataset (see OUTPUTS).</p></li>
+<li><p><strong>rand_state</strong> (<em>float64</em>) – the random seed that is used for reproductibility of the results. Default = 42.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>frame1</strong> (<em>Pandas DataFrame</em>) – A DataSet with (1-split_fraction) datas from the input dataset with unique chemical composition / names</p></li>
+<li><p><strong>frame2</strong> (<em>Pandas DataFrame</em>) – A DataSet with split_fraction datas from the input dataset with unique chemical composition / names</p></li>
+<li><p><strong>frame1_idx</strong> (<em>ndarray</em>) – Contains the indexes of the data picked in Pandas_DataFrame to construct frame1</p></li>
+<li><p><strong>frame2_idx</strong> (<em>ndarray</em>) – Contains the indexes of the data picked in Pandas_DataFrame to construct frame2</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function avoids the same chemical dataset to be found in different training/testing/validating datasets that are used in ML.</p>
+<p>Indeed, it is worthless to put data from the same original dataset / with the same chemical composition
+in the training / testing / validating datasets. This creates a initial bias in the splitting process…</p>
+<p>Another way of doing that would be to write:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">grouped</span> <span class="o">=</span> <span class="n">Pandas_DataFrame</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">grouped</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">k_train</span><span class="p">,</span> <span class="n">k_valid</span> <span class="o">=</span> <span class="n">model_selection</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k</span><span class="p">),</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.40</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train</span> <span class="o">=</span> <span class="n">Pandas_DataFrame</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">Pandas_DataFrame</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">k_train</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">valid</span> <span class="o">=</span> <span class="n">Pandas_DataFrame</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">Pandas_DataFrame</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">k_valid</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>(results will vary slightly as variable k is sorted but not variable names in the function below)</p>
+</dd></dl>
+
 </section>
 </section>
 

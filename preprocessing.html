@@ -51,14 +51,38 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Preprocessing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#flip-the-x-axis">Flip the X axis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#shift-the-x-axis">Shift the X axis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#extract-a-portion-portions-of-a-signal">Extract a portion / portions of a signal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#remove-spikes">Remove spikes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#resampling-a-spectrum">Resampling a spectrum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#normalisation">Normalisation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#temperature-and-excitation-line-effects">Temperature and excitation line effects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#wavelength-wavenumber-convertion">Wavelength-wavenumber convertion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#flip-the-x-axis">Flip the X axis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.flipsp"><code class="docutils literal notranslate"><span class="pre">flipsp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#shift-the-x-axis">Shift the X axis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.shiftsp"><code class="docutils literal notranslate"><span class="pre">shiftsp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#extract-a-portion-portions-of-a-signal">Extract a portion / portions of a signal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.extract_signal"><code class="docutils literal notranslate"><span class="pre">extract_signal()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#remove-spikes">Remove spikes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.despiking"><code class="docutils literal notranslate"><span class="pre">despiking()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#resampling-a-spectrum">Resampling a spectrum</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.resample"><code class="docutils literal notranslate"><span class="pre">resample()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#normalisation">Normalisation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.normalise"><code class="docutils literal notranslate"><span class="pre">normalise()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#temperature-and-excitation-line-effects">Temperature and excitation line effects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.tlcorrection"><code class="docutils literal notranslate"><span class="pre">tlcorrection()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#wavelength-wavenumber-convertion">Wavelength-wavenumber convertion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.convert_x_units"><code class="docutils literal notranslate"><span class="pre">convert_x_units()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="baseline.html">Baseline</a></li>
@@ -105,23 +129,212 @@
 <section id="flip-the-x-axis">
 <h2>Flip the X axis<a class="headerlink" href="#flip-the-x-axis" title="Link to this heading"></a></h2>
 <p>Some spectra come with decreasing X values. Rampy offers a simple function to flip them. This can be necessary to e.g. resample them (as interpolation algorithms usually require the X values to increase). The following function does this. It even allows even arbitrary X value positions. It returns a sorted array with an  increasing x axis.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.flipsp">
+<span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">flipsp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.flipsp" title="Link to this definition"></a></dt>
+<dd><p>Sorts or flips a spectrum along its row dimension based on x-axis values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sp</strong> (<em>np.ndarray</em>) – A 2D array where the first column contains x-axis values
+and subsequent columns contain y-values.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The input array sorted in ascending order based on the first column.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Uses <cite>np.argsort</cite> to ensure sorting regardless of initial order.</p></li>
+</ul>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">rampy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">300</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">20</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sorted_sp</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">flipsp</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
 <section id="shift-the-x-axis">
 <h2>Shift the X axis<a class="headerlink" href="#shift-the-x-axis" title="Link to this heading"></a></h2>
 <p>You can shift the X axis from a given value using the following function:</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.shiftsp">
+<span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">shiftsp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.shiftsp" title="Link to this definition"></a></dt>
+<dd><p>Shifts the x-axis values of a spectrum by a given amount.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sp</strong> (<em>np.ndarray</em>) – A 2D array where the first column contains x-axis values
+(e.g., frequency or wavenumber) and subsequent columns contain y-values.</p></li>
+<li><p><strong>shift</strong> (<em>float</em>) – The amount by which to shift the x-axis values. Negative values
+shift left; positive values shift right.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The input array with shifted x-axis values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">rampy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span> <span class="mi">30</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shifted_sp</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">shiftsp</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
 <section id="extract-a-portion-portions-of-a-signal">
 <h2>Extract a portion / portions of a signal<a class="headerlink" href="#extract-a-portion-portions-of-a-signal" title="Link to this heading"></a></h2>
 <p>You can use the function <code class="docutils literal notranslate"><span class="pre">rampy.extract_signal()</span></code> to do that (old version: <code class="docutils literal notranslate"><span class="pre">rampy.get_portion_interest</span></code>)</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.extract_signal">
+<span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">extract_signal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roi</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.extract_signal" title="Link to this definition"></a></dt>
+<dd><p>Extracts the signal from specified regions of interest (ROI) in the x-y data.</p>
+<p>This function selects and extracts portions of the input x-y data based on the
+specified regions of interest (ROI) provided in <cite>roi</cite>. Each region is defined
+by a lower and upper bound along the x-axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – The x-axis values (e.g., time, wavelength, or other independent variables).</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – The y-axis values corresponding to the x-axis values (e.g., signal intensity).</p></li>
+<li><p><strong>roi</strong> (<em>ndarray</em><em> or </em><em>list</em><em> of </em><em>lists</em>) – <p>Regions of interest (ROI) where the signal should be extracted.
+Must be an n x 2 array or a list of lists, where <cite>n</cite> is the number of regions to extract.
+Each sublist or row should contain two elements:</p>
+<blockquote>
+<div><ul>
+<li><p>The lower bound of the region (inclusive).</p></li>
+<li><p>The upper bound of the region (inclusive).</p></li>
+</ul>
+</div></blockquote>
+<p class="rubric">Example</p>
+<ul>
+<li><p>Array: <cite>np.array([[10, 20], [50, 70]])</cite></p></li>
+<li><p>List: <cite>[[10, 20], [50, 70]]</cite></p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A 2-column array containing the extracted x-y signals from the specified regions.</dt><dd><p>The first column contains the x values, and the second column contains the corresponding y values.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <cite>roi</cite> is not a valid n x 2 array or list of lists, or if any region in <cite>roi</cite>
+    falls outside the range of <cite>x</cite>.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Overlapping regions in <cite>roi</cite> are not merged; they are processed as separate regions.</p></li>
+<li><p>If no valid regions are found within <cite>roi</cite>, an empty array is returned.</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<p>Extracting signal from two regions in an x-y dataset:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">roi</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">70</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">extracted_signal</span> <span class="o">=</span> <span class="n">extract_signal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">roi</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">extracted_signal</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
 <section id="remove-spikes">
 <h2>Remove spikes<a class="headerlink" href="#remove-spikes" title="Link to this heading"></a></h2>
 <p>Spikes can be removed via the <code class="docutils literal notranslate"><span class="pre">rampy.despiking()</span></code> function. It takes as input X and Y values of a spectrum and a threshold. The threshold is the number of standard deviation above the mean noise value that a point must be to be considered as a spike. For instance, if the threshold is 3, then a point will be considered as a spike if it is 3 standard deviation above the mean of the noise. The function will then replace the spike by the mean of <em>k</em> points before and after the spike.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.despiking">
+<span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">despiking</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neigh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.despiking" title="Link to this definition"></a></dt>
+<dd><p>Removes spikes from a 1D signal using a threshold-based approach.</p>
+<p>This function identifies spikes in a signal by comparing local residuals to a threshold
+based on the root mean square error (RMSE). Spikes are replaced with the mean of neighboring points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – A 1D array containing the x-axis values of the signal.</p></li>
+<li><p><strong>y</strong> (<em>np.ndarray</em>) – A 1D array containing the y-axis values of the signal to despike.</p></li>
+<li><p><strong>neigh</strong> (<em>int</em>) – The number of neighboring points to use for calculating average values
+during despiking and for smoothing. Default is 4.</p></li>
+<li><p><strong>threshold</strong> (<em>int</em>) – The multiplier of RMSE used to identify spikes. Default is 3.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 1D array of the despiked signal.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">rampy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">50.</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_despiked</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">despiking</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
 <section id="resampling-a-spectrum">
 <h2>Resampling a spectrum<a class="headerlink" href="#resampling-a-spectrum" title="Link to this heading"></a></h2>
 <p>We need sometime to resample a spectrum with a new X axis. <code class="docutils literal notranslate"><span class="pre">rampy.resample()</span></code> offers such ability. For instance,
 we have a spectrum that has a X axis from 400 to 1300 cm-1, with points each 0.9 cm-1. We want the same but with an X axis with a value each cm-1. We can do for our spectrum:</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.resample">
+<span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_new</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'extrapolate'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.resample" title="Link to this definition"></a></dt>
+<dd><p>Resamples a y signal along new x-axis values using interpolation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – Original x-axis values.</p></li>
+<li><p><strong>y</strong> (<em>np.ndarray</em>) – Original y-axis values corresponding to <cite>x</cite>.</p></li>
+<li><p><strong>x_new</strong> (<em>np.ndarray</em>) – New x-axis values for resampling.</p></li>
+<li><p><strong>fill_value</strong> (<em>array-like</em><em> or </em><em>(</em><em>array-like</em><em>, </em><em>array_like</em><em>) or </em><em>“extrapolate”</em><em>, </em><em>optional</em>) – behavior of the interpolation for requested points outside of the data range. See [scipy help for details](<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html</a>). Default is ‘“extrapolate”’.</p></li>
+<li><p><strong>**kwargs</strong> – <p>Additional arguments passed to <cite>scipy.interpolate.interp1d</cite>.</p>
+<ul>
+<li><p>kind (str or int): Type of interpolation (‘linear’, ‘cubic’, etc.). Default is ‘linear’.</p></li>
+<li><p>bounds_error (bool): If True, a ValueError is raised any time interpolation is attempted on a value outside of the range of x (where extrapolation is necessary). If False, out of bounds values are assigned fill_value. By default, an error is raised unless fill_value=”extrapolate”.</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Resampled y-values corresponding to <cite>x_new</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">rampy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">original_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">original_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resampled_y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">original_x</span><span class="p">,</span> <span class="n">original_y</span><span class="p">,</span> <span class="n">new_x</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
 <section id="normalisation">
 <h2>Normalisation<a class="headerlink" href="#normalisation" title="Link to this heading"></a></h2>
@@ -131,14 +344,177 @@ we have a spectrum that has a X axis from 400 to 1300 cm-1, with points each 0.9
 <li><p>the trapezoidal area under the curve</p></li>
 <li><p>to min-max values of intensities</p></li>
 </ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.normalise">
+<span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">normalise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'intensity'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.normalise" title="Link to this definition"></a></dt>
+<dd><p>Normalizes the y signal(s) using specified methods.</p>
+<p>This function normalizes the input y signal(s) based on the chosen method:
+by area under the curve, maximum intensity, or min-max scaling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>np.ndarray</em>) – A 2D array of shape (m values, n samples) containing the y values to normalize.</p></li>
+<li><p><strong>x</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – A 2D array of shape (m values, n samples) containing the x values
+corresponding to <cite>y</cite>. Required for area normalization. Default is None.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – The normalization method to use. Options are:
+- ‘area’: Normalize by the area under the curve.
+- ‘intensity’: Normalize by the maximum intensity.
+- ‘minmax’: Normalize using min-max scaling.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 2D array of normalized y signals with the same shape as the input <cite>y</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If <cite>x</cite> is not provided when using the ‘area’ normalization method.</p></li>
+<li><p><strong>NotImplementedError</strong> – If an invalid normalization method is specified.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">rampy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">50.</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_norm</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">normalise</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;area&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
 <section id="temperature-and-excitation-line-effects">
 <h2>Temperature and excitation line effects<a class="headerlink" href="#temperature-and-excitation-line-effects" title="Link to this heading"></a></h2>
 <p>Raman spectra may need correction from temperature and excitation line effects. See the review of <a class="reference external" href="http://onlinelibrary.wiley.com/doi/10.1002/jrs.1250190202/abstract">Brooker et al. 1988</a> for details. rampy offers several way to do so with the <code class="docutils literal notranslate"><span class="pre">rampy.tlexcitation()</span></code> function.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.tlcorrection">
+<span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">tlcorrection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#rampy.tlcorrection" title="Link to this definition"></a></dt>
+<dd><p>Corrects Raman spectra for temperature and excitation line effects.</p>
+<p>This function applies corrections to Raman spectra to account for temperature and laser
+excitation wavelength effects. It supports multiple correction equations and normalization
+methods, making it suitable for a variety of materials and experimental conditions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – Raman shifts in cm⁻¹.</p></li>
+<li><p><strong>y</strong> (<em>np.ndarray</em>) – Intensity values (e.g., counts).</p></li>
+<li><p><strong>temperature</strong> (<em>float</em>) – Temperature in °C.</p></li>
+<li><p><strong>wavelength</strong> (<em>float</em>) – Wavelength of the laser that excited the sample, in nm.</p></li>
+<li><p><strong>correction</strong> (<em>str</em><em>, </em><em>optional</em>) – The correction equation to use. Options are:
+- ‘long’: Default equation from Galeener and Sen (1978) with a (v_0^3) coefficient correction.
+- ‘galeener’: Original equation from Galeener and Sen (1978), based on Shuker and Gammon (1970).
+- ‘hehlen’: Equation from Hehlen et al. (2010), preserving the Boson peak signal. Default is ‘long’.</p></li>
+<li><p><strong>normalisation</strong> (<em>str</em><em>, </em><em>optional</em>) – Normalization method for the corrected data. Options are:
+- ‘intensity’: Normalize by maximum intensity.
+- ‘area’: Normalize by total area under the curve.
+- ‘no’: No normalization. Default is ‘area’.</p></li>
+<li><p><strong>density</strong> (<em>float</em><em>, </em><em>optional</em>) – Density of the studied material in kg/m³, used only with the ‘hehlen’ equation.
+Default is 2210.0 (density of silica).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><cite>x</cite> (np.ndarray): Raman shift values after correction.</p></li>
+<li><p><cite>ycorr</cite> (np.ndarray): Corrected intensity values.</p></li>
+<li><p><cite>ese_corr</cite> (np.ndarray): Propagated errors calculated as (sqrt{y}) on raw intensities.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[np.ndarray, np.ndarray, np.ndarray]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an invalid correction or normalization method is specified.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The ‘galeener’ equation is a modification of Shuker and Gammon’s formula to account for
+((v_0 - v)^4) dependence of Raman intensity.</p></li>
+<li><p>The ‘long’ equation includes a (v_0^3) coefficient to remove cubic meter dimensions,
+as used in several studies like Mysen et al. (1982).</p></li>
+<li><p>The ‘hehlen’ equation avoids signal suppression below 500 cm⁻¹, preserving features like
+the Boson peak in glasses.</p></li>
+</ul>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p>Galeener, F.L., &amp; Sen, P.N. (1978). Theory of the first-order vibrational spectra of disordered solids. <em>Physical Review B</em>, 17(4), 1928–1933.</p></li>
+<li><p>Hehlen, B. (2010). Inter-tetrahedra bond angle of permanently densified silicas extracted from their Raman spectra. <em>Journal of Physics: Condensed Matter</em>, 22(2), 025401.</p></li>
+<li><p>Brooker, M.H., Nielsen, O.F., &amp; Praestgaard, E. (1988). Assessment of correction procedures for reduction of Raman spectra. <em>Journal of Raman Spectroscopy</em>, 19(2), 71–78.</p></li>
+<li><p>Mysen, B.O., Finger, L.W., Virgo, D., &amp; Seifert, F.A. (1982). Curve-fitting of Raman spectra of silicate glasses. <em>American Mineralogist</em>, 67(7-8), 686–695.</p></li>
+<li><p>Neuville, D.R., &amp; Mysen, B.O. (1996). Role of aluminium in the silicate network: In situ high-temperature study of glasses and melts on the join SiO₂-NaAlO₂. <em>Geochimica et Cosmochimica Acta</em>, 60(9), 1727–1737.</p></li>
+<li><p>Le Losq, C., Neuville, D.R., Moretti, R., &amp; Roux, J. (2012). Determination of water content in silicate glasses using Raman spectrometry: Implications for the study of explosive volcanism. <em>American Mineralogist</em>, 97(5-6), 779–790.</p></li>
+<li><p>Shuker, R., &amp; Gammon, R.W. (1970). Raman-scattering selection-rule breaking and the density of states in amorphous materials. <em>Physical Review Letters</em>, 25(4), 222.</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<p>Correct a simple spectrum using default parameters:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">])</span>  <span class="c1"># Raman shifts in cm⁻¹</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>     <span class="c1"># Intensity values</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span> <span class="o">=</span> <span class="mf">25.0</span>             <span class="c1"># Temperature in °C</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wavelength</span> <span class="o">=</span> <span class="mf">532.0</span>             <span class="c1"># Wavelength in nm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x_corr</span><span class="p">,</span> <span class="n">y_corr</span><span class="p">,</span> <span class="n">ese_corr</span> <span class="o">=</span> <span class="n">correct_spectra</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Use a specific correction equation and normalization method:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x_corr</span><span class="p">,</span> <span class="n">y_corr</span><span class="p">,</span> <span class="n">ese_corr</span> <span class="o">=</span> <span class="n">correct_spectra</span><span class="p">(</span>
+<span class="go">        x=x,</span>
+<span class="go">        y=y,</span>
+<span class="go">        temperature=25,</span>
+<span class="go">        wavelength=532,</span>
+<span class="go">        correction=&#39;hehlen&#39;,</span>
+<span class="go">        normalisation=&#39;intensity&#39;,</span>
+<span class="go">        density=2500</span>
+<span class="go">    )</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
 <section id="wavelength-wavenumber-convertion">
 <h2>Wavelength-wavenumber convertion<a class="headerlink" href="#wavelength-wavenumber-convertion" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">convert_x_units()</span></code> function allows to convert your X values in nm in inverse cm, or the opposite! Do not hesitate to propose new ways to enrich it!</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.convert_x_units">
+<span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">convert_x_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser_nm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">532.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">way</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'nm_to_cm-1'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.convert_x_units" title="Link to this definition"></a></dt>
+<dd><p>Converts between nanometers and inverse centimeters for Raman spectroscopy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – Array of x-axis values to convert.</p></li>
+<li><p><strong>laser_nm</strong> (<em>float</em>) – Wavelength of the excitation laser in nanometers. Default is 532.0 nm.</p></li>
+<li><p><strong>way</strong> (<em>str</em>) – Conversion direction. Options are:
+- “nm_to_cm-1”: Convert from nanometers to inverse centimeters.
+- “cm-1_to_nm”: Convert from inverse centimeters to nanometers.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Converted x-axis values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an invalid conversion direction is specified.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>Convert from nanometers to inverse centimeters:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">rampy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x_nm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">600.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x_cm_1</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">convert_x_units</span><span class="p">(</span><span class="n">x_nm</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Convert from inverse centimeters to nanometers:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x_cm_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1000.0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x_nm</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">convert_x_units</span><span class="p">(</span><span class="n">x_cm_1</span><span class="p">,</span> <span class="n">way</span><span class="o">=</span><span class="s2">&quot;cm-1_to_nm&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
 </section>
 

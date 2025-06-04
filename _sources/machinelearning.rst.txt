@@ -48,10 +48,7 @@ If you have the two endmember spectra, you can use the ``rampy.mixing()`` functi
 
 If you do not know the endmember spectra, then you may be interested in using directly the PyMCR library, see the documentation `here <https://pages.nist.gov/pyMCR/>`_ and an example notebook `here <https://github.com/usnistgov/pyMCR/blob/master/Examples/Demo.ipynb>`_. We used it in `this publication <https://doi.org/10.2138/am-2019-6887>`_, see the code `here <https://github.com/charlesll/rampy/blob/master/examples/Iron_AmMin_paper/Iron_MORB_code.ipynb>`_.
 
-.. autofunction:: rampy.mixing.mixing_sp
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. autofunction:: rampy.mixing_sp
 
 Helper functions
 -------------------------------
@@ -59,6 +56,3 @@ Helper functions
 The ``rampy.chemical_splitting`` function allows you to split datasets depending on a target (e.g. sample composition).
 
 .. autofunction:: rampy.chemical_splitting
-   :members:
-   :undoc-members:
-   :show-inheritance:

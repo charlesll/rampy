@@ -54,7 +54,10 @@
 <li class="toctree-l1"><a class="reference internal" href="baseline.html">Baseline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="smoothing.html">Smoothing and filtering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Signal parameters</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Signal parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rampy.centroid"><code class="docutils literal notranslate"><span class="pre">centroid()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="maps.html">Maps</a></li>
@@ -91,6 +94,37 @@
   <section id="signal-parameters">
 <h1>Signal parameters<a class="headerlink" href="#signal-parameters" title="Link to this heading"></a></h1>
 <p>I will enrich rampy with new functions to calculate the characteristics/parameters of signals. This is not urgent as scipy.signal allows us to do many things already (e.g. with find_peaks…), and there is no need to reinvent the wheel. One function is often useful and that is not in scipy.signal:</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.centroid">
+<span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">centroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.centroid" title="Link to this definition"></a></dt>
+<dd><p>Calculates the centroid of y signal(s).</p>
+<p>The centroid is calculated as (    ext{centroid} = sum(y / sum(y) cdot x) ).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – A 2D array of shape (m values, n samples) containing the x-axis values.</p></li>
+<li><p><strong>y</strong> (<em>np.ndarray</em>) – A 2D array of shape (m values, n samples) containing the y-axis values.</p></li>
+<li><p><strong>smoothing</strong> (<em>bool</em>) – Whether to smooth the signals before calculating centroids.
+If True, smoothing is applied using <cite>rampy.smooth</cite> with additional arguments passed via <cite>kwargs</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A 1D array of centroids for each sample in <cite>y</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">rampy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rp</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">50.</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">centroids</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">centroid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
 
 
