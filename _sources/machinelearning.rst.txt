@@ -12,9 +12,9 @@ Do not hesitate to ask for new features depending on your needs !
 Machine learning classification
 -------------------------------
 
-Based on a set of spectra and their labels, the ``rampy.ml_classification`` module allows you to perform a classification of the spectra using a supervised ML algorithm. The class will take care of splitting the data into training and test sets, scaling the data, and training the model. You can then use the trained model to predict the labels of new spectra.
+Based on a set of spectra and their labels, the ``rampy.mlclassificator`` class allows you to perform a classification of the spectra using a supervised ML algorithm. The class will take care of splitting the data into training and test sets, scaling the data, and training the model. You can then use the trained model to predict the labels of new spectra.
 
-.. autoclass:: rampy.ml_classification
+.. autoclass:: rampy.mlclassificator
    :members:
    :undoc-members:
    :show-inheritance:
@@ -22,9 +22,9 @@ Based on a set of spectra and their labels, the ``rampy.ml_classification`` modu
 Machine learning exploration
 ----------------------------
 
-The ``rampy.ml_exploration`` module allows you to perform unsupervised ML exploration of a set of spectra. The class will take care of scaling the data and training the model. You can then use the trained model to explore the data and find patterns.
+The ``rampy.mlexplorer`` class allows you to perform unsupervised ML exploration of a set of spectra. The class will take care of scaling the data and training the model. You can then use the trained model to explore the data and find patterns.
 
-.. autoclass:: rampy.ml_exploration
+.. autoclass:: rampy.mlexplorer
    :members:
    :undoc-members:
    :show-inheritance:
@@ -32,9 +32,9 @@ The ``rampy.ml_exploration`` module allows you to perform unsupervised ML explor
 Machine learning regression
 ---------------------------
 
-Based on a set of spectra and their labels, the ``rampy.ml_regressor`` module allows you to perform a regression using the spectra and a supervised ML algorithm. The class will take care of splitting the data into training and test sets, scaling the data, and training the model. You can then use the trained model to predict the new values of your target from new spectra.
+Based on a set of spectra and their labels, the ``rampy.mlregressor`` class allows you to perform a regression using the spectra and a supervised ML algorithm. The class will take care of splitting the data into training and test sets, scaling the data, and training the model. You can then use the trained model to predict the new values of your target from new spectra.
 
-.. autoclass:: rampy.ml_regressor
+.. autoclass:: rampy.mlregressor
    :members:
    :undoc-members:
    :show-inheritance:

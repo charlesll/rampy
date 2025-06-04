@@ -58,15 +58,71 @@
 <li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Machine learning</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#machine-learning-classification">Machine learning classification</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#rampy.ml_classification"><code class="docutils literal notranslate"><span class="pre">ml_classification</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.mlclassificator"><code class="docutils literal notranslate"><span class="pre">mlclassificator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.x"><code class="docutils literal notranslate"><span class="pre">mlclassificator.x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.y"><code class="docutils literal notranslate"><span class="pre">mlclassificator.y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.X_test"><code class="docutils literal notranslate"><span class="pre">mlclassificator.X_test</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.y_test"><code class="docutils literal notranslate"><span class="pre">mlclassificator.y_test</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.algorithm"><code class="docutils literal notranslate"><span class="pre">mlclassificator.algorithm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.scaling"><code class="docutils literal notranslate"><span class="pre">mlclassificator.scaling</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.scaler"><code class="docutils literal notranslate"><span class="pre">mlclassificator.scaler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.test_size"><code class="docutils literal notranslate"><span class="pre">mlclassificator.test_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.rand_state"><code class="docutils literal notranslate"><span class="pre">mlclassificator.rand_state</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.params_"><code class="docutils literal notranslate"><span class="pre">mlclassificator.params_</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.model"><code class="docutils literal notranslate"><span class="pre">mlclassificator.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.X_scaler"><code class="docutils literal notranslate"><span class="pre">mlclassificator.X_scaler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.fit"><code class="docutils literal notranslate"><span class="pre">mlclassificator.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.predict"><code class="docutils literal notranslate"><span class="pre">mlclassificator.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.refit"><code class="docutils literal notranslate"><span class="pre">mlclassificator.refit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlclassificator.scale_data"><code class="docutils literal notranslate"><span class="pre">mlclassificator.scale_data()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#machine-learning-exploration">Machine learning exploration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#rampy.ml_exploration"><code class="docutils literal notranslate"><span class="pre">ml_exploration</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.mlexplorer"><code class="docutils literal notranslate"><span class="pre">mlexplorer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlexplorer.x"><code class="docutils literal notranslate"><span class="pre">mlexplorer.x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlexplorer.X_test"><code class="docutils literal notranslate"><span class="pre">mlexplorer.X_test</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlexplorer.algorithm"><code class="docutils literal notranslate"><span class="pre">mlexplorer.algorithm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlexplorer.scaling"><code class="docutils literal notranslate"><span class="pre">mlexplorer.scaling</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlexplorer.scaler"><code class="docutils literal notranslate"><span class="pre">mlexplorer.scaler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlexplorer.test_size"><code class="docutils literal notranslate"><span class="pre">mlexplorer.test_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlexplorer.rand_state"><code class="docutils literal notranslate"><span class="pre">mlexplorer.rand_state</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlexplorer.model"><code class="docutils literal notranslate"><span class="pre">mlexplorer.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlexplorer.Remarks"><code class="docutils literal notranslate"><span class="pre">mlexplorer.Remarks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlexplorer.http"><code class="docutils literal notranslate"><span class="pre">mlexplorer.http</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlexplorer.fit"><code class="docutils literal notranslate"><span class="pre">mlexplorer.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlexplorer.predict"><code class="docutils literal notranslate"><span class="pre">mlexplorer.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlexplorer.refit"><code class="docutils literal notranslate"><span class="pre">mlexplorer.refit()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#machine-learning-regression">Machine learning regression</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#rampy.ml_regressor"><code class="docutils literal notranslate"><span class="pre">ml_regressor</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.mlregressor"><code class="docutils literal notranslate"><span class="pre">mlregressor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.x"><code class="docutils literal notranslate"><span class="pre">mlregressor.x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.y"><code class="docutils literal notranslate"><span class="pre">mlregressor.y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.X_test"><code class="docutils literal notranslate"><span class="pre">mlregressor.X_test</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.y_test"><code class="docutils literal notranslate"><span class="pre">mlregressor.y_test</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.algorithm"><code class="docutils literal notranslate"><span class="pre">mlregressor.algorithm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.scaling"><code class="docutils literal notranslate"><span class="pre">mlregressor.scaling</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.scaler"><code class="docutils literal notranslate"><span class="pre">mlregressor.scaler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.test_size"><code class="docutils literal notranslate"><span class="pre">mlregressor.test_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.rand_state"><code class="docutils literal notranslate"><span class="pre">mlregressor.rand_state</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.param_kr"><code class="docutils literal notranslate"><span class="pre">mlregressor.param_kr</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.param_svm"><code class="docutils literal notranslate"><span class="pre">mlregressor.param_svm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.param_neurons"><code class="docutils literal notranslate"><span class="pre">mlregressor.param_neurons</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.param_bagging"><code class="docutils literal notranslate"><span class="pre">mlregressor.param_bagging</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.prediction_train"><code class="docutils literal notranslate"><span class="pre">mlregressor.prediction_train</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.prediction_test"><code class="docutils literal notranslate"><span class="pre">mlregressor.prediction_test</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.model"><code class="docutils literal notranslate"><span class="pre">mlregressor.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.X_scaler"><code class="docutils literal notranslate"><span class="pre">mlregressor.X_scaler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.Y_scaler"><code class="docutils literal notranslate"><span class="pre">mlregressor.Y_scaler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.fit"><code class="docutils literal notranslate"><span class="pre">mlregressor.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.predict"><code class="docutils literal notranslate"><span class="pre">mlregressor.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rampy.mlregressor.refit"><code class="docutils literal notranslate"><span class="pre">mlregressor.refit()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#linear-mixture">Linear mixture</a><ul>
@@ -118,31 +174,633 @@
 <p>Do not hesitate to ask for new features depending on your needs !</p>
 <section id="machine-learning-classification">
 <h2>Machine learning classification<a class="headerlink" href="#machine-learning-classification" title="Link to this heading"></a></h2>
-<p>Based on a set of spectra and their labels, the <code class="docutils literal notranslate"><span class="pre">rampy.ml_classification</span></code> module allows you to perform a classification of the spectra using a supervised ML algorithm. The class will take care of splitting the data into training and test sets, scaling the data, and training the model. You can then use the trained model to predict the labels of new spectra.</p>
+<p>Based on a set of spectra and their labels, the <code class="docutils literal notranslate"><span class="pre">rampy.mlclassificator</span></code> class allows you to perform a classification of the spectra using a supervised ML algorithm. The class will take care of splitting the data into training and test sets, scaling the data, and training the model. You can then use the trained model to predict the labels of new spectra.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="rampy.mlclassificator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">mlclassificator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.mlclassificator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Perform automatic classification of spectral data using scikit-learn machine learning algorithms.</p>
+<p>This class supports various classification algorithms and allows customization of hyperparameters.
+It also handles scaling and splitting of training and testing datasets.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="rampy.ml_classification">
-<span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">ml_classification</span></span><a class="headerlink" href="#rampy.ml_classification" title="Link to this definition"></a></dt>
-<dd><p>alias of &lt;module ‘rampy.ml_classification’ from ‘/opt/hostedtoolcache/Python/3.11.12/x64/lib/python3.11/site-packages/rampy/ml_classification.py’&gt;</p>
+<dt class="sig sig-object py" id="rampy.mlclassificator.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#rampy.mlclassificator.x" title="Link to this definition"></a></dt>
+<dd><p>Training spectra organized in rows (1 row = one spectrum).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlclassificator.y">
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#rampy.mlclassificator.y" title="Link to this definition"></a></dt>
+<dd><p>Target labels for training data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlclassificator.X_test">
+<span class="sig-name descname"><span class="pre">X_test</span></span><a class="headerlink" href="#rampy.mlclassificator.X_test" title="Link to this definition"></a></dt>
+<dd><p>Testing spectra organized in rows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlclassificator.y_test">
+<span class="sig-name descname"><span class="pre">y_test</span></span><a class="headerlink" href="#rampy.mlclassificator.y_test" title="Link to this definition"></a></dt>
+<dd><p>Target labels for testing data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlclassificator.algorithm">
+<span class="sig-name descname"><span class="pre">algorithm</span></span><a class="headerlink" href="#rampy.mlclassificator.algorithm" title="Link to this definition"></a></dt>
+<dd><p>Machine learning algorithm to use. Options:
+“Nearest Neighbors”, “Linear SVM”, “RBF SVM”, “Gaussian Process”,
+“Decision Tree”, “Random Forest”, “Neural Net”, “AdaBoost”,
+“Naive Bayes”, “QDA”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlclassificator.scaling">
+<span class="sig-name descname"><span class="pre">scaling</span></span><a class="headerlink" href="#rampy.mlclassificator.scaling" title="Link to this definition"></a></dt>
+<dd><p>Whether to scale the data during fitting and prediction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlclassificator.scaler">
+<span class="sig-name descname"><span class="pre">scaler</span></span><a class="headerlink" href="#rampy.mlclassificator.scaler" title="Link to this definition"></a></dt>
+<dd><p>Type of scaler to use (“MinMaxScaler” or “StandardScaler”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlclassificator.test_size">
+<span class="sig-name descname"><span class="pre">test_size</span></span><a class="headerlink" href="#rampy.mlclassificator.test_size" title="Link to this definition"></a></dt>
+<dd><p>Fraction of the dataset to use as a testing dataset if X_test and y_test are not provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlclassificator.rand_state">
+<span class="sig-name descname"><span class="pre">rand_state</span></span><a class="headerlink" href="#rampy.mlclassificator.rand_state" title="Link to this definition"></a></dt>
+<dd><p>Random seed for reproducibility. Default is 42.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlclassificator.params_">
+<span class="sig-name descname"><span class="pre">params_</span></span><a class="headerlink" href="#rampy.mlclassificator.params_" title="Link to this definition"></a></dt>
+<dd><p>Hyperparameters for the selected algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlclassificator.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#rampy.mlclassificator.model" title="Link to this definition"></a></dt>
+<dd><p>Scikit-learn model instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlclassificator.X_scaler">
+<span class="sig-name descname"><span class="pre">X_scaler</span></span><a class="headerlink" href="#rampy.mlclassificator.X_scaler" title="Link to this definition"></a></dt>
+<dd><p>Scikit-learn scaler instance for X values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.mlclassificator.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.mlclassificator.fit" title="Link to this definition"></a></dt>
+<dd><p>Scale data and train or re-train the model with the specified algorithm.</p>
+<p>This method initializes and trains the model if it hasn’t been trained yet. If a model
+already exists (from a previous fit), it reuses the existing model and optionally updates
+its hyperparameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – Hyperparameters for the selected algorithm. If provided,
+these parameters will override any previously set parameters.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an invalid algorithm is specified or if scaling is inconsistent.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.mlclassificator.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.mlclassificator.predict" title="Link to this definition"></a></dt>
+<dd><p>Predict target values using the trained model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Samples to predict with shape <cite>(n_samples, n_features)</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Predicted target values with shape <cite>(n_samples,)</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>If <cite>scaling</cite> is enabled, input samples will be scaled before prediction.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the model has not been fitted yet.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.mlclassificator.refit">
+<span class="sig-name descname"><span class="pre">refit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rampy.mlclassificator.refit" title="Link to this definition"></a></dt>
+<dd><p>Re-train a model previously trained with fit()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.mlclassificator.scale_data">
+<span class="sig-name descname"><span class="pre">scale_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rampy.mlclassificator.scale_data" title="Link to this definition"></a></dt>
+<dd><p>Scale training and testing data.</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
 <section id="machine-learning-exploration">
 <h2>Machine learning exploration<a class="headerlink" href="#machine-learning-exploration" title="Link to this heading"></a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">rampy.ml_exploration</span></code> module allows you to perform unsupervised ML exploration of a set of spectra. The class will take care of scaling the data and training the model. You can then use the trained model to explore the data and find patterns.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">rampy.mlexplorer</span></code> class allows you to perform unsupervised ML exploration of a set of spectra. The class will take care of scaling the data and training the model. You can then use the trained model to explore the data and find patterns.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="rampy.mlexplorer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">mlexplorer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.mlexplorer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>use machine learning algorithms from scikit learn to explore spectroscopic datasets</p>
+<p>Performs automatic scaling and train/test split before NMF or PCA fit.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="rampy.ml_exploration">
-<span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">ml_exploration</span></span><a class="headerlink" href="#rampy.ml_exploration" title="Link to this definition"></a></dt>
-<dd><p>alias of &lt;module ‘rampy.ml_exploration’ from ‘/opt/hostedtoolcache/Python/3.11.12/x64/lib/python3.11/site-packages/rampy/ml_exploration.py’&gt;</p>
+<dt class="sig sig-object py" id="rampy.mlexplorer.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#rampy.mlexplorer.x" title="Link to this definition"></a></dt>
+<dd><p>Spectra; n_features = n_frequencies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{array-like, sparse matrix}, shape = (n_samples, n_features)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlexplorer.X_test">
+<span class="sig-name descname"><span class="pre">X_test</span></span><a class="headerlink" href="#rampy.mlexplorer.X_test" title="Link to this definition"></a></dt>
+<dd><p>spectra organised in rows (1 row = one spectrum) that you want to use as a testing dataset. THose spectra should not be present in the x (training) dataset. The spectra should share a common X axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{array-like, sparse matrix}, shape = (n_samples, n_features)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlexplorer.algorithm">
+<span class="sig-name descname"><span class="pre">algorithm</span></span><a class="headerlink" href="#rampy.mlexplorer.algorithm" title="Link to this definition"></a></dt>
+<dd><p>“PCA”, “NMF”, default = “PCA”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String,</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlexplorer.scaling">
+<span class="sig-name descname"><span class="pre">scaling</span></span><a class="headerlink" href="#rampy.mlexplorer.scaling" title="Link to this definition"></a></dt>
+<dd><p>True or False. If True, data will be scaled prior to fitting (see below),</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlexplorer.scaler">
+<span class="sig-name descname"><span class="pre">scaler</span></span><a class="headerlink" href="#rampy.mlexplorer.scaler" title="Link to this definition"></a></dt>
+<dd><p>the type of scaling performed. Choose between MinMaxScaler or StandardScaler, see <a class="reference external" href="http://scikit-learn.org/stable/modules/preprocessing.html">http://scikit-learn.org/stable/modules/preprocessing.html</a> for details. Default = “MinMaxScaler”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlexplorer.test_size">
+<span class="sig-name descname"><span class="pre">test_size</span></span><a class="headerlink" href="#rampy.mlexplorer.test_size" title="Link to this definition"></a></dt>
+<dd><p>the fraction of the dataset to use as a testing dataset; only used if X_test and y_test are not provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlexplorer.rand_state">
+<span class="sig-name descname"><span class="pre">rand_state</span></span><a class="headerlink" href="#rampy.mlexplorer.rand_state" title="Link to this definition"></a></dt>
+<dd><p>the random seed that is used for reproductibility of the results. Default = 42.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Float64</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlexplorer.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#rampy.mlexplorer.model" title="Link to this definition"></a></dt>
+<dd><p>A Scikit Learn object model, see scikit learn library documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Scikit learn model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlexplorer.Remarks">
+<span class="sig-name descname"><span class="pre">Remarks</span></span><a class="headerlink" href="#rampy.mlexplorer.Remarks" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">-------</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">For</span> <span class="pre">details</span> <span class="pre">on</span> <span class="pre">hyperparameters</span> <span class="pre">of</span> <span class="pre">each</span> <span class="pre">algorithms,</span> <span class="pre">please</span> <span class="pre">directly</span> <span class="pre">consult</span> <span class="pre">the</span> <span class="pre">documentation</span> <span class="pre">of</span> <span class="pre">SciKit</span> <span class="pre">Learn</span> <span class="pre">at</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlexplorer.http">
+<span class="sig-name descname"><span class="pre">http</span></span><a class="headerlink" href="#rampy.mlexplorer.http" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>//scikit-learn.org/stable/</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Results</span> <span class="pre">for</span> <span class="pre">machine</span> <span class="pre">learning</span> <span class="pre">algorithms</span> <span class="pre">can</span> <span class="pre">vary</span> <span class="pre">from</span> <span class="pre">run</span> <span class="pre">to</span> <span class="pre">run.</span> <span class="pre">A</span> <span class="pre">way</span> <span class="pre">to</span> <span class="pre">solve</span> <span class="pre">that</span> <span class="pre">is</span> <span class="pre">to</span> <span class="pre">fix</span> <span class="pre">the</span> <span class="pre">random_state.</span></span></dt>
+<dd></dd></dl>
+
+<p class="rubric">Example</p>
+<p>Given an array X of n samples by m frequencies, and Y an array of n x 1 concentrations</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">explo</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">mlexplorer</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="c1"># X is an array of signals built by mixing two partial components</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">explo</span><span class="o">.</span><span class="n">algorithm</span> <span class="o">=</span> <span class="s1">&#39;NMF&#39;</span> <span class="c1"># using Non-Negative Matrix factorization</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">explo</span><span class="o">.</span><span class="n">nb_compo</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># number of components to use</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">explo</span><span class="o">.</span><span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="c1"># size of test set</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">explo</span><span class="o">.</span><span class="n">scaler</span> <span class="o">=</span> <span class="s2">&quot;MinMax&quot;</span> <span class="c1"># scaler</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">explo</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span> <span class="c1"># fitting!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">W</span> <span class="o">=</span> <span class="n">explo</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">explo</span><span class="o">.</span><span class="n">X_train_sc</span><span class="p">)</span> <span class="c1"># getting the mixture array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">explo</span><span class="o">.</span><span class="n">X_scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">explo</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">components_</span><span class="p">)</span> <span class="c1"># components in the original space</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">H</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="c1"># plot the two components</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.mlexplorer.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rampy.mlexplorer.fit" title="Link to this definition"></a></dt>
+<dd><p>Train the model with the indicated algorithm.</p>
+<p>Do not forget to tune the hyperparameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.mlexplorer.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.mlexplorer.predict" title="Link to this definition"></a></dt>
+<dd><p>Predict using the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>{array-like</em><em>, </em><em>sparse matrix}</em><em>, </em><em>shape =</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Samples.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>C</strong> (<em>array, shape = (n_samples,)</em>) – Returns predicted values.</p></li>
+<li><p><em>Remark</em></p></li>
+<li><p><em>——</em></p></li>
+<li><p><em>if self.scaling == “yes”, scaling will be performed on the input X.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.mlexplorer.refit">
+<span class="sig-name descname"><span class="pre">refit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rampy.mlexplorer.refit" title="Link to this definition"></a></dt>
+<dd><p>Train the model with the indicated algorithm.</p>
+<p>Do not forget to tune the hyperparameters.</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
 <section id="machine-learning-regression">
 <h2>Machine learning regression<a class="headerlink" href="#machine-learning-regression" title="Link to this heading"></a></h2>
-<p>Based on a set of spectra and their labels, the <code class="docutils literal notranslate"><span class="pre">rampy.ml_regressor</span></code> module allows you to perform a regression using the spectra and a supervised ML algorithm. The class will take care of splitting the data into training and test sets, scaling the data, and training the model. You can then use the trained model to predict the new values of your target from new spectra.</p>
+<p>Based on a set of spectra and their labels, the <code class="docutils literal notranslate"><span class="pre">rampy.mlregressor</span></code> class allows you to perform a regression using the spectra and a supervised ML algorithm. The class will take care of splitting the data into training and test sets, scaling the data, and training the model. You can then use the trained model to predict the new values of your target from new spectra.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="rampy.mlregressor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">mlregressor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.mlregressor" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>use machine learning algorithms from scikit learn to perform regression between spectra and an observed variable.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="rampy.ml_regressor">
-<span class="sig-prename descclassname"><span class="pre">rampy.</span></span><span class="sig-name descname"><span class="pre">ml_regressor</span></span><a class="headerlink" href="#rampy.ml_regressor" title="Link to this definition"></a></dt>
-<dd><p>alias of &lt;module ‘rampy.ml_regressor’ from ‘/opt/hostedtoolcache/Python/3.11.12/x64/lib/python3.11/site-packages/rampy/ml_regressor.py’&gt;</p>
+<dt class="sig sig-object py" id="rampy.mlregressor.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#rampy.mlregressor.x" title="Link to this definition"></a></dt>
+<dd><p>Spectra; n_features = n_frequencies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{array-like, sparse matrix}, shape = (n_samples, n_features)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.y">
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#rampy.mlregressor.y" title="Link to this definition"></a></dt>
+<dd><p>Returns predicted values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array, shape = (n_samples,)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.X_test">
+<span class="sig-name descname"><span class="pre">X_test</span></span><a class="headerlink" href="#rampy.mlregressor.X_test" title="Link to this definition"></a></dt>
+<dd><p>spectra organised in rows (1 row = one spectrum) that you want to use as a testing dataset. THose spectra should not be present in the x (training) dataset. The spectra should share a common X axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{array-like, sparse matrix}, shape = (n_samples, n_features)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.y_test">
+<span class="sig-name descname"><span class="pre">y_test</span></span><a class="headerlink" href="#rampy.mlregressor.y_test" title="Link to this definition"></a></dt>
+<dd><p>the target that you want to use as a testing dataset. Those targets should not be present in the y (training) dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array, shape = (n_samples,)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.algorithm">
+<span class="sig-name descname"><span class="pre">algorithm</span></span><a class="headerlink" href="#rampy.mlregressor.algorithm" title="Link to this definition"></a></dt>
+<dd><p>“KernelRidge”, “SVM”, “LinearRegression”, “Lasso”, “ElasticNet”, “NeuralNet”, “BaggingNeuralNet”, default = “SVM”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String,</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.scaling">
+<span class="sig-name descname"><span class="pre">scaling</span></span><a class="headerlink" href="#rampy.mlregressor.scaling" title="Link to this definition"></a></dt>
+<dd><p>True or False. If True, data will be scaled during fitting and prediction with the requested scaler (see below),</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.scaler">
+<span class="sig-name descname"><span class="pre">scaler</span></span><a class="headerlink" href="#rampy.mlregressor.scaler" title="Link to this definition"></a></dt>
+<dd><p>the type of scaling performed. Choose between MinMaxScaler or StandardScaler, see <a class="reference external" href="http://scikit-learn.org/stable/modules/preprocessing.html">http://scikit-learn.org/stable/modules/preprocessing.html</a> for details. Default = “MinMaxScaler”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.test_size">
+<span class="sig-name descname"><span class="pre">test_size</span></span><a class="headerlink" href="#rampy.mlregressor.test_size" title="Link to this definition"></a></dt>
+<dd><p>the fraction of the dataset to use as a testing dataset; only used if X_test and y_test are not provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.rand_state">
+<span class="sig-name descname"><span class="pre">rand_state</span></span><a class="headerlink" href="#rampy.mlregressor.rand_state" title="Link to this definition"></a></dt>
+<dd><p>the random seed that is used for reproductibility of the results. Default = 42.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Float64</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.param_kr">
+<span class="sig-name descname"><span class="pre">param_kr</span></span><a class="headerlink" href="#rampy.mlregressor.param_kr" title="Link to this definition"></a></dt>
+<dd><p>contain the values of the hyperparameters that should be provided to KernelRidge and GridSearch for the Kernel Ridge regression algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.param_svm">
+<span class="sig-name descname"><span class="pre">param_svm</span></span><a class="headerlink" href="#rampy.mlregressor.param_svm" title="Link to this definition"></a></dt>
+<dd><p>containg the values of the hyperparameters that should be provided to SVM and GridSearch for the Support Vector regression algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.param_neurons">
+<span class="sig-name descname"><span class="pre">param_neurons</span></span><a class="headerlink" href="#rampy.mlregressor.param_neurons" title="Link to this definition"></a></dt>
+<dd><p>contains the parameters for the Neural Network (MLPregressor model in sklearn).
+Default= dict(hidden_layer_sizes=(3,),solver = ‘lbfgs’,activation=’relu’,early_stopping=True)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.param_bagging">
+<span class="sig-name descname"><span class="pre">param_bagging</span></span><a class="headerlink" href="#rampy.mlregressor.param_bagging" title="Link to this definition"></a></dt>
+<dd><p>contains the parameters for the BaggingRegressor sklearn function that uses a MLPregressor base method.
+Default= dict(n_estimators=100, max_samples=1.0, max_features=1.0, bootstrap=True,</p>
+<blockquote>
+<div><p>bootstrap_features=False, oob_score=False, warm_start=False, n_jobs=1, random_state=rand_state, verbose=0)</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.prediction_train">
+<span class="sig-name descname"><span class="pre">prediction_train</span></span><a class="headerlink" href="#rampy.mlregressor.prediction_train" title="Link to this definition"></a></dt>
+<dd><p>the predicted target values for the training y dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array{Float64}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.prediction_test">
+<span class="sig-name descname"><span class="pre">prediction_test</span></span><a class="headerlink" href="#rampy.mlregressor.prediction_test" title="Link to this definition"></a></dt>
+<dd><p>the predicted target values for the testing y_test dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array{Float64}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#rampy.mlregressor.model" title="Link to this definition"></a></dt>
+<dd><p>A Scikit Learn object model, see scikit learn library documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Scikit learn model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.X_scaler">
+<span class="sig-name descname"><span class="pre">X_scaler</span></span><a class="headerlink" href="#rampy.mlregressor.X_scaler" title="Link to this definition"></a></dt>
+<dd><p>A Scikit Learn scaler object for the x values.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rampy.mlregressor.Y_scaler">
+<span class="sig-name descname"><span class="pre">Y_scaler</span></span><a class="headerlink" href="#rampy.mlregressor.Y_scaler" title="Link to this definition"></a></dt>
+<dd><p>A Scikit Learn scaler object for the y values.</p>
+</dd></dl>
+
+<p class="rubric">Example</p>
+<p>Given an array X of n samples by m frequencies, and Y an array of n x 1 concentrations</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">mlregressor</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">algorithm</span><span class="p">(</span><span class="s2">&quot;SVM&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">user_kernel</span> <span class="o">=</span> <span class="s1">&#39;poly&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y_new</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_new</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="remarks">
+<h3>Remarks<a class="headerlink" href="#remarks" title="Link to this heading"></a></h3>
+<p>For details on hyperparameters of each algorithms, please directly consult the documentation of SciKit Learn at:</p>
+<p><a class="reference external" href="http://scikit-learn.org/stable/">http://scikit-learn.org/stable/</a></p>
+<p>For Support Vector and Kernel Ridge regressions, mlregressor performs a cross_validation search with using 5 KFold cross validators.</p>
+<p>If the results are poor with Support Vector and Kernel Ridge regressions, you will have to tune the param_grid_kr or param_grid_svm dictionnary that records the hyperparameter space to investigate during the cross validation.</p>
+<p>Results for machine learning algorithms can vary from run to run. A way to solve that is to fix the random_state.
+For neural nets, results from multiple neural nets (bagging technique) may also generalise better, such that
+it may be better to use the BaggingNeuralNet function.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.mlregressor.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rampy.mlregressor.fit" title="Link to this definition"></a></dt>
+<dd><p>Scale data and train the model with the indicated algorithm.</p>
+<p>Do not forget to tune the hyperparameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>algorithm</strong> (<em>String</em><em>,</em>) – algorithm to use. Choose between “KernelRidge”, “SVM”, “LinearRegression”, “Lasso”, “ElasticNet”, “NeuralNet”, “BaggingNeuralNet”, default = “SVM”</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.mlregressor.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.mlregressor.predict" title="Link to this definition"></a></dt>
+<dd><p>Predict using the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>{array-like</em><em>, </em><em>sparse matrix}</em><em>, </em><em>shape =</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Samples.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>C</strong> (<em>array, shape = (n_samples,)</em>) – Returns predicted values.</p></li>
+<li><p><em>Remark</em></p></li>
+<li><p><em>——</em></p></li>
+<li><p><em>if self.scaling == “yes”, scaling will be performed on the input X.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rampy.mlregressor.refit">
+<span class="sig-name descname"><span class="pre">refit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rampy.mlregressor.refit" title="Link to this definition"></a></dt>
+<dd><p>Re-train a model previously trained with fit()</p>
+</dd></dl>
+
+</section>
 </dd></dl>
 
 </section>
