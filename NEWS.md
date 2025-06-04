@@ -22,6 +22,7 @@ Licence: see LICENCE.md
 
 ## Modifications
 
+  - Minimal Python version is now 3.10
   - normalise(): "area" normalisation now uses the simpson() function from scipy.integrate, instead of the trapezoidal rule. This should be more precise.
 
 # Improvements
