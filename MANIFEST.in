@@ -1,5 +1,0 @@
-include README.md
-include NEWS.md
-include LICENSE
-include rampy/*.py
-include rampy/tests/*.py

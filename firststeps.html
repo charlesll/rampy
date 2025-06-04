@@ -1,0 +1,192 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>First Steps &mdash; RamPy 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Preprocessing" href="preprocessing.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RamPy
+              <img src="_static/Rampy.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">Rampy News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">First Steps</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#library-importation">Library importation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-importation">Data importation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plot-a-spectrum">Plot a spectrum</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signalparams.html">Signal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="maps.html">Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Example notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">rampy API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">First Steps</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/firststeps.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="first-steps">
+<span id="rst-first"></span><h1>First Steps<a class="headerlink" href="#first-steps" title="Link to this heading"></a></h1>
+<p>You can consult the help of each function/class/method on this website.</p>
+<p>Quick examples of the use of the functions/classes are shown to highlight some of the possibilities offered by Rampy.</p>
+<p>Example Jupyter notebooks are also shown, and <a class="reference external" href="https://github.com/charlesll/rampy/tree/master/docs/notebooks">can be dowloaded</a></p>
+<section id="library-importation">
+<h2>Library importation<a class="headerlink" href="#library-importation" title="Link to this heading"></a></h2>
+<p>Python does not come with a lot of possibilities. This is why you usually need to import a few libraries. You can assign a shortname to a library, as usually people import/use functions with libraries’ prefix, to avoid confusion (two libraries can have a function with the same name…). A useful shortname for rampy is <code class="docutils literal notranslate"><span class="pre">rp</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># importing rampy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">rampy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rp</span>
+<span class="c1"># and for numpy we will respect the usual name:</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="c1"># for matplotlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</pre></div>
+</div>
+</section>
+<section id="data-importation">
+<h2>Data importation<a class="headerlink" href="#data-importation" title="Link to this heading"></a></h2>
+<p>This is done using directly Pandas or numpy, except for:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>importing multiple spectra can be done with the <code class="docutils literal notranslate"><span class="pre">rampy.spectrarray()</span></code> function;</p></li>
+<li><p>maps for which rampy provides a function to import the CSV files generated by</p></li>
+</ul>
+</div></blockquote>
+<p>the Renishaw or Horiba Raman spectrometers.</p>
+<p>To import a spectrum saved in a 2 column text file “data.txt” with space separator, we can use the numpy genfromtxt function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="n">spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="s2">&quot;data.txt&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If our file has a 10 line header, we can skip it like</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="s2">&quot;data.txt&quot;</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See the documentation of numpy for further details, as well as that of Pandas.</p>
+</section>
+<section id="plot-a-spectrum">
+<h2>Plot a spectrum<a class="headerlink" href="#plot-a-spectrum" title="Link to this heading"></a></h2>
+<p>This can be done with Matplotlib directly. For instance, to plot our spectrum we can do:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">spectrum</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="s1">&#39;k.&#39;</span><span class="p">,</span><span class="n">markersize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Raman shift, cm$^{-1}$&quot;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Normalized intensity, a. u.&quot;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Fig. 1: the raw data&quot;</span><span class="p">,</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span><span class="n">fontweight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will give the image:</p>
+<a class="reference internal image-reference" href="_images/spectrum.png"><img alt="_images/spectrum.png" src="_images/spectrum.png" style="width: 400px;" />
+</a>
+<p>Rampy also provides a function to plot a spectrum, allowing an interactive view (leveraging Plotly) of the data and possibly of baselines and smoothed signals:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rampy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">rp</span>
+<span class="n">rp</span><span class="o">.</span><span class="n">plot_spectrum</span><span class="p">(</span><span class="n">spectrum</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">spectrum</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Raman shift, cm$^{-1}$&quot;</span><span class="p">,</span>
+                <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Normalized intensity, a. u.&quot;</span><span class="p">,</span>
+                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Fig. 1: the raw data&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See the <a class="reference internal" href="plotting.html#rst-plotting"><span class="std std-ref">Plotting</span></a> page for details on the function.</p>
+<p>Now you are ready for the next steps: <a class="reference internal" href="preprocessing.html#rst-preprocessing"><span class="std std-ref">Preprocessing</span></a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="preprocessing.html" class="btn btn-neutral float-right" title="Preprocessing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

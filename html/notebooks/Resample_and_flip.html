@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resample and flip spectra &mdash; RamPy 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RamPy
+              <img src="../../_static/Rampy.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news.html">Rampy News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../signalparams.html">Signal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../peakfitting.html">Peak fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../maps.html">Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Example notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../API.html">rampy API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Resample and flip spectra</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/html/notebooks/Resample_and_flip.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Resample-and-flip-spectra">
+<h1>Resample and flip spectra<a class="headerlink" href="#Resample-and-flip-spectra" title="Link to this heading"></a></h1>
+<p>Spectral data are often delivered with decreasing and non-regularly sampled frequencies. This notebook shows how rampy can help you to solve this problem.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+import rampy as rp
+</pre></div>
+</div>
+</div>
+<p>Creating a fake signal, with decreasing frequencies and irregularly sampled</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>nb_points  =500
+x = np.sort(np.random.uniform(50,500,nb_points))[::-1]
+
+# gaussian peaks
+p1 = 20.0 * np.exp(-np.log(2) * ((x-150.0)/15.0)**2)
+p2 = 100.0 * np.exp(-np.log(2) * ((x-250.0)/5.0)**2)
+p3 = 50.0 * np.exp(-np.log(2) * ((x-450.0)/1.0)**2)
+p4 = 20.0 * np.exp(-np.log(2) * ((x-350.0)/30.0)**2)
+p5 = 30.0 * np.exp(-np.log(2) * ((x-460.0)/5.0)**2)
+
+# background: a large gaussian + linear
+bkg = 60.0 * np.exp(-np.log(2) * ((x-250.0)/200.0)**2) + 0.1*x
+
+#noise
+noise = 2.0 * np.random.normal(size=nb_points)
+
+#observation
+y = p1 + p2 + p3 + p4 + p5 + noise +bkg
+
+# spectrum, recorded array
+spectrum = np.vstack((x,y)).T
+
+plt.plot(x, y)
+plt.ylabel(&quot;Y&quot;)
+plt.xlabel(&quot;X&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 0, &#39;X&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/html_notebooks_Resample_and_flip_3_1.png" src="../../_images/html_notebooks_Resample_and_flip_3_1.png" />
+</div>
+</div>
+<p>OK, makes no difference for pyplot but actually x is reversely sorted, and no regularly sampled</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(spectrum[0:10,0])
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[499.79076741 498.9087031  498.21050255 497.33467653 497.26713469
+ 496.29510765 495.7252956  492.14208386 491.1816106  490.50786234]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(&quot;interval 1:&quot;+str(spectrum[1,0]-spectrum[0,0]))
+print(&quot;interval 2:&quot;+str(spectrum[2,0]-spectrum[1,0]))
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+interval 1:-0.8820643093732201
+interval 2:-0.6982005499156116
+</pre></div></div>
+</div>
+<p>We can solve the first problem by using rp.resample(). Note that we could also use numpy.interp(). We will compare both for the sack of example. We first flip the array, then resample it.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>spectrum_increasing = rp.flipsp(spectrum)
+print(spectrum_increasing[0:10,0])
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[51.10272118 51.48118147 51.79895842 52.81514729 53.99881943 54.41515659
+ 55.15626508 55.44699214 55.87450992 56.03470415]
+</pre></div></div>
+</div>
+<p>OK, now the frequencies are in increasing order. This seems not important maybe, but remember than many spline algorithm (including gcvspline or the Dierckx version in scipy) required increasing x values…</p>
+<p>Now, we resample on a linearly spaced x axis. When creating x_new, remember that the boundaries should be inside those of the existing frequencies.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>x_new = np.arange(round(spectrum_increasing[0,0])+1,round(spectrum_increasing[-1,0])-1,0.8)
+y_new_rp = rp.resample(spectrum_increasing[:,0],spectrum_increasing[:,1],x_new)
+y_new_np = np.interp(x_new,spectrum_increasing[:,0],spectrum_increasing[:,1])
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.subplot(1,2,1)
+plt.plot(spectrum[:,0],spectrum[:,1],&quot;k.&quot;)
+plt.plot(x_new,y_new_rp,&quot;r-&quot;,label=&quot;rampy&quot;)
+plt.plot(x_new,y_new_np,&quot;b-&quot;,label=&quot;np.interp&quot;)
+plt.ylabel(&quot;Y&quot;)
+plt.xlabel(&quot;X&quot;)
+plt.legend()
+plt.subplot(1,2,2)
+plt.plot(spectrum[:,0],spectrum[:,1],&quot;k.&quot;)
+plt.plot(x_new,y_new_rp,&quot;r-&quot;,label=&quot;rampy&quot;)
+plt.plot(x_new,y_new_np,&quot;b-&quot;,label=&quot;np.interp&quot;)
+plt.ylabel(&quot;Y&quot;)
+plt.xlabel(&quot;X&quot;)
+plt.xlim(200,230)
+plt.ylim(70,90)
+plt.legend()
+plt.tight_layout()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/html_notebooks_Resample_and_flip_11_0.png" src="../../_images/html_notebooks_Resample_and_flip_11_0.png" />
+</div>
+</div>
+<p>As seen below, <code class="docutils literal notranslate"><span class="pre">rampy.resample</span></code> return the same values as <code class="docutils literal notranslate"><span class="pre">numpy.interp</span></code> with the default values. However, we see that the fit is actually not really perfect. This is where <code class="docutils literal notranslate"><span class="pre">rampy.resample</span></code> offers you more: you can choose the type of interpolation done, and other options, as it uses <code class="docutils literal notranslate"><span class="pre">scipy.interpolate.interp1d</span></code> at the low level. See the documentation <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html">here</a>.</p>
+<p>We can try to use a different algorithm and see the result:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>y_new_rp = rp.resample(spectrum_increasing[:,0],spectrum_increasing[:,1],x_new,kind=&quot;nearest&quot;)
+plt.subplot(1,2,1)
+plt.plot(spectrum[:,0],spectrum[:,1],&quot;k.&quot;)
+plt.plot(x_new,y_new_rp,&quot;r-&quot;,label=&quot;rampy&quot;)
+plt.plot(x_new,y_new_np,&quot;b-&quot;,label=&quot;np.interp&quot;)
+plt.ylabel(&quot;Y&quot;)
+plt.xlabel(&quot;X&quot;)
+plt.legend()
+plt.subplot(1,2,2)
+plt.plot(spectrum[:,0],spectrum[:,1],&quot;k.&quot;)
+plt.plot(x_new,y_new_rp,&quot;r-&quot;,label=&quot;rampy&quot;)
+plt.plot(x_new,y_new_np,&quot;b-&quot;,label=&quot;np.interp&quot;)
+plt.ylabel(&quot;Y&quot;)
+plt.xlabel(&quot;X&quot;)
+plt.xlim(200,230)
+plt.ylim(70,90)
+plt.legend()
+plt.tight_layout()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/html_notebooks_Resample_and_flip_13_0.png" src="../../_images/html_notebooks_Resample_and_flip_13_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

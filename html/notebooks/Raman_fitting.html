@@ -1,0 +1,880 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Peak fitting with LMfit &mdash; RamPy 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RamPy
+              <img src="../../_static/Rampy.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../news.html">Rampy News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../signalparams.html">Signal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../peakfitting.html">Peak fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../maps.html">Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Example notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../API.html">rampy API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Peak fitting with LMfit</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/html/notebooks/Raman_fitting.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Peak-fitting-with-LMfit">
+<h1>Peak fitting with LMfit<a class="headerlink" href="#Peak-fitting-with-LMfit" title="Link to this heading"></a></h1>
+<p>Charles Le Losq, Geophysical Laboratory, Carnegie Institution for Science. 7 April 2015. Updated 2025</p>
+<p>This IPython notebook is aimed to show how you can easily fit a Raman spectrum with Python tools, for free and, in my opinion, in an elegant way.</p>
+<p>This fitting procedure is much less “black-box” than existing GUI softwares. It probably is a little bit harder to learn for the newcomer, but rewards are much greater since you can control all the procedure in every single detail.</p>
+<p>In this example, we will fit the 850-1300 cm<span class="math notranslate nohighlight">\(^{-1}\)</span> portion of a Raman spectrum of a lithium tetrasilicate glass Li<span class="math notranslate nohighlight">\(_2\)</span>Si<span class="math notranslate nohighlight">\(_4\)</span>O<span class="math notranslate nohighlight">\(_9\)</span>, the name will be abbreviated LS4 in the following.</p>
+<p>For further references for fitting Raman spectra of glasses, please see for instance: Virgo et al., 1980, Science 208, p 1371-1373; Mysen et al., 1982, American Mineralogist 67, p 686-695; McMillan, 1984, American Mineralogist 69, p 622-644; Mysen, 1990, American Mineralogist 75, p 120-134; Le Losq et al., 2014, Geochimica et Cosmochimica Acta 126, p 495-517 and Neuville et al., 2014, Reviews in Mineralogy and Geochemistry 78.</p>
+<p>We will use the optimization algorithms of Scipy together with the library lmfit (<a class="reference external" href="http://lmfit.github.io/lmfit-py/">http://lmfit.github.io/lmfit-py/</a>) that is extremely useful to add constrains to the fitting procedure.</p>
+<section id="Importing-libraries">
+<h2>Importing libraries<a class="headerlink" href="#Importing-libraries" title="Link to this heading"></a></h2>
+<p>So the first part will be to import a bunch of libraries for doing various things</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%matplotlib inline
+
+import numpy as np # For data manipulation
+import random
+import matplotlib.pyplot as plt # For doing the plots
+</pre></div>
+</div>
+</div>
+<p>We need in particular the library lmfit created and maintained by Matt Newville, CARS, University of Chicago, and available at <a class="reference external" href="http://lmfit.github.io/lmfit-py/">http://lmfit.github.io/lmfit-py/</a>. See the documentation on the website for installing and using this one.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import lmfit
+from lmfit.models import GaussianModel
+</pre></div>
+</div>
+</div>
+<p>And we import rampy (as rp)</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import rampy as rp
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="Importing-and-looking-at-the-data">
+<h1>Importing and looking at the data<a class="headerlink" href="#Importing-and-looking-at-the-data" title="Link to this heading"></a></h1>
+<p>Let’s first have a look at the spectrum</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># get the spectrum to deconvolute, with skipping header and footer comment lines from the spectrometer
+inputsp = np.genfromtxt(&quot;./data/LS4.txt&quot;,skip_header=20, skip_footer=43)
+
+# create a new plot for showing the spectrum
+plt.figure()
+plt.plot(inputsp[:,0],inputsp[:,1],&#39;-&#39;, linewidth=1.0)
+plt.xlabel(&quot;Raman shift, cm$^{-1}$&quot;, fontsize = 12)
+plt.ylabel(&quot;Normalized intensity, a. u.&quot;, fontsize = 12)
+plt.title(&quot;Fig. 1: the raw data&quot;,fontsize = 12,fontweight=&quot;bold&quot;)
+plt.tight_layout()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;Fig. 1: the raw data&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/html_notebooks_Raman_fitting_8_1.png" src="../../_images/html_notebooks_Raman_fitting_8_1.png" />
+</div>
+</div>
+<p>We are interested in fitting the 870-1300 cm<span class="math notranslate nohighlight">\(^{-1}\)</span> portion of this spectrum, which can be assigned to the various symmetric and assymetric stretching vibrations of Si-O bonds in the SiO<span class="math notranslate nohighlight">\(_2\)</span> tetrahedra present in the glass network (see the above cited litterature for details).</p>
+<section id="Baseline-Removal">
+<h2>Baseline Removal<a class="headerlink" href="#Baseline-Removal" title="Link to this heading"></a></h2>
+<p>First thing we notice in Fig. 1, we have to remove a baseline because this spectrum is shifted from 0 by some “background” scattering. For that, we can use the rp.baseline() function</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>roi = np.array([(860,874),(1300,1330)]) # The regions where the baseline will be fitted
+y_corr, y_base = rp.baseline(inputsp[:,0],inputsp[:,1], roi=roi, method=&#39;poly&#39;, polynomial_order=2)# We fit a polynomial background.
+
+plt.plot(inputsp[:,0],inputsp[:,1],&#39;-&#39;, linewidth=1.0,label=&#39;Raw data&#39;)
+plt.plot(inputsp[:,0],y_base,&#39;-&#39;, linewidth=1.0,label=&#39;Baseline&#39;)
+plt.plot(inputsp[:,0],y_corr,&#39;-&#39;, linewidth=1.0,label=&#39;Corrected data&#39;)
+plt.xlabel(&quot;Raman shift, cm$^{-1}$&quot;)
+plt.ylabel(&quot;Normalized intensity, a. u.&quot;)
+plt.title(&#39;Figure 2: the baseline correction&#39;)
+plt.tight_layout()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/html_notebooks_Raman_fitting_11_0.png" src="../../_images/html_notebooks_Raman_fitting_11_0.png" />
+</div>
+</div>
+<p>We could also use the <code class="docutils literal notranslate"><span class="pre">rampy.plot_spectrum</span></code> function to vizualize the baseline.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig = rp.plot_spectrum(inputsp[:,0],inputsp[:,1],
+                 baselines=[y_base,], baseline_labels=[&#39;Polynomial fit&#39;],
+                 xaxis_title=&#39;Raman shift, cm-1&#39;,
+                 yaxis_title=&#39;Normalized intensity, a. u.&#39;,
+                 title=&#39;Fig. 2: the baseline corrected spectrum&#39;)
+# we can add a new line as well:
+fig = rp.plot_spectrum(inputsp[:,0],y_corr, fig=fig)
+fig.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="admonition warning">
+<p>Data type cannot be displayed: application/vnd.plotly.v1+json</p>
+</div>
+</div>
+</div>
+<p>Now we will do some manipulation to have the interested portion of spectrum in a single variable. We will assume that the errors have not been drastically affected by the correction process (in some case it can be, but this one is quite straightforward), such that we will use the initial relative errors stored in the “ese0” variable.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[74]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># signal selection
+lb = 867 # The lower boundary of interest
+hb = 1300 # The upper boundary of interest
+
+# Extract the signal of interest
+sp_fit = rp.extract_signal(inputsp[:,0], y_corr, [[lb, hb]])
+x_fit = sp_fit[:,0]
+y_fit = sp_fit[:,1]
+
+# the relative errors after baseline subtraction
+ese0 = np.sqrt(abs(y_fit))/abs(y_fit)
+
+y_fit = rp.normalise(y_fit, method=&quot;intensity&quot;)
+
+#calculate good ese
+sigma = abs(ese0*y_fit)
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Last-steps-before-fitting-the-spectrum">
+<h2>Last steps before fitting the spectrum<a class="headerlink" href="#Last-steps-before-fitting-the-spectrum" title="Link to this heading"></a></h2>
+<p>So here we are. We have the corrected spectrum in the sample variable.</p>
+<p>But before going further away,we need to write a function for the optimisation. It will return the difference between the calculated and measured spectrum, following the guideline provived by lmfit (<a class="reference external" href="http://lmfit.github.io/lmfit-py/">http://lmfit.github.io/lmfit-py/</a>) Please note that I do the fitting this way because it gives a pretty good control of the entire process, but you can use directly the builtin models of lmfit (<a class="reference external" href="http://lmfit.github.io/lmfit-py/builtin_models.html">http://lmfit.github.io/lmfit-py/builtin_models.html</a>) for fitting the spectrum. Doing so, your code will be
+different from this one and you don’t need to define a residual function. In such case, you want to look at the example 3 on the page <a class="reference external" href="http://lmfit.github.io/lmfit-py/builtin_models.html">http://lmfit.github.io/lmfit-py/builtin_models.html</a>. But let’s just pretend we want to write our own piece of code and use the Gaussian function implemented in Rampy.</p>
+<p>The shape of the spectrum suggests that at least three peaks are present, because of the two obvious bands near 950 and 1080 cm<span class="math notranslate nohighlight">\(^{-1}\)</span> and a slope break near 1200 cm <span class="math notranslate nohighlight">\(^{-1}\)</span>. From previous works, we actually know that we have two additional peaks (See Mysen, 1990 or Le Losq et al., 2014) in this spectral region located near 1050 and 1150 cm<span class="math notranslate nohighlight">\(^{-1}\)</span>. So we have to fit 5 peaks, and hence, we have 5 intensities variables a1 to a5, 5 frequencies f1 to f5, and 5 half width at
+half peak maximum l1 to l5. This makes a total of 15 parameters. Those variables will be stored in the Parameters() object created by the lmfit software (see <a class="reference external" href="http://lmfit.github.io/lmfit-py/parameters.html">http://lmfit.github.io/lmfit-py/parameters.html</a>), we will go back on this one latter. For now, let just say that the Parameters() object is called “pars” and contains the various a1-a5, f1-f5 and l1-l5 parameters, such that we can have their values with using a1 = pars[‘a1’].value for instance.</p>
+<p>So let’s go. We create the function “residual” with arguments pars (the Parameters() object), the x axis, and, in option, the y axis as data and the errors.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def residual(pars, x, data=None, eps=None): #Function definition
+    # unpack parameters, extract .value attribute for each parameter
+    a1 = pars[&#39;a1&#39;].value
+    a2 = pars[&#39;a2&#39;].value
+    a3 = pars[&#39;a3&#39;].value
+    a4 = pars[&#39;a4&#39;].value
+    a5 = pars[&#39;a5&#39;].value
+
+    f1 = pars[&#39;f1&#39;].value
+    f2 = pars[&#39;f2&#39;].value
+    f3 = pars[&#39;f3&#39;].value
+    f4 = pars[&#39;f4&#39;].value
+    f5 = pars[&#39;f5&#39;].value
+
+    l1 = pars[&#39;l1&#39;].value
+    l2 = pars[&#39;l2&#39;].value
+    l3 = pars[&#39;l3&#39;].value
+    l4 = pars[&#39;l4&#39;].value
+    l5 = pars[&#39;l5&#39;].value
+
+    # Using the Gaussian model function from rampy
+    peak1 = rp.gaussian(x,a1,f1,l1)
+    peak2 = rp.gaussian(x,a2,f2,l2)
+    peak3 = rp.gaussian(x,a3,f3,l3)
+    peak4 = rp.gaussian(x,a4,f4,l4)
+    peak5 = rp.gaussian(x,a5,f5,l5)
+
+    model = peak1 + peak2 + peak3 + peak4 + peak5 # The global model is the sum of the Gaussian peaks
+
+    if data is None: # if we don&#39;t have data, the function only returns the direct calculation
+        return model, peak1, peak2, peak3, peak4, peak5
+    if eps is None: # without errors, no ponderation
+        return (model - data)
+    return (model - data)/eps # with errors, the difference is ponderated
+</pre></div>
+</div>
+</div>
+<p>Note that in the above function, I did not applied the square to (model - data). This is implicitely done by lmfit (see <a class="reference external" href="http://lmfit.github.io/lmfit-py/fitting.html#fit-func-label">http://lmfit.github.io/lmfit-py/fitting.html#fit-func-label</a> for further information on function writting).</p>
+</section>
+</section>
+<section id="Fitting">
+<h1>Fitting<a class="headerlink" href="#Fitting" title="Link to this heading"></a></h1>
+<p>Ok, we have our optimisation function. So we can go forward and fit the spectrum…</p>
+<p>We need five Guassians at 950, 1050, 1100, 1150 and 1200 cm<span class="math notranslate nohighlight">\(^{-1}\)</span>. We set their half-width at half-maximum at the same value.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>params = lmfit.Parameters()
+#               (Name,  Value,  Vary,   Min,  Max,  Expr)
+params.add_many((&#39;a1&#39;,   2.4,   True,  0,      None,  None),
+                (&#39;f1&#39;,   946,   True, 910,    970,  None),
+                (&#39;l1&#39;,   26,   True,  20,      50,  None),
+                (&#39;a2&#39;,   3.5,   True,  0,      None,  None),
+                (&#39;f2&#39;,   1026,  True, 990,   1070,  None),
+                (&#39;l2&#39;,   39,   True,  20,   55,  None),
+                (&#39;a3&#39;,   8.5,    True, 0,      None,  None),
+                (&#39;f3&#39;,   1082,  True, 1070,   1110,  None),
+                (&#39;l3&#39;,   31,   True,  25,   35,  None),
+                (&#39;a4&#39;,   2.2,   True,  0,      None,  None),
+                (&#39;f4&#39;,   1140,  True, 1110,    1160,  None),
+                (&#39;l4&#39;,   35,   True,  20,   50,  None),
+                (&#39;a5&#39;,   2.,   True,  0,      None,  None),
+                (&#39;f5&#39;,   1211,  True, 1180,   1220,  None),
+                (&#39;l5&#39;,   28,   True,  20,   45,  None))
+</pre></div>
+</div>
+</div>
+<p>For further details on the Parameters() object, I invite you to look at this page: <a class="reference external" href="http://lmfit.github.io/lmfit-py/parameters.html">http://lmfit.github.io/lmfit-py/parameters.html</a> . But from the above piece of code, you can already guess that you can make specific parameters that vary or not, you can fixe Min or Max values, and you can even put some contrains between parameters (e.g., “l1 = l2’) using the last “Expr” column.</p>
+<p>You can remark that we applied some boundaries for the peak positions, but also for peak widths. This is based on previous fits made for this kind of compositions. Typically, in such glass, peaks from Si-O stretch vibrations do not present half-width greater than 50 cm<span class="math notranslate nohighlight">\(^{-1}\)</span> or smaller than 20 cm<span class="math notranslate nohighlight">\(^{-1}\)</span>. For instance, the 1080 cm<span class="math notranslate nohighlight">\(^{-1}\)</span> peak typically present a half-width of ~ 30 cm<span class="math notranslate nohighlight">\(^{-1}\)</span> ± 5 cm<span class="math notranslate nohighlight">\(^{-1}\)</span> in silica-rich silicate glasses, such that we can
+apply a tighter constrain there. Following such ideas, I put bonds for the parameter values for the half-width of the peaks. This avoid fitting divergence. Furthermore, we know approximately the frequencies of the peaks, such that we can also apply bondaries for them. This will help the fitting, since in this problem, we have five peaks in a broad envelop that only present two significant features at ~950, ~1080 cm<span class="math notranslate nohighlight">\(^{-1}\)</span> as well as two barely visible shoulders near 1050 and 1200
+cm<span class="math notranslate nohighlight">\(^{-1}\)</span>. But this is a simple case. For some more complex (aluminosilicate) glasses, this 850-1300 cm<span class="math notranslate nohighlight">\(^{-1}\)</span> frequency envelop is even less resolved, such that applying reasonable constrains become crucial for any quantitative Raman fitting.</p>
+<p>For starting the fit, as we suppose we have a not bad knowledge of peak frequencies (see the discussion right above), a good thing to do is to fix for the first fit the frequencies of the peaks:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[77]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># we constrain the positions
+params[&#39;f1&#39;].vary = False
+params[&#39;f2&#39;].vary = False
+params[&#39;f3&#39;].vary = False
+params[&#39;f4&#39;].vary = False
+params[&#39;f5&#39;].vary = False
+</pre></div>
+</div>
+</div>
+<p>This avoids any divergence of the fitting procedure regarding the hald-width, because with free frequencies and badly estimated half-width and intensities, the fitting procedure always tends to extremely broaden the peaks and put them at similar frequencies, with strong overlapping. Starting the fitting procedure by fixing the parameter we know the best, i.e. the frequencies, avoid such complications.</p>
+<p>Then, we need to use a large-scale algorithm quite robust for fitting. The levenberg-marquart algorithm fails on such fitting problem in my experience. Let’s choose the Nelder and Mead algorithm for this example: (<a class="reference external" href="http://comjnl.oxfordjournals.org/content/7/4/308.short">http://comjnl.oxfordjournals.org/content/7/4/308.short</a>) :</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[78]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>algo = &#39;nelder&#39;
+
+result = lmfit.minimize(residual, params, method = algo, args=(x_fit, y_fit)) # fit data with  nelder model from scipy
+</pre></div>
+</div>
+</div>
+<p>And now we release the frequencies:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[79]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># we release the positions but contrain the FWMH and amplitude of all peaks
+params[&#39;f1&#39;].vary = True
+params[&#39;f2&#39;].vary = True
+params[&#39;f3&#39;].vary = True
+params[&#39;f4&#39;].vary = True
+params[&#39;f5&#39;].vary = True
+
+#we fit twice
+result2 = lmfit.minimize(residual, params,method = algo, args=(x_fit, y_fit)) # fit data with leastsq model from scipy
+</pre></div>
+</div>
+</div>
+<p>We can now extract the various things generated by lmfit as well as the peaks:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[80]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>model = lmfit.fit_report(result2.params)
+yout, peak1,peak2,peak3,peak4,peak5 = residual(result2.params,x_fit) # the different peaks
+rchi2 = (1/(float(len(y_fit))-15-1))*np.sum((y_fit - yout)**2/sigma**2) # calculation of the reduced chi-square
+</pre></div>
+</div>
+</div>
+<p>And let’s have a look at the fitted spectrum:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[81]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>##### WE DO A NICE FIGURE THAT CAN BE IMPROVED FOR PUBLICATION
+plt.plot(x_fit,y_fit,&#39;k-&#39;)
+plt.plot(x_fit,yout,&#39;r-&#39;)
+plt.plot(x_fit,peak1,&#39;b-&#39;)
+plt.plot(x_fit,peak2,&#39;b-&#39;)
+plt.plot(x_fit,peak3,&#39;b-&#39;)
+plt.plot(x_fit,peak4,&#39;b-&#39;)
+plt.plot(x_fit,peak5,&#39;b-&#39;)
+
+plt.xlim(lb,hb)
+plt.xlabel(&quot;Raman shift, cm$^{-1}$&quot;, fontsize = 14)
+plt.ylabel(&quot;Normalized intensity, a. u.&quot;, fontsize = 14)
+plt.title(&quot;Fig. 3: Fit of the Si-O stretch vibrations\n in LS4 with \nthe Nelder Mead algorithm &quot;,fontsize = 14,fontweight = &quot;bold&quot;)
+print(&quot;rchi-2 = \n&quot;+str(rchi2))
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+rchi-2 =
+10.350930190695651
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/html_notebooks_Raman_fitting_29_1.png" src="../../_images/html_notebooks_Raman_fitting_29_1.png" />
+</div>
+</div>
+<p>Ok, we can test to change the algorithm and use the Levenberg-Marquart one which is well-used for simple problems by a lot of people. We will re-initialize the Params() object and run the entire code written above again.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[85]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>algo = &#39;leastsq&#39; # We will use the Levenberg-Marquart algorithm
+#               (Name,  Value,  Vary,   Min,  Max,  Expr) Here I directly initialize with fixed frequencies
+params.add_many((&#39;a1&#39;,   2.4,   True,  0,      None,  None),
+                (&#39;f1&#39;,   946,   True, 910,    970,  None),
+                (&#39;l1&#39;,   26,   True,  20,      50,  None),
+                (&#39;a2&#39;,   3.5,   True,  0,      None,  None),
+                (&#39;f2&#39;,   1026,  True, 990,   1070,  None),
+                (&#39;l2&#39;,   39,   True,  20,   55,  None),
+                (&#39;a3&#39;,   8.5,    True,    0.7,      None,  None),
+                (&#39;f3&#39;,   1082,  True, 1070,   1110,  None),
+                (&#39;l3&#39;,   31,   True,  25,   35,  None),
+                (&#39;a4&#39;,   2.2,   True,  0,      None,  None),
+                (&#39;f4&#39;,   1140,  True, 1110,    1160,  None),
+                (&#39;l4&#39;,   35,   True,  20,   50,  None),
+                (&#39;a5&#39;,   2.,   True,  0,      None,  None),
+                (&#39;f5&#39;,   1211,  True, 1180,   1220,  None),
+                (&#39;l5&#39;,   28,   True,  20,   45,  None))
+
+result = lmfit.minimize(residual, params, method = algo, args=(x_fit, y_fit))
+# we release the positions but contrain the FWMH and amplitude of all peaks
+params[&#39;f1&#39;].vary = True
+params[&#39;f2&#39;].vary = True
+params[&#39;f3&#39;].vary = True
+params[&#39;f4&#39;].vary = True
+params[&#39;f5&#39;].vary = True
+
+result2 = lmfit.minimize(residual, params,method = algo, args=(x_fit, y_fit))
+model = lmfit.fit_report(result2.params) # the report
+yout, peak1,peak2,peak3,peak4,peak5 = residual(result2.params,x_fit) # the different peaks
+rchi2 = (1/(float(len(y_fit))-15-1))*np.sum((y_fit - yout)**2/sigma**2) # calculation of the reduced chi-square
+
+##### WE DO A NICE FIGURE THAT CAN BE IMPROVED FOR PUBLICATION
+plt.plot(x_fit,y_fit,&#39;k-&#39;)
+plt.plot(x_fit,yout,&#39;r-&#39;)
+plt.plot(x_fit,peak1,&#39;b-&#39;)
+plt.plot(x_fit,peak2,&#39;b-&#39;)
+plt.plot(x_fit,peak3,&#39;b-&#39;)
+plt.plot(x_fit,peak4,&#39;b-&#39;)
+plt.plot(x_fit,peak5,&#39;b-&#39;)
+
+plt.xlim(lb,hb)
+plt.xlabel(&quot;Raman shift, cm$^{-1}$&quot;, fontsize = 14)
+plt.ylabel(&quot;Normalized intensity, a. u.&quot;, fontsize = 14)
+plt.title(&quot;Fig. 4: Fit of the Si-O stretch vibrations\n in LS4 with \nthe Levenberg-Marquardt (LM) algorithm&quot;,fontsize = 14,fontweight = &quot;bold&quot;)
+print(&quot;rchi-2 = \n&quot;+str(rchi2))
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+rchi-2 =
+3.012734451757241
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/html_notebooks_Raman_fitting_31_1.png" src="../../_images/html_notebooks_Raman_fitting_31_1.png" />
+</div>
+</div>
+<p>The comparison of Fig. 3 and 4 shows small differences. In this case, and because we have a good error model, the LM algorithm converges toward results similar to those of the Nelder-Mead algorithm. You can try to run again the calculation with removing the “sigma” input in the “minimize” function used above. You will see that the results will diverge much more than in this case.</p>
+<p>A convenient thing about the LM algorithm is that it allows to estimate the errors on the fitting parameters. This is not possible with gradient-less algorithms such as the Nelder-Mear or the Powell algorithms. For the latters, I will give a piece of code at the end of this notebook that allows to estimate good errors on parameters through bootrapping.</p>
+<p>The downside of the LM algorithm is that, in my experience, it fails if the envelop of bands to fit is broader than the one used in this example, because it seachs at all costs to fit the spectrum as good as possible… This typically results in extrem broadening and overlapping of the peaks you try to fit.</p>
+<p>A way to resolve this issue if the use of the LM algorithm is really needed is to put tigther constrains on the peak half-widths.</p>
+<p>But another way is to use a more global algorithm less prone to diverge from the initial estimations. The Nelder-Mead, Powell (Powell, 1964, Computer Journal 7 (2): 155-62) or the COBYLA (see Powell, 2007 Cambridge University Technical Report DAMTP 2007) algorithms can give good results for complex problems. Also, the Conjugate Gradient algorithm may be suitable (Wright &amp; Nocedal, “Numerical Optimization”, 1999, pp. 120-122). Let’s try the latter for now:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[86]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>algo = &#39;cg&#39; # We will use the Conjugate Gradient algorithm
+#               (Name,  Value,  Vary,   Min,  Max,  Expr) Here I directly initialize with fixed frequencies
+params.add_many((&#39;a1&#39;,   2.4,   True,  0,      None,  None),
+                (&#39;f1&#39;,   946,   True, 910,    970,  None),
+                (&#39;l1&#39;,   26,   True,  20,      50,  None),
+                (&#39;a2&#39;,   3.5,   True,  0,      None,  None),
+                (&#39;f2&#39;,   1026,  True, 990,   1070,  None),
+                (&#39;l2&#39;,   39,   True,  20,   55,  None),
+                (&#39;a3&#39;,   8.5,    True,    0.7,      None,  None),
+                (&#39;f3&#39;,   1082,  True, 1070,   1110,  None),
+                (&#39;l3&#39;,   31,   True,  25,   35,  None),
+                (&#39;a4&#39;,   2.2,   True,  0,      None,  None),
+                (&#39;f4&#39;,   1140,  True, 1110,    1160,  None),
+                (&#39;l4&#39;,   35,   True,  20,   50,  None),
+                (&#39;a5&#39;,   2.,   True,  0,      None,  None),
+                (&#39;f5&#39;,   1211,  True, 1180,   1220,  None),
+                (&#39;l5&#39;,   28,   True,  20,   45,  None))
+
+result = lmfit.minimize(residual, params, method = algo, args=(x_fit, y_fit))
+# we release the positions but contrain the FWMH and amplitude of all peaks
+params[&#39;f1&#39;].vary = True
+params[&#39;f2&#39;].vary = True
+params[&#39;f3&#39;].vary = True
+params[&#39;f4&#39;].vary = True
+params[&#39;f5&#39;].vary = True
+
+result2 = lmfit.minimize(residual, params,method = algo, args=(x_fit, y_fit))
+model = lmfit.fit_report(result2.params) # the report
+yout, peak1,peak2,peak3,peak4,peak5 = residual(result2.params,x_fit) # the different peaks
+rchi2 = (1/(float(len(y_fit))-15-1))*np.sum((y_fit - yout)**2/sigma**2) # calculation of the reduced chi-square
+
+##### WE DO A NICE FIGURE THAT CAN BE IMPROVED FOR PUBLICATION
+plt.plot(x_fit,y_fit,&#39;k-&#39;)
+plt.plot(x_fit,yout,&#39;r-&#39;)
+plt.plot(x_fit,peak1,&#39;b-&#39;)
+plt.plot(x_fit,peak2,&#39;b-&#39;)
+plt.plot(x_fit,peak3,&#39;b-&#39;)
+plt.plot(x_fit,peak4,&#39;b-&#39;)
+plt.plot(x_fit,peak5,&#39;b-&#39;)
+
+plt.xlim(lb,hb)
+plt.xlabel(&quot;Raman shift, cm$^{-1}$&quot;, fontsize = 14)
+plt.ylabel(&quot;Normalized intensity, a. u.&quot;, fontsize = 14)
+plt.title(&quot;Fig. 5: Fit of the Si-O stretch vibrations\n in LS4 with \nthe Conjugate Gradient (CG) algorithm&quot;,fontsize = 14,fontweight = &quot;bold&quot;)
+print(&quot;rchi-2 = \n&quot;+str(rchi2))
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+rchi-2 =
+3.096756204520088
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/html_notebooks_Raman_fitting_33_1.png" src="../../_images/html_notebooks_Raman_fitting_33_1.png" />
+</div>
+</div>
+<p>The CG algorithm returns a result close to the Nelder-Mead and the LM algorithms. A bad thing about the CG algorithm is that it is extremely slow in the Scipy implementation… It is (nearly) acceptable for one fit, but for bootstrapping 100 spectra, it is not a good option at all.</p>
+<p>As a last one, we can see what the results look like with the Powell algorithm:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[89]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>algo = &#39;powell&#39; # We will use the Powell algorithm
+#               (Name,  Value,  Vary,   Min,  Max,  Expr) Here I directly initialize with fixed frequencies
+params.add_many((&#39;a1&#39;,   2.4,   True,  0,      None,  None),
+                (&#39;f1&#39;,   946,   True, 910,    970,  None),
+                (&#39;l1&#39;,   26,   True,  20,      50,  None),
+                (&#39;a2&#39;,   3.5,   True,  0,      None,  None),
+                (&#39;f2&#39;,   1026,  True, 990,   1070,  None),
+                (&#39;l2&#39;,   39,   True,  20,   55,  None),
+                (&#39;a3&#39;,   8.5,    True,    0.7,      None,  None),
+                (&#39;f3&#39;,   1082,  True, 1070,   1110,  None),
+                (&#39;l3&#39;,   31,   True,  25,   35,  None),
+                (&#39;a4&#39;,   2.2,   True,  0,      None,  None),
+                (&#39;f4&#39;,   1140,  True, 1110,    1160,  None),
+                (&#39;l4&#39;,   35,   True,  20,   50,  None),
+                (&#39;a5&#39;,   2.,   True,  0,      None,  None),
+                (&#39;f5&#39;,   1211,  True, 1180,   1220,  None),
+                (&#39;l5&#39;,   28,   True,  20,   45,  None))
+
+result = lmfit.minimize(residual, params, method = algo, args=(x_fit, y_fit))
+# we release the positions but contrain the FWMH and amplitude of all peaks
+params[&#39;f1&#39;].vary = True
+params[&#39;f2&#39;].vary = True
+params[&#39;f3&#39;].vary = True
+params[&#39;f4&#39;].vary = True
+params[&#39;f5&#39;].vary = True
+
+result2 = lmfit.minimize(residual, params,method = algo, args=(x_fit, y_fit))
+model = lmfit.fit_report(result2.params) # the report
+yout, peak1,peak2,peak3,peak4,peak5 = residual(result2.params,x_fit) # the different peaks
+rchi2 = (1/(float(len(y_fit))-15-1))*np.sum((y_fit - yout)**2/sigma**2) # calculation of the reduced chi-square
+
+##### WE DO A NICE FIGURE THAT CAN BE IMPROVED FOR PUBLICATION
+plt.plot(x_fit,y_fit,&#39;k-&#39;)
+plt.plot(x_fit,yout,&#39;r-&#39;)
+plt.plot(x_fit,peak1,&#39;b-&#39;)
+plt.plot(x_fit,peak2,&#39;b-&#39;)
+plt.plot(x_fit,peak3,&#39;b-&#39;)
+plt.plot(x_fit,peak4,&#39;b-&#39;)
+plt.plot(x_fit,peak5,&#39;b-&#39;)
+
+plt.xlim(lb,hb)
+plt.xlabel(&quot;Raman shift, cm$^{-1}$&quot;, fontsize = 14)
+plt.ylabel(&quot;Normalized intensity, a. u.&quot;, fontsize = 14)
+plt.title(&quot;Fig. 6: Fit of the Si-O stretch vibrations\n in LS4 with \nthe Powell algorithm&quot;,fontsize = 14,fontweight = &quot;bold&quot;)
+print(&quot;rchi-2 = \n&quot;+str(rchi2))
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+rchi-2 =
+3.3450700892472325
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/html_notebooks_Raman_fitting_35_1.png" src="../../_images/html_notebooks_Raman_fitting_35_1.png" />
+</div>
+</div>
+<p>You see in Fig. 6 that the results are, again, close to those of the other algorithms, at the exception of the two last peaks. The intensity and the frequency of the peak near 1200 cm<span class="math notranslate nohighlight">\(^{-1}\)</span> is higher in this fit than in the others.</p>
+<p>So one important thing that has to be remembered is that, with the same parameter inputs, you will obtain different results with using different fitting algorithms. The above results are close because the fitting example is quite simple. Actually, all the results given above seem reasonable. The experience with other spectra from other silicate and aluminosilicate glasses is that the Nelder-Mead and Powell algorithms will provide the most robust ways to fit the spectra.</p>
+</section>
+<section id="Error-estimations">
+<h1>Error estimations<a class="headerlink" href="#Error-estimations" title="Link to this heading"></a></h1>
+<p>Errors can be estimated with using the “confidence” function if you used the Levenberg-Marquardt algorithm. See the examples here: <a class="reference external" href="http://lmfit.github.io/lmfit-py/confidence.html">http://lmfit.github.io/lmfit-py/confidence.html</a> .</p>
+<p>If you use a large-scale gradient-less algorithm such as the Nelder-Mead or the Powell algorithms, you cannot do that. Thus, to calculate the errors on the parameters that those algorithms provide as well as the error introduced by choosing one or the other algorithm, we can use the bootstrapping technic. Several descriptions on the internet are available for this technic, so I will skip a complete description here.</p>
+<p>A quick overview is to say that we have datapoints Yi affected by errors e_Yi. We assume that the probability density function of the Yi points is Gaussian. According to the Central Theorem Limit, this probably is a good assumption. Therefore, for each frequency in the spectrum of Fig.1, we have points that are probably at an intensity of Yi but with an error of e_Yi. To estimate how this uncertainties affect our fitting results, we can pick new points in the Gaussian distribution of mean Yi
+with a standard deviation e_Yi, and construct whole new spectra that we will fit. We will repeat this procedure N times.</p>
+<p>In addition to that, we can also randomly choose between the Nelder-Mead or the Powell algorithm during the new fits, such that we will take also into account our arbitrary choice in the fitting algorithm for calculating the errors on the estimated parameters.</p>
+<p>A last thing would be to randomly change a little bit the initial values of the parameters, but this is harder to implement so we will not do it for this example.</p>
+<p>First of all, we have to write a Python function that will randomly sample the probability density functions of the points of the spectrum of Fig. 1. Here is the piece of code I wrote for doing so:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[90]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#### Bootstrap function
+def bootstrap(data, ese,nbsample):
+    # Bootstrap of Raman spectra. We generate new datapoints with the basis of existing data and their standard deviation
+    N = len(data)
+    bootsamples = np.zeros((N,nbsample))
+
+    for i in range(nbsample):
+        for j in range(N):
+            bootsamples[j,i] = np.random.normal(data[j], ese[j], size=None)
+    return bootsamples
+</pre></div>
+</div>
+</div>
+<p>Now we will define how much new spectra we want to generate (the nbsample option of the bootstrap function), and we will run the previous function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%%time
+nboot = 100 # Number of bootstrap samples, I set it to a low value for the example but usually you want thousands there
+data_resampled = bootstrap(y_fit,sigma,nboot)# resampling of data + generate the output parameter tensor
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 400 ms, sys: 8.13 ms, total: 408 ms
+Wall time: 407 ms
+</pre></div></div>
+</div>
+<p>Now, we will create a loop which is going to look at each spectrum in the data_resampled variable, and to fit them with the procedure already described.</p>
+<p>For doing so, we need to declare a couple of variables to record the bootstrap mean fitting error, in order to see if we generated enought samples to obtain a statistically representative bootstrapping process, and to record each set of parameters obtained for each bootstrapped spectrum.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[94]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>para_output = np.zeros((5,3,nboot)) # 5 x 3 parameters x N boot samples
+bootrecord = np.zeros((nboot)) # For recording boot strap efficiency
+
+for nn in range(nboot):
+    algos = [&#39;powell&#39;,&#39;nelder&#39;]
+    algo = random.choice(algos) # We randomly select between the Powell or Nelder_mear algorithm
+    params = lmfit.Parameters()
+    #               (Name,  Value,  Vary,   Min,  Max,  Expr) Here I directly initialize with fixed frequencies
+    params.add_many((&#39;a1&#39;,   24,   True,  0,      None,  None),
+                (&#39;f1&#39;,   946,   True, 910,    970,  None),
+                (&#39;l1&#39;,   26,   True,  20,      50,  None),
+                (&#39;a2&#39;,   35,   True,  0,      None,  None),
+                (&#39;f2&#39;,   1026,  True, 990,   1070,  None),
+                (&#39;l2&#39;,   39,   True,  20,   55,  None),
+                (&#39;a3&#39;,   85,    True,    70,      None,  None),
+                (&#39;f3&#39;,   1082,  True, 1070,   1110,  None),
+                (&#39;l3&#39;,   31,   True,  25,   35,  None),
+                (&#39;a4&#39;,   22,   True,  0,      None,  None),
+                (&#39;f4&#39;,   1140,  True, 1110,    1160,  None),
+                (&#39;l4&#39;,   35,   True,  20,   50,  None),
+                (&#39;a5&#39;,   4,   True,  0,      None,  None),
+                (&#39;f5&#39;,   1211,  True, 1180,   1220,  None),
+                (&#39;l5&#39;,   28,   True,  20,   45,  None))
+
+    result = lmfit.minimize(residual, params, method = algo, args=(x_fit, data_resampled[:,nn],sigma))
+    # we release the positions but contrain the FWMH and amplitude of all peaks
+    params[&#39;f1&#39;].vary = True
+    params[&#39;f2&#39;].vary = True
+    params[&#39;f3&#39;].vary = True
+    params[&#39;f4&#39;].vary = True
+    params[&#39;f5&#39;].vary = True
+
+    result2 = lmfit.minimize(residual, params,method = algo, args=(x_fit, data_resampled[:,nn], sigma))
+
+    vv = result2.params.valuesdict()
+    para_output[0,0,nn] = vv[&#39;a1&#39;]
+    para_output[1,0,nn] = vv[&#39;a2&#39;]
+    para_output[2,0,nn] = vv[&#39;a3&#39;]
+    para_output[3,0,nn] = vv[&#39;a4&#39;]
+    para_output[4,0,nn] = vv[&#39;a5&#39;]
+
+    para_output[0,1,nn] = vv[&#39;f1&#39;]
+    para_output[1,1,nn] = vv[&#39;f2&#39;]
+    para_output[2,1,nn] = vv[&#39;f3&#39;]
+    para_output[3,1,nn] = vv[&#39;f4&#39;]
+    para_output[4,1,nn] = vv[&#39;f5&#39;]
+
+    para_output[0,2,nn] = vv[&#39;l1&#39;]
+    para_output[1,2,nn] = vv[&#39;l2&#39;]
+    para_output[2,2,nn] = vv[&#39;l3&#39;]
+    para_output[3,2,nn] = vv[&#39;l4&#39;]
+    para_output[4,2,nn] = vv[&#39;l5&#39;]
+
+para_mean = np.mean(para_output,axis=2)
+para_ese = np.std(para_output,axis=2)
+for kjy in range(nboot):
+    if kjy == 0:
+        bootrecord[kjy] = 0
+    else:
+        bootrecord[kjy] = np.sum(np.std(para_output[:,:,0:kjy],axis=2))
+</pre></div>
+</div>
+</div>
+<p>We can have a view at the mean values and standard deviation of the parameters that have been generated by the bootstrapping:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[95]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>para_mean
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[95]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[1.01907329e-01, 9.59801068e+02, 3.94998033e+01],
+       [2.29863036e-02, 1.01318563e+03, 3.55462956e+01],
+       [7.00000000e+01, 1.07997286e+03, 2.50000000e+01],
+       [2.16231499e-11, 1.15563198e+03, 2.79510014e+01],
+       [6.16767446e-02, 1.18876604e+03, 3.10309748e+01]])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>para_ese
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[1.04356010e-01, 7.55651492e+00, 1.01056234e+01],
+       [2.39346823e-02, 2.23243821e+01, 1.49455168e+01],
+       [1.36218203e-11, 1.11122589e-03, 5.66669568e-10],
+       [1.72181419e-10, 3.69643476e+00, 7.45882766e+00],
+       [6.03311417e-02, 8.35320041e+00, 6.84409352e+00]])
+</pre></div></div>
+</div>
+<p>Those errors are probably the best estimates of the errors that affect your fitting parameters. You can add another bootstrapping function for changing of, saying, 5 percents the initial estimations of the parameters, and you will have a complete and coherent estimation of the errors affecting the fits. But for most cases, the errors generated by this above bootstrapping technic are already quite robust.</p>
+<p>We can see if we generated enought samples to have valid bootstrap results by looking at how the mean value of the parameters and their error converge. To do a short version of such thing, we can also look at how the summation of the errors of the parameters change with the iteration number. If the summation of errors becomes constant, we can say that we have generated enought bootstrap samples to have a significant result, statistically speaking.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[97]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.plot(np.arange(nboot)+1,bootrecord,&#39;ko&#39;)
+plt.xlim(0,nboot+1)
+plt.xlabel(&quot;Number of iterations&quot;,fontsize = 14)
+plt.ylabel(&quot;Summed errors of parameters&quot;,fontsize = 14)
+plt.title(&quot;Fig. 7: Bootstrap iterations for convergence&quot;,fontsize = 14, fontweight = &#39;bold&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[97]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;Fig. 7: Bootstrap iterations for convergence&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/html_notebooks_Raman_fitting_46_1.png" src="../../_images/html_notebooks_Raman_fitting_46_1.png" />
+</div>
+</div>
+<p>We see from the above figure that the algorithm seems to have converged after 70 iterations. Therefore, we need to generate at least 70 spectra with the bootstrap function to obtain a good estimate of the errors that affect the parameters.</p>
+</section>
+<section id="Conclusion">
+<h1>Conclusion<a class="headerlink" href="#Conclusion" title="Link to this heading"></a></h1>
+<p>This IPython notebook showed how spectra can be corrected from any baseline, how it is possible to use lmfit to fit it with Gaussian peaks, how changing the optimisation algorithm can change the results, and how we can estimate the errors on the calculated parameters with using the bootstrapping technic.</p>
+<p>Several peak models are defined in the Rampy toolbox, or directly in lmfit. You can look at the relevant instructions for both software to use other peak models in the above calculation. Results can be saved in textfiles, through using the Python output functions like np.savetxt or other ways. See the relevant python documentation for doing so. Any comments on this program will be welcome.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

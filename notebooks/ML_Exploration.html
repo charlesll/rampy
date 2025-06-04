@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example of use of the mlexplorer() function &mdash; RamPy 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ML regression with rampy.ml_regressor" href="ML_Regression.html" />
+    <link rel="prev" title="Machine learning classification" href="ML_Classification.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            RamPy
+              <img src="../_static/Rampy.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news.html">Rampy News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../signalparams.html">Signal parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../peakfitting.html">Peak fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../maps.html">Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Example notebooks</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#processing">Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#peak-fitting">Peak fitting</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../examples.html#machine-learning">Machine learning</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Mixing.html">Mixing endmember spectra</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ML_Classification.html">Machine learning classification</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Example of use of the mlexplorer() function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ML_Regression.html">ML regression with rampy.ml_regressor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#maps">Maps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../API.html">rampy API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../examples.html">Example notebooks</a></li>
+      <li class="breadcrumb-item active">Example of use of the mlexplorer() function</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/notebooks/ML_Exploration.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Example-of-use-of-the-mlexplorer()-function">
+<h1>Example of use of the mlexplorer() function<a class="headerlink" href="#Example-of-use-of-the-mlexplorer()-function" title="Link to this heading"></a></h1>
+<p>Author: Charles Le Losq</p>
+<p><strong>The ``rampy.mlexplorer`` class is in development. It aims to allow exploring sets of spectroscopic data with using principal component analysis or non-negative matrix factorization for instance. For now the work-in-progress version of this function is made available in this notebook.</strong></p>
+<p>It will perform automatic data scaling and provides access to popular data mining algorithms from scikit-learn.</p>
+<p>Main goal is to provide easy access to PCA, NMF and so on. It is not intended to perform multivariate curve resolution analysis, which is the goal of the PyMCR library that integrates well with Rampy.</p>
+<p>Any help/feedback is more than welcome!</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%matplotlib inline
+import numpy as np
+np.random.seed(42) # fixing the seed
+import matplotlib
+import matplotlib.pyplot as plt
+import rampy as rp
+from scipy.stats import norm
+
+from sklearn.decomposition import PCA, NMF
+import sklearn
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>x = np.arange(0,600,10.0)
+nb_samples = 40 # number of samples in our dataset
+
+S_1 = norm.pdf(x,loc=200.,scale=100.)
+S_2 = norm.pdf(x,loc=400,scale=50)
+S_true = np.vstack((S_1,S_2))
+print(&quot;Number of samples:&quot;+str(nb_samples))
+print(&quot;Shape of partial spectra matrix:&quot;+str(S_true.shape))
+
+C_ = np.random.rand(nb_samples) #60 samples with random concentrations between 0 and 1
+C_true = np.vstack((C_,(1-C_))).T
+print(&quot;Shape of concentration matrix:&quot;+str(C_true.shape))
+
+Obs = np.dot(C_true,S_true) + np.random.randn(nb_samples,len(x))*1e-4
+
+# norm is a class which, when called, can normalize data into the
+# [0.0, 1.0] interval.
+norm_ = matplotlib.colors.Normalize(
+    vmin=np.min(C_),
+    vmax=np.max(C_))
+
+# choose a colormap
+c_m = matplotlib.cm.jet
+
+# create a ScalarMappable and initialize a data structure
+s_m = matplotlib.cm.ScalarMappable(cmap=c_m, norm=norm_)
+s_m.set_array([])
+
+ax = plt.subplot()
+
+# plotting spectra
+# calling the ScalarMappable that was initialised with c_m and norm
+for i in range(C_.shape[0]):
+    plt.plot(x,
+             Obs[i,:].T,
+             color=s_m.to_rgba(C_[i]))
+
+# we plot the colorbar, using again our
+# ScalarMappable
+c_bar = plt.colorbar(s_m, ax=ax)
+c_bar.set_label(r&quot;C_&quot;)
+
+plt.xlabel(&#39;X&#39;)
+plt.ylabel(&#39;Y&#39;)
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Number of samples:40
+Shape of partial spectra matrix:(2, 60)
+Shape of concentration matrix:(40, 2)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Exploration_2_1.png" src="../_images/notebooks_ML_Exploration_2_1.png" />
+</div>
+</div>
+<p>We create an mlexplorer object called ‘explo’</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>explo = rp.mlexplorer(Obs)
+</pre></div>
+</div>
+</div>
+<p>We will explore the data with a Non-Negative Matrix factorisation algorithm, training it with 2 components on 70% of the data. MinMax scaling is performed before training.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>explo.algorithm = &#39;NMF&#39;
+explo.nb_compo = 2
+explo.test_size = 0.3
+explo.scaler = &quot;MinMax&quot;
+explo.fit()
+</pre></div>
+</div>
+</div>
+<p>The code uses the functions from scikit-learn, if you want a low-level control, you can define everything using the scikit-learn API and manipulating the model.</p>
+<p>Training and testing data (original and scaled) are embedded into the object, as well as the scaler and model.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(&quot;Example of X data (testing):&quot;)
+print(explo.X_test[1,1:5])
+print(&quot;\nScaler :&quot;)
+print(explo.X_scaler)
+print(&quot;\nModel :&quot;)
+print(explo.model)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Example of X data (testing):
+[0.00057493 0.000589   0.00081001 0.00083645]
+
+Scaler :
+MinMaxScaler()
+
+Model :
+NMF(init=&#39;nndsvd&#39;, n_components=2)
+</pre></div></div>
+</div>
+<p>Please directly see the scikit-learn documentation for information about their PCA and NMF algorithms.</p>
+<p>We can use directly the model to extract the W and H matrix and plot them, following the scikit-learn API:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>W = explo.model.transform(explo.X_train_sc) # mixture array
+H = explo.X_scaler.inverse_transform(explo.model.components_) # components in the original space
+plt.plot(x,H.T) # plot
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&lt;matplotlib.lines.Line2D at 0x729293a2d890&gt;,
+ &lt;matplotlib.lines.Line2D at 0x729293a2dad0&gt;]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Exploration_10_1.png" src="../_images/notebooks_ML_Exploration_10_1.png" />
+</div>
+</div>
+<p>We can modify hyperparameter and refit the data with the refit function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>explo.model.tol=1e-12
+explo.model.n_components=2
+explo.model.max_iter = 4000
+explo.model.solver=&quot;cd&quot;
+explo.model.alpha=0.1
+print(explo.model)
+explo.refit()
+W = explo.model.transform(explo.X_train_sc) # mixture array
+H = explo.X_scaler.inverse_transform(explo.model.components_) # components in the original space
+plt.plot(x,H.T)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+NMF(init=&#39;nndsvd&#39;, max_iter=4000, n_components=2, tol=1e-12)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&lt;matplotlib.lines.Line2D at 0x729293aaaa10&gt;,
+ &lt;matplotlib.lines.Line2D at 0x729293aaab50&gt;]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Exploration_12_2.png" src="../_images/notebooks_ML_Exploration_12_2.png" />
+</div>
+</div>
+<p>Now if we try a PCA…</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>explo.algorithm = &#39;PCA&#39;
+explo.nb_compo = 2
+explo.fit()
+
+H_PCA = explo.X_scaler.inverse_transform(explo.model.components_)
+plt.plot(x,H_PCA.T)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&lt;matplotlib.lines.Line2D at 0x7292915247d0&gt;,
+ &lt;matplotlib.lines.Line2D at 0x729291512d10&gt;]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_ML_Exploration_14_1.png" src="../_images/notebooks_ML_Exploration_14_1.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ML_Classification.html" class="btn btn-neutral float-left" title="Machine learning classification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ML_Regression.html" class="btn btn-neutral float-right" title="ML regression with rampy.ml_regressor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

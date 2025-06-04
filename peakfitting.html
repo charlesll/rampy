@@ -1,0 +1,342 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Peak fitting &mdash; RamPy 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8fa8b3e9"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Machine learning" href="machinelearning.html" />
+    <link rel="prev" title="Signal parameters" href="signalparams.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RamPy
+              <img src="_static/Rampy.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="philosophy.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">Rampy News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="baseline.html">Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smoothing.html">Smoothing and filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signalparams.html">Signal parameters</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Peak fitting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#peak-shapes">Peak shapes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.peak_shapes.gaussian"><code class="docutils literal notranslate"><span class="pre">gaussian</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.peak_shapes.lorentzian"><code class="docutils literal notranslate"><span class="pre">lorentzian</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.peak_shapes.pseudovoigt"><code class="docutils literal notranslate"><span class="pre">pseudovoigt</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.peak_shapes.pearson7"><code class="docutils literal notranslate"><span class="pre">pearson7</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#peak-areas">Peak areas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#propagate-uncertainties">Propagate uncertainties</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="maps.html">Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dac.html">Diamond Anvil Cell Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Example notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">rampy API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RamPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Peak fitting</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/peakfitting.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="peak-fitting">
+<span id="rst-fitting"></span><h1>Peak fitting<a class="headerlink" href="#peak-fitting" title="Link to this heading"></a></h1>
+<p>Rampy will soon offer a dedicated function for peak fitting: <code class="docutils literal notranslate"><span class="pre">rampy.fit_peaks</span></code> will use <cite>curve_fit</cite> from <cite>scipy.optimize</cite> to fit your spectrum with a model that is a sum of peaks.</p>
+<p>Users can also use dedicated interfaces such as lmfit. We provide an example of peak-fitting with the lmfit for instance here: <a class="reference internal" href="examples.html#rst-notebooks"><span class="std std-ref">Example notebooks</span></a> .</p>
+<section id="peak-shapes">
+<h2>Peak shapes<a class="headerlink" href="#peak-shapes" title="Link to this heading"></a></h2>
+<p>Rampy offers functions for various peak shapes, including:</p>
+<ul class="simple">
+<li><p>gaussian peaks &gt; <code class="docutils literal notranslate"><span class="pre">rampy.gaussian</span></code></p></li>
+<li><p>lorentzian peaks &gt; <code class="docutils literal notranslate"><span class="pre">rampy.lorentzian</span></code></p></li>
+<li><p>pseudo-voigt peaks &gt; <code class="docutils literal notranslate"><span class="pre">rampy.pseudovoigt</span></code></p></li>
+<li><p>pearson7 peaks &gt; <code class="docutils literal notranslate"><span class="pre">rampy.pearson7</span></code></p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="rampy.peak_shapes.gaussian">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.peak_shapes.</span></span><span class="sig-name descname"><span class="pre">gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HWHM</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.peak_shapes.gaussian" title="Link to this definition"></a></dt>
+<dd><p>Bases:</p>
+<p>Computes a Gaussian peak.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – Positions at which the signal should be sampled.</p></li>
+<li><p><strong>amp</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Amplitude of the Gaussian peak.</p></li>
+<li><p><strong>freq</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Frequency/position of the Gaussian component.</p></li>
+<li><p><strong>HWHM</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Half-width at half-maximum.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The computed Gaussian signal.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Formula used: (        ext{amp} cdot exp(-log(2) cdot ((x -        ext{freq}) /    ext{HWHM})^2) ).</p>
+<p class="rubric">Examples</p>
+<p>You can create a single peak like:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also create an array with several peaks in columns using arrays for the peak parameters:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">10.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mf">7.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]))</span>
+</pre></div>
+</div>
+<p>In this case, <cite>y</cite> will be an array of shape (len(x), 2) with one peak per columns. Your peaks can even share parameters, here the HWHM:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">10.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mf">7.</span><span class="p">]]),</span> <span class="mf">2.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The composite signal is simply given by</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rampy.peak_shapes.lorentzian">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.peak_shapes.</span></span><span class="sig-name descname"><span class="pre">lorentzian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HWHM</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.peak_shapes.lorentzian" title="Link to this definition"></a></dt>
+<dd><p>Bases:</p>
+<p>Computes a Lorentzian peak.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – Positions at which the signal should be sampled.</p></li>
+<li><p><strong>amp</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Amplitude of the Lorentzian peak.</p></li>
+<li><p><strong>freq</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Frequency/position of the Lorentzian component.</p></li>
+<li><p><strong>HWHM</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Half-width at half-maximum.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The computed Lorentzian signal.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Formula used: (        ext{amp} / (1 + ((x -   ext{freq}) /    ext{HWHM})^2) ).</p>
+<p class="rubric">Examples</p>
+<p>You can create a single peak like:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">lorentzian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also create an array with several peaks in columns using arrays for the peak parameters:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">lorentzian</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">10.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mf">7.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]))</span>
+</pre></div>
+</div>
+<p>In this case, <cite>y</cite> will be an array of shape (len(x), 2) with one peak per columns. Your peaks can even share parameters, here the HWHM:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">lorentzian</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">10.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mf">7.</span><span class="p">]]),</span> <span class="mf">2.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The composite signal is simply given by</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rampy.peak_shapes.pseudovoigt">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.peak_shapes.</span></span><span class="sig-name descname"><span class="pre">pseudovoigt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HWHM</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L_ratio</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.peak_shapes.pseudovoigt" title="Link to this definition"></a></dt>
+<dd><p>Bases:</p>
+<p>Computes a pseudo-Voigt peak.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – Positions at which the signal should be sampled. Can be a vector or array.</p></li>
+<li><p><strong>amp</strong> (<em>float</em>) – Amplitude of the pseudo-Voigt peak.</p></li>
+<li><p><strong>freq</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Frequency/position of the Gaussian component.</p></li>
+<li><p><strong>HWHM</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Half-width at half-maximum.</p></li>
+<li><p><strong>L_ratio</strong> (<em>float</em>) – Ratio of the Lorentzian component. Must be between 0 and 1 inclusive.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The computed pseudo-Voigt signal.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <cite>L_ratio</cite> is not between 0 and 1.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<dl class="simple">
+<dt>Formula used: ( (1 - L_{       ext{ratio}}) cdot      ext{gaussian}(x,        ext{amp},       ext{freq},      ext{HWHM}) +</dt><dd><p>L_{       ext{ratio}} cdot       ext{lorentzian}(x,      ext{amp},       ext{freq},      ext{HWHM}) ).</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>You can create a single peak like:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">pseudovoigt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also create an array with several peaks in columns using arrays for the peak parameters:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">pseudovoigt</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]]))</span>
+</pre></div>
+</div>
+<p>In this case, <cite>y</cite> will be an array of shape (len(x), 2) with one peak per columns. Your peaks can even share parameters, here the L_ratio:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">pseudovoigt</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]),</span> <span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The composite signal is simply given by</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rampy.peak_shapes.pearson7">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.peak_shapes.</span></span><span class="sig-name descname"><span class="pre">pearson7</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.peak_shapes.pearson7" title="Link to this definition"></a></dt>
+<dd><p>Bases:</p>
+<p>Computes a Pearson VII peak.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – Positions at which the signal should be sampled.</p></li>
+<li><p><strong>a0</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Amplitude parameter.</p></li>
+<li><p><strong>a1</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Frequency/position parameter.</p></li>
+<li><p><strong>a2</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Width parameter.</p></li>
+<li><p><strong>a3</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Shape parameter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The computed Pearson VII signal.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Formula used: ( a_0 / ((1 + ((x - a_1) / a_2)^2 cdot (2^{(1/a_3)} - 1))^{a_3}) ).</p>
+<p class="rubric">Examples</p>
+<p>You can create a single peak like:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">pearson7</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also create an array with several peaks in columns using arrays for the peak parameters:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">pearson7</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]]))</span>
+</pre></div>
+</div>
+<p>In this case, <cite>y</cite> will be an array of shape (len(x), 2) with one peak per columns. Your peaks can even share parameters, here the a3:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">pearson7</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]),</span> <span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The composite signal is simply given by</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="peak-areas">
+<h2>Peak areas<a class="headerlink" href="#peak-areas" title="Link to this heading"></a></h2>
+<p>Peak area can be calculated using the <code class="docutils literal notranslate"><span class="pre">rampy.area_peak</span></code> function, using analytical functions.</p>
+<p>Note that the old function <code class="docutils literal notranslate"><span class="pre">rampy.peakarea</span></code> is still available but it will be removed in a near future. It uses numerical integration and is thus less precise than the <code class="docutils literal notranslate"><span class="pre">rampy.area_peak</span></code> function.</p>
+</section>
+<section id="propagate-uncertainties">
+<h2>Propagate uncertainties<a class="headerlink" href="#propagate-uncertainties" title="Link to this heading"></a></h2>
+<p>A good way to propagate the uncertainties of your model is to directly use the <code class="docutils literal notranslate"><span class="pre">uncertainties</span></code> package, see the docs <a class="reference external" href="https://pythonhosted.org/uncertainties/">here</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="signalparams.html" class="btn btn-neutral float-left" title="Signal parameters" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="machinelearning.html" class="btn btn-neutral float-right" title="Machine learning" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Charles Le Losq.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
