@@ -16,6 +16,11 @@ Wanted features (planned)
 
 - peak fitting (in particular for maps): working on a Scikit-Learn API
 
+0.6.2 (stable)
+----------------
+
+  - Fix the documentation.
+
 0.6.1 (stable)
 ----------------
 
