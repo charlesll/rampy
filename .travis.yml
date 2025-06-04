@@ -1,13 +1,9 @@
 language: python
 python:
-  - "3.6"
+  - "3.11"
 
 os:
   - linux
-
-addons:
-  apt_packages:
-    - gfortran
 
 install:
   - pip install cvxpy
