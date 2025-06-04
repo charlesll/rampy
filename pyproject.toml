@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rampy"
-version = "0.6.0"
+version = "0.6.1"
 dependencies = [
     "numpy>=1.12",
     "scipy>=1.10.0",
@@ -18,7 +18,7 @@ dependencies = [
 authors = [
   {name = "Charles Le Losq", email = "lelosq@ipgp.fr"},
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = {file = "LICENSE"}
 description = "A Python module containing functions to treat spectroscopic (XANES, Raman, IR...) data"
 readme = "README.md"

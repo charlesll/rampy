@@ -50,7 +50,7 @@ class TestMLC(unittest.TestCase):
         X = dataset
         y = labels
         
-        names = ["Nearest Neighbors", "Linear SVM", "RBF SVM", "Gaussian Process",
+        names = ["Nearest Neighbors", "SVC", "Gaussian Process",
                  "Decision Tree", "Random Forest", "Neural Net", "AdaBoost",
                  "Naive Bayes", "QDA"]
 

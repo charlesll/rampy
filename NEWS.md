@@ -12,21 +12,52 @@ Licence: see LICENCE.md
 
 - Classification via 1D CNN and other algorithms using Keras or Pytorch
 
-- peak fitting for maps
+- peak fitting (in particular for maps): working on a Scikit-Learn API
 
-# 0.5.4 (stable)
+# 0.6.1 (stable)
 
-## improvements
+## Additions
 
-- we use the make_smoothing_spline function from Scipy for the GCVSmoothedNSpline smoothing mode (smooth function) and the gcvspline baseline, in replaced of the call to the gcvspline library.  make_smoothing_spline is a reimplenetation of the Woltring Fortran code in gcvspline library, so modulo numerical errors, it returns the same results. This offers now the gcvspline baseline to all, without problem of Fortran compilation.
-- bir are now an optional argument in rampy.baseline (because they do not appear in als, arPLS and drPLS algorithms)
-- various improvements of the code formatting
-- tests & examples updated
+  - area_peak(): function to calculate analytically the area of peaks in a spectrum.
 
-## additions
-- plot_spectrum(): makes an interactive plot of a signal, and also possibly of added baselines and smoothed signals.
-- whittaker(): it is now possible to pass weights
-- baseline(): a whittaker baseline going through regions of interest is also available in the baseline() function 
+## Modifications
+
+  - normalise(): "area" normalisation now uses the simpson() function from scipy.integrate, instead of the trapezoidal rule. This should be more precise.
+
+# Improvements
+
+  - maps(): documentation of the class has been improved.
+
+## Fix
+
+  - baseline(): a problem with the roi has been raised (issue #34). This is now fixed, roi argument is completely optional.
+  - resample(): fill_value was not working properly (not the good default option). It is now fixed. resample() will extrapolate automatically.
+
+# 0.6.0
+
+## Improvements:
+
+  - baseline(): we use the make_smoothing_spline function from Scipy for the GCVSmoothedNSpline smoothing mode (smooth function) and the gcvspline baseline, in replaced of the call to the gcvspline library.  make_smoothing_spline is a reimplenetation of the Woltring Fortran code in gcvspline library, so modulo numerical errors, it returns the same results. This offers now the gcvspline baseline to all, without problem of Fortran compilation.
+  - baseline(): bir are now an optional argument in rampy.baseline (because they do not appear in als, arPLS and drPLS algorithms)
+  - peakarea(): function is improved and a test is added.
+  - mlclassificator(): this class was badly handling model parameters. This is now fixed. The code has been improved.
+  - various improvements of the code formatting
+  - tests & examples updated
+  - docstrings re-written in Google Style
+  - docs updated
+
+## Additions:
+
+  - plot_spectrum(): makes an interactive plot of a signal, and also possibly of added baselines and smoothed signals.
+  - whittaker(): it is now possible to pass weights
+  - baseline(): Whittaker and Gaussian process baselines going through regions of interest is also available in the baseline() function 
+  - ruby_T_corr(): Computes the temperature correction for the Ruby pressure scale.
+  - borate_T_corr(): Computes the temperature correction for the SrB4O7:Sm2+ pressure scale.
+  - pressure_sensor(): Converts the wavelength of fluorescence lines into pressure in GPa.
+
+## Deprecation:
+
+  - get_portion_interest() becomes extract_signal(). get_portion_interest() still works but it will be removed in a future release
 
 # 0.5.3
 

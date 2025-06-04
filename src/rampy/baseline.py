@@ -77,7 +77,7 @@ def extract_signal(x: np.ndarray, y: np.ndarray, roi) -> np.ndarray:
     extracted_regions = [xy[(xy[:, 0] > bounds[0]) & (xy[:, 0] < bounds[1])] for bounds in roi]
     return np.vstack(extracted_regions)
 
-def validate_input(x: np.ndarray, y: np.ndarray, roi):
+def validate_input(x, y):
     """Validate the input arrays."""
     if not isinstance(x, np.ndarray) or not isinstance(y, np.ndarray):
         raise TypeError("x and y must be numpy arrays.")
@@ -85,6 +85,7 @@ def validate_input(x: np.ndarray, y: np.ndarray, roi):
     if x.shape != y.shape:
         raise ValueError("x and y must have the same shape.")
 
+def validate_roi(roi):
     # Check if roi is a numpy array or a list of lists
     if isinstance(roi, np.ndarray):
         if roi.ndim != 2 or roi.shape[1] != 2:
@@ -94,7 +95,6 @@ def validate_input(x: np.ndarray, y: np.ndarray, roi):
             raise ValueError("roi must be a list of lists, where each sublist contains two elements.")
     else:
         raise TypeError("roi must be either a numpy array or a list of lists.")
-
 
 def standardize_data(x: np.ndarray, y: np.ndarray):
     """Standardize the data using sklearn's StandardScaler."""
@@ -106,7 +106,6 @@ def standardize_data(x: np.ndarray, y: np.ndarray):
 
 def baseline(x_input: np.ndarray, 
              y_input: np.ndarray, 
-             roi = np.array([[0, 100]]), 
              method: str = "poly", 
              **kwargs) -> tuple:
     """Subtracts a baseline from an x-y spectrum using various methods.
@@ -118,13 +117,6 @@ def baseline(x_input: np.ndarray,
     Args:
         x_input (ndarray): The x-axis values (e.g., wavelength or wavenumber).
         y_input (ndarray): The y-axis values (e.g., intensity or absorbance).
-        roi (ndarray or list of lists, optional): Regions of interest (ROI) for baseline fitting.
-            Must be an n x 2 array or list of lists where each row specifies the start and end 
-            of a region. Default is `np.array([[0, 100]])`.
-            Example:
-                - Array: `np.array([[100., 200.], [500., 600.]])`
-                - List: `[[100., 200.], [500., 600.]]`
-            Note: Some methods (e.g., "als", "arPLS") do not use the `roi` parameter but require it to be specified.
         method (str, optional): The method used for baseline fitting. Default is "poly".
             Available options:
                 - "poly": Polynomial fitting. Requires `polynomial_order`.
@@ -141,6 +133,7 @@ def baseline(x_input: np.ndarray,
                 - "GP": Gaussian process method using a rational quadratic kernel.
 
         **kwargs: Additional parameters specific to the chosen method.
+            - roi (ndarray): Regions of interest for baseline fitting. Default is the entire range of `x_input`.
             - polynomial_order (int): Degree of the polynomial for the "poly" method. Default is 1.
             - s (float): Spline smoothing coefficient for "unispline" and "gcvspline". Default is 2.0.
             - ese_y (ndarray): Errors associated with y_input for the "gcvspline" method.
@@ -179,19 +172,19 @@ def baseline(x_input: np.ndarray,
         >>> peak = rampy.gaussian(x, 100.0, 250.0, 7.0)
         >>> y = peak + background + noise
         >>> roi = np.array([[0, 200], [300, 500]])
-        >>> corrected_signal, baseline = baseline(x, y, method="poly", polynomial_order=5)
+        >>> corrected_signal, baseline = baseline(x, y, method="poly", roi = roi, polynomial_order=5)
 
         Example with GCVSpline algorithm:
 
-        >>> corrected_signal, baseline = baseline(x, y, method="gcvspline", s=2.0)
+        >>> corrected_signal, baseline = baseline(x, y, method="gcvspline", roi=roi, s=2.0)
 
         Example with Whittaker smoothing:
 
-        >>> corrected_signal, baseline = baseline(x, y, roi=roi, method="whittaker")
+        >>> corrected_signal, baseline = baseline(x, y, method="whittaker", roi=roi)
 
         Example with Gaussian process:
 
-        >>> corrected_signal, baseline = baseline(x, y, roi=roi, method="GP")
+        >>> corrected_signal, baseline = baseline(x, y, method="GP", roi=roi)
 
         Example with rubberband correction:
 
@@ -202,17 +195,14 @@ def baseline(x_input: np.ndarray,
         >>> corrected_signal, baseline = baseline(x, y, method="als", lam=1e5, p=0.01)
     """
 
+    # first check the input
+    validate_input(x_input, y_input)
 
-    if np.array_equal(roi, np.array([[0, 100]])):
-        warnings.warn(
-            "The 'roi' parameter now has a default value of np.array([[0, 100]]). "
-            "Please specify 'roi' explicitly in future calls to avoid this warning.",
-            DeprecationWarning,
-            stacklevel=2
-        )
+    # then get the roi or set it to the entire x_input range
+    roi  = kwargs.get('roi', [[np.min(x_input), np.max(x_input)]])
+    validate_roi(roi)
 
-    validate_input(x_input, y_input, roi)
-
+    # now extract the signal and standardize the data
     yafit_unscaled = extract_signal(x_input, y_input, roi)
     x, y, X_scaler, Y_scaler = standardize_data(x_input, y_input)
 
@@ -226,7 +216,7 @@ def baseline(x_input: np.ndarray,
     corrected_signal = y_input.reshape(-1, 1) - Y_scaler.inverse_transform(baseline_fitted.reshape(-1, 1))
     return corrected_signal, Y_scaler.inverse_transform(baseline_fitted.reshape(-1, 1))
 
-def fit_baseline(x: np.ndarray, y: np.ndarray, roi: np.ndarray, yafit: np.ndarray, method: str, **kwargs) -> np.ndarray:
+def fit_baseline(x: np.ndarray, y: np.ndarray, roi_: np.ndarray, yafit: np.ndarray, method: str, **kwargs) -> np.ndarray:
     """Fit the baseline using the specified method."""
     if method == 'poly':
         poly_order = kwargs.get('polynomial_order', 1)
@@ -286,7 +276,7 @@ def fit_baseline(x: np.ndarray, y: np.ndarray, roi: np.ndarray, yafit: np.ndarra
     elif method == 'whittaker':
         # Create weights array with 0s outside the regions of interest
         weights = np.zeros_like(x)
-        for bounds in roi:
+        for bounds in roi_:
             weights[(x >= bounds[0]) & (x <= bounds[1])] = 1
 
         return rampy.whittaker(y, 

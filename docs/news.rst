@@ -16,7 +16,27 @@ Wanted features (planned)
 
 - peak fitting (in particular for maps): working on a Scikit-Learn API
 
-0.6.0 (stable)
+0.6.1 (stable)
+----------------
+
+Additions:
+
+  - area_peak(): function to calculate analytically the area of peaks in a spectrum.
+
+Modifications:
+
+  - normalise(): "area" normalisation now uses the simpson() function from scipy.integrate, instead of the trapezoidal rule. This should be more precise.
+
+Improvements:
+
+  - maps(): documentation of the class has been improved.
+
+Fix:
+
+  - baseline(): a problem with the roi has been raised (issue #34). This is now fixed, roi argument is completely optional.
+  - resample(): fill_value was not working properly (not the good default option). It is now fixed. resample() will extrapolate automatically.
+
+0.6.0
 ----------------
 
 Improvements:

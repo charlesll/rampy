@@ -15,22 +15,30 @@ import rampy as rp
 from rampy import peak_shapes
 
 class maps():
-    """treat maps of Raman spectra
+    """Class for handling and analyzing Raman spectral maps.
 
-    Parameters
-    ----------
-    file : str
-        filename, including path
+    This class provides methods for reading, processing, and analyzing
+    1D or 2D Raman spectral maps from Horiba or Renishaw spectrometers.
 
-    spectrometer_type : str
-        type of spectrometer, choose between "horiba" or "renishaw", default: 'horiba'
+    Args:
+        file (str): Path to the map file.
+        spectrometer_type (str, optional): Type of spectrometer. 
+            Must be either 'horiba' or 'renishaw'. Defaults to 'horiba'.
+        map_type (str, optional): Type of map. Must be either '2D' or '1D'. Defaults to '2D'.
+        despiking (bool, optional): Whether to perform despiking on the spectra. Defaults to False.
+        neigh (int, optional): Number of neighboring points for despiking. Defaults to 4.
+        threshold (float, optional): Threshold for spike detection. Defaults to 3.
 
-    map_type : str
-        type of map, choose between "2D" or "1D", default: '2D'
+    Raises:
+        ValueError: If `map_type` is not '1D' or '2D'.
     """
 
-    def __init__(self,file, spectrometer_type = "horiba", map_type = "2D", 
-                 despiking=False, neigh=4, threshold = 3):
+    def __init__(self, file, 
+                 spectrometer_type = "horiba", 
+                 map_type = "2D", 
+                 despiking=False, 
+                 neigh=4, 
+                 threshold = 3):
         self.spectrometer_type = spectrometer_type
         self.filename = file
 
@@ -60,43 +68,59 @@ class maps():
                 self.I = despiking(self.w, self.I[:,i], neigh=neigh, threshold=threshold)
 
     def background(self, bir, method = "poly", **kwargs):
-        """correct a background from the initial signal I on a map using rampy.baseline
+        """Corrects background from the signal using rampy.baseline.
 
-        Parameters
-        ----------
-        bir : ndarray
-            arrays of the backgroudn interpolation regions.
-        method : string
-            see rampy.baseline documentation for methods available. Default is polynomial
+        Applies baseline correction to each spectrum in the map using the specified method.
 
-        All kwargs argument for rampy.baseline() will be forwarded and can be used there.
+        Args:
+            bir (ndarray): Regions of interest for baseline fitting.
+            method (str, optional): Baseline correction method. Defaults to 'poly'.
+                Supported methods include:
+                    - 'poly': Polynomial fitting.
+                    - 'unispline': Spline fitting (UnivariateSpline).
+                    - 'gcvspline': GCVSpline fitting.
+                    - 'gaussian': Gaussian function fitting.
+                    - 'exp': Exponential fitting.
+                    - 'log': Logarithmic fitting.
+                    - 'rubberband': Rubberband correction.
+                    - 'als': Asymmetric Least Squares.
+                    - 'arPLS': Asymmetrically Reweighted Penalized Least Squares.
+                    - 'drPLS': Doubly Reweighted Penalized Least Squares.
+                    - 'whittaker': Whittaker smoothing.
+                    - 'GP': Gaussian process method.
+            **kwargs: Additional method-specific parameters, such as:
+                roi (ndarray): Regions of interest (default: full range).
+                polynomial_order (int): Polynomial degree for 'poly'.
+                s (float): Spline smoothing parameter.
+                ese_y (ndarray): Errors for 'gcvspline'.
+                lam (float): Smoothness parameter for 'als', 'arPLS', etc.
+                p (float): Weighting parameter for 'als'.
+                ratio (float): Convergence ratio for 'arPLS', 'drPLS'.
+                niter (int): Number of iterations for 'als', 'drPLS'.
+                eta (float): Roughness for 'drPLS'.
+                p0_gaussian (list): Initial params for 'gaussian'.
+                p0_exp (list): Initial params for 'exp'.
+                p0_log (list): Initial params for 'log'.
 
-        Returns
-        -------
-        Background and corrected spectra area available at self.background and self.I_corrected
+        Returns:
+            None. Sets `self.I_background` and `self.I_corrected` with the background and background-corrected spectra.
         """
         self.I_background = np.copy(self.I)
         self.I_corrected = np.copy(self.I)
         for i in range(len(self.X)):
-            y_, bkg_ = rp.baseline(self.w, self.I[:,i], bir, method, **kwargs)
+            y_, bkg_ = rp.baseline(self.w, self.I[:,i], method, roi=bir, **kwargs)
             self.I_corrected[:,i] = y_.ravel()
             self.I_background[:,i] = bkg_.ravel()
 
     def normalise(self, y, method="intensity"):
-        """normalise the spectra to their max intensity, their area or min-max normalisation
+        """Normalises the spectra using rampy.normalise.
 
-        This uses the internals of rampy.normalise.
+        Args:
+            y (ndarray): Intensities to normalise (e.g., `self.I_corrected`).
+            method (str, optional): Normalisation method. One of 'area', 'intensity', or 'minmax'. Defaults to 'intensity'.
 
-        Parameters
-        ----------
-        y : object intensities
-            the intensities to normalise. For instance, if you want to normalised the background corrected I, pass self.I_corrected.
-        method : string
-            method used, choose between area, intensity, minmax
-
-        Returns
-        -------
-        The normalised spectra are available at self.I_normalised
+        Returns:
+            None. Sets `self.I_normalised` with the normalised spectra.
         """
         self.I_normalised = np.copy(self.I)
         for i in range(len(self.X)):
@@ -104,50 +128,38 @@ class maps():
             self.I_normalised[:,i] = y_.ravel()
 
     def smooth(self, y, method="whittaker",**kwargs):
-        """uses the smooth function of rampy to smooth the signals
-        Parameters
-        ----------
-        y : object intensities
-            the intensities to normalise. For instance, if you want to normalised the background corrected I, pass self.I_corrected.
-        method : str
-            Method for smoothing the signal;
-            choose between savgol (Savitzky-Golay), GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline, whittaker, flat, hanning, hamming, bartlett, blackman.
-        window_length : int, optional
-            The length of the filter window (i.e. the number of coefficients). window_length must be a positive odd integer.
-        polyorder : int, optional
-            The order of the polynomial used to fit the samples. polyorder must be less than window_length.
-        Lambda : float, optional
-            smoothing parameter of the Whittaker filter described in Eilers (2003). The higher the smoother the fit.
-        d : int, optional
-            d parameter in Whittaker filter, see Eilers (2003).
-        ese_y : ndarray, optional
-            errors associated with y (for the gcvspline algorithms)
+        """Smooths spectra using rampy.smooth.
 
-        Returns
-        -------
-        self.y_smoothed : ndarray
-            the smoothed signal for the map
+        Args:
+            y (ndarray): Intensities to smooth (e.g., `self.I_corrected`).
+            method (str, optional): Smoothing method. Supported methods include:
+                'savgol', 'GCVSmoothedNSpline', 'MSESmoothedNSpline', 'DOFSmoothedNSpline',
+                'whittaker', 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'.
+                Defaults to 'whittaker'.
+            **kwargs: Additional method-specific parameters, such as:
+                window_length (int): Length of the filter window (for Savitzky-Golay).
+                polyorder (int): Polynomial order (for Savitzky-Golay).
+                Lambda (float): Smoothing parameter for Whittaker filter.
+                d (int): Parameter for Whittaker filter.
+                ese_y (ndarray): Errors for spline algorithms.
 
+        Returns:
+            None. Sets `self.y_smoothed` with the smoothed spectra.
         """
         self.y_smoothed = np.copy(self.I)
         for i in range(len(self.X)):
-            y_ = rp.smooth(self.w, y[:,i],method=method, **kwargs)
+            y_ = rp.smooth(self.w, y[:,i], method=method, **kwargs)
             self.y_smoothed[:,i] = y_.ravel()
 
     def centroid(self, y, region_to_investigate):
-        """calculate the centroid in a given region of interest
+        """Calculates the centroid in a given region of interest.
 
-        Parameters
-        ----------
-        y : object intensities
-            the intensities to normalise. For instance, pass self.normalised for performing the calculation on normalised spectra.
-        region_to_investigate : 1x2 array
-            the x values of regions where the centroid will be measured
+        Args:
+            y (ndarray): Intensities to analyze (e.g., `self.I_normalised`).
+            region_to_investigate (array-like): [min, max] values of the region where the centroid is measured.
 
-        Returns
-        -------
-        self.centroid_position : ndarray
-	    	centroid position for the map
+        Returns:
+            None. Sets `self.centroid_position` with the centroid positions for the map.
         """
         self.centroid_position = np.copy(self.X)
         for i in range(len(self.X)):
@@ -155,22 +167,16 @@ class maps():
             self.centroid_position[i] = rp.centroid(sp_[:,0], sp_[:,1])
 
     def intensity(self, y, region_to_investigate):
-        """get the maximum intensity in the region to investigate.
+        """Finds the maximum intensity in a specified region.
 
-        The intensity maximum is estimated from a simple np.max() search.
-        Do not forget to smooth the signal if necessary prior to using this.
+        The maximum is estimated using `np.max` within the region.
 
-        Parameters
-        ----------
-        y : object intensities
-            the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.
-        region_to_investigate : 1x2 array
-            the x values of regions where the intensity will be measured
+        Args:
+            y (ndarray): Intensities to analyze (e.g., `self.I_normalised`).
+            region_to_investigate (array-like): [min, max] values of the region to search for the maximum.
 
-        Returns
-        -------
-        self.I_max : ndarray
-            Intensity maximum
+        Returns:
+            None. Sets `self.I_max` with the intensity maxima for the map.
         """
         self.I_max = np.copy(self.X)
         for i in range(len(self.X)):
@@ -178,22 +184,16 @@ class maps():
             self.I_max[i] = np.max(sp_[:,1])
 
     def area(self, y, region_to_investigate):
-        """get the area under the curve in the region to investigate.
+        """Calculates the area under the curve in a specified region.
 
-        The area is calculated by trapezoidal integration, using np.trapz()
-        Do not forget to smooth the signal if necessary prior to using this.
+        The area is computed via trapezoidal integration (`np.trapz`).
 
-        Parameters
-        ----------
-        y : object intensities
-            the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.
-        region_to_investigate : 1x2 array
-            the x values of regions where the area will be measured
+        Args:
+            y (ndarray): Intensities to analyze (e.g., `self.I_normalised`).
+            region_to_investigate (array-like): [min, max] values of the region to integrate.
 
-        Returns
-        -------
-        self.A : ndarray
-                maximum to make a nice plot
+        Returns:
+            None. Sets `self.A` with the integrated areas for the map.
         """
         self.A = np.copy(self.X)
         for i in range(len(self.X)):
@@ -201,21 +201,16 @@ class maps():
             self.A[i] = np.trapz(sp_[:,1],sp_[:,0])
 
     def intensity_ratio(self, y, region_to_investigate):
-        """get the intensity ratio between two regions of interest.
+        """Calculates the intensity ratio between two regions of interest.
 
-        The intensity maxima are estimated from a simple np.max() search.
-        Do not forget to smooth the signals if necessary prior to using this.
-        Parameters
-        ----------
-        y : object intensities
-            the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.
-        region_to_investigate : 2x2 array
-            the x values of regions where the intensity ratios will be measured. The two lines record the two regions of interest.
+        The ratio is computed as the maximum intensity in region 1 divided by the maximum in region 2.
 
-        Returns
-        -------
-        self.I_ratio : ndarray
-			Intensity ratio
+        Args:
+            y (ndarray): Intensities to analyze (e.g., `self.I_normalised`).
+            region_to_investigate (ndarray): 2x2 array, each row [min, max] for the two regions.
+
+        Returns:
+            None. Sets `self.I_ratio` with the intensity ratios for the map.
         """
         self.I_ratio = np.copy(self.X)
         I_max1 = np.copy(self.X)
@@ -229,22 +224,16 @@ class maps():
 
 
     def area_ratio(self, y, region_to_investigate):
-        """get the area ratio between two regions of interest.
+        """Calculates the area ratio between two regions of interest.
 
-        The areas are calculated by trapezoidal integration, using np.trapz()
-        Do not forget to smooth the signals if necessary prior to using this.
+        The ratio is computed as the integrated area in region 1 divided by the area in region 2.
 
-        Parameters
-        ----------
-        y : object intensities
-            the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.
-        region_to_investigate : 1x2 array
-            the x values of regions where the areas will be measured. The two lines record the two regions of interest.
+        Args:
+            y (ndarray): Intensities to analyze (e.g., `self.I_normalised`).
+            region_to_investigate (ndarray): 2x2 array, each row [min, max] for the two regions.
 
-        Returns
-        -------
-        self.A_ratio : ndarray
-			Area ratio = area region 1 / area region 2
+        Returns:
+            None. Sets `self.A_ratio` with the area ratios for the map.
         """
         self.A_ratio = np.copy(self.X)
         A_max1 = np.copy(self.X)
