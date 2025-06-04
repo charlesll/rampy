@@ -8,6 +8,7 @@
 #############################################################################
 import numpy as np
 from scipy.interpolate import interp1d
+from scipy.integrate import simpson
 
 import rampy
 
@@ -184,7 +185,7 @@ def flipsp(sp: np.ndarray) -> np.ndarray:
     """
     return sp[sp[:, 0].argsort()] # we actually use argsort to sort the array in ascending order
 
-def resample(x: np.ndarray, y: np.ndarray, x_new: np.ndarray, **kwargs) -> np.ndarray:
+def resample(x: np.ndarray, y: np.ndarray, x_new: np.ndarray, fill_value="extrapolate", **kwargs) -> np.ndarray:
     """
     Resamples a y signal along new x-axis values using interpolation.
 
@@ -192,11 +193,11 @@ def resample(x: np.ndarray, y: np.ndarray, x_new: np.ndarray, **kwargs) -> np.nd
         x (np.ndarray): Original x-axis values.
         y (np.ndarray): Original y-axis values corresponding to `x`.
         x_new (np.ndarray): New x-axis values for resampling.
+        fill_value (array-like or (array-like, array_like) or “extrapolate”, optional): behavior of the interpolation for requested points outside of the data range. See [scipy help for details](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html). Default is '“extrapolate”'.
         **kwargs: Additional arguments passed to `scipy.interpolate.interp1d`.
 
             - kind (str or int): Type of interpolation ('linear', 'cubic', etc.). Default is 'linear'.
-            - bounds_error (bool): If True, raises an error when extrapolation is required. Default is False.
-            - fill_value (float or str): Value used for out-of-bounds points. Default is NaN or "extrapolate".
+            - bounds_error (bool): If True, a ValueError is raised any time interpolation is attempted on a value outside of the range of x (where extrapolation is necessary). If False, out of bounds values are assigned fill_value. By default, an error is raised unless fill_value="extrapolate".
 
     Returns:
         np.ndarray: Resampled y-values corresponding to `x_new`.
@@ -210,7 +211,7 @@ def resample(x: np.ndarray, y: np.ndarray, x_new: np.ndarray, **kwargs) -> np.nd
         >>> new_x = np.linspace(100, 300, 5)
         >>> resampled_y = rp.resample(original_x, original_y, new_x)
     """
-    f = interp1d(x,y,**kwargs)
+    f = interp1d(x, y, fill_value=fill_value, **kwargs)
     return f(x_new)
 
 def normalise(y: np.ndarray, x : np.ndarray = None, method: str = "intensity") -> np.ndarray:
@@ -245,7 +246,7 @@ def normalise(y: np.ndarray, x : np.ndarray = None, method: str = "intensity") -
 
     if method == "area":
         try:
-            y = y/np.trapz(y, x, axis=0)
+            y = y/simpson(y, x=x, axis=0)
         except:
             raise ValueError("Input array of x values for area normalisation")
     elif method == "intensity":

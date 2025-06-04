@@ -8,6 +8,9 @@
 #############################################################################
 import numpy as np
 from scipy.integrate import simpson
+import math
+from typing import Literal
+from scipy.special import gamma
 import rampy
 
 def peakarea(shape: str, amp: float, HWHM: float, pos: float = None, 
@@ -15,6 +18,8 @@ def peakarea(shape: str, amp: float, HWHM: float, pos: float = None,
              ese_HWHM: float = None) -> tuple[float, float | None]:
     """
     Computes the area of a peak given its shape and parameters.
+
+    **warning: this function will be deprecated in a futur release, use the function area_peak instead!**
 
     For Gaussian peaks, the area is calculated analytically. For other shapes 
     (Lorentzian, pseudo-Voigt, Pearson VII), the area is calculated using numerical 
@@ -75,6 +80,10 @@ def peakarea(shape: str, amp: float, HWHM: float, pos: float = None,
 
 
     """
+
+    # deprecation warning
+    print("WARNING: this function will be deprecated in a futur release, use the function area_peaks instead!")
+    
     # Validate input parameters
     if shape not in ["gaussian", "lorentzian", "pseudovoigt", "pearson7"]:
         raise NotImplementedError("Supported shapes are 'gaussian', 'lorentzian', 'pseudovoigt', and 'pearson7'.")
@@ -148,3 +157,61 @@ def gaussianarea(amp,HWHM,**options):
         esearea = None
 
     return area, esearea
+
+def area_peak(
+    peak_type: Literal["gaussian", "lorentzian", "pseudovoigt", "pearson7"],
+    amplitude: float,
+    hwhm: float,
+    *,
+    lorentzian_fraction: float | None = None,
+    exponent: float | None = None
+) -> float:
+    """
+    Calculates the analytical area under a peak based on its type and parameters.
+
+    Args:
+        peak_type: Type of peak (gaussian, lorentzian, pseudovoigt, pearson7)
+        amplitude: Amplitude of the peak (maximum height)
+        hwhm: Half-width at half-maximum of the peak
+        lorentzian_fraction: Lorentzian fraction for Pseudo-Voigt [0, 1]
+        exponent: Shape parameter for Pearson VII
+
+    Returns:
+        Area under the specified peak
+
+    Raises:
+        ValueError: For invalid arguments or missing required parameters
+
+    Examples:
+        >>> area_peaks("gaussian", 2.0, 0.5)
+        2.3548200450309493
+        
+        >>> area_peaks("pseudovoigt", 2.0, 0.5, lorentzian_fraction=0.5)
+        3.141592653589793
+    """
+    if peak_type == "gaussian":
+        return amplitude * hwhm * math.sqrt(math.pi / math.log(2))
+    
+    elif peak_type == "lorentzian":
+        return math.pi * amplitude * hwhm
+    
+    elif peak_type == "pseudovoigt":
+        if lorentzian_fraction is None:
+            raise ValueError("lorentzian_fraction required for pseudovoigt")
+        if not 0 <= lorentzian_fraction <= 1:
+            raise ValueError("lorentzian_fraction must be in [0, 1]")
+            
+        area_L = math.pi * amplitude * hwhm
+        area_G = amplitude * hwhm * math.sqrt(math.pi / math.log(2))
+        return lorentzian_fraction * area_L + (1 - lorentzian_fraction) * area_G
+    
+    elif peak_type == "pearson7":
+        if exponent is None:
+            raise ValueError("exponent required for pearson7")
+            
+        k = 2**(1/exponent) - 1
+        gamma_num = math.gamma(exponent - 0.5)
+        gamma_den = math.gamma(exponent)
+        return amplitude * hwhm * math.sqrt(math.pi / k) * gamma_num / gamma_den
+    
+    raise ValueError(f"Unsupported peak type: {peak_type}")

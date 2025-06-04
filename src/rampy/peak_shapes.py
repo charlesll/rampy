@@ -7,18 +7,21 @@
 #
 #############################################################################
 import numpy as np
+from scipy.optimize import curve_fit
+import plotly.graph_objs as go
+from plotly.subplots import make_subplots
 
 def gaussian(x: np.ndarray, amp, freq, HWHM) -> np.ndarray:
     """Computes a Gaussian peak.
 
     Args:
-        x (np.ndarray): Positions at which the signal should be sampled.
-        amp (float or np.ndarray): Amplitude of the Gaussian peak.
-        freq (float or np.ndarray): Frequency/position of the Gaussian component.
-        HWHM (float or np.ndarray): Half-width at half-maximum.
+        x (np.ndarray): x axis
+        amp (float or np.ndarray): Peak amplitude
+        freq (float or np.ndarray): Peak position
+        HWHM (float or np.ndarray): Peak half-width at half-maximum.
 
     Returns:
-        np.ndarray: The computed Gaussian signal.
+        np.ndarray: calculated peak.
 
     Notes:
         Formula used: \( \text{amp} \cdot \exp(-\log(2) \cdot ((x - \text{freq}) / \text{HWHM})^2) \).
@@ -27,16 +30,16 @@ def gaussian(x: np.ndarray, amp, freq, HWHM) -> np.ndarray:
         You can create a single peak like:
 
         >>> x = np.linspace(0, 10, 1000)
-        >>> y = rp.gaussian(x, 10., 3., 1.0)
+        >>> y = rampy.gaussian(x, 10., 3., 1.0)
 
         You can also create an array with several peaks in columns using arrays for the peak parameters:
 
         >>> x = np.linspace(0, 10, 1000)
-        >>> y = rp.gaussian(x.reshape(-1, 1), np.array([[10, 10.]]), np.array([[3, 7.]]), np.array([[1., 1.]]))
+        >>> y = rampy.gaussian(x.reshape(-1, 1), np.array([[10, 10.]]), np.array([[3, 7.]]), np.array([[1., 1.]]))
 
         In this case, `y` will be an array of shape (len(x), 2) with one peak per columns. Your peaks can even share parameters, here the HWHM:
 
-        >>> y = rp.gaussian(x.reshape(-1, 1), np.array([[10, 10.]]), np.array([[3, 7.]]), 2.0)
+        >>> y = rampy.gaussian(x.reshape(-1, 1), np.array([[10, 10.]]), np.array([[3, 7.]]), 2.0)
         
         The composite signal is simply given by
 
@@ -49,13 +52,13 @@ def lorentzian(x: np.ndarray, amp, freq, HWHM) -> np.ndarray:
     """Computes a Lorentzian peak.
 
     Args:
-        x (np.ndarray): Positions at which the signal should be sampled.
-        amp (float or np.ndarray): Amplitude of the Lorentzian peak.
-        freq (float or np.ndarray): Frequency/position of the Lorentzian component.
-        HWHM (float or np.ndarray): Half-width at half-maximum.
+        x (np.ndarray): x axis
+        amp (float or np.ndarray): Peak amplitude
+        freq (float or np.ndarray): Peak position
+        HWHM (float or np.ndarray): Peak half-width at half-maximum.
 
     Returns:
-        np.ndarray: The computed Lorentzian signal.
+        np.ndarray: calculated peak.
 
     Notes:
         Formula used: \( \text{amp} / (1 + ((x - \text{freq}) / \text{HWHM})^2) \).
@@ -64,16 +67,16 @@ def lorentzian(x: np.ndarray, amp, freq, HWHM) -> np.ndarray:
         You can create a single peak like:
 
         >>> x = np.linspace(0, 10, 1000)
-        >>> y = rp.lorentzian(x, 10., 3., 1.0)
+        >>> y = rampy.lorentzian(x, 10., 3., 1.0)
 
         You can also create an array with several peaks in columns using arrays for the peak parameters:
 
         >>> x = np.linspace(0, 10, 1000)
-        >>> y = rp.lorentzian(x.reshape(-1, 1), np.array([[10, 10.]]), np.array([[3, 7.]]), np.array([[1., 1.]]))
+        >>> y = rampy.lorentzian(x.reshape(-1, 1), np.array([[10, 10.]]), np.array([[3, 7.]]), np.array([[1., 1.]]))
 
         In this case, `y` will be an array of shape (len(x), 2) with one peak per columns. Your peaks can even share parameters, here the HWHM:
 
-        >>> y = rp.lorentzian(x.reshape(-1, 1), np.array([[10, 10.]]), np.array([[3, 7.]]), 2.0)
+        >>> y = rampy.lorentzian(x.reshape(-1, 1), np.array([[10, 10.]]), np.array([[3, 7.]]), 2.0)
         
         The composite signal is simply given by
 
@@ -82,16 +85,15 @@ def lorentzian(x: np.ndarray, amp, freq, HWHM) -> np.ndarray:
     """
     return amp / (1.0 + ((x - freq) / HWHM)**2)
 
-
 def pseudovoigt(x: np.ndarray, amp, freq, HWHM, L_ratio) -> np.ndarray:
     """Computes a pseudo-Voigt peak.
 
     Args:
-        x (np.ndarray): Positions at which the signal should be sampled. Can be a vector or array.
-        amp (float): Amplitude of the pseudo-Voigt peak.
-        freq (float or np.ndarray): Frequency/position of the Gaussian component.
-        HWHM (float or np.ndarray): Half-width at half-maximum.
-        L_ratio (float): Ratio of the Lorentzian component. Must be between 0 and 1 inclusive.
+        x (np.ndarray): x axis
+        amp (float or np.ndarray): Peak amplitude
+        freq (float or np.ndarray): Peak position
+        HWHM (float or np.ndarray): Peak half-width at half-maximum.
+        L_ratio (float): Ratio of the Lorentzian component, must be between 0 and 1 (inclusive).
 
     Returns:
         np.ndarray: The computed pseudo-Voigt signal.
@@ -107,16 +109,16 @@ def pseudovoigt(x: np.ndarray, amp, freq, HWHM, L_ratio) -> np.ndarray:
         You can create a single peak like:
 
         >>> x = np.linspace(0, 10, 1000)
-        >>> y = rp.pseudovoigt(x, 10., 3., 1.0, 0.5)
+        >>> y = rampy.pseudovoigt(x, 10., 3., 1.0, 0.5)
 
         You can also create an array with several peaks in columns using arrays for the peak parameters:
 
         >>> x = np.linspace(0, 10, 1000)
-        >>> y = rp.pseudovoigt(x.reshape(-1, 1), np.array([[10, 10]]), np.array([[3, 7]]), np.array([[1., 1.]]), np.array([[0.5, 0.5]]))
+        >>> y = rampy.pseudovoigt(x.reshape(-1, 1), np.array([[10, 10]]), np.array([[3, 7]]), np.array([[1., 1.]]), np.array([[0.5, 0.5]]))
 
         In this case, `y` will be an array of shape (len(x), 2) with one peak per columns. Your peaks can even share parameters, here the L_ratio:
 
-        >>> y = rp.pseudovoigt(x.reshape(-1, 1), np.array([[10, 10]]), np.array([[3, 7]]), np.array([[1., 1.]]), 0.5)
+        >>> y = rampy.pseudovoigt(x.reshape(-1, 1), np.array([[10, 10]]), np.array([[3, 7]]), np.array([[1., 1.]]), 0.5)
         
         The composite signal is simply given by
 
@@ -128,16 +130,16 @@ def pseudovoigt(x: np.ndarray, amp, freq, HWHM, L_ratio) -> np.ndarray:
     
     return L_ratio * lorentzian(x, amp, freq, HWHM) + (1 - L_ratio) * gaussian(x, amp, freq, HWHM)
 
-
 def pearson7(x, a0, a1, a2, a3):
     """Computes a Pearson VII peak.
 
     Args:
         x (np.ndarray): Positions at which the signal should be sampled.
-        a0 (float or np.ndarray): Amplitude parameter.
-        a1 (float or np.ndarray): Frequency/position parameter.
-        a2 (float or np.ndarray): Width parameter.
-        a3 (float or np.ndarray): Shape parameter.
+        x (np.ndarray): x axis
+        a0 (float or np.ndarray): Peak amplitude
+        a1 (float or np.ndarray): Peak position
+        a2 (float or np.ndarray): Peak width
+        a3 (float or np.ndarray): Peak shape parameter.
 
     Returns:
         np.ndarray: The computed Pearson VII signal.
@@ -149,16 +151,16 @@ def pearson7(x, a0, a1, a2, a3):
         You can create a single peak like:
 
         >>> x = np.linspace(0, 10, 1000)
-        >>> y = rp.pearson7(x, 10., 3., 1.0, 0.5)
+        >>> y = rampy.pearson7(x, 10., 3., 1.0, 0.5)
 
         You can also create an array with several peaks in columns using arrays for the peak parameters:
 
         >>> x = np.linspace(0, 10, 1000)
-        >>> y = rp.pearson7(x.reshape(-1, 1), np.array([[10, 10]]), np.array([[3, 7]]), np.array([[1., 1.]]), np.array([[0.5, 0.5]]))
+        >>> y = rampy.pearson7(x.reshape(-1, 1), np.array([[10, 10]]), np.array([[3, 7]]), np.array([[1., 1.]]), np.array([[0.5, 0.5]]))
 
         In this case, `y` will be an array of shape (len(x), 2) with one peak per columns. Your peaks can even share parameters, here the a3:
 
-        >>> y = rp.pearson7(x.reshape(-1, 1), np.array([[10, 10]]), np.array([[3, 7]]), np.array([[1., 1.]]), 0.5)
+        >>> y = rampy.pearson7(x.reshape(-1, 1), np.array([[10, 10]]), np.array([[3, 7]]), np.array([[1., 1.]]), 0.5)
         
         The composite signal is simply given by
 

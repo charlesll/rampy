@@ -3,12 +3,12 @@
 Peak fitting
 =============
 
-Rampy does not (yet) offer a dedicated function for peak fitting. Instead, we invite users to use lmfit or scipy.optimize to perform peak fitting, which is basically the action to fit a model (sum of peaks) to your data.
+Rampy will soon offer a dedicated function for peak fitting: ``rampy.fit_peaks`` will use `curve_fit` from `scipy.optimize` to fit your spectrum with a model that is a sum of peaks.
 
-We provide an example of peak-fitting with the lmfit for instance here: :ref:`RST Notebooks` .
+Users can also use dedicated interfaces such as lmfit. We provide an example of peak-fitting with the lmfit for instance here: :ref:`RST Notebooks` .
 
 Peak shapes
---------------------
+-------------
 
 Rampy offers functions for various peak shapes, including:
 
@@ -17,7 +17,22 @@ Rampy offers functions for various peak shapes, including:
 * pseudo-voigt peaks > ``rampy.pseudovoigt``
 * pearson7 peaks > ``rampy.pearson7``
 
-.. automodule:: rampy.peak_shapes
+.. autoclass:: rampy.peak_shapes.gaussian
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: rampy.peak_shapes.lorentzian
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: rampy.peak_shapes.pseudovoigt
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: rampy.peak_shapes.pearson7
    :members:
    :undoc-members:
    :show-inheritance:
@@ -25,9 +40,11 @@ Rampy offers functions for various peak shapes, including:
 Peak areas
 ----------
 
-Peak area can be calculated using the ``rampy.peakarea`` function. 
+Peak area can be calculated using the ``rampy.area_peak`` function, using analytical functions.
 
-.. automodule:: rampy.peak_area
+Note that the old function ``rampy.peakarea`` is still available but it will be removed in a near future. It uses numerical integration and is thus less precise than the ``rampy.area_peak`` function.
+
+.. automodule:: rampy.peak_area.area_peak
    :members:
    :undoc-members:
    :show-inheritance:
@@ -35,4 +52,4 @@ Peak area can be calculated using the ``rampy.peakarea`` function.
 Propagate uncertainties
 -----------------------
 
-The best way to propagate the uncertainties of your model is to directly use the ``uncertainties`` package, see the docs `here <https://pythonhosted.org/uncertainties/>`_.
+A good way to propagate the uncertainties of your model is to directly use the ``uncertainties`` package, see the docs `here <https://pythonhosted.org/uncertainties/>`_.

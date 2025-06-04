@@ -98,3 +98,62 @@ class TestPeakArea(unittest.TestCase):
         areas_calculated, _ = rampy.peakarea("gaussian", amp=amps.tolist(), HWHM=HWHMs.tolist())
         
         np.testing.assert_allclose(areas_calculated.flatten(), areas_expected.flatten(), rtol=1e-6)
+
+    def test_area_peak(self):
+        import math
+
+        # Test Gaussian peak
+        A = 2.0
+        hwhm = 0.5
+        expected_gaussian = A * hwhm * math.sqrt(math.pi / math.log(2))
+        assert math.isclose(rampy.area_peak("gaussian", A, hwhm), expected_gaussian, rel_tol=1e-9)
+
+        # Test Lorentzian peak
+        expected_lorentzian = math.pi * A * hwhm
+        assert math.isclose(rampy.area_peak("lorentzian", A, hwhm), expected_lorentzian, rel_tol=1e-9)
+
+        # Test Pseudo-Voigt peak
+        lorentzian_fraction = 0.5
+        area_L = math.pi * A * hwhm
+        area_G = A * hwhm * math.sqrt(math.pi / math.log(2))
+        expected_pseudovoigt = lorentzian_fraction * area_L + (1 - lorentzian_fraction) * area_G
+        assert math.isclose(rampy.area_peak("pseudovoigt", A, hwhm, lorentzian_fraction=lorentzian_fraction), expected_pseudovoigt, rel_tol=1e-9)
+
+        # Test Pearson VII peak
+        exponent = 2.0
+        k = 2**(1/exponent) - 1
+        gamma_num = math.gamma(exponent - 0.5)
+        gamma_den = math.gamma(exponent)
+        expected_pearson7 = A * hwhm * math.sqrt(math.pi / k) * gamma_num / gamma_den
+        assert math.isclose(rampy.area_peak("pearson7", A, hwhm, exponent=exponent), expected_pearson7, rel_tol=1e-9)
+
+        # Test errors
+        try:
+            rampy.area_peak("pseudovoigt", A, hwhm)  # Missing lorentzian_fraction
+        except ValueError as e:
+            assert str(e) == "lorentzian_fraction required for pseudovoigt"
+        else:
+            assert False, "Expected ValueError for missing lorentzian_fraction"
+
+        try:
+            rampy.area_peak("pseudovoigt", A, hwhm, lorentzian_fraction=1.5)  # Invalid lorentzian_fraction
+        except ValueError as e:
+            assert str(e) == "lorentzian_fraction must be in [0, 1]"
+        else:
+            assert False, "Expected ValueError for invalid lorentzian_fraction"
+
+        try:
+            rampy.area_peak("pearson7", A, hwhm)  # Missing exponent
+        except ValueError as e:
+            assert str(e) == "exponent required for pearson7"
+        else:
+            assert False, "Expected ValueError for missing exponent"
+
+        try:
+            rampy.area_peak("unsupported", A, hwhm)  # Unsupported peak type
+        except ValueError as e:
+            assert str(e) == "Unsupported peak type: unsupported"
+        else:
+            assert False, "Expected ValueError for unsupported peak type"
+
+        print("All tests passed.")
