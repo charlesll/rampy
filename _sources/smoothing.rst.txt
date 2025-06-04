@@ -18,12 +18,12 @@ You can also directly use the Whittaker smoother. This can be useful if you want
 
 You will find example notebooks below as well as the docstrings of the functions!
 
-.. autoclass:: rampy.filters.smooth
+.. autofunction:: rampy.smooth
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. autoclass:: rampy.filters.whittaker
+.. autofunction:: rampy.whittaker
    :members:
    :undoc-members:
    :show-inheritance:
@@ -33,7 +33,7 @@ Filtering
 
 The ``rampy.spectrafilter()`` function allows you to filter your spectra using a Butterworth filter. Low, high, bandstop and bandpass filters are possible. Can be useful to remove wavelets from FTIR spectra for instance!
 
-.. autoclass:: rampy.filters.spectrafilter
+.. autofunction:: rampy.spectrafilter
    :members:
    :undoc-members:
    :show-inheritance:

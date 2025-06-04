@@ -17,22 +17,22 @@ Rampy offers functions for various peak shapes, including:
 * pseudo-voigt peaks > ``rampy.pseudovoigt``
 * pearson7 peaks > ``rampy.pearson7``
 
-.. autoclass:: rampy.peak_shapes.gaussian
+.. autofunction:: rampy.peak_shapes.gaussian
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. autoclass:: rampy.peak_shapes.lorentzian
+.. autofunction:: rampy.peak_shapes.lorentzian
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. autoclass:: rampy.peak_shapes.pseudovoigt
+.. autofunction:: rampy.peak_shapes.pseudovoigt
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. autoclass:: rampy.peak_shapes.pearson7
+.. autofunction:: rampy.peak_shapes.pearson7
    :members:
    :undoc-members:
    :show-inheritance:
@@ -44,7 +44,7 @@ Peak area can be calculated using the ``rampy.area_peak`` function, using analyt
 
 Note that the old function ``rampy.peakarea`` is still available but it will be removed in a near future. It uses numerical integration and is thus less precise than the ``rampy.area_peak`` function.
 
-.. automodule:: rampy.peak_area.area_peak
+.. autofunction:: rampy.peak_area.area_peak
    :members:
    :undoc-members:
    :show-inheritance:

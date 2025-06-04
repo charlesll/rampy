@@ -53,10 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="baseline.html">Baseline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="smoothing.html">Smoothing and filtering</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Plotting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#rampy.plotting.plot_spectrum"><code class="docutils literal notranslate"><span class="pre">plot_spectrum</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Plotting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signalparams.html">Signal parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="peakfitting.html">Peak fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="machinelearning.html">Machine learning</a></li>
@@ -93,85 +90,7 @@
              
   <section id="plotting">
 <span id="rst-plotting"></span><h1>Plotting<a class="headerlink" href="#plotting" title="Link to this heading"></a></h1>
-<p>Starting from v0.5.4, there is now a function <code class="docutils literal notranslate"><span class="pre">rampy.plot_spectrum</span></code> to plot a spectrum with Plotly. It is a simple function that takes as input the X and Y values of a spectrum and plot it. It can also take as input the baselines and smoothed signals to plot them too. Have a look at the <a class="reference internal" href="examples.html#rst-notebooks"><span class="std std-ref">Example notebooks</span></a> for further example of use.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="rampy.plotting.plot_spectrum">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.plotting.</span></span><span class="sig-name descname"><span class="pre">plot_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baselines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseline_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothed_signals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothed_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Spectrum'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xaxis_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaxis_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.plotting.plot_spectrum" title="Link to this definition"></a></dt>
-<dd><p>Bases:</p>
-<p>Plots a spectrum with optional baselines, smoothed signals, and regions of interest (bir) using Plotly.</p>
-<p>This function adds a single spectrum to a Plotly figure. It supports overlaying baselines, smoothed signals,
-and highlighting regions of interest (bir). If no figure is provided, a new Plotly figure is created.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>array-like</em>) – The x-axis values for the spectrum.</p></li>
-<li><p><strong>y</strong> (<em>array-like</em>) – The y-axis values for the spectrum.</p></li>
-<li><p><strong>fig</strong> (<em>plotly.graph_objects.Figure</em><em>, </em><em>optional</em>) – The Plotly figure to which the spectrum will be added.
-If None, a new figure will be created. Default is None.</p></li>
-<li><p><strong>baselines</strong> (<em>list</em><em> of </em><em>array-like</em><em>, </em><em>optional</em>) – List of baseline arrays to overlay on the spectrum. Default is None.</p></li>
-<li><p><strong>baseline_labels</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – Labels for each baseline. Default is None.</p></li>
-<li><p><strong>smoothed_signals</strong> (<em>list</em><em> of </em><em>array-like</em><em>, </em><em>optional</em>) – List of smoothed signal arrays to overlay on the spectrum. Default is None.</p></li>
-<li><p><strong>smoothed_labels</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – Labels for each smoothed signal. Default is None.</p></li>
-<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – Label for the spectrum. Default is “Spectrum”.</p></li>
-<li><p><strong>color</strong> (<em>str</em><em> or </em><em>tuple</em><em>, </em><em>optional</em>) – Base color for the spectrum. If None, a default color will be chosen. Default is None.</p></li>
-<li><p><strong>bir</strong> (<em>list</em><em> or </em><em>ndarray</em><em>, </em><em>optional</em>) – Regions of interest to highlight on the plot. Should be a list or array
-of shape <cite>(n_regions, 2)</cite>, where each row specifies the start and end of a region
-(e.g., <cite>[[x_start1, x_end1], [x_start2, x_end2]]</cite>). Default is None.</p></li>
-<li><p><strong>xaxis_title</strong> (<em>str</em><em>, </em><em>optional</em>) – Title for the x-axis. If None, no specific title is set. Default is None.</p></li>
-<li><p><strong>yaxis_title</strong> (<em>str</em><em>, </em><em>optional</em>) – Title for the y-axis. If None, no specific title is set. Default is None.</p></li>
-<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – Title for the entire plot. If None, no title is set. Default is None.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The updated Plotly figure object containing the plotted spectrum.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>plotly.graph_objects.Figure</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<p>Plot a simple spectrum:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span> <span class="o">=</span> <span class="n">plot_spectrum</span><span class="p">(</span>
-<span class="go">        x=x,</span>
-<span class="go">        y=y,</span>
-<span class="go">        label=&quot;Sample Spectrum&quot;,</span>
-<span class="go">        xaxis_title=&quot;Wavenumber (cm⁻¹)&quot;,</span>
-<span class="go">        yaxis_title=&quot;Intensity (a.u.)&quot;,</span>
-<span class="go">        title=&quot;Sample Spectrum Analysis&quot;</span>
-<span class="go">    )</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Plot a spectrum with baseline and smoothed signal:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">baseline</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">smoothed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">baseline</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span> <span class="o">=</span> <span class="n">plot_spectrum</span><span class="p">(</span>
-<span class="gp">&gt;&gt;&gt; </span>       <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>       <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>       <span class="n">baselines</span><span class="o">=</span><span class="p">[</span><span class="n">baseline</span><span class="p">],</span>
-<span class="gp">&gt;&gt;&gt; </span>       <span class="n">baseline_labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Constant Baseline&quot;</span><span class="p">],</span>
-<span class="gp">&gt;&gt;&gt; </span>       <span class="n">smoothed_signals</span><span class="o">=</span><span class="p">[</span><span class="n">smoothed</span><span class="p">],</span>
-<span class="gp">&gt;&gt;&gt; </span>       <span class="n">smoothed_labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Moving Average&quot;</span><span class="p">],</span>
-<span class="gp">&gt;&gt;&gt; </span>       <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Wavenumber (cm⁻¹)&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>       <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Intensity (a.u.)&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span>   <span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-<p class="rubric">Notes</p>
-<ul class="simple">
-<li><p>All input arrays are automatically converted to vectors using <code class="docutils literal notranslate"><span class="pre">np.asarray(...).flatten()</span></code> to ensure compatibility with Plotly.</p></li>
-<li><p>Baselines are displayed as dashed lines with distinct colors.</p></li>
-<li><p>Smoothed signals are displayed as dotted lines with distinct colors.</p></li>
-<li><p>Regions of interest (BIR) are highlighted with semi-transparent yellow rectangles.</p></li>
-<li><p>The function returns the figure object, allowing for further customization if needed.</p></li>
-</ul>
-</dd></dl>
-
+<p>Starting from v0.6.0, there is now a function <code class="docutils literal notranslate"><span class="pre">rampy.plot_spectrum</span></code> to plot a spectrum with Plotly. It is a simple function that takes as input the X and Y values of a spectrum and plot it. It can also take as input the baselines and smoothed signals to plot them too. Have a look at the <a class="reference internal" href="examples.html#rst-notebooks"><span class="std std-ref">Example notebooks</span></a> for further example of use.</p>
 </section>
 
 

@@ -76,6 +76,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#rampy.baseline.rubberband_baseline"><code class="docutils literal notranslate"><span class="pre">rubberband_baseline()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rampy.baseline.standardize_data"><code class="docutils literal notranslate"><span class="pre">standardize_data()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rampy.baseline.validate_input"><code class="docutils literal notranslate"><span class="pre">validate_input()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.baseline.validate_roi"><code class="docutils literal notranslate"><span class="pre">validate_roi()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-rampy.filters">rampy.filters module</a><ul>
@@ -193,6 +194,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-rampy.peak_area">rampy.peak_area module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rampy.peak_area.area_peak"><code class="docutils literal notranslate"><span class="pre">area_peak()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rampy.peak_area.gaussianarea"><code class="docutils literal notranslate"><span class="pre">gaussianarea()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rampy.peak_area.peakarea"><code class="docutils literal notranslate"><span class="pre">peakarea()</span></code></a></li>
 </ul>
@@ -314,7 +316,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rampy.baseline.baseline">
-<span class="sig-prename descclassname"><span class="pre">rampy.baseline.</span></span><span class="sig-name descname"><span class="pre">baseline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([[0,</span> <span class="pre">100]])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'poly'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#rampy.baseline.baseline" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">rampy.baseline.</span></span><span class="sig-name descname"><span class="pre">baseline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'poly'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#rampy.baseline.baseline" title="Link to this definition"></a></dt>
 <dd><p>Subtracts a baseline from an x-y spectrum using various methods.</p>
 <p>This function performs baseline subtraction on spectroscopic data by fitting a model
 to the background signal. It supports multiple correction methods, including polynomial
@@ -324,16 +326,6 @@ fitting, splines, and advanced penalized least squares techniques.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x_input</strong> (<em>ndarray</em>) – The x-axis values (e.g., wavelength or wavenumber).</p></li>
 <li><p><strong>y_input</strong> (<em>ndarray</em>) – The y-axis values (e.g., intensity or absorbance).</p></li>
-<li><p><strong>roi</strong> (<em>ndarray</em><em> or </em><em>list</em><em> of </em><em>lists</em><em>, </em><em>optional</em>) – <p>Regions of interest (ROI) for baseline fitting.
-Must be an n x 2 array or list of lists where each row specifies the start and end
-of a region. Default is <cite>np.array([[0, 100]])</cite>.
-.. rubric:: Example</p>
-<ul>
-<li><p>Array: <cite>np.array([[100., 200.], [500., 600.]])</cite></p></li>
-<li><p>List: <cite>[[100., 200.], [500., 600.]]</cite></p></li>
-</ul>
-<p>Note: Some methods (e.g., “als”, “arPLS”) do not use the <cite>roi</cite> parameter but require it to be specified.</p>
-</p></li>
 <li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – <p>The method used for baseline fitting. Default is “poly”.
 Available options:</p>
 <blockquote>
@@ -354,6 +346,7 @@ Available options:</p>
 </div></blockquote>
 </p></li>
 <li><p><strong>**kwargs</strong> – <p>Additional parameters specific to the chosen method.
+- roi (ndarray): Regions of interest for baseline fitting. Default is the entire range of <cite>x_input</cite>.
 - polynomial_order (int): Degree of the polynomial for the “poly” method. Default is 1.
 - s (float): Spline smoothing coefficient for “unispline” and “gcvspline”. Default is 2.0.
 - ese_y (ndarray): Errors associated with y_input for the “gcvspline” method.</p>
@@ -399,19 +392,19 @@ The fitted baseline is transformed back to the original scale before subtraction
 <span class="gp">&gt;&gt;&gt; </span><span class="n">peak</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mf">250.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">peak</span> <span class="o">+</span> <span class="n">background</span> <span class="o">+</span> <span class="n">noise</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">roi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_signal</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">polynomial_order</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_signal</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">roi</span> <span class="o">=</span> <span class="n">roi</span><span class="p">,</span> <span class="n">polynomial_order</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Example with GCVSpline algorithm:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_signal</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;gcvspline&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_signal</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;gcvspline&quot;</span><span class="p">,</span> <span class="n">roi</span><span class="o">=</span><span class="n">roi</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Example with Whittaker smoothing:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_signal</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">roi</span><span class="o">=</span><span class="n">roi</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;whittaker&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_signal</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;whittaker&quot;</span><span class="p">,</span> <span class="n">roi</span><span class="o">=</span><span class="n">roi</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Example with Gaussian process:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_signal</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">roi</span><span class="o">=</span><span class="n">roi</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GP&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_signal</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GP&quot;</span><span class="p">,</span> <span class="n">roi</span><span class="o">=</span><span class="n">roi</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Example with rubberband correction:</p>
@@ -493,7 +486,7 @@ Each sublist or row should contain two elements:</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rampy.baseline.fit_baseline">
-<span class="sig-prename descclassname"><span class="pre">rampy.baseline.</span></span><span class="sig-name descname"><span class="pre">fit_baseline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yafit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.baseline.fit_baseline" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">rampy.baseline.</span></span><span class="sig-name descname"><span class="pre">fit_baseline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roi_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yafit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.baseline.fit_baseline" title="Link to this definition"></a></dt>
 <dd><p>Fit the baseline using the specified method.</p>
 </dd></dl>
 
@@ -533,9 +526,14 @@ Each sublist or row should contain two elements:</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rampy.baseline.validate_input">
-<span class="sig-prename descclassname"><span class="pre">rampy.baseline.</span></span><span class="sig-name descname"><span class="pre">validate_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roi</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.baseline.validate_input" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">rampy.baseline.</span></span><span class="sig-name descname"><span class="pre">validate_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.baseline.validate_input" title="Link to this definition"></a></dt>
 <dd><p>Validate the input arrays.</p>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rampy.baseline.validate_roi">
+<span class="sig-prename descclassname"><span class="pre">rampy.baseline.</span></span><span class="sig-name descname"><span class="pre">validate_roi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roi</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.baseline.validate_roi" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-rampy.filters">
@@ -976,34 +974,39 @@ In this array, list intensities first, then all peak positions, then the last el
 <dt class="sig sig-object py" id="rampy.maps.maps">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.maps.</span></span><span class="sig-name descname"><span class="pre">maps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrometer_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'horiba'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2D'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">despiking</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neigh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>treat maps of Raman spectra</p>
+<p>Class for handling and analyzing Raman spectral maps.</p>
+<p>This class provides methods for reading, processing, and analyzing
+1D or 2D Raman spectral maps from Horiba or Renishaw spectrometers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>file</strong> (<em>str</em>) – filename, including path</p></li>
-<li><p><strong>spectrometer_type</strong> (<em>str</em>) – type of spectrometer, choose between “horiba” or “renishaw”, default: ‘horiba’</p></li>
-<li><p><strong>map_type</strong> (<em>str</em>) – type of map, choose between “2D” or “1D”, default: ‘2D’</p></li>
+<li><p><strong>file</strong> (<em>str</em>) – Path to the map file.</p></li>
+<li><p><strong>spectrometer_type</strong> (<em>str</em><em>, </em><em>optional</em>) – Type of spectrometer.
+Must be either ‘horiba’ or ‘renishaw’. Defaults to ‘horiba’.</p></li>
+<li><p><strong>map_type</strong> (<em>str</em><em>, </em><em>optional</em>) – Type of map. Must be either ‘2D’ or ‘1D’. Defaults to ‘2D’.</p></li>
+<li><p><strong>despiking</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to perform despiking on the spectra. Defaults to False.</p></li>
+<li><p><strong>neigh</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of neighboring points for despiking. Defaults to 4.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – Threshold for spike detection. Defaults to 3.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <cite>map_type</cite> is not ‘1D’ or ‘2D’.</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="rampy.maps.maps.area">
 <span class="sig-name descname"><span class="pre">area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_to_investigate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.area" title="Link to this definition"></a></dt>
-<dd><p>get the area under the curve in the region to investigate.</p>
-<p>The area is calculated by trapezoidal integration, using np.trapz()
-Do not forget to smooth the signal if necessary prior to using this.</p>
+<dd><p>Calculates the area under the curve in a specified region.</p>
+<p>The area is computed via trapezoidal integration (<cite>np.trapz</cite>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>y</strong> (<em>object intensities</em>) – the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.</p></li>
-<li><p><strong>region_to_investigate</strong> (<em>1x2 array</em>) – the x values of regions where the area will be measured</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Intensities to analyze (e.g., <cite>self.I_normalised</cite>).</p></li>
+<li><p><strong>region_to_investigate</strong> (<em>array-like</em>) – [min, max] values of the region to integrate.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>self.A</strong> – maximum to make a nice plot</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
+<dd class="field-even"><p>None. Sets <cite>self.A</cite> with the integrated areas for the map.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1011,21 +1014,17 @@ Do not forget to smooth the signal if necessary prior to using this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="rampy.maps.maps.area_ratio">
 <span class="sig-name descname"><span class="pre">area_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_to_investigate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.area_ratio" title="Link to this definition"></a></dt>
-<dd><p>get the area ratio between two regions of interest.</p>
-<p>The areas are calculated by trapezoidal integration, using np.trapz()
-Do not forget to smooth the signals if necessary prior to using this.</p>
+<dd><p>Calculates the area ratio between two regions of interest.</p>
+<p>The ratio is computed as the integrated area in region 1 divided by the area in region 2.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>y</strong> (<em>object intensities</em>) – the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.</p></li>
-<li><p><strong>region_to_investigate</strong> (<em>1x2 array</em>) – the x values of regions where the areas will be measured. The two lines record the two regions of interest.</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Intensities to analyze (e.g., <cite>self.I_normalised</cite>).</p></li>
+<li><p><strong>region_to_investigate</strong> (<em>ndarray</em>) – 2x2 array, each row [min, max] for the two regions.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>self.A_ratio</strong> – Area ratio = area region 1 / area region 2</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
+<dd class="field-even"><p>None. Sets <cite>self.A_ratio</cite> with the area ratios for the map.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1033,17 +1032,48 @@ Do not forget to smooth the signals if necessary prior to using this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="rampy.maps.maps.background">
 <span class="sig-name descname"><span class="pre">background</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'poly'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.background" title="Link to this definition"></a></dt>
-<dd><p>correct a background from the initial signal I on a map using rampy.baseline</p>
+<dd><p>Corrects background from the signal using rampy.baseline.</p>
+<p>Applies baseline correction to each spectrum in the map using the specified method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>bir</strong> (<em>ndarray</em>) – arrays of the backgroudn interpolation regions.</p></li>
-<li><p><strong>method</strong> (<em>string</em>) – see rampy.baseline documentation for methods available. Default is polynomial</p></li>
-<li><p><strong>there.</strong> (<em>All kwargs argument for rampy.baseline</em><em>(</em><em>) </em><em>will be forwarded and can be used</em>)</p></li>
+<li><p><strong>bir</strong> (<em>ndarray</em>) – Regions of interest for baseline fitting.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – <p>Baseline correction method. Defaults to ‘poly’.
+Supported methods include:</p>
+<blockquote>
+<div><ul>
+<li><p>’poly’: Polynomial fitting.</p></li>
+<li><p>’unispline’: Spline fitting (UnivariateSpline).</p></li>
+<li><p>’gcvspline’: GCVSpline fitting.</p></li>
+<li><p>’gaussian’: Gaussian function fitting.</p></li>
+<li><p>’exp’: Exponential fitting.</p></li>
+<li><p>’log’: Logarithmic fitting.</p></li>
+<li><p>’rubberband’: Rubberband correction.</p></li>
+<li><p>’als’: Asymmetric Least Squares.</p></li>
+<li><p>’arPLS’: Asymmetrically Reweighted Penalized Least Squares.</p></li>
+<li><p>’drPLS’: Doubly Reweighted Penalized Least Squares.</p></li>
+<li><p>’whittaker’: Whittaker smoothing.</p></li>
+<li><p>’GP’: Gaussian process method.</p></li>
+</ul>
+</div></blockquote>
+</p></li>
+<li><p><strong>**kwargs</strong> – Additional method-specific parameters, such as:
+roi (ndarray): Regions of interest (default: full range).
+polynomial_order (int): Polynomial degree for ‘poly’.
+s (float): Spline smoothing parameter.
+ese_y (ndarray): Errors for ‘gcvspline’.
+lam (float): Smoothness parameter for ‘als’, ‘arPLS’, etc.
+p (float): Weighting parameter for ‘als’.
+ratio (float): Convergence ratio for ‘arPLS’, ‘drPLS’.
+niter (int): Number of iterations for ‘als’, ‘drPLS’.
+eta (float): Roughness for ‘drPLS’.
+p0_gaussian (list): Initial params for ‘gaussian’.
+p0_exp (list): Initial params for ‘exp’.
+p0_log (list): Initial params for ‘log’.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Background and corrected spectra area available at self.background and self.I_corrected</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None. Sets <cite>self.I_background</cite> and <cite>self.I_corrected</cite> with the background and background-corrected spectra.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1051,19 +1081,16 @@ Do not forget to smooth the signals if necessary prior to using this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="rampy.maps.maps.centroid">
 <span class="sig-name descname"><span class="pre">centroid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_to_investigate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.centroid" title="Link to this definition"></a></dt>
-<dd><p>calculate the centroid in a given region of interest</p>
+<dd><p>Calculates the centroid in a given region of interest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>y</strong> (<em>object intensities</em>) – the intensities to normalise. For instance, pass self.normalised for performing the calculation on normalised spectra.</p></li>
-<li><p><strong>region_to_investigate</strong> (<em>1x2 array</em>) – the x values of regions where the centroid will be measured</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Intensities to analyze (e.g., <cite>self.I_normalised</cite>).</p></li>
+<li><p><strong>region_to_investigate</strong> (<em>array-like</em>) – [min, max] values of the region where the centroid is measured.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>self.centroid_position</strong> – centroid position for the map</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
+<dd class="field-even"><p>None. Sets <cite>self.centroid_position</cite> with the centroid positions for the map.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1071,21 +1098,17 @@ Do not forget to smooth the signals if necessary prior to using this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="rampy.maps.maps.intensity">
 <span class="sig-name descname"><span class="pre">intensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_to_investigate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.intensity" title="Link to this definition"></a></dt>
-<dd><p>get the maximum intensity in the region to investigate.</p>
-<p>The intensity maximum is estimated from a simple np.max() search.
-Do not forget to smooth the signal if necessary prior to using this.</p>
+<dd><p>Finds the maximum intensity in a specified region.</p>
+<p>The maximum is estimated using <cite>np.max</cite> within the region.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>y</strong> (<em>object intensities</em>) – the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.</p></li>
-<li><p><strong>region_to_investigate</strong> (<em>1x2 array</em>) – the x values of regions where the intensity will be measured</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Intensities to analyze (e.g., <cite>self.I_normalised</cite>).</p></li>
+<li><p><strong>region_to_investigate</strong> (<em>array-like</em>) – [min, max] values of the region to search for the maximum.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>self.I_max</strong> – Intensity maximum</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
+<dd class="field-even"><p>None. Sets <cite>self.I_max</cite> with the intensity maxima for the map.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1093,19 +1116,17 @@ Do not forget to smooth the signal if necessary prior to using this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="rampy.maps.maps.intensity_ratio">
 <span class="sig-name descname"><span class="pre">intensity_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_to_investigate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.intensity_ratio" title="Link to this definition"></a></dt>
-<dd><p>get the intensity ratio between two regions of interest.</p>
-<p>The intensity maxima are estimated from a simple np.max() search.
-Do not forget to smooth the signals if necessary prior to using this.
-:param y: the intensities to consider. For instance, pass self.normalised for performing the calculation on normalised spectra.
-:type y: object intensities
-:param region_to_investigate: the x values of regions where the intensity ratios will be measured. The two lines record the two regions of interest.
-:type region_to_investigate: 2x2 array</p>
+<dd><p>Calculates the intensity ratio between two regions of interest.</p>
+<p>The ratio is computed as the maximum intensity in region 1 divided by the maximum in region 2.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>self.I_ratio</strong> – Intensity ratio</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>ndarray</em>) – Intensities to analyze (e.g., <cite>self.I_normalised</cite>).</p></li>
+<li><p><strong>region_to_investigate</strong> (<em>ndarray</em>) – 2x2 array, each row [min, max] for the two regions.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>ndarray</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None. Sets <cite>self.I_ratio</cite> with the intensity ratios for the map.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1113,17 +1134,16 @@ Do not forget to smooth the signals if necessary prior to using this.
 <dl class="py method">
 <dt class="sig sig-object py" id="rampy.maps.maps.normalise">
 <span class="sig-name descname"><span class="pre">normalise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'intensity'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.normalise" title="Link to this definition"></a></dt>
-<dd><p>normalise the spectra to their max intensity, their area or min-max normalisation</p>
-<p>This uses the internals of rampy.normalise.</p>
+<dd><p>Normalises the spectra using rampy.normalise.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>y</strong> (<em>object intensities</em>) – the intensities to normalise. For instance, if you want to normalised the background corrected I, pass self.I_corrected.</p></li>
-<li><p><strong>method</strong> (<em>string</em>) – method used, choose between area, intensity, minmax</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Intensities to normalise (e.g., <cite>self.I_corrected</cite>).</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – Normalisation method. One of ‘area’, ‘intensity’, or ‘minmax’. Defaults to ‘intensity’.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>The normalised spectra are available at self.I_normalised</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None. Sets <cite>self.I_normalised</cite> with the normalised spectra.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1131,28 +1151,25 @@ Do not forget to smooth the signals if necessary prior to using this.
 <dl class="py method">
 <dt class="sig sig-object py" id="rampy.maps.maps.smooth">
 <span class="sig-name descname"><span class="pre">smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'whittaker'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.maps.maps.smooth" title="Link to this definition"></a></dt>
-<dd><p>uses the smooth function of rampy to smooth the signals
-:param y: the intensities to normalise. For instance, if you want to normalised the background corrected I, pass self.I_corrected.
-:type y: object intensities
-:param method: Method for smoothing the signal;</p>
-<blockquote>
-<div><p>choose between savgol (Savitzky-Golay), GCVSmoothedNSpline, MSESmoothedNSpline, DOFSmoothedNSpline, whittaker, flat, hanning, hamming, bartlett, blackman.</p>
-</div></blockquote>
+<dd><p>Smooths spectra using rampy.smooth.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>window_length</strong> (<em>int</em><em>, </em><em>optional</em>) – The length of the filter window (i.e. the number of coefficients). window_length must be a positive odd integer.</p></li>
-<li><p><strong>polyorder</strong> (<em>int</em><em>, </em><em>optional</em>) – The order of the polynomial used to fit the samples. polyorder must be less than window_length.</p></li>
-<li><p><strong>Lambda</strong> (<em>float</em><em>, </em><em>optional</em>) – smoothing parameter of the Whittaker filter described in Eilers (2003). The higher the smoother the fit.</p></li>
-<li><p><strong>d</strong> (<em>int</em><em>, </em><em>optional</em>) – d parameter in Whittaker filter, see Eilers (2003).</p></li>
-<li><p><strong>ese_y</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – errors associated with y (for the gcvspline algorithms)</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Intensities to smooth (e.g., <cite>self.I_corrected</cite>).</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – Smoothing method. Supported methods include:
+‘savgol’, ‘GCVSmoothedNSpline’, ‘MSESmoothedNSpline’, ‘DOFSmoothedNSpline’,
+‘whittaker’, ‘flat’, ‘hanning’, ‘hamming’, ‘bartlett’, ‘blackman’.
+Defaults to ‘whittaker’.</p></li>
+<li><p><strong>**kwargs</strong> – Additional method-specific parameters, such as:
+window_length (int): Length of the filter window (for Savitzky-Golay).
+polyorder (int): Polynomial order (for Savitzky-Golay).
+Lambda (float): Smoothing parameter for Whittaker filter.
+d (int): Parameter for Whittaker filter.
+ese_y (ndarray): Errors for spline algorithms.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>self.y_smoothed</strong> – the smoothed signal for the map</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
+<dd class="field-even"><p>None. Sets <cite>self.y_smoothed</cite> with the smoothed spectra.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1923,6 +1940,38 @@ it may be better to use the BaggingNeuralNet function.</p>
 <section id="module-rampy.peak_area">
 <span id="rampy-peak-area-module"></span><h2>rampy.peak_area module<a class="headerlink" href="#module-rampy.peak_area" title="Link to this heading"></a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="rampy.peak_area.area_peak">
+<span class="sig-prename descclassname"><span class="pre">rampy.peak_area.</span></span><span class="sig-name descname"><span class="pre">area_peak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">peak_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'gaussian'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'lorentzian'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'pseudovoigt'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'pearson7'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hwhm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lorentzian_fraction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#rampy.peak_area.area_peak" title="Link to this definition"></a></dt>
+<dd><p>Calculates the analytical area under a peak based on its type and parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>peak_type</strong> – Type of peak (gaussian, lorentzian, pseudovoigt, pearson7)</p></li>
+<li><p><strong>amplitude</strong> – Amplitude of the peak (maximum height)</p></li>
+<li><p><strong>hwhm</strong> – Half-width at half-maximum of the peak</p></li>
+<li><p><strong>lorentzian_fraction</strong> – Lorentzian fraction for Pseudo-Voigt [0, 1]</p></li>
+<li><p><strong>exponent</strong> – Shape parameter for Pearson VII</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Area under the specified peak</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – For invalid arguments or missing required parameters</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">area_peaks</span><span class="p">(</span><span class="s2">&quot;gaussian&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="go">2.3548200450309493</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">area_peaks</span><span class="p">(</span><span class="s2">&quot;pseudovoigt&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">lorentzian_fraction</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="go">3.141592653589793</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="rampy.peak_area.gaussianarea">
 <span class="sig-prename descclassname"><span class="pre">rampy.peak_area.</span></span><span class="sig-name descname"><span class="pre">gaussianarea</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HWHM</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.peak_area.gaussianarea" title="Link to this definition"></a></dt>
 <dd><p>returns the area of a Gaussian peak</p>
@@ -1949,6 +1998,7 @@ esearea  (float or ndarray): error on peak area; will be None if no errors on am
 <dt class="sig sig-object py" id="rampy.peak_area.peakarea">
 <span class="sig-prename descclassname"><span class="pre">rampy.peak_area.</span></span><span class="sig-name descname"><span class="pre">peakarea</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HWHM</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a3</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">L_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ese_amp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ese_HWHM</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#rampy.peak_area.peakarea" title="Link to this definition"></a></dt>
 <dd><p>Computes the area of a peak given its shape and parameters.</p>
+<p><strong>warning: this function will be deprecated in a futur release, use the function area_peak instead!</strong></p>
 <p>For Gaussian peaks, the area is calculated analytically. For other shapes
 (Lorentzian, pseudo-Voigt, Pearson VII), the area is calculated using numerical
 integration (trapezoidal rule).</p>
@@ -2032,14 +2082,14 @@ Default is None.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>np.ndarray</em>) – Positions at which the signal should be sampled.</p></li>
-<li><p><strong>amp</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Amplitude of the Gaussian peak.</p></li>
-<li><p><strong>freq</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Frequency/position of the Gaussian component.</p></li>
-<li><p><strong>HWHM</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Half-width at half-maximum.</p></li>
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – x axis</p></li>
+<li><p><strong>amp</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Peak amplitude</p></li>
+<li><p><strong>freq</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Peak position</p></li>
+<li><p><strong>HWHM</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Peak half-width at half-maximum.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The computed Gaussian signal.</p>
+<dd class="field-even"><p>calculated peak.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>np.ndarray</p>
@@ -2050,16 +2100,16 @@ Default is None.</p></li>
 <p class="rubric">Examples</p>
 <p>You can create a single peak like:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You can also create an array with several peaks in columns using arrays for the peak parameters:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">10.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mf">7.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">10.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mf">7.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]))</span>
 </pre></div>
 </div>
 <p>In this case, <cite>y</cite> will be an array of shape (len(x), 2) with one peak per columns. Your peaks can even share parameters, here the HWHM:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">10.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mf">7.</span><span class="p">]]),</span> <span class="mf">2.0</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">10.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mf">7.</span><span class="p">]]),</span> <span class="mf">2.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The composite signal is simply given by</p>
@@ -2075,14 +2125,14 @@ Default is None.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>np.ndarray</em>) – Positions at which the signal should be sampled.</p></li>
-<li><p><strong>amp</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Amplitude of the Lorentzian peak.</p></li>
-<li><p><strong>freq</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Frequency/position of the Lorentzian component.</p></li>
-<li><p><strong>HWHM</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Half-width at half-maximum.</p></li>
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – x axis</p></li>
+<li><p><strong>amp</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Peak amplitude</p></li>
+<li><p><strong>freq</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Peak position</p></li>
+<li><p><strong>HWHM</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Peak half-width at half-maximum.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The computed Lorentzian signal.</p>
+<dd class="field-even"><p>calculated peak.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>np.ndarray</p>
@@ -2093,16 +2143,16 @@ Default is None.</p></li>
 <p class="rubric">Examples</p>
 <p>You can create a single peak like:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">lorentzian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">lorentzian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You can also create an array with several peaks in columns using arrays for the peak parameters:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">lorentzian</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">10.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mf">7.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">lorentzian</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">10.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mf">7.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]))</span>
 </pre></div>
 </div>
 <p>In this case, <cite>y</cite> will be an array of shape (len(x), 2) with one peak per columns. Your peaks can even share parameters, here the HWHM:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">lorentzian</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">10.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mf">7.</span><span class="p">]]),</span> <span class="mf">2.0</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">lorentzian</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mf">10.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mf">7.</span><span class="p">]]),</span> <span class="mf">2.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The composite signal is simply given by</p>
@@ -2119,10 +2169,11 @@ Default is None.</p></li>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> (<em>np.ndarray</em>) – Positions at which the signal should be sampled.</p></li>
-<li><p><strong>a0</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Amplitude parameter.</p></li>
-<li><p><strong>a1</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Frequency/position parameter.</p></li>
-<li><p><strong>a2</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Width parameter.</p></li>
-<li><p><strong>a3</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Shape parameter.</p></li>
+<li><p><strong>x</strong> – x axis</p></li>
+<li><p><strong>a0</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Peak amplitude</p></li>
+<li><p><strong>a1</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Peak position</p></li>
+<li><p><strong>a2</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Peak width</p></li>
+<li><p><strong>a3</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Peak shape parameter.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2137,16 +2188,16 @@ Default is None.</p></li>
 <p class="rubric">Examples</p>
 <p>You can create a single peak like:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">pearson7</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">pearson7</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You can also create an array with several peaks in columns using arrays for the peak parameters:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">pearson7</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">pearson7</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]]))</span>
 </pre></div>
 </div>
 <p>In this case, <cite>y</cite> will be an array of shape (len(x), 2) with one peak per columns. Your peaks can even share parameters, here the a3:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">pearson7</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]),</span> <span class="mf">0.5</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">pearson7</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]),</span> <span class="mf">0.5</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The composite signal is simply given by</p>
@@ -2162,11 +2213,11 @@ Default is None.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>np.ndarray</em>) – Positions at which the signal should be sampled. Can be a vector or array.</p></li>
-<li><p><strong>amp</strong> (<em>float</em>) – Amplitude of the pseudo-Voigt peak.</p></li>
-<li><p><strong>freq</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Frequency/position of the Gaussian component.</p></li>
-<li><p><strong>HWHM</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Half-width at half-maximum.</p></li>
-<li><p><strong>L_ratio</strong> (<em>float</em>) – Ratio of the Lorentzian component. Must be between 0 and 1 inclusive.</p></li>
+<li><p><strong>x</strong> (<em>np.ndarray</em>) – x axis</p></li>
+<li><p><strong>amp</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Peak amplitude</p></li>
+<li><p><strong>freq</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Peak position</p></li>
+<li><p><strong>HWHM</strong> (<em>float</em><em> or </em><em>np.ndarray</em>) – Peak half-width at half-maximum.</p></li>
+<li><p><strong>L_ratio</strong> (<em>float</em>) – Ratio of the Lorentzian component, must be between 0 and 1 (inclusive).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2187,16 +2238,16 @@ Default is None.</p></li>
 <p class="rubric">Examples</p>
 <p>You can create a single peak like:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">pseudovoigt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">pseudovoigt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You can also create an array with several peaks in columns using arrays for the peak parameters:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">pseudovoigt</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">pseudovoigt</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]]))</span>
 </pre></div>
 </div>
 <p>In this case, <cite>y</cite> will be an array of shape (len(x), 2) with one peak per columns. Your peaks can even share parameters, here the L_ratio:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rp</span><span class="o">.</span><span class="n">pseudovoigt</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]),</span> <span class="mf">0.5</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">pseudovoigt</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]]),</span> <span class="mf">0.5</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The composite signal is simply given by</p>
@@ -2847,7 +2898,7 @@ corresponding to <cite>y</cite>. Required for area normalization. Default is Non
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rampy.spectranization.resample">
-<span class="sig-prename descclassname"><span class="pre">rampy.spectranization.</span></span><span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_new</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.spectranization.resample" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">rampy.spectranization.</span></span><span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_new</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'extrapolate'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#rampy.spectranization.resample" title="Link to this definition"></a></dt>
 <dd><p>Resamples a y signal along new x-axis values using interpolation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2855,11 +2906,11 @@ corresponding to <cite>y</cite>. Required for area normalization. Default is Non
 <li><p><strong>x</strong> (<em>np.ndarray</em>) – Original x-axis values.</p></li>
 <li><p><strong>y</strong> (<em>np.ndarray</em>) – Original y-axis values corresponding to <cite>x</cite>.</p></li>
 <li><p><strong>x_new</strong> (<em>np.ndarray</em>) – New x-axis values for resampling.</p></li>
+<li><p><strong>fill_value</strong> (<em>array-like</em><em> or </em><em>(</em><em>array-like</em><em>, </em><em>array_like</em><em>) or </em><em>“extrapolate”</em><em>, </em><em>optional</em>) – behavior of the interpolation for requested points outside of the data range. See [scipy help for details](<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html</a>). Default is ‘“extrapolate”’.</p></li>
 <li><p><strong>**kwargs</strong> – <p>Additional arguments passed to <cite>scipy.interpolate.interp1d</cite>.</p>
 <ul>
 <li><p>kind (str or int): Type of interpolation (‘linear’, ‘cubic’, etc.). Default is ‘linear’.</p></li>
-<li><p>bounds_error (bool): If True, raises an error when extrapolation is required. Default is False.</p></li>
-<li><p>fill_value (float or str): Value used for out-of-bounds points. Default is NaN or “extrapolate”.</p></li>
+<li><p>bounds_error (bool): If True, a ValueError is raised any time interpolation is attempted on a value outside of the range of x (where extrapolation is necessary). If False, out of bounds values are assigned fill_value. By default, an error is raised unless fill_value=”extrapolate”.</p></li>
 </ul>
 </p></li>
 </ul>

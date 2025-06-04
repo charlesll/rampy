@@ -51,10 +51,7 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="firststeps.html">First Steps</a></li>
 <li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Preprocessing</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Baseline</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#rampy.baseline.baseline"><code class="docutils literal notranslate"><span class="pre">baseline</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Baseline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="smoothing.html">Smoothing and filtering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signalparams.html">Signal parameters</a></li>
@@ -97,119 +94,6 @@
 <a class="reference internal image-reference" href="_images/baseline.png"><img alt="_images/baseline.png" src="_images/baseline.png" style="width: 500px;" />
 </a>
 <p>Below you will find the documentation of the relevant functions, and have a look at the example notebooks too: <a class="reference internal" href="examples.html#rst-notebooks"><span class="std std-ref">Example notebooks</span></a></p>
-<dl class="py class">
-<dt class="sig sig-object py" id="rampy.baseline.baseline">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rampy.baseline.</span></span><span class="sig-name descname"><span class="pre">baseline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([[0,</span> <span class="pre">100]])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'poly'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rampy.baseline.baseline" title="Link to this definition"></a></dt>
-<dd><p>Bases:</p>
-<p>Subtracts a baseline from an x-y spectrum using various methods.</p>
-<p>This function performs baseline subtraction on spectroscopic data by fitting a model
-to the background signal. It supports multiple correction methods, including polynomial
-fitting, splines, and advanced penalized least squares techniques.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x_input</strong> (<em>ndarray</em>) – The x-axis values (e.g., wavelength or wavenumber).</p></li>
-<li><p><strong>y_input</strong> (<em>ndarray</em>) – The y-axis values (e.g., intensity or absorbance).</p></li>
-<li><p><strong>roi</strong> (<em>ndarray</em><em> or </em><em>list</em><em> of </em><em>lists</em><em>, </em><em>optional</em>) – <p>Regions of interest (ROI) for baseline fitting.
-Must be an n x 2 array or list of lists where each row specifies the start and end
-of a region. Default is <cite>np.array([[0, 100]])</cite>.
-.. rubric:: Example</p>
-<ul>
-<li><p>Array: <cite>np.array([[100., 200.], [500., 600.]])</cite></p></li>
-<li><p>List: <cite>[[100., 200.], [500., 600.]]</cite></p></li>
-</ul>
-<p>Note: Some methods (e.g., “als”, “arPLS”) do not use the <cite>roi</cite> parameter but require it to be specified.</p>
-</p></li>
-<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – <p>The method used for baseline fitting. Default is “poly”.
-Available options:</p>
-<blockquote>
-<div><ul>
-<li><p>”poly”: Polynomial fitting. Requires <cite>polynomial_order</cite>.</p></li>
-<li><p>”unispline”: Spline fitting using Scipy’s <cite>UnivariateSpline</cite>. Requires <cite>s</cite>.</p></li>
-<li><p>”gcvspline”: Spline fitting using GCVSpline. Requires <cite>s</cite> and optionally <cite>ese_y</cite>.</p></li>
-<li><p>”gaussian”: Gaussian function fitting. Requires <cite>p0_gaussian</cite>.</p></li>
-<li><p>”exp”: Exponential background fitting. Requires <cite>p0_exp</cite>.</p></li>
-<li><p>”log”: Logarithmic background fitting. Requires <cite>p0_log</cite>.</p></li>
-<li><p>”rubberband”: Rubberband correction using convex hull interpolation.</p></li>
-<li><p>”als”: Asymmetric Least Squares correction. Requires <cite>lam</cite>, <cite>p</cite>, and <cite>niter</cite>.</p></li>
-<li><p>”arPLS”: Asymmetrically Reweighted Penalized Least Squares smoothing. Requires <cite>lam</cite> and <cite>ratio</cite>.</p></li>
-<li><p>”drPLS”: Doubly Reweighted Penalized Least Squares smoothing. Requires <cite>niter</cite>, <cite>lam</cite>, <cite>eta</cite>, and <cite>ratio</cite>.</p></li>
-<li><p>”whittaker”: Whittaker smoothing with weights applied to regions of interest. Requires <cite>lam</cite>.</p></li>
-<li><p>”GP”: Gaussian process method using a rational quadratic kernel.</p></li>
-</ul>
-</div></blockquote>
-</p></li>
-<li><p><strong>**kwargs</strong> – <p>Additional parameters specific to the chosen method.
-- polynomial_order (int): Degree of the polynomial for the “poly” method. Default is 1.
-- s (float): Spline smoothing coefficient for “unispline” and “gcvspline”. Default is 2.0.
-- ese_y (ndarray): Errors associated with y_input for the “gcvspline” method.</p>
-<blockquote>
-<div><p>Defaults to sqrt(abs(y_input)) if not provided.</p>
-</div></blockquote>
-<ul>
-<li><p>lam (float): Smoothness parameter for methods like “als”, “arPLS”, and others. Default is 1e5.</p></li>
-<li><p>p (float): Weighting parameter for ALS method. Recommended values are between 0.001 and 0.1. Default is 0.01.</p></li>
-<li><p>ratio (float): Convergence ratio parameter for arPLS/drPLS methods. Default is 0.01 for arPLS and 0.001 for drPLS.</p></li>
-<li><p>niter (int): Number of iterations for ALS/drPLS methods. Defaults are 10 for ALS and 100 for drPLS.</p></li>
-<li><p>eta (float): Roughness parameter for drPLS method, between 0 and 1. Default is 0.5.</p></li>
-<li><p>p0_gaussian (list): Initial parameters [a, b, c] for Gaussian fitting:
-(y = a cdot exp(-log(2) cdot ((x-b)/c)^2)). Default is [1., 1., 1.].</p></li>
-<li><p>p0_exp (list): Initial parameters [a, b, c] for exponential fitting:
-(y = a cdot exp(b cdot (x-c))). Default is [1., 1., 0.].</p></li>
-<li><p>p0_log (list): Initial parameters [a, b, c, d] for logarithmic fitting:
-(y = a cdot log(-b cdot (x-c)) - d cdot x^2). Default is [1., 1., 1., 1.].</p></li>
-</ul>
-</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>corrected_signal (ndarray): The signal after baseline subtraction.
-baseline_fitted (ndarray): The fitted baseline.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If the specified method is not recognized or invalid parameters are provided.</p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The input data is standardized before fitting to improve numerical stability during optimization.
-The fitted baseline is transformed back to the original scale before subtraction.</p>
-<p class="rubric">Examples</p>
-<p>Example with polynomial baseline correction:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="n">nb_points</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">noise</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">nb_points</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">background</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="mi">50</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">x</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">peak</span> <span class="o">=</span> <span class="n">rampy</span><span class="o">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mf">250.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">peak</span> <span class="o">+</span> <span class="n">background</span> <span class="o">+</span> <span class="n">noise</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">roi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_signal</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;poly&quot;</span><span class="p">,</span> <span class="n">polynomial_order</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Example with GCVSpline algorithm:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_signal</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;gcvspline&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Example with Whittaker smoothing:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_signal</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">roi</span><span class="o">=</span><span class="n">roi</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;whittaker&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Example with Gaussian process:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_signal</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">roi</span><span class="o">=</span><span class="n">roi</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;GP&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Example with rubberband correction:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_signal</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;rubberband&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Example with ALS algorithm:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_signal</span><span class="p">,</span> <span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;als&quot;</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">1e5</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
 </section>
 
 
