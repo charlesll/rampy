@@ -26,7 +26,6 @@ jobs:
       run: echo "/usr/local/bin" >> $GITHUB_PATH
 
     - name: Build HTML
-      #uses: ammaraskar/sphinx-action@master
       run: sphinx-build -b html docs docs/build/html
 
     - name: Upload artifacts
@@ -37,7 +36,6 @@ jobs:
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: docs/build/html
