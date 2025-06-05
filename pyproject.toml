@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rampy"
-version = "0.6.2"
+version = "0.6.3"
 dependencies = [
     "numpy>=1.12",
     "scipy>=1.10.0",

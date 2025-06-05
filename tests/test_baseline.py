@@ -28,16 +28,16 @@ class TestBaseline(unittest.TestCase):
         roi2 = np.array([[1,20],[80,100]])
 
         # calculating the baselines
-        ycalc1, base1 = rampy.baseline(x2,y2,'poly',roi=roi2,polynomial_order=1)
-        ycalc2, base2 = rampy.baseline(x2,y2,'gcvspline',roi=roi2,s=0.1 )
-        ycalc3, base3 = rampy.baseline(x2,y2,'unispline',roi=roi2,s=1e0)
-        ycalc4, base4 = rampy.baseline(x2,y2,'als',lam=10**7,p=0.05)
-        ycalc5, base5 = rampy.baseline(x2,y2,'arPLS',lam=10**7,ratio=0.1)
-        ycalc6, base6 = rampy.baseline(x2,y2,'drPLS')
-        ycalc7, base7 = rampy.baseline(x2,y2,'exp',roi=roi2,p0_exp=[0.1,0.1,45])
+        ycalc1, base1 = rampy.baseline(x2,y2,roi=roi2,method='poly',polynomial_order=1)
+        ycalc2, base2 = rampy.baseline(x2,y2,roi=roi2,method='gcvspline',s=0.1 )
+        ycalc3, base3 = rampy.baseline(x2,y2,roi=roi2,method='unispline',s=1e0)
+        ycalc4, base4 = rampy.baseline(x2,y2,method='als',lam=10**7,p=0.05)
+        ycalc5, base5 = rampy.baseline(x2,y2,method='arPLS',lam=10**7,ratio=0.1)
+        ycalc6, base6 = rampy.baseline(x2,y2,method='drPLS')
+        ycalc7, base7 = rampy.baseline(x2,y2,roi=roi2,method='exp',p0_exp=[0.1,0.1,45])
         # we just check that rubberband works....
-        ycalc8, base8 = rampy.baseline(x2,y2,'rubberband')
-        ycalc9, base9 = rampy.baseline(x2,y2,'whittaker',roi=roi2,lam=1e5)
+        ycalc8, base8 = rampy.baseline(x2,y2,method='rubberband')
+        ycalc9, base9 = rampy.baseline(x2,y2,roi=roi2,method='whittaker',lam=1e5)
 
         # Testing the shapes
         np.testing.assert_equal(ycalc1.shape,base1.shape)

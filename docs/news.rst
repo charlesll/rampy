@@ -16,12 +16,17 @@ Wanted features (planned)
 
 - peak fitting (in particular for maps): working on a Scikit-Learn API
 
-0.6.2 (stable)
+0.6.3 (stable)
+----------------
+
+  - fix 'roi' and 'method' arguments in baseline() function (issue #38)
+
+0.6.2
 ----------------
 
   - Fix the documentation.
 
-0.6.1 (stable)
+0.6.1
 ----------------
 
 Additions:

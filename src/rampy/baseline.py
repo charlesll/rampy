@@ -106,6 +106,7 @@ def standardize_data(x: np.ndarray, y: np.ndarray):
 
 def baseline(x_input: np.ndarray, 
              y_input: np.ndarray, 
+             roi = None,
              method: str = "poly", 
              **kwargs) -> tuple:
     """Subtracts a baseline from an x-y spectrum using various methods.
@@ -117,6 +118,7 @@ def baseline(x_input: np.ndarray,
     Args:
         x_input (ndarray): The x-axis values (e.g., wavelength or wavenumber).
         y_input (ndarray): The y-axis values (e.g., intensity or absorbance).
+        roi (ndarray): Regions of interest for baseline fitting. Default is the entire range of `x_input`.
         method (str, optional): The method used for baseline fitting. Default is "poly".
             Available options:
                 - "poly": Polynomial fitting. Requires `polynomial_order`.
@@ -133,7 +135,7 @@ def baseline(x_input: np.ndarray,
                 - "GP": Gaussian process method using a rational quadratic kernel.
 
         **kwargs: Additional parameters specific to the chosen method.
-            - roi (ndarray): Regions of interest for baseline fitting. Default is the entire range of `x_input`.
+
             - polynomial_order (int): Degree of the polynomial for the "poly" method. Default is 1.
             - s (float): Spline smoothing coefficient for "unispline" and "gcvspline". Default is 2.0.
             - ese_y (ndarray): Errors associated with y_input for the "gcvspline" method.
@@ -199,8 +201,10 @@ def baseline(x_input: np.ndarray,
     validate_input(x_input, y_input)
 
     # then get the roi or set it to the entire x_input range
-    roi  = kwargs.get('roi', [[np.min(x_input), np.max(x_input)]])
-    validate_roi(roi)
+    if roi is not None:
+        validate_roi(roi)
+    else:
+        roi = [[np.min(x_input), np.max(x_input)]]
 
     # now extract the signal and standardize the data
     yafit_unscaled = extract_signal(x_input, y_input, roi)
