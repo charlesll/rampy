@@ -78,7 +78,7 @@ def preparing_data(dataliste,**kwargs):
         # finding the minimum between 1200 and 1300 to fit a constant baseline (bas1)
         idx_roi = np.where(data[:,1] == np.min(data[(data[:,0]>1200)&(data[:,0]<1300),1]))[0][0]  
         roi_bas1 = np.array([[data[idx_roi,0] - 15.,data[idx_roi,0] + 15.]])
-        y_bas1, bas1 = rp.baseline(data[:,0],data[:,1],roi_bas1,"poly",polynomial_order=0)
+        y_bas1, bas1 = rp.baseline(data[:,0],data[:,1],roi_bas1,method="poly",polynomial_order=0)
 
         # resampling
         y_norm = rp.resample(data[:,0],y_bas1[:,0],x)
@@ -89,7 +89,7 @@ def preparing_data(dataliste,**kwargs):
         record[:,i] = y_long[:]*scale #with a scale factor to bring values closer to 1 for representation
         
         # now grabbing the signal above the cutting baseline (bas2) in the roi_cutoff portion of spectra
-        y_corr, bas2 = rp.baseline(x,y_long[:],roi_cutoff,"poly",polynomial_order=1.0)
+        y_corr, bas2 = rp.baseline(x,y_long[:],roi_cutoff,method="poly",polynomial_order=1.0)
         
         x_cut = x[(roi_cutoff[0,0]<=x)&(x<=roi_cutoff[1,1])].reshape(-1,1)
         y_cut = y_corr[(roi_cutoff[0,0]<=x)&(x<=roi_cutoff[1,1])].reshape(-1,1)
@@ -105,8 +105,8 @@ def preparing_data(dataliste,**kwargs):
         # smoothing the signal with a Whittaker smoother = improves results
         record_hf[:,i] = rp.whittaker(record_hf_no_smo[:,i],Lambda = 10.0**3)
         
-        # wew take care of correcting any deviation from 0 after smoothing
-        y_r_2, _ = rp.baseline(x_cut,record_hf[:,i],roi_cutoff,"poly",p=1.0)
+        # we take care of correcting any deviation from 0 after smoothing
+        y_r_2, _ = rp.baseline(x_cut[:,0],record_hf[:,i],roi_cutoff,method="poly",polynomial_order=1.0)
         record_hf[:,i] = ((y_r_2-np.min(y_r_2))/(np.max(y_r_2)-np.min(y_r_2))).reshape(-1)
         
         # for the baseline
