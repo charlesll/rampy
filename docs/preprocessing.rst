@@ -46,11 +46,11 @@ we have a spectrum that has a X axis from 400 to 1300 cm-1, with points each 0.9
 Normalisation
 -------------
 
-Rampy provides the ``rampy.normalisation()`` function to normalise the Y values of a spectrum to
+Rampy provides the ``rampy.normalisation()`` function to normalise the Y values of a spectrum using
 
 - the maximum intensity
-- the trapezoidal area under the curve
-- to min-max values of intensities
+- the area under the curve
+- the min-max values of intensities
 
 .. autofunction:: rampy.normalise
 
