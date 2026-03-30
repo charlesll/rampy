@@ -17,7 +17,8 @@ Licence: see LICENCE.md
 # 0.6.4 (stable)
 
   - fix usage of tlcorrection with the area normalisation (issue #40)
-  - fox docstrings (issue #39)
+  - fix docstrings (issue #39)
+  - fix QDA classification example and test (use solver='eigen' and shrinkage='auto').
 
 # 0.6.3
 
