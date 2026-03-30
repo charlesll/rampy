@@ -25,7 +25,7 @@ class TestMLC(unittest.TestCase):
         spectra_5 = rp.gaussian(x, 10.0, 600., 200.)
 
         # the number of observations of each signal
-        number_of_spectra = 20
+        number_of_spectra = 100
 
         # generating a dataset (will be shuffled later during the train-test split)
         dataset = np.hstack((np.ones((len(x),number_of_spectra))*spectra_1.reshape(-1,1),
@@ -61,6 +61,8 @@ class TestMLC(unittest.TestCase):
         # iterate over classifiers
         for name in names:
             MLC.algorithm = name
+            if MLC.algorithm == "QDA":
+                MLC.params_ = {'solver':'eigen','shrinkage':'auto'}
             MLC.fit()
             score = MLC.model.score(MLC.X_test, MLC.y_test)
 

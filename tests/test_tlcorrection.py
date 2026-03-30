@@ -3,6 +3,7 @@ import unittest
 import numpy as np
 import scipy
 from scipy.constants import c, h, k
+from scipy.integrate import simpson
 
 import rampy as rp
 
@@ -21,7 +22,7 @@ class Testtlcorrection(unittest.TestCase):
         t0 = nu0**3.0*nu/((nu0-nu)**4)
         t1= 1.0 - np.exp(-h*c*nu/(k*T)) # c in m/s  : t1 dimensionless
         long_calc= y_for_long*t0*t1 # pour les y
-        long_calc = long_calc/np.trapz(long_calc,x_for_long) # area normalisation
+        long_calc = long_calc/simpson(long_calc,x=x_for_long) # area normalisation
 
         np.testing.assert_equal(long_res,long_calc)
         np.testing.assert_equal(x_for_long,x_long)
