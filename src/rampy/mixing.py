@@ -10,7 +10,7 @@ import numpy as np
 import cvxpy
 
 def mixing_sp(y_fit: np.ndarray, ref1: np.ndarray, ref2: np.ndarray) -> np.ndarray:
-    """
+    r"""
     Mixes two reference spectra to match given experimental signals.
 
     This function calculates the fractions of the first reference spectrum (`ref1`) 

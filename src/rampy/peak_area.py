@@ -16,7 +16,7 @@ import rampy
 def peakarea(shape: str, amp: float, HWHM: float, pos: float = None, 
              a3: float = None, L_ratio: float = None, ese_amp: float = None, 
              ese_HWHM: float = None) -> tuple[float, float | None]:
-    """
+    r"""
     Computes the area of a peak given its shape and parameters.
 
     **warning: this function will be deprecated in a futur release, use the function area_peak instead!**

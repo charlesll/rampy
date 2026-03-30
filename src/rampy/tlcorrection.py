@@ -11,7 +11,7 @@ from scipy.constants import c, h, k
 from scipy.integrate import simpson
 
 def tlcorrection(x: np.ndarray, y: np.ndarray, temperature: float, wavelength: float, **kwargs) -> tuple:
-    """Corrects Raman spectra for temperature and excitation line effects.
+    r"""Corrects Raman spectra for temperature and excitation line effects.
 
     This function applies corrections to Raman spectra to account for temperature and laser 
     excitation wavelength effects. It supports multiple correction equations and normalization 

@@ -260,7 +260,7 @@ def normalise(y: np.ndarray, x : np.ndarray = None, method: str = "intensity") -
     return y
 
 def centroid(x: np.ndarray, y: np.ndarray, smoothing: bool = False, **kwargs) -> np.ndarray:
-    """Calculates the centroid of y signal(s).
+    r"""Calculates the centroid of y signal(s).
 
     The centroid is calculated as \( \text{centroid} = \sum(y / \sum(y) \cdot x) \).
 

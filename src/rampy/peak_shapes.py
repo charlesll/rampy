@@ -12,7 +12,7 @@ import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
 def gaussian(x: np.ndarray, amp, freq, HWHM) -> np.ndarray:
-    """Computes a Gaussian peak.
+    r"""Computes a Gaussian peak.
 
     Args:
         x (np.ndarray): x axis
@@ -49,7 +49,7 @@ def gaussian(x: np.ndarray, amp, freq, HWHM) -> np.ndarray:
     return amp * np.exp(-np.log(2) * ((x - freq) / HWHM)**2)
 
 def lorentzian(x: np.ndarray, amp, freq, HWHM) -> np.ndarray:
-    """Computes a Lorentzian peak.
+    r"""Computes a Lorentzian peak.
 
     Args:
         x (np.ndarray): x axis
@@ -86,7 +86,7 @@ def lorentzian(x: np.ndarray, amp, freq, HWHM) -> np.ndarray:
     return amp / (1.0 + ((x - freq) / HWHM)**2)
 
 def pseudovoigt(x: np.ndarray, amp, freq, HWHM, L_ratio) -> np.ndarray:
-    """Computes a pseudo-Voigt peak.
+    r"""Computes a pseudo-Voigt peak.
 
     Args:
         x (np.ndarray): x axis
@@ -131,7 +131,7 @@ def pseudovoigt(x: np.ndarray, amp, freq, HWHM, L_ratio) -> np.ndarray:
     return L_ratio * lorentzian(x, amp, freq, HWHM) + (1 - L_ratio) * gaussian(x, amp, freq, HWHM)
 
 def pearson7(x, a0, a1, a2, a3):
-    """Computes a Pearson VII peak.
+    r"""Computes a Pearson VII peak.
 
     Args:
         x (np.ndarray): Positions at which the signal should be sampled.
