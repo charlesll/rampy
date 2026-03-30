@@ -3,6 +3,7 @@
 /dev/
 /docs/doctrees/
 /docs/build/
+/docs/html/
 /build/
 .ipynb_checkpoints/
 /rampy.egg-info/

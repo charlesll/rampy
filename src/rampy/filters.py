@@ -41,7 +41,7 @@ def smooth(x: np.ndarray, y: np.ndarray, method: str = "whittaker", **kwargs) ->
             - polyorder (int): Polynomial order for Savitzky-Golay filter. Must be less 
               than `window_length`. Default is 2.
             - Lambda (float): Smoothing parameter for the Whittaker filter. Higher values 
-              produce smoother fits. Default is \(10^5\).
+              produce smoother fits. Default is 10**5.
             - d (int): Difference order in the Whittaker filter. Default is 2.
             - ese_y (float or np.ndarray): Errors associated with y values for spline methods. 
               Default is 1.0.
@@ -145,7 +145,7 @@ def whittaker(y: np.ndarray, weights: np.ndarray = None, **kwargs) -> np.ndarray
         be smoothed. Default is uniform weights across all points.
         **kwargs: Additional parameters for Whittaker smoothing.
             - Lambda (float): The smoothing coefficient; higher values produce smoother results. 
-              Default is \(10^5\).
+              Default is 10**5.
 
     Returns:
         np.ndarray: An array containing the smoothed values.

@@ -14,7 +14,13 @@ Licence: see LICENCE.md
 
 - peak fitting (in particular for maps): working on a Scikit-Learn API
 
-# 0.6.3 (stable)
+# 0.6.4 (stable)
+
+  - fix usage of tlcorrection with the area normalisation (issue #40)
+  - fix docstrings (issue #39)
+  - fix QDA classification example and test (use solver='eigen' and shrinkage='auto').
+
+# 0.6.3
 
   - fix 'roi' and 'method' arguments in baseline() function (issue #38)
 

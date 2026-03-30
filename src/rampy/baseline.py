@@ -146,11 +146,11 @@ def baseline(x_input: np.ndarray,
             - niter (int): Number of iterations for ALS/drPLS methods. Defaults are 10 for ALS and 100 for drPLS.
             - eta (float): Roughness parameter for drPLS method, between 0 and 1. Default is 0.5.
             - p0_gaussian (list): Initial parameters [a, b, c] for Gaussian fitting: 
-              \(y = a \cdot \exp(-\log(2) \cdot ((x-b)/c)^2)\). Default is [1., 1., 1.].
+              ``y = a * np.exp(-np.log(2) * ((x-b)/c)**2)``. Default is [1., 1., 1.].
             - p0_exp (list): Initial parameters [a, b, c] for exponential fitting: 
-              \(y = a \cdot \exp(b \cdot (x-c))\). Default is [1., 1., 0.].
+              ``y = a * np.exp(b * (x-c))``. Default is [1., 1., 0.].
             - p0_log (list): Initial parameters [a, b, c, d] for logarithmic fitting: 
-              \(y = a \cdot \log(-b \cdot (x-c)) - d \cdot x^2\). Default is [1., 1., 1., 1.].
+              ``y = a * np.log(-b * (x-c)) - d * x**2``. Default is [1., 1., 1., 1.].
 
     Returns:
         tuple:

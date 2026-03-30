@@ -51,8 +51,8 @@ def peakarea(shape: str, amp: float, HWHM: float, pos: float = None,
 
     Notes:
         - For Gaussian peaks, the formula used is:
-          \( \text{area} = \sqrt{\pi / \ln(2)} \cdot \text{amp} \cdot \text{HWHM} \).
-        - For other shapes, numerical integration is performed over a range of \( \pm 10 \cdot \text{HWHM} \).
+          ``area = np.sqrt(np.pi / np.log(2)) * amp * HWHM``.
+        - For other shapes, numerical integration is performed over a range of +/- 10 * HWHM.
     
     Example:
         Compute the area of a Gaussian peak:
