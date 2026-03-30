@@ -109,7 +109,7 @@ def baseline(x_input: np.ndarray,
              roi = None,
              method: str = "poly", 
              **kwargs) -> tuple:
-    """Subtracts a baseline from an x-y spectrum using various methods.
+    r"""Subtracts a baseline from an x-y spectrum using various methods.
 
     This function performs baseline subtraction on spectroscopic data by fitting a model 
     to the background signal. It supports multiple correction methods, including polynomial 
