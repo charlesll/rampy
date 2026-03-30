@@ -16,7 +16,7 @@ import rampy
 def peakarea(shape: str, amp: float, HWHM: float, pos: float = None, 
              a3: float = None, L_ratio: float = None, ese_amp: float = None, 
              ese_HWHM: float = None) -> tuple[float, float | None]:
-    r"""
+    """
     Computes the area of a peak given its shape and parameters.
 
     **warning: this function will be deprecated in a futur release, use the function area_peak instead!**
@@ -51,8 +51,8 @@ def peakarea(shape: str, amp: float, HWHM: float, pos: float = None,
 
     Notes:
         - For Gaussian peaks, the formula used is:
-          \( \text{area} = \sqrt{\pi / \ln(2)} \cdot \text{amp} \cdot \text{HWHM} \).
-        - For other shapes, numerical integration is performed over a range of \( \pm 10 \cdot \text{HWHM} \).
+          ``area = np.sqrt(np.pi / np.log(2)) * amp * HWHM``.
+        - For other shapes, numerical integration is performed over a range of +/- 10 * HWHM.
     
     Example:
         Compute the area of a Gaussian peak:

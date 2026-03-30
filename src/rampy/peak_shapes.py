@@ -12,7 +12,7 @@ import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
 def gaussian(x: np.ndarray, amp, freq, HWHM) -> np.ndarray:
-    r"""Computes a Gaussian peak.
+    """Computes a Gaussian peak.
 
     Args:
         x (np.ndarray): x axis
@@ -24,7 +24,7 @@ def gaussian(x: np.ndarray, amp, freq, HWHM) -> np.ndarray:
         np.ndarray: calculated peak.
 
     Notes:
-        Formula used: \( \text{amp} \cdot \exp(-\log(2) \cdot ((x - \text{freq}) / \text{HWHM})^2) \).
+        Formula used: ``amp * np.exp(-np.log(2) * ((x - freq) / HWHM)**2)``.
 
     Examples:
         You can create a single peak like:
@@ -49,7 +49,7 @@ def gaussian(x: np.ndarray, amp, freq, HWHM) -> np.ndarray:
     return amp * np.exp(-np.log(2) * ((x - freq) / HWHM)**2)
 
 def lorentzian(x: np.ndarray, amp, freq, HWHM) -> np.ndarray:
-    r"""Computes a Lorentzian peak.
+    """Computes a Lorentzian peak.
 
     Args:
         x (np.ndarray): x axis
@@ -61,7 +61,7 @@ def lorentzian(x: np.ndarray, amp, freq, HWHM) -> np.ndarray:
         np.ndarray: calculated peak.
 
     Notes:
-        Formula used: \( \text{amp} / (1 + ((x - \text{freq}) / \text{HWHM})^2) \).
+        Formula used: ``amp / (1.0 + ((x - freq) / HWHM)**2)``.
 
     Examples:
         You can create a single peak like:
@@ -86,7 +86,7 @@ def lorentzian(x: np.ndarray, amp, freq, HWHM) -> np.ndarray:
     return amp / (1.0 + ((x - freq) / HWHM)**2)
 
 def pseudovoigt(x: np.ndarray, amp, freq, HWHM, L_ratio) -> np.ndarray:
-    r"""Computes a pseudo-Voigt peak.
+    """Computes a pseudo-Voigt peak.
 
     Args:
         x (np.ndarray): x axis
@@ -102,8 +102,7 @@ def pseudovoigt(x: np.ndarray, amp, freq, HWHM, L_ratio) -> np.ndarray:
         ValueError: If `L_ratio` is not between 0 and 1.
 
     Notes:
-        Formula used: \( (1 - L_{\text{ratio}}) \cdot \text{gaussian}(x, \text{amp}, \text{freq}, \text{HWHM}) + 
-                      L_{\text{ratio}} \cdot \text{lorentzian}(x, \text{amp}, \text{freq}, \text{HWHM}) \).
+        Formula used: ``(1 - L_ratio) * gaussian(x, amp, freq, HWHM) + L_ratio * lorentzian(x, amp, freq, HWHM)``.
 
     Examples:
         You can create a single peak like:
@@ -131,7 +130,7 @@ def pseudovoigt(x: np.ndarray, amp, freq, HWHM, L_ratio) -> np.ndarray:
     return L_ratio * lorentzian(x, amp, freq, HWHM) + (1 - L_ratio) * gaussian(x, amp, freq, HWHM)
 
 def pearson7(x, a0, a1, a2, a3):
-    r"""Computes a Pearson VII peak.
+    """Computes a Pearson VII peak.
 
     Args:
         x (np.ndarray): Positions at which the signal should be sampled.
@@ -145,7 +144,7 @@ def pearson7(x, a0, a1, a2, a3):
         np.ndarray: The computed Pearson VII signal.
 
     Notes:
-        Formula used: \( a_0 / ((1 + ((x - a_1) / a_2)^2 \cdot (2^{(1/a_3)} - 1))^{a_3}) \).
+        Formula used: ``a0 / ((1 + ((x - a1) / a2)**2 * (2**(1/a3) - 1))**a3)``.
 
     Examples:
         You can create a single peak like:

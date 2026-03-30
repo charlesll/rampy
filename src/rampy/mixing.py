@@ -10,13 +10,13 @@ import numpy as np
 import cvxpy
 
 def mixing_sp(y_fit: np.ndarray, ref1: np.ndarray, ref2: np.ndarray) -> np.ndarray:
-    r"""
+    """
     Mixes two reference spectra to match given experimental signals.
 
     This function calculates the fractions of the first reference spectrum (`ref1`) 
     in a linear combination of `ref1` and `ref2` that best matches the provided signals (`y_fit`). 
     The calculation minimizes the sum of the least absolute values of the objective function:
-    \( \text{obj} = \sum \left| y_{\text{fit}} - (F_1 \cdot \text{ref1} + (1 - F_1) \cdot \text{ref2}) \right| \).
+    ``obj = sum(|y_fit - (F1 * ref1 + (1 - F1) * ref2)|)``.
 
     Args:
         y_fit (np.ndarray): Array containing the experimental signals with shape `(m, n)`, 

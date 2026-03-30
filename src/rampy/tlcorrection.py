@@ -11,7 +11,7 @@ from scipy.constants import c, h, k
 from scipy.integrate import simpson
 
 def tlcorrection(x: np.ndarray, y: np.ndarray, temperature: float, wavelength: float, **kwargs) -> tuple:
-    r"""Corrects Raman spectra for temperature and excitation line effects.
+    """Corrects Raman spectra for temperature and excitation line effects.
 
     This function applies corrections to Raman spectra to account for temperature and laser 
     excitation wavelength effects. It supports multiple correction equations and normalization 
@@ -23,7 +23,7 @@ def tlcorrection(x: np.ndarray, y: np.ndarray, temperature: float, wavelength: f
         temperature (float): Temperature in °C.
         wavelength (float): Wavelength of the laser that excited the sample, in nm.
         correction (str, optional): The correction equation to use. Options are:
-            - 'long': Default equation from Galeener and Sen (1978) with a \(v_0^3\) coefficient correction.
+            - 'long': Default equation from Galeener and Sen (1978) with a ``v0**3`` coefficient correction.
             - 'galeener': Original equation from Galeener and Sen (1978), based on Shuker and Gammon (1970).
             - 'hehlen': Equation from Hehlen et al. (2010), preserving the Boson peak signal. Default is 'long'.
         normalisation (str, optional): Normalization method for the corrected data. Options are:
@@ -37,15 +37,15 @@ def tlcorrection(x: np.ndarray, y: np.ndarray, temperature: float, wavelength: f
         tuple[np.ndarray, np.ndarray, np.ndarray]:
             - `x` (np.ndarray): Raman shift values after correction.
             - `ycorr` (np.ndarray): Corrected intensity values.
-            - `ese_corr` (np.ndarray): Propagated errors calculated as \(\sqrt{y}\) on raw intensities.
+            - `ese_corr` (np.ndarray): Propagated errors calculated as ``np.sqrt(y)`` on raw intensities.
 
     Raises:
         ValueError: If an invalid correction or normalization method is specified.
 
     Notes:
         - The 'galeener' equation is a modification of Shuker and Gammon's formula to account for 
-          \((v_0 - v)^4\) dependence of Raman intensity.
-        - The 'long' equation includes a \(v_0^3\) coefficient to remove cubic meter dimensions, 
+          ``(v0 - v)**4`` dependence of Raman intensity.
+        - The 'long' equation includes a ``v0**3`` coefficient to remove cubic meter dimensions, 
           as used in several studies like Mysen et al. (1982).
         - The 'hehlen' equation avoids signal suppression below 500 cm⁻¹, preserving features like 
           the Boson peak in glasses.
