@@ -8,6 +8,7 @@
 #############################################################################
 import numpy as np
 from scipy.constants import c, h, k
+from scipy.integrate import simpson
 
 def tlcorrection(x: np.ndarray, y: np.ndarray, temperature: float, wavelength: float, **kwargs) -> tuple:
     """Corrects Raman spectra for temperature and excitation line effects.
@@ -135,7 +136,7 @@ def tlcorrection(x: np.ndarray, y: np.ndarray, temperature: float, wavelength: f
 
     # Normalization
     if normalisation == 'area':
-        area = np.trapz(ycorr, x)
+        area = simpson(ycorr, x=x, axis=0)
         if area != 0:
             ycorr = ycorr/area  # area normalization
         else:
